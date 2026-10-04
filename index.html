@@ -1095,14 +1095,13 @@
             📘 Facebook Page
           </a>
 
-          <a
+          <button
             class="btn-light"
-            href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
-            target="_blank"
-            rel="noopener noreferrer"
+            type="button"
+            onclick="ouvrirFormationLesona()"
           >
-            👥 Groupe WhatsApp
-          </a>
+            🎓 Groupe LESONA
+          </button>
 
         </div>
 
@@ -1593,7 +1592,7 @@
 
 <script>
   /* =========================================================
-     V6 CONFIGURATION — LIENS RENA
+     V6 CONFIGURATION — LIENS
   ========================================================= */
 
   const V6_CONFIG = {
@@ -1605,6 +1604,9 @@
 
     whatsappGroupUrl:
       "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
+
+    whatsappExerciseGroupUrl:
+      "https://chat.whatsapp.com/FU0bIEq9nmVI6W4VDH6GlI",
 
     whatsappGreeting:
       "Salama Tantsaha Matihanina, liana amin'ny formation gratuite 7 jours aho."
@@ -1743,10 +1745,49 @@
   }
 
 
+  /* =========================================================
+     FORMATION — GROUPE LESONA
+  ========================================================= */
+
+  function ouvrirFormationLesona(){
+
+    if(!V6_CONFIG.whatsappGroupUrl){
+      alert("⚠️ Tsy mbola misy lien Groupe LESONA.");
+      return;
+    }
+
+    window.open(
+      V6_CONFIG.whatsappGroupUrl,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
+
   function ouvrirFormationWhatsApp(){
 
-    ouvrirWhatsAppMessage(
-      V6_CONFIG.whatsappGreeting
+    ouvrirFormationLesona();
+  }
+
+
+  /* =========================================================
+     EXERCICE & PRATIQUE
+     
+     Tsy ampifandraisina amin'ny bouton public ao amin'ny site.
+     Ny lien dia zaraina ao anatin'ny Groupe LESONA.
+  ========================================================= */
+
+  function ouvrirExercisePratique(){
+
+    if(!V6_CONFIG.whatsappExerciseGroupUrl){
+      alert("⚠️ Tsy mbola misy lien Groupe EXERCICE & PRATIQUE.");
+      return;
+    }
+
+    window.open(
+      V6_CONFIG.whatsappExerciseGroupUrl,
+      "_blank",
+      "noopener,noreferrer"
     );
   }
 
@@ -1761,16 +1802,7 @@
 
   function ouvrirWhatsAppGroupe(){
 
-    if(!V6_CONFIG.whatsappGroupUrl){
-      alert("⚠️ Tsy mbola misy lien Groupe WhatsApp.");
-      return;
-    }
-
-    window.open(
-      V6_CONFIG.whatsappGroupUrl,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    ouvrirFormationLesona();
   }
 
 
