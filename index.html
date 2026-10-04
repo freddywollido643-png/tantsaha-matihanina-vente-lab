@@ -1,2081 +1,2029 @@
 <!DOCTYPE html>
 <html lang="mg">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#123b2a">
-  <meta name="description" content="Tantsaha Matihanina Vente Lab — Mianatra, Mampihatra, Mahomby.">
-  <title>Tantsaha Matihanina — Vente Lab</title>
-
-  <style>
-    :root {
-      --green-dark: #123b2a;
-      --green: #1d5c3d;
-      --green-light: #eaf4ed;
-      --gold: #d6a82f;
-      --gold-light: #fff6d8;
-      --white: #ffffff;
-      --bg: #f5f7f5;
-      --text: #17221c;
-      --muted: #66736b;
-      --border: #dce5df;
-      --danger: #b42318;
-      --shadow: 0 10px 30px rgba(18, 59, 42, 0.08);
-      --radius: 18px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button,
-    input,
-    select,
-    textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .container {
-      width: min(1120px, 92%);
-      margin: auto;
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(18, 59, 42, 0.97);
-      color: white;
-      box-shadow: 0 3px 15px rgba(0,0,0,0.12);
-    }
-
-    .nav {
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .brand {
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      line-height: 1.15;
-    }
-
-    .brand span {
-      display: block;
-      font-size: 0.75rem;
-      color: #e7c65d;
-      letter-spacing: 2px;
-      margin-top: 3px;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .nav-links a {
-      padding: 8px 11px;
-      border-radius: 9px;
-      font-size: 0.92rem;
-      transition: 0.2s;
-    }
-
-    .nav-links a:hover {
-      background: rgba(255,255,255,0.1);
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      background:
-        radial-gradient(circle at top right, rgba(214,168,47,0.18), transparent 30%),
-        linear-gradient(135deg, #123b2a, #1d5c3d);
-      color: white;
-      padding: 78px 0 72px;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.35fr 0.65fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-block;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #f5dc86;
-      font-size: 0.86rem;
-      font-weight: 700;
-      margin-bottom: 18px;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.2rem, 6vw, 4.3rem);
-      line-height: 1.02;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      color: #e3bd46;
-    }
-
-    .hero p {
-      max-width: 720px;
-      color: #e4eee8;
-      font-size: 1.08rem;
-      margin-bottom: 26px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 0;
-      border-radius: 12px;
-      padding: 13px 18px;
-      font-weight: 800;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-primary {
-      background: var(--gold);
-      color: #17221c;
-      box-shadow: 0 8px 20px rgba(214,168,47,0.22);
-    }
-
-    .btn-secondary {
-      background: white;
-      color: var(--green-dark);
-    }
-
-    .hero-card {
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 22px;
-      padding: 28px;
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-card .big {
-      font-size: 3rem;
-      margin-bottom: 8px;
-    }
-
-    .hero-card h3 {
-      margin-bottom: 10px;
-    }
-
-    .hero-card ul {
-      list-style: none;
-    }
-
-    .hero-card li {
-      padding: 6px 0;
-      color: #e7eee9;
-    }
-
-    .hero-card li::before {
-      content: "✓";
-      color: #e3bd46;
-      font-weight: bold;
-      margin-right: 9px;
-    }
-
-    /* =========================
-       GENERAL SECTIONS
-    ========================= */
-
-    section {
-      padding: 72px 0;
-    }
-
-    .section-head {
-      max-width: 760px;
-      margin-bottom: 34px;
-    }
-
-    .section-head .label {
-      color: var(--green);
-      font-weight: 800;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 7px;
-    }
-
-    .section-head h2 {
-      font-size: clamp(1.8rem, 4vw, 2.7rem);
-      color: var(--green-dark);
-      margin-bottom: 8px;
-    }
-
-    .section-head p {
-      color: var(--muted);
-    }
-
-    /* =========================
-       TOOLS
-    ========================= */
-
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .tool-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      box-shadow: var(--shadow);
-      transition: 0.2s;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-4px);
-      border-color: #c6d6cc;
-    }
-
-    .tool-icon {
-      font-size: 2rem;
-      margin-bottom: 12px;
-    }
-
-    .tool-card h3 {
-      color: var(--green-dark);
-      margin-bottom: 8px;
-      font-size: 1.05rem;
-    }
-
-    .tool-card p {
-      color: var(--muted);
-      font-size: 0.92rem;
-    }
-
-    .tool-card.featured {
-      border: 2px solid var(--gold);
-      background: linear-gradient(180deg, #fffdf5, white);
-    }
-
-    /* =========================
-       TOOL WORKSPACE
-    ========================= */
-
-    .workspace {
-      background: #edf4ef;
-    }
-
-    .workspace-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: 30px;
-      box-shadow: var(--shadow);
-      margin-bottom: 30px;
-    }
-
-    .workspace-title {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-
-    .workspace-title .icon {
-      font-size: 2.3rem;
-    }
-
-    .workspace-title h2 {
-      color: var(--green-dark);
-      margin-bottom: 4px;
-    }
-
-    .workspace-title p {
-      color: var(--muted);
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    .field label {
-      font-weight: 700;
-      color: #34423a;
-      font-size: 0.93rem;
-    }
-
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      border: 1px solid #ccd8d0;
-      border-radius: 11px;
-      padding: 12px 13px;
-      outline: none;
-      background: white;
-      color: var(--text);
-      transition: 0.2s;
-    }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(29,92,61,0.1);
-    }
-
-    .field textarea {
-      min-height: 105px;
-      resize: vertical;
-    }
-
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn-green {
-      background: var(--green-dark);
-      color: white;
-    }
-
-    .btn-light {
-      background: #eef3ef;
-      color: var(--green-dark);
-    }
-
-    .btn-gold {
-      background: var(--gold);
-      color: #1a211c;
-    }
-
-    /* =========================
-       CALCULATOR
-    ========================= */
-
-    .calculator-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-    }
-
-    .results {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .result-box {
-      background: #f6f9f6;
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 15px;
-    }
-
-    .result-box .label {
-      color: var(--muted);
-      font-size: 0.82rem;
-      margin-bottom: 4px;
-    }
-
-    .result-box .value {
-      font-weight: 800;
-      font-size: 1.12rem;
-      color: var(--green-dark);
-    }
-
-    .result-box.profit {
-      background: var(--green-light);
-      border-color: #b8d5c1;
-    }
-
-    .result-box.margin {
-      background: var(--gold-light);
-      border-color: #ead78e;
-    }
-
-    .status-message {
-      margin-top: 16px;
-      padding: 13px 15px;
-      border-radius: 11px;
-      background: #f6f8f6;
-      color: #405048;
-      font-size: 0.92rem;
-    }
-
-    /* =========================
-       OFFER GENERATOR
-    ========================= */
-
-    .offer-layout {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 28px;
-    }
-
-    .offer-preview-wrap {
-      position: sticky;
-      top: 95px;
-      align-self: start;
-    }
-
-    .offer-preview {
-      background: white;
-      border: 2px solid var(--green);
-      border-radius: 18px;
-      padding: 28px;
-      min-height: 430px;
-      box-shadow: var(--shadow);
-    }
-
-    .offer-preview-header {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 15px;
-      margin-bottom: 18px;
-    }
-
-    .offer-preview-header .mini-brand {
-      color: var(--green);
-      font-size: 0.76rem;
-      font-weight: 800;
-      letter-spacing: 1.3px;
-      margin-bottom: 8px;
-    }
-
-    .offer-preview h3 {
-      font-size: 1.55rem;
-      color: var(--green-dark);
-      margin-bottom: 7px;
-    }
-
-    .offer-preview .offer-description {
-      color: var(--muted);
-      white-space: pre-line;
-      margin-bottom: 18px;
-    }
-
-    .offer-price {
-      background: var(--gold-light);
-      border: 1px solid #ead78e;
-      border-radius: 12px;
-      padding: 14px;
-      margin: 15px 0;
-    }
-
-    .offer-price strong {
-      display: block;
-      font-size: 1.4rem;
-      color: var(--green-dark);
-    }
-
-    .offer-meta {
-      display: grid;
-      gap: 7px;
-      margin-top: 15px;
-      color: #45534b;
-      font-size: 0.92rem;
-    }
-
-    .offer-cta {
-      margin-top: 22px;
-      padding-top: 17px;
-      border-top: 1px solid var(--border);
-      font-weight: 800;
-      color: var(--green-dark);
-    }
-
-    .copy-status {
-      margin-top: 10px;
-      color: var(--green);
-      font-weight: 700;
-      font-size: 0.9rem;
-      min-height: 22px;
-    }
-
-    /* =========================
-       FORMATION
-    ========================= */
-
-    .formation-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 12px;
-    }
-
-    .day-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 17px 12px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-
-    .day-card .day {
-      color: var(--gold);
-      font-weight: 900;
-      font-size: 1.1rem;
-      margin-bottom: 7px;
-    }
-
-    .day-card h3 {
-      font-size: 0.94rem;
-      color: var(--green-dark);
-    }
-
-    /* =========================
-       PROCESS
-    ========================= */
-
-    .process-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
-    .process-card {
-      position: relative;
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 21px;
-      box-shadow: var(--shadow);
-    }
-
-    .process-number {
-      display: inline-flex;
-      width: 34px;
-      height: 34px;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: var(--green-dark);
-      color: white;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .process-card h3 {
-      color: var(--green-dark);
-      font-size: 1rem;
-    }
-
-    /* =========================
-       CTA
-    ========================= */
-
-    .cta {
-      background: var(--green-dark);
-      color: white;
-      text-align: center;
-      border-radius: 25px;
-      padding: 55px 25px;
-      margin-bottom: 70px;
-    }
-
-    .cta h2 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      margin-bottom: 10px;
-    }
-
-    .cta p {
-      color: #dce8e0;
-      max-width: 680px;
-      margin: 0 auto 22px;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    footer {
-      background: #0d2c20;
-      color: white;
-      padding: 35px 0;
-      text-align: center;
-    }
-
-    footer strong {
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    footer p {
-      color: #b9c9bf;
-      font-size: 0.9rem;
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (max-width: 950px) {
-      .hero-grid,
-      .calculator-layout,
-      .offer-layout {
-        grid-template-columns: 1fr;
-      }
-
-      .tools-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .formation-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-
-      .process-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .offer-preview-wrap {
-        position: static;
-      }
-    }
-
-    @media (max-width: 680px) {
-      .nav {
-        padding: 10px 0;
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .nav-links {
-        width: 100%;
-        justify-content: flex-start;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding-bottom: 3px;
-      }
-
-      .nav-links a {
-        white-space: nowrap;
-      }
-
-      .hero {
-        padding: 55px 0;
-      }
-
-      section {
-        padding: 55px 0;
-      }
-
-      .tools-grid,
-      .form-grid,
-      .results,
-      .process-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .formation-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .workspace-card {
-        padding: 20px;
-      }
-
-      .hero-card {
-        padding: 21px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#123b2a">
+<title>Tantsaha Matihanina — Vente Lab V4</title>
+
+<style>
+:root{
+  --green:#123b2a;
+  --green2:#1d5a3f;
+  --gold:#d9a441;
+  --gold2:#f0c766;
+  --white:#ffffff;
+  --light:#f4f7f4;
+  --dark:#14201a;
+  --muted:#65736b;
+  --border:#dce5df;
+  --danger:#a52d2d;
+  --success:#1c7048;
+  --shadow:0 10px 30px rgba(18,59,42,.10);
+  --radius:18px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:var(--dark);
+  line-height:1.6;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.container{
+  width:min(1120px,92%);
+  margin:auto;
+}
+
+/* HEADER */
+header{
+  background:var(--green);
+  color:white;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  box-shadow:0 3px 15px rgba(0,0,0,.12);
+}
+
+.nav{
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo{
+  font-weight:900;
+  letter-spacing:.5px;
+}
+
+.logo span{
+  display:block;
+  font-size:11px;
+  color:var(--gold2);
+  letter-spacing:1.5px;
+}
+
+.nav-links{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.nav-links a{
+  font-size:14px;
+  opacity:.92;
+}
+
+.nav-links a:hover{
+  color:var(--gold2);
+}
+
+/* HERO */
+.hero{
+  background:
+    radial-gradient(circle at top right,rgba(217,164,65,.18),transparent 35%),
+    linear-gradient(135deg,var(--green),#0c2c20);
+  color:white;
+  padding:70px 0;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:40px;
+  align-items:center;
+}
+
+.badge{
+  display:inline-block;
+  background:rgba(217,164,65,.15);
+  border:1px solid rgba(240,199,102,.35);
+  color:var(--gold2);
+  padding:7px 13px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:18px;
+}
+
+.hero h1{
+  font-size:clamp(38px,6vw,68px);
+  line-height:1.05;
+  margin-bottom:18px;
+}
+
+.hero h1 span{
+  color:var(--gold2);
+}
+
+.hero p{
+  max-width:700px;
+  color:#e5eee9;
+  font-size:18px;
+}
+
+.hero-card{
+  background:white;
+  color:var(--dark);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 20px 45px rgba(0,0,0,.18);
+}
+
+.hero-card .big{
+  font-size:44px;
+  margin-bottom:8px;
+}
+
+.hero-card h3{
+  margin-bottom:8px;
+}
+
+.hero-card p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* SECTIONS */
+section{
+  padding:65px 0;
+}
+
+.section-title{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.section-title .eyebrow{
+  color:var(--green2);
+  font-size:13px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+}
+
+.section-title h2{
+  font-size:clamp(28px,5vw,42px);
+  margin:6px 0 10px;
+}
+
+.section-title p{
+  color:var(--muted);
+  max-width:700px;
+  margin:auto;
+}
+
+/* TOOLS */
+.tools-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.tool-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:23px;
+  box-shadow:var(--shadow);
+  transition:.2s;
+  cursor:pointer;
+}
+
+.tool-card:hover{
+  transform:translateY(-4px);
+  border-color:#bfd0c5;
+}
+
+.tool-icon{
+  font-size:32px;
+  margin-bottom:12px;
+}
+
+.tool-card h3{
+  font-size:17px;
+  margin-bottom:7px;
+}
+
+.tool-card p{
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* WORKSPACE */
+.workspace{
+  background:#edf3ee;
+}
+
+.workspace-box{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:var(--shadow);
+  margin-bottom:28px;
+}
+
+.workspace-box h3{
+  font-size:25px;
+  margin-bottom:5px;
+}
+
+.workspace-box > p{
+  color:var(--muted);
+  margin-bottom:24px;
+}
+
+/* FORM */
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+}
+
+.form-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.form-group.full{
+  grid-column:1/-1;
+}
+
+label{
+  font-weight:bold;
+  font-size:13px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid #ccd8d0;
+  border-radius:11px;
+  padding:12px 13px;
+  font:inherit;
+  background:#fbfdfb;
+  outline:none;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--green2);
+  box-shadow:0 0 0 3px rgba(29,90,63,.08);
+}
+
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:20px;
+}
+
+button{
+  border:0;
+  border-radius:11px;
+  padding:12px 18px;
+  font-weight:bold;
+  cursor:pointer;
+  font:inherit;
+}
+
+.btn-primary{
+  background:var(--green);
+  color:white;
+}
+
+.btn-primary:hover{
+  background:var(--green2);
+}
+
+.btn-gold{
+  background:var(--gold);
+  color:#182317;
+}
+
+.btn-light{
+  background:#eef3ef;
+  color:var(--green);
+}
+
+.btn-danger{
+  background:#f8e8e8;
+  color:var(--danger);
+}
+
+/* CALCULATOR */
+.result-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin-top:24px;
+}
+
+.result-card{
+  background:#f4f8f5;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+}
+
+.result-card small{
+  color:var(--muted);
+  display:block;
+  margin-bottom:5px;
+}
+
+.result-card strong{
+  font-size:19px;
+  color:var(--green);
+}
+
+.profit-positive{
+  color:var(--success)!important;
+}
+
+.profit-negative{
+  color:var(--danger)!important;
+}
+
+/* OUTPUT */
+.output{
+  margin-top:24px;
+  background:#102f22;
+  color:white;
+  border-radius:16px;
+  padding:22px;
+  white-space:pre-wrap;
+  font-size:14px;
+  line-height:1.7;
+  min-height:100px;
+}
+
+.output-title{
+  font-weight:bold;
+  margin-bottom:10px;
+  color:var(--gold2);
+}
+
+/* TRAINING */
+.days-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.day-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+}
+
+.day-number{
+  color:var(--gold);
+  font-size:13px;
+  font-weight:bold;
+}
+
+.day-card h3{
+  margin:5px 0;
+}
+
+.day-card p{
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* PROCESS */
+.process-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.process-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+}
+
+.process-number{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:var(--green);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+/* CTA */
+.cta{
+  background:var(--green);
+  color:white;
+  text-align:center;
+  border-radius:25px;
+  padding:55px 25px;
+}
+
+.cta h2{
+  font-size:clamp(28px,5vw,44px);
+  margin-bottom:10px;
+}
+
+.cta p{
+  color:#dce9e2;
+  max-width:650px;
+  margin:0 auto 22px;
+}
+
+/* FOOTER */
+footer{
+  background:#0a2117;
+  color:#cbd8d0;
+  padding:30px 0;
+  margin-top:65px;
+}
+
+.footer-inner{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+footer strong{
+  color:white;
+}
+
+footer small{
+  color:#91a59a;
+}
+
+/* HIGHLIGHT */
+.highlight{
+  border:2px solid var(--gold);
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .tools-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .days-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .process-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .result-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .hero-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+@media(max-width:650px){
+  .nav{
+    min-height:auto;
+    padding:15px 0;
+    align-items:flex-start;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  section{
+    padding:48px 0;
+  }
+
+  .tools-grid,
+  .days-grid,
+  .process-grid,
+  .form-grid,
+  .result-grid{
+    grid-template-columns:1fr;
+  }
+
+  .workspace-box{
+    padding:20px;
+  }
+
+  .hero{
+    padding:55px 0;
+  }
+
+  .hero-card{
+    padding:22px;
+  }
+
+  .actions button{
+    width:100%;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================= -->
-
-  <header>
-    <div class="container nav">
-      <a href="#accueil" class="brand">
-        TANTSAHA MATIHANINA
-        <span>VENTE LAB</span>
-      </a>
-
-      <nav class="nav-links">
-        <a href="#outils">Outils</a>
-        <a href="#kajy">Kajy</a>
-        <a href="#offre">Offre</a>
-        <a href="#formation">Formation</a>
-        <a href="#processus">Processus</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-
-    <!-- =========================
-         HERO
-    ========================= -->
-
-    <section class="hero" id="accueil">
-      <div class="container hero-grid">
-
-        <div>
-          <div class="eyebrow">
-            🎓 Formation pratique • Vente professionnelle
-          </div>
-
-          <h1>
-            Mivarotra tsara.<br>
-            <span>Mahazo tombony.</span>
-          </h1>
-
-          <p>
-            Tantsaha Matihanina — Vente Lab dia espace pratique
-            hanampiana ny tantsaha sy mpiompy Malagasy hianatra
-            ny fomba fivarotana ny vokatra amin'ny fomba matihanina.
-          </p>
-
-          <div class="hero-actions">
-            <a href="#kajy" class="btn btn-primary">
-              Hanomboka hianatra
-            </a>
-
-            <a href="#formation" class="btn btn-secondary">
-              Jereo ny formation
-            </a>
-          </div>
-        </div>
-
-        <div class="hero-card">
-          <div class="big">🌱</div>
-
-          <h3>Mianatra • Mampihatra • Mahomby</h3>
-
-          <ul>
-            <li>Kajy ny coût sy ny bénéfice</li>
-            <li>Mamorona offre mahasarika</li>
-            <li>Mianatra miresaka amin'ny client</li>
-            <li>Mitantana objection sy négociation</li>
-            <li>Manao closing sy commande</li>
-            <li>Mamorona reçu de vente</li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =========================
-         TOOLS
-    ========================= -->
-
-    <section id="outils">
-      <div class="container">
-
-        <div class="section-head">
-          <div class="label">Vente Lab</div>
-          <h2>Outils pratique ho anao</h2>
-          <p>
-            Tsy théorie fotsiny. Eto ianao dia hianatra amin'ny
-            alalan'ny exercices sy simulations.
-          </p>
-        </div>
-
-        <div class="tools-grid">
-
-          <a href="#kajy" class="tool-card featured">
-            <div class="tool-icon">🧮</div>
-            <h3>Kajy Prix & Tombony</h3>
-            <p>
-              Kajio ny coût, prix de vente, chiffre d'affaires
-              ary bénéfice.
-            </p>
-          </a>
-
-          <a href="#offre" class="tool-card featured">
-            <div class="tool-icon">🛍️</div>
-            <h3>Créer une Offre</h3>
-            <p>
-              Amboary ny offre-nao mba ho mazava sy mahasarika.
-            </p>
-          </a>
-
-          <div class="tool-card">
-            <div class="tool-icon">📱</div>
-            <h3>Publication</h3>
-            <p>
-              Mamoròna modèle publication azo ampiasaina amin'ny
-              Facebook sy WhatsApp.
-            </p>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-icon">💬</div>
-            <h3>Simulation Client</h3>
-            <p>
-              Manaova entraînement amin'ny resaka client sy objection.
-            </p>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-icon">📝</div>
-            <h3>Commande</h3>
-            <p>
-              Ianaro ny fomba fandraisana commande amin'ny fomba
-              matihanina.
-            </p>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-icon">🧾</div>
-            <h3>Reçu de Vente</h3>
-            <p>
-              Mamoròna reçu madio sy azo print-na.
-            </p>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-icon">🎯</div>
-            <h3>Challenge 7 Jours</h3>
-            <p>
-              Technique iray isan'andro miaraka amin'ny exercice pratique.
-            </p>
-          </div>
-
-          <div class="tool-card">
-            <div class="tool-icon">📊</div>
-            <h3>Projet Vente Tantsaha</h3>
-            <p>
-              Ataovy manontolo ny processus de vente amin'ny simulation.
-            </p>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================
-         WORKSPACE
-    ========================= -->
-
-    <section class="workspace">
-
-      <div class="container">
-
-        <!-- =====================
-             CALCULATOR
-        ====================== -->
-
-        <div class="workspace-card" id="kajy">
-
-          <div class="workspace-title">
-            <div class="icon">🧮</div>
-
-            <div>
-              <h2>Kajy Prix & Tombony</h2>
-              <p>
-                Ampidiro ny fandaniana sy ny vidin'ny varotra.
-                Hivoaka ho azy ny coût total, coût unitaire,
-                chiffre d'affaires, bénéfice ary marge.
-              </p>
-            </div>
-          </div>
-
-          <div class="calculator-layout">
-
-            <div>
-
-              <div class="field">
-                <label for="produit">Produit</label>
-
-                <select id="produit">
-                  <option value="Akoho Gasy">Akoho Gasy</option>
-                  <option value="Pondeuse">Pondeuse</option>
-                  <option value="Poulet de chair">Poulet de chair</option>
-                  <option value="Kisoa">Kisoa</option>
-                  <option value="Gana">Gana</option>
-                  <option value="Gisa">Gisa</option>
-                  <option value="Vorontsiloza">Vorontsiloza</option>
-                  <option value="Bitro">Bitro</option>
-                  <option value="Osy">Osy</option>
-                  <option value="Ondry">Ondry</option>
-                  <option value="Tantely">Tantely</option>
-                  <option value="Trondro">Trondro</option>
-                  <option value="Vary">Vary</option>
-                  <option value="Katsaka">Katsaka</option>
-                  <option value="Legioma">Legioma</option>
-                </select>
-              </div>
-
-              <br>
-
-              <div class="form-grid">
-
-                <div class="field">
-                  <label for="quantite">Quantité</label>
-                  <input
-                    type="number"
-                    id="quantite"
-                    min="1"
-                    value="50"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="achat">Coût d'achat total (Ar)</label>
-                  <input
-                    type="number"
-                    id="achat"
-                    min="0"
-                    value="750000"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="sakafo">Sakafo (Ar)</label>
-                  <input
-                    type="number"
-                    id="sakafo"
-                    min="0"
-                    value="150000"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="fikarakarana">Fikarakarana (Ar)</label>
-                  <input
-                    type="number"
-                    id="fikarakarana"
-                    min="0"
-                    value="30000"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="transport">Transport (Ar)</label>
-                  <input
-                    type="number"
-                    id="transport"
-                    min="0"
-                    value="20000"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="autres">Autres coûts (Ar)</label>
-                  <input
-                    type="number"
-                    id="autres"
-                    min="0"
-                    value="0"
-                  >
-                </div>
-
-                <div class="field full">
-                  <label for="prixVente">
-                    Prix de vente / unité (Ar)
-                  </label>
-
-                  <input
-                    type="number"
-                    id="prixVente"
-                    min="0"
-                    value="25000"
-                  >
-                </div>
-
-              </div>
-
-              <div class="button-row">
-                <button
-                  class="btn btn-green"
-                  onclick="calculerTombony()"
-                >
-                  🧮 Kajio
-                </button>
-
-                <button
-                  class="btn btn-light"
-                  onclick="resetCalculateur()"
-                >
-                  ↺ Hamafa
-                </button>
-              </div>
-
-            </div>
-
-            <div>
-
-              <div class="results">
-
-                <div class="result-box">
-                  <div class="label">Coût total</div>
-                  <div class="value" id="coutTotal">
-                    950 000 Ar
-                  </div>
-                </div>
-
-                <div class="result-box">
-                  <div class="label">Coût unitaire</div>
-                  <div class="value" id="coutUnitaire">
-                    19 000 Ar
-                  </div>
-                </div>
-
-                <div class="result-box">
-                  <div class="label">Chiffre d'affaires</div>
-                  <div class="value" id="chiffreAffaires">
-                    1 250 000 Ar
-                  </div>
-                </div>
-
-                <div class="result-box profit">
-                  <div class="label">Bénéfice</div>
-                  <div class="value" id="benefice">
-                    300 000 Ar
-                  </div>
-                </div>
-
-                <div class="result-box margin">
-                  <div class="label">Marge</div>
-                  <div class="value" id="marge">
-                    24.00 %
-                  </div>
-                </div>
-
-              </div>
-
-              <div
-                class="status-message"
-                id="calculMessage"
-              >
-                ✅ Akoho Gasy dia mampiseho bénéfice positif.
-                Hamarino foana fa tafiditra ao anatin'ny coût
-                ny fandaniana rehetra.
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- =====================
-             OFFER GENERATOR
-        ====================== -->
-
-        <div class="workspace-card" id="offre">
-
-          <div class="workspace-title">
-            <div class="icon">🛍️</div>
-
-            <div>
-              <h2>Créer une Offre</h2>
-              <p>
-                Amboary eto ny offre-nao. Rehefa vita dia
-                mamorona automatiquement ny texte azonao
-                alefa amin'ny Facebook, WhatsApp na client.
-              </p>
-            </div>
-          </div>
-
-          <div class="offer-layout">
-
-            <!-- FORM -->
-
-            <div>
-
-              <div class="form-grid">
-
-                <div class="field">
-                  <label for="offreProduit">Produit</label>
-
-                  <input
-                    type="text"
-                    id="offreProduit"
-                    placeholder="Ohatra: Akoho Gasy"
-                    value="Akoho Gasy"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="offreQuantite">
-                    Quantité disponible
-                  </label>
-
-                  <input
-                    type="number"
-                    id="offreQuantite"
-                    min="1"
-                    placeholder="Ohatra: 50"
-                    value="50"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="offrePrix">
-                    Prix de vente / unité (Ar)
-                  </label>
-
-                  <input
-                    type="number"
-                    id="offrePrix"
-                    min="0"
-                    placeholder="Ohatra: 25000"
-                    value="25000"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="offreZone">
-                    Zone / Lieu
-                  </label>
-
-                  <input
-                    type="text"
-                    id="offreZone"
-                    placeholder="Ohatra: Mahanoro"
-                    value="Mahanoro"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="offreLivraison">
-                    Livraison
-                  </label>
-
-                  <select id="offreLivraison">
-                    <option value="Livraison azo ifanarahana">
-                      Livraison azo ifanarahana
-                    </option>
-
-                    <option value="Livraison misy">
-                      Livraison misy
-                    </option>
-
-                    <option value="Tsy misy livraison">
-                      Tsy misy livraison
-                    </option>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label for="offreContact">
-                    Contact / WhatsApp
-                  </label>
-
-                  <input
-                    type="text"
-                    id="offreContact"
-                    placeholder="Ohatra: 034 XX XXX XX"
-                    value=""
-                  >
-                </div>
-
-                <div class="field full">
-                  <label for="offreAvantage">
-                    Avantage / Bonus
-                  </label>
-
-                  <input
-                    type="text"
-                    id="offreAvantage"
-                    placeholder="Ohatra: Akoho salama, voakarakara tsara"
-                    value="Akoho salama sy voakarakara tsara"
-                  >
-                </div>
-
-                <div class="field full">
-                  <label for="offreDescription">
-                    Description
-                  </label>
-
-                  <textarea
-                    id="offreDescription"
-                    placeholder="Lazao fohy ny produit-nao..."
-                  >Akoho Gasy tsara kalitao, mety amin'ny fiompiana na fihinanana.</textarea>
-                </div>
-
-                <div class="field full">
-                  <label for="offreCta">
-                    Appel à l'action (CTA)
-                  </label>
-
-                  <input
-                    type="text"
-                    id="offreCta"
-                    value="Raha liana ianao dia mifandraisa aminay."
-                  >
-                </div>
-
-              </div>
-
-              <div class="button-row">
-
-                <button
-                  class="btn btn-green"
-                  onclick="genererOffre()"
-                >
-                  🛍️ Générer l'offre
-                </button>
-
-                <button
-                  class="btn btn-gold"
-                  onclick="copierOffre()"
-                >
-                  📋 Copier l'offre
-                </button>
-
-                <button
-                  class="btn btn-light"
-                  onclick="resetOffre()"
-                >
-                  ↺ Hamafa
-                </button>
-
-              </div>
-
-              <div
-                class="copy-status"
-                id="copyStatus"
-              ></div>
-
-            </div>
-
-            <!-- PREVIEW -->
-
-            <div class="offer-preview-wrap">
-
-              <div
-                class="offer-preview"
-                id="offerPreview"
-              >
-
-                <div class="offer-preview-header">
-
-                  <div class="mini-brand">
-                    TANTSAHA MATIHANINA
-                  </div>
-
-                  <h3 id="previewTitle">
-                    🐔 AKOHO GASY
-                  </h3>
-
-                  <p
-                    class="offer-description"
-                    id="previewDescription"
-                  >
-                    Akoho Gasy tsara kalitao, mety amin'ny
-                    fiompiana na fihinanana.
-                  </p>
-
-                </div>
-
-                <div class="offer-price">
-
-                  <span>Vidiny</span>
-
-                  <strong id="previewPrice">
-                    25 000 Ar / unité
-                  </strong>
-
-                  <span id="previewQuantity">
-                    50 isa disponible
-                  </span>
-
-                </div>
-
-                <div class="offer-meta">
-
-                  <div>
-                    ⭐ <strong>Avantage:</strong>
-                    <span id="previewAvantage">
-                      Akoho salama sy voakarakara tsara
-                    </span>
-                  </div>
-
-                  <div>
-                    🚚 <strong>Livraison:</strong>
-                    <span id="previewLivraison">
-                      Livraison azo ifanarahana
-                    </span>
-                  </div>
-
-                  <div>
-                    📍 <strong>Zone:</strong>
-                    <span id="previewZone">
-                      Mahanoro
-                    </span>
-                  </div>
-
-                  <div>
-                    📞 <strong>Contact:</strong>
-                    <span id="previewContact">
-                      Tsy mbola napetraka
-                    </span>
-                  </div>
-
-                </div>
-
-                <div class="offer-cta" id="previewCta">
-                  👉 Raha liana ianao dia mifandraisa aminay.
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =========================
-         FORMATION
-    ========================= -->
-
-    <section id="formation">
-      <div class="container">
-
-        <div class="section-head">
-          <div class="label">Formation</div>
-
-          <h2>7 andro hianarana ny technique de vente</h2>
-
-          <p>
-            Isan'andro dia misy technique iray sy exercice iray
-            tokony hampiharina.
-          </p>
-        </div>
-
-        <div class="formation-grid">
-
-          <div class="day-card">
-            <div class="day">J1</div>
-            <h3>Produit + Client</h3>
-          </div>
-
-          <div class="day-card">
-            <div class="day">J2</div>
-            <h3>Prix + Tombony</h3>
-          </div>
-
-          <div class="day-card">
-            <div class="day">J3</div>
-            <h3>Offre + Publication</h3>
-          </div>
-
-          <div class="day-card">
-            <div class="day">J4</div>
-            <h3>Prospection</h3>
-          </div>
-
-          <div class="day-card">
-            <div class="day">J5</div>
-            <h3>Objection + Négociation</h3>
-          </div>
-
-          <div class="day-card">
-            <div class="day">J6</div>
-            <h3>Closing + Commande</h3>
-          </div>
-
-          <div class="day-card">
-            <div class="day">J7</div>
-            <h3>Challenge Final</h3>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =========================
-         PROCESS
-    ========================= -->
-
-    <section id="processus" style="background:#edf4ef;">
-      <div class="container">
-
-        <div class="section-head">
-          <div class="label">Méthode</div>
-
-          <h2>Ny processus de vente</h2>
-
-          <p>
-            Ny vente professionnelle dia processus iray,
-            fa tsy hoe "mampiditra prix" fotsiny.
-          </p>
-        </div>
-
-        <div class="process-grid">
-
-          <div class="process-card">
-            <span class="process-number">1</span>
-            <h3>Produit</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">2</span>
-            <h3>Client cible</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">3</span>
-            <h3>Besoin</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">4</span>
-            <h3>Offre</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">5</span>
-            <h3>Prospection</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">6</span>
-            <h3>Conversation</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">7</span>
-            <h3>Objection</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">8</span>
-            <h3>Négociation</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">9</span>
-            <h3>Closing</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">10</span>
-            <h3>Paiement</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">11</span>
-            <h3>Livraison</h3>
-          </div>
-
-          <div class="process-card">
-            <span class="process-number">12</span>
-            <h3>Fidélisation</h3>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- =========================
-         CTA
-    ========================= -->
-
-    <div class="container">
-
-      <div class="cta">
-
-        <h2>Vonona hampihatra?</h2>
-
-        <p>
-          Ny tanjona dia tsy ny hahalala technique fotsiny,
-          fa ny hahavita mampihatra azy amin'ny tena
-          processus de vente.
-        </p>
-
-        <a href="#offre" class="btn btn-primary">
-          🛍️ Hanomboka amin'ny Offre
-        </a>
-
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- =========================
-       FOOTER
-  ========================= -->
-
-  <footer>
-
-    <div class="container">
-
-      <strong>TANTSAHA MATIHANINA MADAGASCAR</strong>
+<!-- HEADER -->
+<header>
+  <div class="container nav">
+    <a href="#accueil" class="logo">
+      TANTSAHA MATIHANINA
+      <span>VENTE LAB • V4</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="#outils">Outils</a>
+      <a href="#kajy">Kajy</a>
+      <a href="#offre">Offre</a>
+      <a href="#publication">Publication</a>
+      <a href="#formation">Formation</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="accueil">
+  <div class="container hero-grid">
+
+    <div>
+      <div class="badge">🌱 LABORATOIRE DE VENTE TANTSAHA</div>
+
+      <h1>
+        Mivarotra tsara.<br>
+        <span>Mahazo tombony.</span>
+      </h1>
 
       <p>
-        Mianatra • Mampihatra • Mahomby
+        Mianara mametraka prix, mamorona offre,
+        manoratra publication, mitady client ary
+        manakatona vente amin'ny fomba matihanina.
       </p>
-
-      <p style="margin-top:8px;">
-        ©2026 Tantsaha Matihanina / Auteur Freddy
-      </p>
-
     </div>
 
-  </footer>
-
-  <!-- =========================
-       JAVASCRIPT
-  ========================= -->
-
-  <script>
-
-    /* =========================================
-       UTILITY
-    ========================================= */
-
-    function valeur(id) {
-      const element = document.getElementById(id);
-
-      if (!element) {
-        return 0;
-      }
-
-      return Number(element.value) || 0;
-    }
-
-
-    function formatAr(nombre) {
-      return new Intl.NumberFormat("fr-FR").format(
-        Math.round(nombre)
-      ) + " Ar";
-    }
-
-
-    /* =========================================
-       CALCULATEUR
-    ========================================= */
-
-    function calculerTombony() {
-
-      const produit =
-        document.getElementById("produit").value;
-
-      const quantite =
-        valeur("quantite");
-
-      const achat =
-        valeur("achat");
-
-      const sakafo =
-        valeur("sakafo");
-
-      const fikarakarana =
-        valeur("fikarakarana");
-
-      const transport =
-        valeur("transport");
-
-      const autres =
-        valeur("autres");
-
-      const prixVente =
-        valeur("prixVente");
-
-
-      if (quantite <= 0) {
-
-        document.getElementById("calculMessage").textContent =
-          "⚠️ Ampidiro quantité mihoatra ny 0.";
-
-        return;
-      }
-
-
-      const coutTotal =
-        achat +
-        sakafo +
-        fikarakarana +
-        transport +
-        autres;
-
-
-      const coutUnitaire =
-        coutTotal / quantite;
-
-
-      const chiffreAffaires =
-        quantite * prixVente;
-
-
-      const benefice =
-        chiffreAffaires - coutTotal;
-
-
-      const marge =
-        chiffreAffaires > 0
-          ? (benefice / chiffreAffaires) * 100
-          : 0;
-
-
-      document.getElementById("coutTotal").textContent =
-        formatAr(coutTotal);
-
-
-      document.getElementById("coutUnitaire").textContent =
-        formatAr(coutUnitaire);
-
-
-      document.getElementById("chiffreAffaires").textContent =
-        formatAr(chiffreAffaires);
-
-
-      document.getElementById("benefice").textContent =
-        formatAr(benefice);
-
-
-      document.getElementById("marge").textContent =
-        marge.toFixed(2) + " %";
-
-
-      const message =
-        document.getElementById("calculMessage");
-
-
-      if (benefice > 0) {
-
-        message.textContent =
-          "✅ " +
-          produit +
-          " dia mampiseho bénéfice positif. " +
-          "Hamarino foana fa tafiditra ao anatin'ny coût " +
-          "ny fandaniana rehetra.";
-
-      } else if (benefice === 0) {
-
-        message.textContent =
-          "⚠️ " +
-          produit +
-          " dia amin'ny point mort: tsy misy bénéfice " +
-          "ary tsy misy perte.";
-
-      } else {
-
-        message.textContent =
-          "❌ " +
-          produit +
-          " dia mampiseho perte. " +
-          "Diniho indray ny coût sy ny prix de vente.";
-      }
-
-    }
-
-
-    function resetCalculateur() {
-
-      document.getElementById("produit").value =
-        "Akoho Gasy";
-
-      document.getElementById("quantite").value =
-        50;
-
-      document.getElementById("achat").value =
-        750000;
-
-      document.getElementById("sakafo").value =
-        150000;
-
-      document.getElementById("fikarakarana").value =
-        30000;
-
-      document.getElementById("transport").value =
-        20000;
-
-      document.getElementById("autres").value =
-        0;
-
-      document.getElementById("prixVente").value =
-        25000;
-
-
-      calculerTombony();
-    }
-
-
-    /* =========================================
-       OFFER GENERATOR
-    ========================================= */
-
-    function getOffreData() {
-
-      return {
-
-        produit:
-          document.getElementById("offreProduit").value.trim(),
-
-        quantite:
-          valeur("offreQuantite"),
-
-        prix:
-          valeur("offrePrix"),
-
-        zone:
-          document.getElementById("offreZone").value.trim(),
-
-        livraison:
-          document.getElementById("offreLivraison").value,
-
-        contact:
-          document.getElementById("offreContact").value.trim(),
-
-        avantage:
-          document.getElementById("offreAvantage").value.trim(),
-
-        description:
-          document.getElementById("offreDescription").value.trim(),
-
-        cta:
-          document.getElementById("offreCta").value.trim()
-      };
-
-    }
-
-
-    function genererOffre() {
-
-      const data = getOffreData();
-
-
-      const produit =
-        data.produit || "Produit";
-
-
-      const quantite =
-        data.quantite > 0
-          ? data.quantite
-          : 0;
-
-
-      const prix =
-        data.prix > 0
-          ? formatAr(data.prix)
-          : "Prix à préciser";
-
-
-      const zone =
-        data.zone || "Zone à préciser";
-
-
-      const avantage =
-        data.avantage ||
-        "Produit soigneusement préparé";
-
-
-      const description =
-        data.description ||
-        "Produit de qualité proposé par Tantsaha Matihanina.";
-
-
-      const contact =
-        data.contact ||
-        "Contact à préciser";
-
-
-      const cta =
-        data.cta ||
-        "Raha liana ianao dia mifandraisa aminay.";
-
-
-      document.getElementById("previewTitle").textContent =
-        "🛍️ " + produit.toUpperCase();
-
-
-      document.getElementById("previewDescription").textContent =
-        description;
-
-
-      document.getElementById("previewPrice").textContent =
-        prix + " / unité";
-
-
-      document.getElementById("previewQuantity").textContent =
-        quantite > 0
-          ? quantite + " isa disponible"
-          : "Quantité à préciser";
-
-
-      document.getElementById("previewAvantage").textContent =
-        avantage;
-
-
-      document.getElementById("previewLivraison").textContent =
-        data.livraison;
-
-
-      document.getElementById("previewZone").textContent =
-        zone;
-
-
-      document.getElementById("previewContact").textContent =
-        contact;
-
-
-      document.getElementById("previewCta").textContent =
-        "👉 " + cta;
-
-
-      document.getElementById("copyStatus").textContent =
-        "✅ Offre générée. Azonao jerena eo ankavanana.";
-
-    }
-
-
-    /* =========================================
-       BUILD TEXT
-    ========================================= */
-
-    function construireTexteOffre() {
-
-      const data = getOffreData();
-
-
-      const produit =
-        data.produit || "Produit";
-
-
-      const quantite =
-        data.quantite > 0
-          ? data.quantite + " isa"
-          : "Quantité à préciser";
-
-
-      const prix =
-        data.prix > 0
-          ? formatAr(data.prix) + " / unité"
-          : "Prix à préciser";
-
-
-      const avantage =
-        data.avantage ||
-        "Produit tsara kalitao";
-
-
-      const description =
-        data.description ||
-        "Produit de qualité.";
-
-
-      const zone =
-        data.zone ||
-        "Zone à préciser";
-
-
-      const contact =
-        data.contact ||
-        "Contact à préciser";
-
-
-      const cta =
-        data.cta ||
-        "Raha liana ianao dia mifandraisa aminay.";
-
-
-      return `🌱 TANTSAHA MATIHANINA
-
-🛍️ ${produit.toUpperCase()}
-
-${description}
-
-💰 Vidiny: ${prix}
-📦 Quantité: ${quantite}
+    <div class="hero-card">
+      <div class="big">🧑‍🌾</div>
+      <h3>Mianatra • Mampihatra • Mahomby</h3>
+      <p>
+        Tantsaha Matihanina Vente Lab dia toerana
+        anaovana simulation sy fanazarana alohan'ny
+        hidirana amin'ny vente tena izy.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="outils">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Vente Lab</div>
+      <h2>🧰 Outils de Vente</h2>
+      <p>
+        Ireo fitaovana fototra hanampy ny tantsaha
+        handamina ny vente sy hahalala ny tombony.
+      </p>
+    </div>
+
+    <div class="tools-grid">
+
+      <a href="#kajy" class="tool-card highlight">
+        <div class="tool-icon">🧮</div>
+        <h3>Kajy Prix & Tombony</h3>
+        <p>
+          Kajio ny coût total, prix unitaire,
+          chiffre d'affaires ary bénéfice.
+        </p>
+      </a>
+
+      <a href="#offre" class="tool-card">
+        <div class="tool-icon">🛍️</div>
+        <h3>Créer une Offre</h3>
+        <p>
+          Mamorona offre mazava sy mora azon'ny client.
+        </p>
+      </a>
+
+      <a href="#publication" class="tool-card highlight">
+        <div class="tool-icon">📱</div>
+        <h3>Publication</h3>
+        <p>
+          Mamorona publication Facebook/WhatsApp
+          vonona halefa.
+        </p>
+      </a>
+
+      <a href="#formation" class="tool-card">
+        <div class="tool-icon">💬</div>
+        <h3>Simulation Client</h3>
+        <p>
+          Hianara hiatrika fanontaniana sy objection.
+        </p>
+      </a>
+
+      <a href="#formation" class="tool-card">
+        <div class="tool-icon">📝</div>
+        <h3>Commande</h3>
+        <p>
+          Mandamina ny dingana rehefa misy client.
+        </p>
+      </a>
+
+      <a href="#formation" class="tool-card">
+        <div class="tool-icon">🧾</div>
+        <h3>Reçu de Vente</h3>
+        <p>
+          Mianara manao trace tsotra amin'ny vente.
+        </p>
+      </a>
+
+      <a href="#formation" class="tool-card">
+        <div class="tool-icon">🎯</div>
+        <h3>Challenge 7 Jours</h3>
+        <p>
+          Fanazarana isan'andro mandritra ny 7 andro.
+        </p>
+      </a>
+
+      <a href="#projet" class="tool-card">
+        <div class="tool-icon">📊</div>
+        <h3>Projet Vente Tantsaha</h3>
+        <p>
+          Ampiharo amin'ny projet fictif iray ny zavatra nianarana.
+        </p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="workspace" id="kajy">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Outil 01</div>
+      <h2>🧮 Kajy Prix & Tombony</h2>
+      <p>
+        Fantaro aloha ny coût-nao vao mametraka prix.
+      </p>
+    </div>
+
+    <div class="workspace-box">
+
+      <h3>Calculateur de rentabilité</h3>
+      <p>
+        Ampidiro ny vola rehetra lany amin'ny projet.
+      </p>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="calcProduit">Produit</label>
+          <input id="calcProduit" type="text" placeholder="Ohatra: Akoho Gasy">
+        </div>
+
+        <div class="form-group">
+          <label for="calcQuantite">Quantité</label>
+          <input id="calcQuantite" type="number" min="1" placeholder="50">
+        </div>
+
+        <div class="form-group">
+          <label for="calcAchat">Coût d'achat total (Ar)</label>
+          <input id="calcAchat" type="number" min="0" placeholder="750000">
+        </div>
+
+        <div class="form-group">
+          <label for="calcSakafo">Sakafo (Ar)</label>
+          <input id="calcSakafo" type="number" min="0" placeholder="150000">
+        </div>
+
+        <div class="form-group">
+          <label for="calcFikarakarana">Fikarakarana (Ar)</label>
+          <input id="calcFikarakarana" type="number" min="0" placeholder="30000">
+        </div>
+
+        <div class="form-group">
+          <label for="calcTransport">Transport (Ar)</label>
+          <input id="calcTransport" type="number" min="0" placeholder="20000">
+        </div>
+
+        <div class="form-group">
+          <label for="calcAutres">Autres coûts (Ar)</label>
+          <input id="calcAutres" type="number" min="0" placeholder="0">
+        </div>
+
+        <div class="form-group">
+          <label for="calcPrix">Prix de vente / unité (Ar)</label>
+          <input id="calcPrix" type="number" min="0" placeholder="25000">
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" onclick="calculerTombony()">
+          🧮 Calculer
+        </button>
+
+        <button class="btn-light" onclick="resetCalculateur()">
+          Réinitialiser
+        </button>
+      </div>
+
+      <div class="result-grid">
+
+        <div class="result-card">
+          <small>Coût total</small>
+          <strong id="resCout">0 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Coût unitaire</small>
+          <strong id="resUnitaire">0 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Chiffre d'affaires</small>
+          <strong id="resCA">0 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Bénéfice</small>
+          <strong id="resBenefice">0 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Marge</small>
+          <strong id="resMarge">0 %</strong>
+        </div>
+
+      </div>
+
+      <div class="output" id="calcMessage">
+        Ampidiro ny données dia tsindrio « Calculer ».
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section id="offre">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Outil 02</div>
+      <h2>🛍️ Créer une Offre</h2>
+      <p>
+        Avadiho ho offre mazava sy matihanina ny produit-nao.
+      </p>
+    </div>
+
+    <div class="workspace-box">
+
+      <h3>Générateur d'offre</h3>
+      <p>
+        Fenoy ireo informations ary mamoròna offre vonona halefa.
+      </p>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="offreProduit">Produit</label>
+          <input id="offreProduit" type="text" placeholder="Akoho Gasy">
+        </div>
+
+        <div class="form-group">
+          <label for="offreQuantite">Quantité disponible</label>
+          <input id="offreQuantite" type="number" min="1" placeholder="50">
+        </div>
+
+        <div class="form-group">
+          <label for="offrePrix">Prix de vente / unité</label>
+          <input id="offrePrix" type="number" min="0" placeholder="25000">
+        </div>
+
+        <div class="form-group">
+          <label for="offreZone">Zone / Lieu</label>
+          <input id="offreZone" type="text" placeholder="Mahanoro">
+        </div>
+
+        <div class="form-group">
+          <label for="offreLivraison">Livraison</label>
+          <input id="offreLivraison" type="text" placeholder="Azo ifanarahana">
+        </div>
+
+        <div class="form-group">
+          <label for="offreContact">Contact / WhatsApp</label>
+          <input id="offreContact" type="text" placeholder="+261...">
+        </div>
+
+        <div class="form-group full">
+          <label for="offreAvantage">Avantage / Bonus</label>
+          <input id="offreAvantage" type="text"
+                 placeholder="Akoho salama sy voakarakara tsara">
+        </div>
+
+        <div class="form-group full">
+          <label for="offreDescription">Description</label>
+          <textarea id="offreDescription"
+                    placeholder="Lazao fohy ny toetra sy ny tombony an'ilay produit..."></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label for="offreCTA">CTA</label>
+          <input id="offreCTA" type="text"
+                 value="Raha liana ianao dia mifandraisa aminay.">
+        </div>
+
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" onclick="genererOffre()">
+          🛍️ Générer l'offre
+        </button>
+
+        <button class="btn-gold" onclick="remplirPublicationDepuisOffre()">
+          📱 Alefa any amin'ny Publication
+        </button>
+
+        <button class="btn-light" onclick="copierOffre()">
+          📋 Copier
+        </button>
+
+        <button class="btn-light" onclick="resetOffre()">
+          Réinitialiser
+        </button>
+      </div>
+
+      <div class="output" id="offreOutput">
+        <div class="output-title">OFFRE</div>
+        Fenoy ny formulaire dia tsindrio « Générer l'offre ».
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATION V4 -->
+<section class="workspace" id="publication">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Outil 03 • V4</div>
+      <h2>📱 Publication</h2>
+      <p>
+        Mamorona publication Facebook na WhatsApp
+        avy amin'ny offre-nao.
+      </p>
+    </div>
+
+    <div class="workspace-box">
+
+      <h3>Générateur de Publication</h3>
+      <p>
+        Ny tanjona dia tsy hoe mivarotra fotsiny,
+        fa manintona client sy mampazava ny offre.
+      </p>
+
+      <div class="form-grid">
+
+        <div class="form-group full">
+          <label for="pubHook">
+            🪝 Hook — Lohateny mahasarika
+          </label>
+          <input id="pubHook"
+                 type="text"
+                 placeholder="Mitady Akoho Gasy tsara kalitao ve ianao?">
+        </div>
+
+        <div class="form-group">
+          <label for="pubProduit">🐔 Produit</label>
+          <input id="pubProduit"
+                 type="text"
+                 placeholder="Akoho Gasy">
+        </div>
+
+        <div class="form-group">
+          <label for="pubQuantite">📦 Quantité</label>
+          <input id="pubQuantite"
+                 type="number"
+                 min="1"
+                 placeholder="50">
+        </div>
+
+        <div class="form-group">
+          <label for="pubPrix">💰 Prix / unité</label>
+          <input id="pubPrix"
+                 type="number"
+                 min="0"
+                 placeholder="25000">
+        </div>
+
+        <div class="form-group">
+          <label for="pubZone">📍 Zone</label>
+          <input id="pubZone"
+                 type="text"
+                 placeholder="Mahanoro">
+        </div>
+
+        <div class="form-group">
+          <label for="pubLivraison">🚚 Livraison</label>
+          <input id="pubLivraison"
+                 type="text"
+                 placeholder="Azo ifanarahana">
+        </div>
+
+        <div class="form-group">
+          <label for="pubContact">📞 Contact</label>
+          <input id="pubContact"
+                 type="text"
+                 placeholder="+261...">
+        </div>
+
+        <div class="form-group full">
+          <label for="pubAvantage">⭐ Avantage</label>
+          <input id="pubAvantage"
+                 type="text"
+                 placeholder="Salama, voakarakara tsara, kalitao tsara">
+        </div>
+
+        <div class="form-group full">
+          <label for="pubDescription">📝 Description</label>
+          <textarea id="pubDescription"
+                    placeholder="Hazavao fohy ny produit sy izay maha-samy hafa azy."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="pubCTA">🎯 CTA</label>
+          <input id="pubCTA"
+                 type="text"
+                 value="Raha liana ianao dia mifandraisa aminay.">
+        </div>
+
+        <div class="form-group">
+          <label for="pubPlatform">📱 Plateforme</label>
+          <select id="pubPlatform">
+            <option value="facebook">Facebook</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="both">Facebook + WhatsApp</option>
+          </select>
+        </div>
+
+        <div class="form-group full">
+          <label for="pubHashtags">#️⃣ Hashtags</label>
+          <input id="pubHashtags"
+                 type="text"
+                 value="#TantsahaMatihanina #Fambolena #Fiompiana #Vente">
+        </div>
+
+      </div>
+
+      <div class="actions">
+
+        <button class="btn-primary" onclick="genererPublication()">
+          📱 Générer Publication
+        </button>
+
+        <button class="btn-gold" onclick="copierPublicationComplete()">
+          📋 Copier complète
+        </button>
+
+        <button class="btn-light" onclick="copierPublicationCourte()">
+          ⚡ Copier courte
+        </button>
+
+        <button class="btn-light" onclick="remplirPublicationDepuisOffre()">
+          🔄 Depuis l'Offre
+        </button>
+
+        <button class="btn-danger" onclick="resetPublication()">
+          Réinitialiser
+        </button>
+
+      </div>
+
+      <div class="output" id="publicationComplete">
+        <div class="output-title">📱 VERSION COMPLÈTE</div>
+        Fenoy ny informations dia tsindrio « Générer Publication ».
+      </div>
+
+      <div class="output" id="publicationCourte">
+        <div class="output-title">⚡ VERSION COURTE</div>
+        Mbola tsy misy publication.
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Formation</div>
+      <h2>🎯 Challenge 7 Jours</h2>
+      <p>
+        Tsy mijanona amin'ny théorie:
+        mianatra → mampihatra → manitsy → mamerina.
+      </p>
+    </div>
+
+    <div class="days-grid">
+
+      <div class="day-card">
+        <div class="day-number">JOUR 01</div>
+        <h3>Produit + Client</h3>
+        <p>
+          Fantaro izay amidinao sy izay tena mpividy kendrena.
+        </p>
+      </div>
+
+      <div class="day-card">
+        <div class="day-number">JOUR 02</div>
+        <h3>Prix + Tombony</h3>
+        <p>
+          Kajio ny coût ary apetraho ny prix.
+        </p>
+      </div>
+
+      <div class="day-card">
+        <div class="day-number">JOUR 03</div>
+        <h3>Offre + Publication</h3>
+        <p>
+          Ataovy mazava sy mahasarika ny offre.
+        </p>
+      </div>
+
+      <div class="day-card">
+        <div class="day-number">JOUR 04</div>
+        <h3>Prospection</h3>
+        <p>
+          Fantaro hoe aiza sy ahoana no hitadiavana client.
+        </p>
+      </div>
+
+      <div class="day-card">
+        <div class="day-number">JOUR 05</div>
+        <h3>Objection + Négociation</h3>
+        <p>
+          Mianara mamaly objection sy miaro ny prix.
+        </p>
+      </div>
+
+      <div class="day-card">
+        <div class="day-number">JOUR 06</div>
+        <h3>Closing + Commande</h3>
+        <p>
+          Avadiho ho commande ny intérêt an'ny client.
+        </p>
+      </div>
+
+      <div class="day-card">
+        <div class="day-number">JOUR 07</div>
+        <h3>Challenge Final</h3>
+        <p>
+          Ataovy simulation complète hatramin'ny vente.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section>
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Méthode</div>
+      <h2>🔄 Process Vente</h2>
+      <p>
+        Dingana iray manaraka iray mba tsy hanao vente an-jambany.
+      </p>
+    </div>
+
+    <div class="process-grid">
+
+      <div class="process-card">
+        <div class="process-number">1</div>
+        <h3>Produit</h3>
+        <p>Fantaro tsara izay amidinao.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">2</div>
+        <h3>Client</h3>
+        <p>Farito izay tena mila azy.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">3</div>
+        <h3>Coût</h3>
+        <p>Fantaro ny vola tena lany.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">4</div>
+        <h3>Prix</h3>
+        <p>Farito ny prix misy marge.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">5</div>
+        <h3>Offre</h3>
+        <p>Amboary ny proposition.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">6</div>
+        <h3>Publication</h3>
+        <p>Atolory amin'ny tsena.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">7</div>
+        <h3>Prospection</h3>
+        <p>Mitadiava prospects.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">8</div>
+        <h3>Conversation</h3>
+        <p>Fantaro ny filàn'ny client.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">9</div>
+        <h3>Objection</h3>
+        <p>Valio tsara ny ahiahy.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">10</div>
+        <h3>Négociation</h3>
+        <p>Arovy ny valeur sy ny marge.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">11</div>
+        <h3>Closing</h3>
+        <p>Makà décision mazava.</p>
+      </div>
+
+      <div class="process-card">
+        <div class="process-number">12</div>
+        <h3>Suivi</h3>
+        <p>Aza very ny client aorian'ny vente.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT -->
+<section id="projet" class="workspace">
+  <div class="container">
+
+    <div class="section-title">
+      <div class="eyebrow">Projet fictif</div>
+      <h2>📊 Projet Vente Tantsaha</h2>
+      <p>
+        Ohatra ampiasaina amin'ny formation.
+      </p>
+    </div>
+
+    <div class="workspace-box">
+
+      <h3>🐔 Projet : 50 Akoho Gasy</h3>
+
+      <div class="form-grid">
+
+        <div class="result-card">
+          <small>Quantité</small>
+          <strong>50 isa</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Achat</small>
+          <strong>750 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Sakafo</small>
+          <strong>150 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Fikarakarana</small>
+          <strong>30 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Transport</small>
+          <strong>20 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Coût total</small>
+          <strong>950 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Prix vente</small>
+          <strong>25 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>CA</small>
+          <strong>1 250 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Bénéfice</small>
+          <strong class="profit-positive">300 000 Ar</strong>
+        </div>
+
+        <div class="result-card">
+          <small>Marge</small>
+          <strong>24 %</strong>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section>
+  <div class="container">
+
+    <div class="cta">
+      <h2>Mianatra. Mampihatra. Mahomby.</h2>
+
+      <p>
+        Ny vente matihanina dia tsy vintana.
+        Misy méthode, calcul, offre, communication
+        ary suivi.
+      </p>
+
+      <a href="#kajy" class="btn-gold"
+         style="display:inline-block;">
+        🧮 Hanomboka amin'ny Kajy
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-inner">
+
+    <div>
+      <strong>TANTSAHA MATIHANINA</strong><br>
+      <small>Vente Lab • Mianatra • Mampihatra • Mahomby</small>
+    </div>
+
+    <div>
+      <small>
+        ©2026 Tantsaha Matihanina / Auteur Freddy
+      </small>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function valeur(id){
+  const el = document.getElementById(id);
+
+  if(!el) return "";
+
+  return el.value.trim();
+}
+
+function nombre(id){
+  const value = parseFloat(document.getElementById(id)?.value);
+
+  return Number.isFinite(value) ? value : 0;
+}
+
+function formatAr(nombre){
+  return new Intl.NumberFormat("fr-FR").format(
+    Math.round(nombre || 0)
+  ) + " Ar";
+}
+
+function safeText(value, fallback=""){
+  const text = String(value || "").trim();
+
+  return text || fallback;
+}
+
+
+/* =========================================================
+   CALCULATEUR
+========================================================= */
+
+function calculerTombony(){
+
+  const produit = valeur("calcProduit") || "Produit";
+
+  const quantite = nombre("calcQuantite");
+
+  const achat = nombre("calcAchat");
+  const sakafo = nombre("calcSakafo");
+  const fikarakarana = nombre("calcFikarakarana");
+  const transport = nombre("calcTransport");
+  const autres = nombre("calcAutres");
+  const prix = nombre("calcPrix");
+
+  if(quantite <= 0){
+
+    document.getElementById("calcMessage").textContent =
+      "⚠️ Ampidiro ny quantité tokony ho lehibe noho 0.";
+
+    return;
+  }
+
+  const coutTotal =
+    achat +
+    sakafo +
+    fikarakarana +
+    transport +
+    autres;
+
+  const coutUnitaire =
+    coutTotal / quantite;
+
+  const ca =
+    quantite * prix;
+
+  const benefice =
+    ca - coutTotal;
+
+  const marge =
+    ca > 0
+      ? (benefice / ca) * 100
+      : 0;
+
+  document.getElementById("resCout").textContent =
+    formatAr(coutTotal);
+
+  document.getElementById("resUnitaire").textContent =
+    formatAr(coutUnitaire);
+
+  document.getElementById("resCA").textContent =
+    formatAr(ca);
+
+  const beneficeElement =
+    document.getElementById("resBenefice");
+
+  beneficeElement.textContent =
+    formatAr(benefice);
+
+  beneficeElement.classList.remove(
+    "profit-positive",
+    "profit-negative"
+  );
+
+  beneficeElement.classList.add(
+    benefice >= 0
+      ? "profit-positive"
+      : "profit-negative"
+  );
+
+  document.getElementById("resMarge").textContent =
+    marge.toFixed(2) + " %";
+
+  let message =
+    "🧮 RÉSULTAT — " + produit + "\n\n" +
+    "Quantité : " + quantite + " isa\n" +
+    "Coût total : " + formatAr(coutTotal) + "\n" +
+    "Coût unitaire : " + formatAr(coutUnitaire) + "\n" +
+    "Chiffre d'affaires : " + formatAr(ca) + "\n" +
+    "Bénéfice : " + formatAr(benefice) + "\n" +
+    "Marge : " + marge.toFixed(2) + " %\n\n";
+
+  if(benefice > 0){
+
+    message +=
+      "✅ Mahazo tombony ianao amin'ity simulation ity.";
+
+  }else if(benefice === 0){
+
+    message +=
+      "⚠️ Équilibre : tsy misy tombony na fatiantoka.";
+
+  }else{
+
+    message +=
+      "❌ Fatiantoka : mila jerena indray ny coût na ny prix.";
+
+  }
+
+  document.getElementById("calcMessage").textContent =
+    message;
+}
+
+
+function resetCalculateur(){
+
+  [
+    "calcProduit",
+    "calcQuantite",
+    "calcAchat",
+    "calcSakafo",
+    "calcFikarakarana",
+    "calcTransport",
+    "calcAutres",
+    "calcPrix"
+  ].forEach(id => {
+
+    const el = document.getElementById(id);
+
+    if(el) el.value = "";
+
+  });
+
+  document.getElementById("resCout").textContent = "0 Ar";
+  document.getElementById("resUnitaire").textContent = "0 Ar";
+  document.getElementById("resCA").textContent = "0 Ar";
+  document.getElementById("resBenefice").textContent = "0 Ar";
+  document.getElementById("resMarge").textContent = "0 %";
+
+  document.getElementById("calcMessage").textContent =
+    "Ampidiro ny données dia tsindrio « Calculer ».";
+}
+
+
+/* =========================================================
+   OFFRE GENERATOR
+========================================================= */
+
+function getOffreData(){
+
+  return {
+
+    produit:
+      safeText(
+        valeur("offreProduit"),
+        "Produit"
+      ),
+
+    quantite:
+      nombre("offreQuantite"),
+
+    prix:
+      nombre("offrePrix"),
+
+    zone:
+      safeText(
+        valeur("offreZone"),
+        "Zone tsy voafaritra"
+      ),
+
+    livraison:
+      safeText(
+        valeur("offreLivraison"),
+        "Azo ifanarahana"
+      ),
+
+    contact:
+      safeText(
+        valeur("offreContact"),
+        "Mifandraisa aminay"
+      ),
+
+    avantage:
+      safeText(
+        valeur("offreAvantage"),
+        "Produit tsara kalitao"
+      ),
+
+    description:
+      safeText(
+        valeur("offreDescription"),
+        "Produit tsara kalitao, mety amin'ny filànao."
+      ),
+
+    cta:
+      safeText(
+        valeur("offreCTA"),
+        "Raha liana ianao dia mifandraisa aminay."
+      )
+  };
+}
+
+
+function construireTexteOffre(data){
+
+  let texte =
+`🌱 TANTSAHA MATIHANINA
+
+🛍️ ${data.produit.toUpperCase()}
+
+${data.description}
+
+💰 Vidiny: ${formatAr(data.prix)} / unité
+📦 Quantité: ${data.quantite || "Arakaraka ny disponibilité"} isa
 
 ⭐ Avantage:
-${avantage}
+${data.avantage}
 
 🚚 Livraison:
 ${data.livraison}
 
 📍 Zone:
-${zone}
+${data.zone}
 
 📞 Contact:
-${contact}
+${data.contact}
 
-👉 ${cta}
+👉 ${data.cta}
 
 Mianatra • Mampihatra • Mahomby
+
 ©2026 Tantsaha Matihanina / Auteur Freddy`;
 
-    }
+  return texte;
+}
 
 
-    /* =========================================
-       COPY OFFER
-    ========================================= */
+function genererOffre(){
 
-    async function copierOffre() {
+  const data = getOffreData();
 
-      genererOffre();
+  const texte =
+    construireTexteOffre(data);
 
-      const texte =
-        construireTexteOffre();
-
-
-      try {
-
-        await navigator.clipboard.writeText(texte);
-
-        document.getElementById("copyStatus").textContent =
-          "✅ Offre copiée. Azonao apetaka ao amin'ny Facebook, WhatsApp na Messenger.";
-
-      } catch (error) {
-
-        /* Fallback pour certains navigateurs */
-
-        const textarea =
-          document.createElement("textarea");
-
-        textarea.value = texte;
-
-        document.body.appendChild(textarea);
-
-        textarea.select();
-
-        try {
-
-          document.execCommand("copy");
-
-          document.getElementById("copyStatus").textContent =
-            "✅ Offre copiée. Azonao apetaka izao.";
-
-        } catch (fallbackError) {
-
-          document.getElementById("copyStatus").textContent =
-            "⚠️ Tsy afaka copier automatiquement. Safidio sy kopiao ilay texte.";
-
-        }
-
-        document.body.removeChild(textarea);
-      }
-
-    }
+  document.getElementById("offreOutput").textContent =
+    texte;
+}
 
 
-    /* =========================================
-       RESET OFFER
-    ========================================= */
+async function copierOffre(){
 
-    function resetOffre() {
+  const data = getOffreData();
 
-      document.getElementById("offreProduit").value =
-        "Akoho Gasy";
+  const texte =
+    construireTexteOffre(data);
 
-      document.getElementById("offreQuantite").value =
-        50;
-
-      document.getElementById("offrePrix").value =
-        25000;
-
-      document.getElementById("offreZone").value =
-        "Mahanoro";
-
-      document.getElementById("offreLivraison").value =
-        "Livraison azo ifanarahana";
-
-      document.getElementById("offreContact").value =
-        "";
-
-      document.getElementById("offreAvantage").value =
-        "Akoho salama sy voakarakara tsara";
-
-      document.getElementById("offreDescription").value =
-        "Akoho Gasy tsara kalitao, mety amin'ny fiompiana na fihinanana.";
-
-      document.getElementById("offreCta").value =
-        "Raha liana ianao dia mifandraisa aminay.";
+  await copierTexte(
+    texte,
+    "offreOutput"
+  );
+}
 
 
-      genererOffre();
+function resetOffre(){
 
-      document.getElementById("copyStatus").textContent =
-        "↺ Offre averina amin'ny ohatra voalohany.";
+  [
+    "offreProduit",
+    "offreQuantite",
+    "offrePrix",
+    "offreZone",
+    "offreLivraison",
+    "offreContact",
+    "offreAvantage",
+    "offreDescription"
+  ].forEach(id => {
 
-    }
+    const el =
+      document.getElementById(id);
+
+    if(el) el.value = "";
+
+  });
+
+  document.getElementById("offreCTA").value =
+    "Raha liana ianao dia mifandraisa aminay.";
+
+  document.getElementById("offreOutput").innerHTML =
+    '<div class="output-title">OFFRE</div>' +
+    "Fenoy ny formulaire dia tsindrio « Générer l'offre ».";
+}
 
 
-    /* =========================================
-       AUTO INITIALIZATION
-    ========================================= */
+/* =========================================================
+   PUBLICATION V4
+========================================================= */
 
-    document.addEventListener("DOMContentLoaded", function() {
+function getPublicationData(){
 
-      calculerTombony();
+  return {
 
-      genererOffre();
+    hook:
+      safeText(
+        valeur("pubHook"),
+        "🌱 Mitady produit tsara kalitao ve ianao?"
+      ),
 
+    produit:
+      safeText(
+        valeur("pubProduit"),
+        "Produit"
+      ),
+
+    quantite:
+      nombre("pubQuantite"),
+
+    prix:
+      nombre("pubPrix"),
+
+    zone:
+      safeText(
+        valeur("pubZone"),
+        "Zone tsy voafaritra"
+      ),
+
+    livraison:
+      safeText(
+        valeur("pubLivraison"),
+        "Azo ifanarahana"
+      ),
+
+    contact:
+      safeText(
+        valeur("pubContact"),
+        "Mifandraisa aminay"
+      ),
+
+    avantage:
+      safeText(
+        valeur("pubAvantage"),
+        "Produit tsara kalitao"
+      ),
+
+    description:
+      safeText(
+        valeur("pubDescription"),
+        "Produit tsara kalitao, voakarakara tsara."
+      ),
+
+    cta:
+      safeText(
+        valeur("pubCTA"),
+        "Raha liana ianao dia mifandraisa aminay."
+      ),
+
+    platform:
+      valeur("pubPlatform"),
+
+    hashtags:
+      safeText(
+        valeur("pubHashtags"),
+        "#TantsahaMatihanina"
+      )
+  };
+}
+
+
+function construirePublicationComplete(data){
+
+  return `${data.hook}
+
+🌱 TANTSAHA MATIHANINA
+
+🛍️ ${data.produit.toUpperCase()}
+
+${data.description}
+
+💰 VIDINY:
+${formatAr(data.prix)} / unité
+
+📦 QUANTITÉ:
+${data.quantite || "Arakaraka ny disponibilité"} isa
+
+⭐ NAHOANA NO MISAFIDY AZY?
+${data.avantage}
+
+📍 ZONE:
+${data.zone}
+
+🚚 LIVRAISON:
+${data.livraison}
+
+📞 CONTACT:
+${data.contact}
+
+👉 ${data.cta}
+
+${data.hashtags}
+
+Mianatra • Mampihatra • Mahomby
+
+©2026 Tantsaha Matihanina / Auteur Freddy`;
+}
+
+
+function construirePublicationCourte(data){
+
+  return `${data.hook}
+
+🛍️ ${data.produit}
+💰 ${formatAr(data.prix)} / unité
+📦 ${data.quantite || "Disponible"} isa
+📍 ${data.zone}
+🚚 ${data.livraison}
+📞 ${data.contact}
+
+⭐ ${data.avantage}
+
+👉 ${data.cta}
+
+${data.hashtags}`;
+}
+
+
+function genererPublication(){
+
+  const data =
+    getPublicationData();
+
+  const complete =
+    construirePublicationComplete(data);
+
+  const courte =
+    construirePublicationCourte(data);
+
+  document.getElementById(
+    "publicationComplete"
+  ).textContent =
+    complete;
+
+  document.getElementById(
+    "publicationCourte"
+  ).textContent =
+    courte;
+}
+
+
+async function copierPublicationComplete(){
+
+  const data =
+    getPublicationData();
+
+  const texte =
+    construirePublicationComplete(data);
+
+  await copierTexte(
+    texte,
+    "publicationComplete"
+  );
+}
+
+
+async function copierPublicationCourte(){
+
+  const data =
+    getPublicationData();
+
+  const texte =
+    construirePublicationCourte(data);
+
+  await copierTexte(
+    texte,
+    "publicationCourte"
+  );
+}
+
+
+/* =========================================================
+   TRANSFERT OFFRE → PUBLICATION
+========================================================= */
+
+function remplirPublicationDepuisOffre(){
+
+  const produit =
+    valeur("offreProduit");
+
+  const quantite =
+    valeur("offreQuantite");
+
+  const prix =
+    valeur("offrePrix");
+
+  const zone =
+    valeur("offreZone");
+
+  const livraison =
+    valeur("offreLivraison");
+
+  const contact =
+    valeur("offreContact");
+
+  const avantage =
+    valeur("offreAvantage");
+
+  const description =
+    valeur("offreDescription");
+
+  const cta =
+    valeur("offreCTA");
+
+  if(!produit &&
+     !quantite &&
+     !prix &&
+     !zone &&
+     !livraison &&
+     !contact &&
+     !avantage &&
+     !description){
+
+    document.getElementById("publication").scrollIntoView({
+      behavior:"smooth"
     });
 
-  </script>
+    return;
+  }
+
+  document.getElementById("pubProduit").value =
+    produit;
+
+  document.getElementById("pubQuantite").value =
+    quantite;
+
+  document.getElementById("pubPrix").value =
+    prix;
+
+  document.getElementById("pubZone").value =
+    zone;
+
+  document.getElementById("pubLivraison").value =
+    livraison;
+
+  document.getElementById("pubContact").value =
+    contact;
+
+  document.getElementById("pubAvantage").value =
+    avantage;
+
+  document.getElementById("pubDescription").value =
+    description;
+
+  document.getElementById("pubCTA").value =
+    cta ||
+    "Raha liana ianao dia mifandraisa aminay.";
+
+  if(produit){
+
+    document.getElementById("pubHook").value =
+      "🐔 Mitady " +
+      produit +
+      " tsara kalitao ve ianao?";
+  }
+
+  document.getElementById("publication").scrollIntoView({
+    behavior:"smooth"
+  });
+
+  genererPublication();
+}
+
+
+/* =========================================================
+   COPY SYSTEM
+========================================================= */
+
+async function copierTexte(texte, elementId){
+
+  try{
+
+    if(
+      navigator.clipboard &&
+      window.isSecureContext
+    ){
+
+      await navigator.clipboard.writeText(texte);
+
+    }else{
+
+      const textarea =
+        document.createElement("textarea");
+
+      textarea.value = texte;
+
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+
+      document.body.appendChild(textarea);
+
+      textarea.focus();
+      textarea.select();
+
+      document.execCommand("copy");
+
+      textarea.remove();
+    }
+
+    const element =
+      document.getElementById(elementId);
+
+    const original =
+      element.textContent;
+
+    element.textContent =
+      "✅ Voakopia! Azonao apetaka ao Facebook na WhatsApp izao.";
+
+    setTimeout(() => {
+
+      element.textContent =
+        original;
+
+    },1800);
+
+  }catch(error){
+
+    alert(
+      "Tsy afaka manao copie automatique. " +
+      "Sélectionnez puis copiez manuellement."
+    );
+  }
+}
+
+
+/* =========================================================
+   INITIAL DEMO DATA
+========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.getElementById("calcProduit").value =
+    "Akoho Gasy";
+
+  document.getElementById("calcQuantite").value =
+    "50";
+
+  document.getElementById("calcAchat").value =
+    "750000";
+
+  document.getElementById("calcSakafo").value =
+    "150000";
+
+  document.getElementById("calcFikarakarana").value =
+    "30000";
+
+  document.getElementById("calcTransport").value =
+    "20000";
+
+  document.getElementById("calcAutres").value =
+    "0";
+
+  document.getElementById("calcPrix").value =
+    "25000";
+
+});
+
+</script>
 
 </body>
-</html>
+</html>io
