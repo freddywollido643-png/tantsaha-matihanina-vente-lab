@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="mg">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Tantsaha Matihanina — Vente Lab</title>
+
+  <meta
+    name="description"
+    content="Site pratique de formation en vente professionnelle ho an'ny tantsaha sy mpiompy Malagasy."
+  >
+
+  <style>
+    :root {
+      --green-dark: #123d2a;
+      --green: #1f5c3f;
+      --gold: #d9a441;
+      --cream: #f7f5ef;
+      --white: #ffffff;
+      --text: #1f2933;
+      --muted: #64748b;
+      --border: #e5e7eb;
+      --shadow: 0 10px 30px rgba(18, 61, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Arial, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      background: var(--green-dark);
+      color: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+    }
+
+    .nav {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      opacity: 0.9;
+    }
+
+    .nav-links a:hover {
+      color: var(--gold);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(18, 61, 42, 0.98),
+          rgba(31, 92, 63, 0.94)
+        );
+      color: var(--white);
+      padding: 80px 0 90px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(217, 164, 65, 0.15);
+      color: #f5d58d;
+      border: 1px solid rgba(217, 164, 65, 0.35);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      line-height: 1.05;
+      margin-bottom: 20px;
+      letter-spacing: -1.5px;
+    }
+
+    .hero h1 span {
+      color: var(--gold);
+    }
+
+    .hero p {
+      color: rgba(255, 255, 255, 0.86);
+      max-width: 650px;
+      font-size: 1.08rem;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #1d2a22;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-card h3 {
+      margin-bottom: 18px;
+      color: #f5d58d;
+    }
+
+    .hero-card ul {
+      list-style: none;
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-card li {
+      display: flex;
+      gap: 10px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    section {
+      padding: 75px 0;
+    }
+
+    .section-heading {
+      max-width: 700px;
+      margin-bottom: 38px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-heading h2 {
+      color: var(--green-dark);
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+    }
+
+    /* =========================
+       TOOLS
+    ========================= */
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .tool-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      transition: 0.2s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(217, 164, 65, 0.6);
+    }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: #f3ead3;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .tool-card h3 {
+      color: var(--green-dark);
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    .tool-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* =========================
+       TRAINING
+    ========================= */
+
+    .training {
+      background: var(--white);
+    }
+
+    .days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .day {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 12px;
+      text-align: center;
+      background: var(--cream);
+    }
+
+    .day strong {
+      display: block;
+      color: var(--gold);
+      margin-bottom: 7px;
+    }
+
+    .day span {
+      color: var(--green-dark);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    /* =========================
+       PROCESS
+    ========================= */
+
+    .process {
+      background: #edf3ee;
+    }
+
+    .process-list {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .process-item {
+      position: relative;
+      background: var(--white);
+      border-radius: 14px;
+      padding: 18px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+    }
+
+    .process-number {
+      width: 30px;
+      height: 30px;
+      margin: 0 auto 10px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--green-dark);
+      color: var(--white);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .process-item span {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    /* =========================
+       CTA
+    ========================= */
+
+    .cta {
+      background: var(--green-dark);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      max-width: 650px;
+      margin: 0 auto 25px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      background: #0b281c;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 28px 0;
+      font-size: 0.85rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .days {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .process-list {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        min-height: 62px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 55px 0 65px;
+      }
+
+      section {
+        padding: 55px 0;
+      }
+
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .days {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .process-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container nav">
+      <a href="#" class="brand">
+        TANTSAHA MATIHANINA
+        <span>VENTE LAB</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#outils">Outils</a>
+        <a href="#formation">Formation</a>
+        <a href="#processus">Processus</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+
+    <section class="hero">
+      <div class="container hero-grid">
+
+        <div>
+          <div class="badge">
+            🎓 Formation pratique • Vente professionnelle
+          </div>
+
+          <h1>
+            Mivarotra tsara.<br>
+            <span>Mahazo tombony.</span>
+          </h1>
+
+          <p>
+            Tantsaha Matihanina — Vente Lab dia espace pratique
+            hanampiana ny tantsaha sy mpiompy Malagasy hianatra
+            ny fomba fivarotana ny vokatra amin'ny fomba matihanina.
+          </p>
+
+          <div class="hero-actions">
+            <a href="#outils" class="btn btn-primary">
+              Hanomboka hianatra
+            </a>
+
+            <a href="#formation" class="btn btn-secondary">
+              Jereo ny formation
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <h3>🌱 Mianatra • Mampihatra • Mahomby</h3>
+
+          <ul>
+            <li>✓ Kajy ny coût sy ny bénéfice</li>
+            <li>✓ Mamorona offre mahasarika</li>
+            <li>✓ Mianatra miresaka amin'ny client</li>
+            <li>✓ Mitantana objection sy négociation</li>
+            <li>✓ Manao closing sy commande</li>
+            <li>✓ Mamorona reçu de vente</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OUTILS -->
+    <section id="outils">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="eyebrow">Vente Lab</div>
+
+          <h2>
+            Outils pratique ho anao
+          </h2>
+
+          <p>
+            Tsy théorie fotsiny. Eto ianao dia hianatra amin'ny
+            alalan'ny exercices sy simulations.
+          </p>
+        </div>
+
+        <div class="tools-grid">
+
+          <article class="tool-card">
+            <div class="tool-icon">🧮</div>
+            <h3>Kajy Prix & Tombony</h3>
+            <p>
+              Kajio ny coût, prix de vente, chiffre d'affaires
+              ary bénéfice.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">🛍️</div>
+            <h3>Créer une Offre</h3>
+            <p>
+              Amboary ny offre-nao mba ho mazava sy mahasarika.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">📱</div>
+            <h3>Publication</h3>
+            <p>
+              Mamoròna modèle publication azo ampiasaina
+              amin'ny Facebook sy WhatsApp.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">💬</div>
+            <h3>Simulation Client</h3>
+            <p>
+              Manaova entraînement amin'ny resaka client
+              sy objection.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">📝</div>
+            <h3>Commande</h3>
+            <p>
+              Ianaro ny fomba fandraisana commande amin'ny
+              fomba matihanina.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">🧾</div>
+            <h3>Reçu de Vente</h3>
+            <p>
+              Mamoròna reçu madio sy azo print-na.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">🎯</div>
+            <h3>Challenge 7 Jours</h3>
+            <p>
+              Technique iray isan'andro miaraka amin'ny
+              exercice pratique.
+            </p>
+          </article>
+
+          <article class="tool-card">
+            <div class="tool-icon">📊</div>
+            <h3>Projet Vente Tantsaha</h3>
+            <p>
+              Ataovy manontolo ny processus de vente
+              amin'ny simulation.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMATION -->
+    <section id="formation" class="training">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="eyebrow">Formation</div>
+
+          <h2>
+            7 andro hianarana ny technique de vente
+          </h2>
+
+          <p>
+            Isan'andro dia misy technique iray sy exercice iray
+            tokony hampiharina.
+          </p>
+        </div>
+
+        <div class="days">
+
+          <div class="day">
+            <strong>J1</strong>
+            <span>Produit + Client</span>
+          </div>
+
+          <div class="day">
+            <strong>J2</strong>
+            <span>Prix + Tombony</span>
+          </div>
+
+          <div class="day">
+            <strong>J3</strong>
+            <span>Offre + Publication</span>
+          </div>
+
+          <div class="day">
+            <strong>J4</strong>
+            <span>Prospection</span>
+          </div>
+
+          <div class="day">
+            <strong>J5</strong>
+            <span>Objection + Négociation</span>
+          </div>
+
+          <div class="day">
+            <strong>J6</strong>
+            <span>Closing + Commande</span>
+          </div>
+
+          <div class="day">
+            <strong>J7</strong>
+            <span>Challenge Final</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESSUS -->
+    <section id="processus" class="process">
+      <div class="container">
+
+        <div class="section-heading">
+          <div class="eyebrow">Méthode</div>
+
+          <h2>
+            Ny processus de vente
+          </h2>
+
+          <p>
+            Ny vente professionnelle dia processus iray,
+            fa tsy hoe "mampiditra prix" fotsiny.
+          </p>
+        </div>
+
+        <div class="process-list">
+
+          <div class="process-item">
+            <div class="process-number">1</div>
+            <span>Produit</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">2</div>
+            <span>Client cible</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">3</div>
+            <span>Besoin</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">4</div>
+            <span>Offre</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">5</div>
+            <span>Prospection</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">6</div>
+            <span>Conversation</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">7</div>
+            <span>Objection</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">8</div>
+            <span>Négociation</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">9</div>
+            <span>Closing</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">10</div>
+            <span>Paiement</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">11</div>
+            <span>Livraison</span>
+          </div>
+
+          <div class="process-item">
+            <div class="process-number">12</div>
+            <span>Fidélisation</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+      <div class="container">
+
+        <h2>
+          Vonona hampihatra?
+        </h2>
+
+        <p>
+          Ny tanjona dia tsy ny hahalala technique fotsiny,
+          fa ny hahavita mampihatra azy amin'ny tena processus de vente.
+        </p>
+
+        <a href="#outils" class="btn btn-primary">
+          Hanomboka ny Vente Lab
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+
+      <div>
+        <div class="footer-brand">
+          TANTSAHA MATIHANINA MADAGASCAR
+        </div>
+
+        <div>
+          Mianatra • Mampihatra • Mahomby
+        </div>
+      </div>
+
+      <div>
+        ©2026 Tantsaha Matihanina / Auteur Freddy
+      </div>
+
+    </div>
+  </footer>
+
+</body>
+</html>
