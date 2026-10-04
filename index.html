@@ -36,8 +36,14 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, Arial, sans-serif;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
       background: var(--cream);
       color: var(--text);
       line-height: 1.6;
@@ -46,6 +52,11 @@
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
     }
 
     .container {
@@ -191,6 +202,16 @@
       background: rgba(255, 255, 255, 0.1);
     }
 
+    .btn-outline {
+      background: var(--white);
+      border-color: var(--border);
+      color: var(--green-dark);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gold);
+    }
+
     .hero-card {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.13);
@@ -260,6 +281,7 @@
     }
 
     .tool-card {
+      display: block;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -292,6 +314,119 @@
 
     .tool-card p {
       color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* =========================
+       CALCULATEUR
+    ========================= */
+
+    .calculator {
+      background: var(--cream);
+    }
+
+    .calculator-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .calc-intro {
+      background: #edf3ee;
+      border-left: 4px solid var(--green);
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      color: var(--text);
+      font-size: 0.92rem;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .calc-field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .calc-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .calc-field label {
+      font-weight: 700;
+      color: var(--green-dark);
+      font-size: 0.9rem;
+    }
+
+    .calc-field input {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0 13px;
+      background: #fff;
+      color: var(--text);
+      outline: none;
+    }
+
+    .calc-field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(217, 164, 65, 0.12);
+    }
+
+    .calc-actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .calc-results {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .result-box {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      background: var(--cream);
+    }
+
+    .result-box.highlight {
+      background: #edf3ee;
+      border-color: rgba(31, 92, 63, 0.2);
+    }
+
+    .result-label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      color: var(--green-dark);
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .result-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #fff8e8;
+      color: var(--text);
       font-size: 0.9rem;
     }
 
@@ -344,7 +479,6 @@
     }
 
     .process-item {
-      position: relative;
       background: var(--white);
       border-radius: 14px;
       padding: 18px 12px;
@@ -473,15 +607,32 @@
       .btn {
         width: 100%;
       }
+
+      .calc-grid,
+      .calc-results {
+        grid-template-columns: 1fr;
+      }
+
+      .calc-field.full {
+        grid-column: auto;
+      }
+
+      .calculator-card {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
+  <!-- =========================
+       HEADER
+  ========================= -->
+
   <header>
     <div class="container nav">
+
       <a href="#" class="brand">
         TANTSAHA MATIHANINA
         <span>VENTE LAB</span>
@@ -489,19 +640,29 @@
 
       <nav class="nav-links">
         <a href="#outils">Outils</a>
+        <a href="#kajy">Kajy</a>
         <a href="#formation">Formation</a>
         <a href="#processus">Processus</a>
       </nav>
+
     </div>
   </header>
 
-  <!-- HERO -->
+
+  <!-- =========================
+       MAIN
+  ========================= -->
+
   <main>
 
+    <!-- HERO -->
+
     <section class="hero">
+
       <div class="container hero-grid">
 
         <div>
+
           <div class="badge">
             🎓 Formation pratique • Vente professionnelle
           </div>
@@ -518,6 +679,7 @@
           </p>
 
           <div class="hero-actions">
+
             <a href="#outils" class="btn btn-primary">
               Hanomboka hianatra
             </a>
@@ -525,11 +687,17 @@
             <a href="#formation" class="btn btn-secondary">
               Jereo ny formation
             </a>
+
           </div>
+
         </div>
 
+
         <div class="hero-card">
-          <h3>🌱 Mianatra • Mampihatra • Mahomby</h3>
+
+          <h3>
+            🌱 Mianatra • Mampihatra • Mahomby
+          </h3>
 
           <ul>
             <li>✓ Kajy ny coût sy ny bénéfice</li>
@@ -539,17 +707,27 @@
             <li>✓ Manao closing sy commande</li>
             <li>✓ Mamorona reçu de vente</li>
           </ul>
+
         </div>
 
       </div>
+
     </section>
 
-    <!-- OUTILS -->
+
+    <!-- =========================
+         OUTILS
+    ========================= -->
+
     <section id="outils">
+
       <div class="container">
 
         <div class="section-heading">
-          <div class="eyebrow">Vente Lab</div>
+
+          <div class="eyebrow">
+            Vente Lab
+          </div>
 
           <h2>
             Outils pratique ho anao
@@ -559,90 +737,507 @@
             Tsy théorie fotsiny. Eto ianao dia hianatra amin'ny
             alalan'ny exercices sy simulations.
           </p>
+
         </div>
+
 
         <div class="tools-grid">
 
-          <article class="tool-card">
-            <div class="tool-icon">🧮</div>
-            <h3>Kajy Prix & Tombony</h3>
+
+          <!-- KAJY -->
+
+          <a href="#kajy" class="tool-card">
+
+            <div class="tool-icon">
+              🧮
+            </div>
+
+            <h3>
+              Kajy Prix & Tombony
+            </h3>
+
             <p>
               Kajio ny coût, prix de vente, chiffre d'affaires
               ary bénéfice.
             </p>
-          </article>
+
+          </a>
+
+
+          <!-- OFFER -->
 
           <article class="tool-card">
-            <div class="tool-icon">🛍️</div>
-            <h3>Créer une Offre</h3>
+
+            <div class="tool-icon">
+              🛍️
+            </div>
+
+            <h3>
+              Créer une Offre
+            </h3>
+
             <p>
               Amboary ny offre-nao mba ho mazava sy mahasarika.
             </p>
+
           </article>
 
+
+          <!-- PUBLICATION -->
+
           <article class="tool-card">
-            <div class="tool-icon">📱</div>
-            <h3>Publication</h3>
+
+            <div class="tool-icon">
+              📱
+            </div>
+
+            <h3>
+              Publication
+            </h3>
+
             <p>
               Mamoròna modèle publication azo ampiasaina
               amin'ny Facebook sy WhatsApp.
             </p>
+
           </article>
 
+
+          <!-- SIMULATION -->
+
           <article class="tool-card">
-            <div class="tool-icon">💬</div>
-            <h3>Simulation Client</h3>
+
+            <div class="tool-icon">
+              💬
+            </div>
+
+            <h3>
+              Simulation Client
+            </h3>
+
             <p>
               Manaova entraînement amin'ny resaka client
               sy objection.
             </p>
+
           </article>
 
+
+          <!-- COMMANDE -->
+
           <article class="tool-card">
-            <div class="tool-icon">📝</div>
-            <h3>Commande</h3>
+
+            <div class="tool-icon">
+              📝
+            </div>
+
+            <h3>
+              Commande
+            </h3>
+
             <p>
               Ianaro ny fomba fandraisana commande amin'ny
               fomba matihanina.
             </p>
+
           </article>
 
+
+          <!-- RECU -->
+
           <article class="tool-card">
-            <div class="tool-icon">🧾</div>
-            <h3>Reçu de Vente</h3>
+
+            <div class="tool-icon">
+              🧾
+            </div>
+
+            <h3>
+              Reçu de Vente
+            </h3>
+
             <p>
               Mamoròna reçu madio sy azo print-na.
             </p>
+
           </article>
 
+
+          <!-- CHALLENGE -->
+
           <article class="tool-card">
-            <div class="tool-icon">🎯</div>
-            <h3>Challenge 7 Jours</h3>
+
+            <div class="tool-icon">
+              🎯
+            </div>
+
+            <h3>
+              Challenge 7 Jours
+            </h3>
+
             <p>
               Technique iray isan'andro miaraka amin'ny
               exercice pratique.
             </p>
+
           </article>
 
+
+          <!-- PROJECT -->
+
           <article class="tool-card">
-            <div class="tool-icon">📊</div>
-            <h3>Projet Vente Tantsaha</h3>
+
+            <div class="tool-icon">
+              📊
+            </div>
+
+            <h3>
+              Projet Vente Tantsaha
+            </h3>
+
             <p>
               Ataovy manontolo ny processus de vente
               amin'ny simulation.
             </p>
+
           </article>
 
         </div>
+
       </div>
+
     </section>
 
-    <!-- FORMATION -->
-    <section id="formation" class="training">
+
+    <!-- =========================
+         CALCULATEUR
+    ========================= -->
+
+    <section id="kajy" class="calculator">
+
       <div class="container">
 
         <div class="section-heading">
-          <div class="eyebrow">Formation</div>
+
+          <div class="eyebrow">
+            Outil pratique
+          </div>
+
+          <h2>
+            🧮 Kajy Prix & Tombony
+          </h2>
+
+          <p>
+            Ampidiro ny fandaniana sy ny vidin'ny varotra.
+            Hivoaka ho azy ny coût total, coût unitaire,
+            chiffre d'affaires, bénéfice ary marge.
+          </p>
+
+        </div>
+
+
+        <div class="calculator-card">
+
+          <div class="calc-intro">
+            💡 <strong>Ohatra:</strong>
+            50 Akoho Gasy, coût total 950 000 Ar,
+            prix de vente 25 000 Ar / akoho.
+            Ny calculateur no hanao ny kajy ho azy.
+          </div>
+
+
+          <div class="calc-grid">
+
+
+            <!-- PRODUIT -->
+
+            <div class="calc-field full">
+
+              <label for="calcProduit">
+                Produit
+              </label>
+
+              <input
+                id="calcProduit"
+                type="text"
+                placeholder="Ohatra: Akoho Gasy"
+              >
+
+            </div>
+
+
+            <!-- QUANTITE -->
+
+            <div class="calc-field">
+
+              <label for="calcQuantite">
+                Quantité
+              </label>
+
+              <input
+                id="calcQuantite"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="50"
+              >
+
+            </div>
+
+
+            <!-- ACHAT -->
+
+            <div class="calc-field">
+
+              <label for="calcAchat">
+                Coût d'achat total (Ar)
+              </label>
+
+              <input
+                id="calcAchat"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="750000"
+              >
+
+            </div>
+
+
+            <!-- SAKAFO -->
+
+            <div class="calc-field">
+
+              <label for="calcSakafo">
+                Sakafo (Ar)
+              </label>
+
+              <input
+                id="calcSakafo"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="150000"
+              >
+
+            </div>
+
+
+            <!-- FIKARAKARANA -->
+
+            <div class="calc-field">
+
+              <label for="calcFikarakarana">
+                Fikarakarana (Ar)
+              </label>
+
+              <input
+                id="calcFikarakarana"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="30000"
+              >
+
+            </div>
+
+
+            <!-- TRANSPORT -->
+
+            <div class="calc-field">
+
+              <label for="calcTransport">
+                Transport (Ar)
+              </label>
+
+              <input
+                id="calcTransport"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="20000"
+              >
+
+            </div>
+
+
+            <!-- AUTRES -->
+
+            <div class="calc-field">
+
+              <label for="calcAutres">
+                Autres coûts (Ar)
+              </label>
+
+              <input
+                id="calcAutres"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="0"
+              >
+
+            </div>
+
+
+            <!-- PRIX DE VENTE -->
+
+            <div class="calc-field">
+
+              <label for="calcPrixVente">
+                Prix de vente / unité (Ar)
+              </label>
+
+              <input
+                id="calcPrixVente"
+                type="number"
+                min="0"
+                step="1"
+                placeholder="25000"
+              >
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="calc-actions">
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="calculerTombony()"
+            >
+              🧮 Kajio
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-outline"
+              onclick="resetCalculateur()"
+            >
+              ↺ Hamafa
+            </button>
+
+          </div>
+
+
+          <!-- RESULTS -->
+
+          <div class="calc-results" aria-live="polite">
+
+
+            <div class="result-box">
+
+              <div class="result-label">
+                Coût total
+              </div>
+
+              <div
+                class="result-value"
+                id="resultCoutTotal"
+              >
+                0 Ar
+              </div>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <div class="result-label">
+                Coût unitaire
+              </div>
+
+              <div
+                class="result-value"
+                id="resultCoutUnitaire"
+              >
+                0 Ar
+              </div>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <div class="result-label">
+                Chiffre d'affaires
+              </div>
+
+              <div
+                class="result-value"
+                id="resultCA"
+              >
+                0 Ar
+              </div>
+
+            </div>
+
+
+            <div class="result-box highlight">
+
+              <div class="result-label">
+                Bénéfice
+              </div>
+
+              <div
+                class="result-value"
+                id="resultBenefice"
+              >
+                0 Ar
+              </div>
+
+            </div>
+
+
+            <div class="result-box highlight">
+
+              <div class="result-label">
+                Marge
+              </div>
+
+              <div
+                class="result-value"
+                id="resultMarge"
+              >
+                0 %
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div
+            class="result-note"
+            id="resultNote"
+          >
+            💡 Ampidiro aloha ny données-nao,
+            dia tsindrio <strong>🧮 Kajio</strong>.
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FORMATION
+    ========================= -->
+
+    <section id="formation" class="training">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <div class="eyebrow">
+            Formation
+          </div>
 
           <h2>
             7 andro hianarana ny technique de vente
@@ -652,39 +1247,48 @@
             Isan'andro dia misy technique iray sy exercice iray
             tokony hampiharina.
           </p>
+
         </div>
 
+
         <div class="days">
+
 
           <div class="day">
             <strong>J1</strong>
             <span>Produit + Client</span>
           </div>
 
+
           <div class="day">
             <strong>J2</strong>
             <span>Prix + Tombony</span>
           </div>
+
 
           <div class="day">
             <strong>J3</strong>
             <span>Offre + Publication</span>
           </div>
 
+
           <div class="day">
             <strong>J4</strong>
             <span>Prospection</span>
           </div>
+
 
           <div class="day">
             <strong>J5</strong>
             <span>Objection + Négociation</span>
           </div>
 
+
           <div class="day">
             <strong>J6</strong>
             <span>Closing + Commande</span>
           </div>
+
 
           <div class="day">
             <strong>J7</strong>
@@ -692,15 +1296,25 @@
           </div>
 
         </div>
+
       </div>
+
     </section>
 
-    <!-- PROCESSUS -->
+
+    <!-- =========================
+         PROCESSUS
+    ========================= -->
+
     <section id="processus" class="process">
+
       <div class="container">
 
         <div class="section-heading">
-          <div class="eyebrow">Méthode</div>
+
+          <div class="eyebrow">
+            Méthode
+          </div>
 
           <h2>
             Ny processus de vente
@@ -710,64 +1324,78 @@
             Ny vente professionnelle dia processus iray,
             fa tsy hoe "mampiditra prix" fotsiny.
           </p>
+
         </div>
 
+
         <div class="process-list">
+
 
           <div class="process-item">
             <div class="process-number">1</div>
             <span>Produit</span>
           </div>
 
+
           <div class="process-item">
             <div class="process-number">2</div>
             <span>Client cible</span>
           </div>
+
 
           <div class="process-item">
             <div class="process-number">3</div>
             <span>Besoin</span>
           </div>
 
+
           <div class="process-item">
             <div class="process-number">4</div>
             <span>Offre</span>
           </div>
+
 
           <div class="process-item">
             <div class="process-number">5</div>
             <span>Prospection</span>
           </div>
 
+
           <div class="process-item">
             <div class="process-number">6</div>
             <span>Conversation</span>
           </div>
+
 
           <div class="process-item">
             <div class="process-number">7</div>
             <span>Objection</span>
           </div>
 
+
           <div class="process-item">
             <div class="process-number">8</div>
             <span>Négociation</span>
           </div>
+
 
           <div class="process-item">
             <div class="process-number">9</div>
             <span>Closing</span>
           </div>
 
+
           <div class="process-item">
             <div class="process-number">10</div>
             <span>Paiement</span>
           </div>
 
+
           <div class="process-item">
             <div class="process-number">11</div>
             <span>Livraison</span>
           </div>
+
 
           <div class="process-item">
             <div class="process-number">12</div>
@@ -775,11 +1403,18 @@
           </div>
 
         </div>
+
       </div>
+
     </section>
 
-    <!-- CTA -->
+
+    <!-- =========================
+         CTA
+    ========================= -->
+
     <section class="cta">
+
       <div class="container">
 
         <h2>
@@ -788,23 +1423,34 @@
 
         <p>
           Ny tanjona dia tsy ny hahalala technique fotsiny,
-          fa ny hahavita mampihatra azy amin'ny tena processus de vente.
+          fa ny hahavita mampihatra azy amin'ny tena
+          processus de vente.
         </p>
 
-        <a href="#outils" class="btn btn-primary">
-          Hanomboka ny Vente Lab
+        <a
+          href="#kajy"
+          class="btn btn-primary"
+        >
+          🧮 Hanomboka amin'ny Kajy
         </a>
 
       </div>
+
     </section>
 
   </main>
 
-  <!-- FOOTER -->
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
+
   <footer>
+
     <div class="container footer-inner">
 
       <div>
+
         <div class="footer-brand">
           TANTSAHA MATIHANINA MADAGASCAR
         </div>
@@ -812,14 +1458,284 @@
         <div>
           Mianatra • Mampihatra • Mahomby
         </div>
+
       </div>
+
 
       <div>
         ©2026 Tantsaha Matihanina / Auteur Freddy
       </div>
 
     </div>
+
   </footer>
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================= -->
+
+  <script>
+
+    function valeur(id) {
+
+      const input = document.getElementById(id);
+
+      return Math.max(
+        0,
+        Number(input.value) || 0
+      );
+
+    }
+
+
+    function formatAr(nombre) {
+
+      return (
+        new Intl.NumberFormat("fr-FR").format(
+          Math.round(nombre)
+        ) + " Ar"
+      );
+
+    }
+
+
+    function calculerTombony() {
+
+      const produit =
+        document
+          .getElementById("calcProduit")
+          .value
+          .trim();
+
+
+      const quantite =
+        valeur("calcQuantite");
+
+
+      const achat =
+        valeur("calcAchat");
+
+
+      const sakafo =
+        valeur("calcSakafo");
+
+
+      const fikarakarana =
+        valeur("calcFikarakarana");
+
+
+      const transport =
+        valeur("calcTransport");
+
+
+      const autres =
+        valeur("calcAutres");
+
+
+      const prixVente =
+        valeur("calcPrixVente");
+
+
+      /*
+       * COÛT TOTAL
+       */
+
+      const coutTotal =
+        achat +
+        sakafo +
+        fikarakarana +
+        transport +
+        autres;
+
+
+      /*
+       * COÛT UNITAIRE
+       */
+
+      const coutUnitaire =
+        quantite > 0
+          ? coutTotal / quantite
+          : 0;
+
+
+      /*
+       * CHIFFRE D'AFFAIRES
+       */
+
+      const chiffreAffaires =
+        quantite * prixVente;
+
+
+      /*
+       * BÉNÉFICE
+       */
+
+      const benefice =
+        chiffreAffaires - coutTotal;
+
+
+      /*
+       * MARGE
+       *
+       * Marge = bénéfice / chiffre d'affaires × 100
+       */
+
+      const marge =
+        chiffreAffaires > 0
+          ? (benefice / chiffreAffaires) * 100
+          : 0;
+
+
+      /*
+       * AFFICHAGE
+       */
+
+      document
+        .getElementById("resultCoutTotal")
+        .textContent =
+        formatAr(coutTotal);
+
+
+      document
+        .getElementById("resultCoutUnitaire")
+        .textContent =
+        formatAr(coutUnitaire);
+
+
+      document
+        .getElementById("resultCA")
+        .textContent =
+        formatAr(chiffreAffaires);
+
+
+      document
+        .getElementById("resultBenefice")
+        .textContent =
+        formatAr(benefice);
+
+
+      document
+        .getElementById("resultMarge")
+        .textContent =
+        marge.toFixed(2) + " %";
+
+
+      /*
+       * MESSAGE
+       */
+
+      const note =
+        document.getElementById("resultNote");
+
+
+      if (!quantite) {
+
+        note.innerHTML =
+          "⚠️ Ampidiro ny <strong>quantité</strong> " +
+          "mba hahazoana coût unitaire sy bénéfice marina.";
+
+        return;
+
+      }
+
+
+      if (benefice > 0) {
+
+        note.innerHTML =
+          "✅ " +
+          (produit || "Ny produit") +
+          " dia mampiseho " +
+          "<strong>bénéfice positif</strong>. " +
+          "Hamarino foana fa tafiditra ao anatin'ny " +
+          "coût ny fandaniana rehetra.";
+
+      }
+
+
+      else if (benefice < 0) {
+
+        note.innerHTML =
+          "⚠️ Misy <strong>fatiantoka</strong> " +
+          "amin'ity prix de vente ity. " +
+          "Diniho indray ny coût na ny prix de vente.";
+
+      }
+
+
+      else {
+
+        note.innerHTML =
+          "ℹ️ <strong>Équilibre</strong>: " +
+          "mitovy ny chiffre d'affaires sy ny coût total. " +
+          "Tsy mbola misy bénéfice.";
+
+      }
+
+    }
+
+
+    function resetCalculateur() {
+
+      const champs = [
+
+        "calcProduit",
+        "calcQuantite",
+        "calcAchat",
+        "calcSakafo",
+        "calcFikarakarana",
+        "calcTransport",
+        "calcAutres",
+        "calcPrixVente"
+
+      ];
+
+
+      champs.forEach(
+        function(id) {
+
+          document
+            .getElementById(id)
+            .value = "";
+
+        }
+      );
+
+
+      document
+        .getElementById("resultCoutTotal")
+        .textContent = "0 Ar";
+
+
+      document
+        .getElementById("resultCoutUnitaire")
+        .textContent = "0 Ar";
+
+
+      document
+        .getElementById("resultCA")
+        .textContent = "0 Ar";
+
+
+      document
+        .getElementById("resultBenefice")
+        .textContent = "0 Ar";
+
+
+      document
+        .getElementById("resultMarge")
+        .textContent = "0 %";
+
+
+      document
+        .getElementById("resultNote")
+        .innerHTML =
+        "💡 Ampidiro aloha ny données-nao, " +
+        "dia tsindrio <strong>🧮 Kajio</strong>.";
+
+    }
+
+  </script>
 
 </body>
 </html>
