@@ -1,16 +1,35 @@
-/* =========================================================
-   TANTSAHA MATIHANINA — VENTE LAB
-   js/app.js
-   ========================================================= */
+/* ============================================================
+   TANTSAHA MATIHANINA • VENTE LAB
+   APP.JS — VERSION COMPLETE
 
-"use strict";
+   Modules:
+   - Mobile navigation
+   - Smooth navigation
+   - Tool workspace
+   - Prix & Tombony
+   - Kajy Fiompiana
+   - Calendrier Mpiompy & Vente
+   - Créer une Offre
+   - Publication
+   - Simulation Client
+   - Commande
+   - Reçu
+   - Guide
+   - Challenge 7 Jours
+   - Dashboard
+   - Funnel
+   - Retour & Évaluation
+   - Supabase Reviews
+   - Modal
+   - LocalStorage
+============================================================ */
 
-/* =========================================================
+
+/* ============================================================
    1. CONFIGURATION
-   ========================================================= */
+============================================================ */
 
-const APP_CONFIG = {
-  storageKey: "tantsaha_vente_lab_data_v1",
+const TM_CONFIG = {
 
   whatsappGroup:
     "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
@@ -21,760 +40,1125 @@ const APP_CONFIG = {
   facebook:
     "https://www.facebook.com/share/1Zfiu8oj3m/",
 
-  currency: "Ar"
-};
+  supabaseUrl:
+    "https://sdzybetralbaincrxddf.supabase.co",
 
-
-/* =========================================================
-   2. SUPABASE CONFIG
-   =========================================================
-   Aza apetraka eto mihitsy ny service_role key.
-   Publishable key ihany no azo ampiasaina amin'ny frontend.
-   ========================================================= */
-
-const SUPABASE_CONFIG = {
-  url: "https://sdzybetralbaincrxddf.supabase.co",
-
-  publishableKey:
+  supabaseKey:
     "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy"
+
 };
+
+
+/* ============================================================
+   2. SUPABASE
+============================================================ */
 
 let supabaseClient = null;
 
+function initSupabase() {
 
-/* =========================================================
-   3. STATE
-   ========================================================= */
+  try {
 
-const defaultState = {
-  calculations: [],
-  orders: [],
-  prospects: [],
-  publications: [],
-  simulations: [],
-  evaluations: [],
+    if (
+      window.supabase &&
+      typeof window.supabase.createClient === "function"
+    ) {
 
-  funnel: {
-    prospects: 0,
-    responses: 0,
-    discussions: 0,
-    orders: 0,
-    clients: 0
+      supabaseClient = window.supabase.createClient(
+        TM_CONFIG.supabaseUrl,
+        TM_CONFIG.supabaseKey
+      );
+
+    }
+
+  } catch (error) {
+
+    console.warn(
+      "Supabase non disponible:",
+      error
+    );
+
   }
-};
+
+}
+
+
+/* ============================================================
+   3. LOCAL STORAGE
+============================================================ */
+
+const STORAGE_KEY =
+  "tantsaha_matihanina_vente_lab_v2";
+
+
+function defaultState() {
+
+  return {
+
+    calculations: [],
+
+    livestockCalculations: [],
+
+    calendarPlans: [],
+
+    offers: [],
+
+    publications: [],
+
+    simulations: [],
+
+    orders: [],
+
+    evaluations: [],
+
+    challenge: {},
+
+    lastUpdated: null
+
+  };
+
+}
+
+
+function loadState() {
+
+  try {
+
+    const raw =
+      localStorage.getItem(STORAGE_KEY);
+
+    if (!raw) {
+
+      return defaultState();
+
+    }
+
+    const parsed =
+      JSON.parse(raw);
+
+    return {
+      ...defaultState(),
+      ...parsed
+    };
+
+  } catch (error) {
+
+    console.warn(
+      "Erreur localStorage:",
+      error
+    );
+
+    return defaultState();
+
+  }
+
+}
+
 
 let state = loadState();
 
 
-/* =========================================================
-   4. DOM HELPERS
-   ========================================================= */
+function saveState() {
 
-function $(selector, parent = document) {
-  return parent.querySelector(selector);
+  state.lastUpdated =
+    new Date().toISOString();
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(state)
+  );
+
 }
 
-function $$(selector, parent = document) {
-  return Array.from(parent.querySelectorAll(selector));
+
+/* ============================================================
+   4. HELPERS
+============================================================ */
+
+function $(selector) {
+
+  return document.querySelector(selector);
+
 }
 
-function byId(id) {
-  return document.getElementById(id);
+
+function $all(selector) {
+
+  return Array.from(
+    document.querySelectorAll(selector)
+  );
+
 }
 
-function safeText(value) {
+
+function escapeHTML(value) {
+
   if (value === null || value === undefined) {
     return "";
   }
 
-  return String(value);
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
 }
 
-function numberValue(value) {
-  const number = Number(
-    String(value ?? "")
-      .replace(/\s/g, "")
-      .replace(",", ".")
-  );
-
-  return Number.isFinite(number) ? number : 0;
-}
 
 function formatNumber(value) {
-  return new Intl.NumberFormat("fr-FR").format(
-    Math.round(numberValue(value))
-  );
+
+  const number =
+    Number(value) || 0;
+
+  return new Intl.NumberFormat(
+    "fr-FR"
+  ).format(number);
+
 }
+
 
 function formatAr(value) {
+
   return `${formatNumber(value)} Ar`;
-}
 
-function today() {
-  return new Date().toISOString();
-}
-
-function escapeHTML(value) {
-  return safeText(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
 }
 
 
-/* =========================================================
-   5. LOCAL STORAGE
-   ========================================================= */
+function round(value, decimals = 2) {
 
-function loadState() {
-  try {
-    const saved = localStorage.getItem(APP_CONFIG.storageKey);
+  const factor =
+    Math.pow(10, decimals);
 
-    if (!saved) {
-      return structuredClone(defaultState);
+  return Math.round(
+    (Number(value) || 0) * factor
+  ) / factor;
+
+}
+
+
+function todayISO() {
+
+  const date =
+    new Date();
+
+  return date.toISOString()
+    .split("T")[0];
+
+}
+
+
+function parseDate(dateString) {
+
+  const date =
+    new Date(`${dateString}T00:00:00`);
+
+  return date;
+
+}
+
+
+function formatDate(dateString) {
+
+  if (!dateString) {
+    return "—";
+  }
+
+  const date =
+    parseDate(dateString);
+
+  if (Number.isNaN(date.getTime())) {
+    return dateString;
+  }
+
+  return new Intl.DateTimeFormat(
+    "fr-FR",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
     }
+  ).format(date);
 
-    const parsed = JSON.parse(saved);
-
-    return {
-      ...structuredClone(defaultState),
-      ...parsed,
-      funnel: {
-        ...defaultState.funnel,
-        ...(parsed.funnel || {})
-      }
-    };
-  } catch (error) {
-    console.error("Erreur chargement localStorage :", error);
-
-    return structuredClone(defaultState);
-  }
 }
 
 
-function saveState() {
-  try {
-    localStorage.setItem(
-      APP_CONFIG.storageKey,
-      JSON.stringify(state)
-    );
-  } catch (error) {
-    console.error("Erreur sauvegarde :", error);
-  }
+function addDays(dateString, days) {
+
+  const date =
+    parseDate(dateString);
+
+  date.setDate(
+    date.getDate() + Number(days)
+  );
+
+  return date
+    .toISOString()
+    .split("T")[0];
+
 }
 
 
-/* =========================================================
-   6. TOAST
-   ========================================================= */
+function showToast(
+  message,
+  type = "success"
+) {
 
-function showToast(message, type = "success") {
-  let container = byId("toastContainer");
+  const container =
+    $("#toastContainer");
 
   if (!container) {
-    container = document.createElement("div");
-    container.id = "toastContainer";
-    container.className = "toast-container";
-    document.body.appendChild(container);
+    return;
   }
 
-  const toast = document.createElement("div");
+  const toast =
+    document.createElement("div");
 
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
+  toast.className =
+    `toast toast-${type}`;
+
+  toast.textContent =
+    message;
 
   container.appendChild(toast);
 
   setTimeout(() => {
-    toast.style.opacity = "0";
-    toast.style.transform = "translateX(12px)";
+
+    toast.classList.add("show");
+
+  }, 20);
+
+  setTimeout(() => {
+
+    toast.classList.remove("show");
 
     setTimeout(() => {
       toast.remove();
-    }, 250);
-  }, 3000);
+    }, 300);
+
+  }, 3500);
+
 }
 
 
-/* =========================================================
-   7. MOBILE NAVIGATION
-   ========================================================= */
+function scrollToSection(id) {
 
-function initMobileNavigation() {
-  const toggle = $(".nav-toggle");
-  const nav = $(".main-nav");
+  const element =
+    document.getElementById(id);
+
+  if (!element) {
+    return;
+  }
+
+  element.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+/* ============================================================
+   5. MOBILE NAVIGATION
+============================================================ */
+
+function initNavigation() {
+
+  const toggle =
+    $(".nav-toggle");
+
+  const nav =
+    $(".main-nav");
 
   if (!toggle || !nav) {
     return;
   }
 
-  toggle.addEventListener("click", () => {
-    nav.classList.toggle("active");
+  toggle.addEventListener(
+    "click",
+    () => {
 
-    const opened = nav.classList.contains("active");
-
-    toggle.setAttribute(
-      "aria-expanded",
-      String(opened)
-    );
-  });
-
-  $$(".main-nav a").forEach(link => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("active");
+      const open =
+        nav.classList.toggle("open");
 
       toggle.setAttribute(
         "aria-expanded",
-        "false"
+        String(open)
       );
+
+    }
+  );
+
+
+  $all(".main-nav a")
+    .forEach(link => {
+
+      link.addEventListener(
+        "click",
+        () => {
+
+          nav.classList.remove("open");
+
+          toggle.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+      );
+
     });
-  });
+
 }
 
 
-/* =========================================================
-   8. SMOOTH SCROLL
-   ========================================================= */
+/* ============================================================
+   6. SMOOTH LINKS
+============================================================ */
 
-function initSmoothScroll() {
-  $$('a[href^="#"]').forEach(link => {
-    link.addEventListener("click", event => {
-      const targetId = link.getAttribute("href");
+function initSmoothLinks() {
 
-      if (!targetId || targetId === "#") {
-        return;
-      }
+  $all('a[href^="#"]')
+    .forEach(link => {
 
-      const target = document.querySelector(targetId);
+      link.addEventListener(
+        "click",
+        event => {
 
-      if (!target) {
-        return;
-      }
+          const href =
+            link.getAttribute("href");
 
-      event.preventDefault();
+          if (
+            !href ||
+            href === "#"
+          ) {
+            return;
+          }
 
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+          const target =
+            document.querySelector(href);
+
+          if (!target) {
+            return;
+          }
+
+          event.preventDefault();
+
+          target.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+        }
+      );
+
     });
-  });
+
 }
 
 
-/* =========================================================
-   9. TOOL WORKSPACE
-   ========================================================= */
-
-function initToolWorkspace() {
-  const workspace = byId("toolWorkspace");
-
-  if (!workspace) {
-    return;
-  }
-
-  $$("[data-tool]").forEach(button => {
-    button.addEventListener("click", () => {
-      const tool = button.dataset.tool;
-
-      openTool(tool);
-    });
-  });
-
-  const closeButton =
-    $(".workspace-close", workspace);
-
-  if (closeButton) {
-    closeButton.addEventListener("click", closeTool);
-  }
-}
-
+/* ============================================================
+   7. TOOL WORKSPACE
+============================================================ */
 
 function openTool(tool) {
-  const workspace = byId("toolWorkspace");
+
+  const workspace =
+    $("#toolWorkspace");
 
   if (!workspace) {
     return;
   }
 
-  workspace.classList.add("active");
+  const renderers = {
 
-  let content = "";
+    price:
+      renderPriceTool,
 
-  switch (tool) {
-    case "price":
-      content = renderPriceTool();
-      break;
+    elevage:
+      renderLivestockTool,
 
-    case "elevage":
-      content = renderElevageTool();
-      break;
+    calendar:
+      renderCalendarTool,
 
-    case "offer":
-      content = renderOfferTool();
-      break;
+    offer:
+      renderOfferTool,
 
-    case "publication":
-      content = renderPublicationTool();
-      break;
+    publication:
+      renderPublicationTool,
 
-    case "simulation":
-      content = renderSimulationTool();
-      break;
+    simulation:
+      renderSimulationTool,
 
-    case "order":
-      content = renderOrderTool();
-      break;
+    order:
+      renderOrderTool,
 
-    case "receipt":
-      content = renderReceiptTool();
-      break;
+    receipt:
+      renderReceiptTool,
 
-    case "guide":
-      content = renderGuideTool();
-      break;
+    guide:
+      renderGuideTool,
 
-    case "challenge":
-      content = renderChallengeTool();
-      break;
+    challenge:
+      renderChallengeTool
 
-    default:
-      content = renderDefaultTool();
-  }
-
-  workspace.innerHTML = content;
-
-  workspace.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-
-  bindWorkspaceEvents();
-}
+  };
 
 
-function closeTool() {
-  const workspace = byId("toolWorkspace");
+  const renderer =
+    renderers[tool];
 
-  if (!workspace) {
+  if (!renderer) {
+
+    workspace.innerHTML = `
+      <div class="workspace-placeholder">
+        <h3>Outil mbola tsy voaomana</h3>
+        <p>
+          Havaozina tsy ho ela ity fonctionnalité ity.
+        </p>
+      </div>
+    `;
+
     return;
+
   }
 
-  workspace.classList.remove("active");
+  renderer(workspace);
+
+  setTimeout(() => {
+
+    workspace.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+  }, 50);
+
 }
 
 
-/* =========================================================
-   10. WORKSPACE HEADER
-   ========================================================= */
+function initTools() {
 
-function workspaceHeader(title, description) {
+  $all("[data-tool]")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const tool =
+            button.dataset.tool;
+
+          openTool(tool);
+
+        }
+      );
+
+    });
+
+}
+
+
+/* ============================================================
+   8. TOOL HEADER
+============================================================ */
+
+function toolHeader(
+  icon,
+  title,
+  description
+) {
+
   return `
-    <div class="workspace-header">
-      <div>
-        <div class="workspace-title">
-          ${escapeHTML(title)}
-        </div>
 
-        <div class="workspace-description">
-          ${escapeHTML(description)}
-        </div>
+    <div class="workspace-header">
+
+      <div class="workspace-icon">
+        ${icon}
       </div>
 
-      <button
-        type="button"
-        class="workspace-close"
-        aria-label="Fermer"
-      >
-        ✕
-      </button>
+      <div>
+
+        <span class="eyebrow">
+          VENTE LAB
+        </span>
+
+        <h2>
+          ${escapeHTML(title)}
+        </h2>
+
+        <p>
+          ${escapeHTML(description)}
+        </p>
+
+      </div>
+
     </div>
+
   `;
+
 }
 
 
-/* =========================================================
-   11. PRICE CALCULATOR
-   ========================================================= */
+/* ============================================================
+   9. PRIX & TOMBONY
+============================================================ */
 
-function renderPriceTool() {
-  return `
-    ${workspaceHeader(
+function renderPriceTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "🧮",
       "Kajy Prix & Tombony",
-      "Fantaro ny vidiny, ny coût ary ny tombony alohan'ny hivarotana."
+      "Fantaro aloha ny coût sy ny tombony alohan'ny hivarotana."
     )}
 
-    <form id="priceForm">
+    <div class="tool-explanation">
 
-      <div class="form-grid">
+      <h3>Inona no ataon'ity outil ity?</h3>
 
-        <div class="form-group">
-          <label class="form-label">
-            Anaran'ny vokatra
-          </label>
+      <p>
+        Izy ity dia manampy anao hahafantatra
+        hoe ohatrinona ny vola lany, ny CA,
+        ny tombony ary ny marge.
+      </p>
 
-          <input
-            id="priceProduct"
-            class="form-control"
-            type="text"
-            placeholder="Ohatra: Akoho Gasy"
-            required
-          >
-        </div>
+      <h3>Rahoviana no ampiasaina?</h3>
 
-        <div class="form-group">
-          <label class="form-label">
-            Isan'ny vokatra
-          </label>
+      <p>
+        Ampiasao izy alohan'ny hametrahana prix
+        na hamoahana publication.
+      </p>
 
-          <input
-            id="priceQuantity"
-            class="form-control"
-            type="number"
-            min="1"
-            value="1"
-            required
-          >
-        </div>
+      <div class="example-box">
 
-        <div class="form-group">
-          <label class="form-label">
-            Coût total
-          </label>
+        <strong>Ohatra:</strong>
 
-          <input
-            id="priceCost"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ohatra: 60000"
-            required
-          >
-        </div>
+        <p>
+          Coût total = 100 000 Ar
+        </p>
 
-        <div class="form-group">
-          <label class="form-label">
-            Prix de vente / unité
-          </label>
+        <p>
+          Prix = 15 000 Ar / unité
+        </p>
 
-          <input
-            id="priceSale"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ohatra: 15000"
-            required
-          >
-        </div>
+        <p>
+          Raha 10 no amidy:
+          CA = 150 000 Ar
+        </p>
+
+        <p>
+          Tombony = 50 000 Ar
+        </p>
 
       </div>
 
-      <div class="form-actions">
+    </div>
 
-        <button
-          type="submit"
-          class="btn btn-primary"
-        >
-          Kajio ny tombony
-        </button>
 
-        <button
-          type="button"
-          class="btn btn-outline"
-          id="clearPrice"
+    <form id="priceForm" class="tool-form">
+
+      <div class="form-group">
+
+        <label>
+          Anaran'ny vokatra
+        </label>
+
+        <input
+          name="product"
+          type="text"
+          placeholder="Ohatra: Akoho Gasy"
+          required
         >
-          Hamafa
-        </button>
 
       </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Isan'ny vokatra
+        </label>
+
+        <input
+          name="quantity"
+          type="number"
+          min="1"
+          value="1"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Coût total
+        </label>
+
+        <input
+          name="cost"
+          type="number"
+          min="0"
+          placeholder="Ohatra: 60000"
+          required
+        >
+
+        <small>
+          Vola tena lany amin'ny vokatra rehetra.
+        </small>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix de vente / unité
+        </label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          placeholder="Ohatra: 15000"
+          required
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Kajio ny tombony
+      </button>
 
     </form>
 
-    <div id="priceResult" class="result-box"></div>
+
+    <div
+      id="priceResult"
+      class="tool-result"
+    ></div>
+
   `;
+
+
+  $("#priceForm")
+    .addEventListener(
+      "submit",
+      calculatePrice
+    );
+
 }
 
 
-function calculatePrice() {
+function calculatePrice(event) {
+
+  event.preventDefault();
+
+  const form =
+    event.currentTarget;
+
+  const data =
+    new FormData(form);
+
   const product =
-    byId("priceProduct")?.value.trim() || "Vokatra";
+    data.get("product");
 
   const quantity =
-    numberValue(byId("priceQuantity")?.value) || 1;
+    Number(data.get("quantity"));
 
   const cost =
-    numberValue(byId("priceCost")?.value);
+    Number(data.get("cost"));
 
-  const sale =
-    numberValue(byId("priceSale")?.value);
+  const price =
+    Number(data.get("price"));
 
-  const revenue = sale * quantity;
+  if (
+    quantity <= 0 ||
+    cost < 0 ||
+    price < 0
+  ) {
 
-  const profit = revenue - cost;
+    showToast(
+      "Jereo tsara ny isa nampidirina.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const revenue =
+    quantity * price;
+
+  const profit =
+    revenue - cost;
 
   const margin =
     revenue > 0
       ? (profit / revenue) * 100
       : 0;
 
-  const costPerUnit =
-    quantity > 0
-      ? cost / quantity
-      : 0;
+  const unitCost =
+    cost / quantity;
 
-  const profitPerUnit =
-    quantity > 0
-      ? profit / quantity
-      : 0;
+  const result =
+    {
 
-  state.calculations.unshift({
-    id: Date.now(),
-    product,
-    quantity,
-    cost,
-    sale,
-    revenue,
-    profit,
-    margin,
-    createdAt: today()
-  });
+      id: Date.now(),
 
-  state.calculations =
-    state.calculations.slice(0, 100);
+      product,
+
+      quantity,
+
+      cost,
+
+      price,
+
+      revenue,
+
+      profit,
+
+      margin: round(margin),
+
+      unitCost: round(unitCost),
+
+      createdAt:
+        new Date().toISOString()
+
+    };
+
+
+  state.calculations.unshift(
+    result
+  );
 
   saveState();
 
-  updateDashboard();
+  const resultBox =
+    $("#priceResult");
 
-  const result = byId("priceResult");
+  resultBox.innerHTML = `
 
-  if (!result) {
-    return;
-  }
+    <div class="result-card">
 
-  const status =
-    profit > 0
-      ? "result-positive"
-      : profit < 0
-        ? "result-negative"
-        : "result-neutral";
+      <div class="result-card-header">
 
-  result.classList.add("active");
+        <span>
+          📊 Résultat
+        </span>
 
-  result.innerHTML = `
-    <div class="result-title">
-      Résultat — ${escapeHTML(product)}
+        <strong>
+          ${escapeHTML(product)}
+        </strong>
+
+      </div>
+
+
+      <div class="result-grid">
+
+        <div>
+          <small>Coût total</small>
+          <strong>${formatAr(cost)}</strong>
+        </div>
+
+        <div>
+          <small>CA</small>
+          <strong>${formatAr(revenue)}</strong>
+        </div>
+
+        <div>
+          <small>Tombony</small>
+          <strong>${formatAr(profit)}</strong>
+        </div>
+
+        <div>
+          <small>Marge</small>
+          <strong>${formatNumber(result.margin)} %</strong>
+        </div>
+
+      </div>
+
+
+      <div class="result-explanation">
+
+        ${
+          profit > 0
+            ? `
+              <strong>✅ Misy tombony.</strong>
+              <p>
+                Amin'ity prix ity dia
+                ${formatAr(profit)}
+                ny tombony vinavinana.
+              </p>
+            `
+            : profit === 0
+              ? `
+                <strong>⚠️ Tsy misy tombony.</strong>
+                <p>
+                  Mitovy ny CA sy ny coût.
+                  Mila dinihina indray ny prix.
+                </p>
+              `
+              : `
+                <strong>❌ Perte.</strong>
+                <p>
+                  Ambany noho ny coût ny CA.
+                  Aza maika hivarotra amin'ity prix ity.
+                </p>
+              `
+        }
+
+      </div>
+
     </div>
 
-    <div class="result-value ${status}">
-      ${formatAr(profit)}
-    </div>
-
-    <div class="result-note">
-      CA: <strong>${formatAr(revenue)}</strong>
-      · Coût: <strong>${formatAr(cost)}</strong>
-      · Marge: <strong>${margin.toFixed(2)}%</strong>
-    </div>
-
-    <div class="result-note">
-      Coût/unité: ${formatAr(costPerUnit)}
-      · Tombony/unité: ${formatAr(profitPerUnit)}
-    </div>
-
-    ${
-      profit > 0
-        ? `<div class="alert alert-success" style="margin-top:15px;margin-bottom:0">
-             Mahazo tombony ianao amin'ity calcul ity.
-           </div>`
-        : profit < 0
-          ? `<div class="alert alert-danger" style="margin-top:15px;margin-bottom:0">
-               Misy perte. Avereno jerena ny coût na ny prix de vente.
-             </div>`
-          : `<div class="alert alert-warning" style="margin-top:15px;margin-bottom:0">
-               Tsy mbola misy tombony.
-             </div>`
-    }
   `;
 
+
+  updateDashboard();
+
   showToast(
-    "Vita ny calcul Prix & Tombony.",
+    "Calcul vita ary voatahiry.",
     "success"
   );
+
 }
 
 
-/* =========================================================
-   12. ELEVAGE CALCULATOR
-   ========================================================= */
+/* ============================================================
+   10. KAJY FIOMPIANA
+============================================================ */
 
-function renderElevageTool() {
-  return `
-    ${workspaceHeader(
+function renderLivestockTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "🐔",
       "Kajy Fiompiana",
-      "Kajio ny coût, CA ary tombony amin'ny fiompiana."
+      "Kajio ny coût, prix de vente ary tombony amin'ny fiompiana."
     )}
 
-    <form id="elevageForm">
 
-      <div class="form-grid">
+    <div class="tool-explanation">
 
-        <div class="form-group">
-          <label class="form-label">
-            Karazana fiompiana
-          </label>
+      <h3>Inona no tokony ho fantatra?</h3>
 
-          <select
-            id="elevageType"
-            class="form-control"
-          >
-            <option value="Akoho Gasy">Akoho Gasy</option>
-            <option value="Pondeuse">Pondeuse</option>
-            <option value="Poulet de chair">Poulet de chair</option>
-            <option value="Kisoa">Kisoa</option>
-            <option value="Osy">Osy</option>
-            <option value="Ondry">Ondry</option>
-            <option value="Bitro">Bitro</option>
-            <option value="Gana">Gana</option>
-            <option value="Gisa">Gisa</option>
-            <option value="Vorontsiloza">Vorontsiloza</option>
-          </select>
-        </div>
+      <p>
+        Tsy ny vidin'ny biby ihany no coût.
+        Tokony hojerena koa ny sakafo sy ny dépenses hafa.
+      </p>
 
-        <div class="form-group">
-          <label class="form-label">
-            Isan'ny biby
-          </label>
+      <div class="example-box">
 
-          <input
-            id="elevageQuantity"
-            class="form-control"
-            type="number"
-            min="1"
-            value="1"
-            required
-          >
-        </div>
+        <strong>Ohatra:</strong>
 
-        <div class="form-group">
-          <label class="form-label">
-            Achat / investissement
-          </label>
+        <p>
+          Biby = 10
+        </p>
 
-          <input
-            id="elevagePurchase"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-          >
-        </div>
+        <p>
+          Achat = 100 000 Ar
+        </p>
 
-        <div class="form-group">
-          <label class="form-label">
-            Sakafo
-          </label>
+        <p>
+          Sakafo = 60 000 Ar
+        </p>
 
-          <input
-            id="elevageFeed"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-          >
-        </div>
+        <p>
+          Autres = 10 000 Ar
+        </p>
 
-        <div class="form-group">
-          <label class="form-label">
-            Fanafody / vaksiny
-          </label>
-
-          <input
-            id="elevageHealth"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-          >
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Hafa
-          </label>
-
-          <input
-            id="elevageOther"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-          >
-        </div>
-
-        <div class="form-group full">
-          <label class="form-label">
-            Prix de vente / biby
-          </label>
-
-          <input
-            id="elevageSale"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-            required
-          >
-        </div>
+        <p>
+          Coût total = 170 000 Ar
+        </p>
 
       </div>
 
-      <div class="form-actions">
+    </div>
 
-        <button
-          type="submit"
-          class="btn btn-primary"
+
+    <form id="livestockForm" class="tool-form">
+
+      <div class="form-group">
+
+        <label>
+          Karazana fiompiana
+        </label>
+
+        <select name="animal" required>
+
+          <option value="">
+            Safidio
+          </option>
+
+          <option>Akoho Gasy</option>
+          <option>Poulet de chair</option>
+          <option>Pondeuse</option>
+          <option>Kisoa</option>
+          <option>Osy</option>
+          <option>Ondry</option>
+          <option>Bitro</option>
+          <option>Gana</option>
+          <option>Gisa</option>
+          <option>Vorontsiloza</option>
+          <option>Trondro</option>
+          <option>Omby</option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Isan'ny biby
+        </label>
+
+        <input
+          name="quantity"
+          type="number"
+          min="1"
+          required
         >
-          Kajio
-        </button>
 
       </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Coût achat
+        </label>
+
+        <input
+          name="purchase"
+          type="number"
+          min="0"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Coût sakafo
+        </label>
+
+        <input
+          name="feed"
+          type="number"
+          min="0"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Autres coûts
+        </label>
+
+        <input
+          name="other"
+          type="number"
+          min="0"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix de vente / biby
+        </label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          required
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Kajio ny fiompiana
+      </button>
 
     </form>
 
-    <div id="elevageResult" class="result-box"></div>
+
+    <div
+      id="livestockResult"
+      class="tool-result"
+    ></div>
+
   `;
+
+
+  $("#livestockForm")
+    .addEventListener(
+      "submit",
+      calculateLivestock
+    );
+
 }
 
 
-function calculateElevage() {
-  const type =
-    byId("elevageType")?.value || "Fiompiana";
+function calculateLivestock(event) {
+
+  event.preventDefault();
+
+  const data =
+    new FormData(
+      event.currentTarget
+    );
+
+  const animal =
+    data.get("animal");
 
   const quantity =
-    numberValue(byId("elevageQuantity")?.value) || 1;
+    Number(data.get("quantity"));
 
   const purchase =
-    numberValue(byId("elevagePurchase")?.value);
+    Number(data.get("purchase")) || 0;
 
   const feed =
-    numberValue(byId("elevageFeed")?.value);
-
-  const health =
-    numberValue(byId("elevageHealth")?.value);
+    Number(data.get("feed")) || 0;
 
   const other =
-    numberValue(byId("elevageOther")?.value);
+    Number(data.get("other")) || 0;
 
-  const sale =
-    numberValue(byId("elevageSale")?.value);
+  const price =
+    Number(data.get("price")) || 0;
+
 
   const totalCost =
-    purchase + feed + health + other;
+    purchase + feed + other;
 
   const revenue =
-    quantity * sale;
+    quantity * price;
 
   const profit =
     revenue - totalCost;
@@ -784,2058 +1168,3520 @@ function calculateElevage() {
       ? (profit / revenue) * 100
       : 0;
 
-  const record = {
+  const costPerAnimal =
+    quantity > 0
+      ? totalCost / quantity
+      : 0;
+
+
+  const result = {
+
     id: Date.now(),
-    type,
+
+    animal,
+
     quantity,
+
     purchase,
+
     feed,
-    health,
+
     other,
+
     totalCost,
+
+    price,
+
     revenue,
+
     profit,
-    margin,
-    createdAt: today()
+
+    margin: round(margin),
+
+    costPerAnimal:
+      round(costPerAnimal),
+
+    createdAt:
+      new Date().toISOString()
+
   };
 
-  state.calculations.unshift(record);
 
-  state.calculations =
-    state.calculations.slice(0, 100);
+  state.livestockCalculations.unshift(
+    result
+  );
 
   saveState();
+
+
+  $("#livestockResult").innerHTML = `
+
+    <div class="result-card">
+
+      <div class="result-card-header">
+
+        <span>🐔 ${escapeHTML(animal)}</span>
+
+        <strong>
+          ${quantity} biby
+        </strong>
+
+      </div>
+
+
+      <div class="result-grid">
+
+        <div>
+          <small>Coût total</small>
+          <strong>${formatAr(totalCost)}</strong>
+        </div>
+
+        <div>
+          <small>Coût / biby</small>
+          <strong>${formatAr(costPerAnimal)}</strong>
+        </div>
+
+        <div>
+          <small>CA</small>
+          <strong>${formatAr(revenue)}</strong>
+        </div>
+
+        <div>
+          <small>Tombony</small>
+          <strong>${formatAr(profit)}</strong>
+        </div>
+
+      </div>
+
+
+      <div class="result-explanation">
+
+        ${
+          profit > 0
+            ? `
+              <strong>✅ Fiompiana mahazo tombony.</strong>
+              <p>
+                Tombony vinavinana:
+                ${formatAr(profit)}.
+              </p>
+            `
+            : `
+              <strong>⚠️ Mila dinihina.</strong>
+              <p>
+                Tsy mbola tsara ny différence
+                entre coût sy CA.
+              </p>
+            `
+        }
+
+      </div>
+
+    </div>
+
+  `;
+
 
   updateDashboard();
 
-  const result =
-    byId("elevageResult");
-
-  if (!result) {
-    return;
-  }
-
-  result.classList.add("active");
-
-  result.innerHTML = `
-    <div class="result-title">
-      ${escapeHTML(type)}
-    </div>
-
-    <div class="result-value ${
-      profit >= 0
-        ? "result-positive"
-        : "result-negative"
-    }">
-      ${formatAr(profit)}
-    </div>
-
-    <div class="result-note">
-      Coût total:
-      <strong>${formatAr(totalCost)}</strong>
-    </div>
-
-    <div class="result-note">
-      CA estimé:
-      <strong>${formatAr(revenue)}</strong>
-    </div>
-
-    <div class="result-note">
-      Marge:
-      <strong>${margin.toFixed(2)}%</strong>
-    </div>
-  `;
-
   showToast(
-    "Vita ny kajy fiompiana.",
+    "Kajy fiompiana vita.",
     "success"
   );
+
 }
 
 
-/* =========================================================
-   13. OFFER CREATOR
-   ========================================================= */
+/* ============================================================
+   11. CALENDRIER MPIOMPY & VENTE
+============================================================ */
 
-function renderOfferTool() {
-  return `
-    ${workspaceHeader(
-      "Créer une Offre",
-      "Amboary ny offre-nao amin'ny fomba mora takatry ny client."
+/*
+   IMPORTANT:
+   Ireo durations ireo dia "base pédagogique".
+   Tsy daty ara-pahasalamana raikitra.
+   Ny tena fotoana dia miankina amin'ny race,
+   alimentation, santé, poids ary marché.
+*/
+
+const ELEVAGE_RULES = {
+
+  "Poulet de chair": {
+
+    cycle: 45,
+
+    preparation: 7,
+
+    prospecting: 7,
+
+    publication: 5,
+
+    followup: 1,
+
+    weightNote:
+      "Jereo ny lanja sy ny toe-pahasalamana alohan'ny vente."
+
+  },
+
+  "Akoho Gasy": {
+
+    cycle: 120,
+
+    preparation: 14,
+
+    prospecting: 10,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Ny taona sy lanja no tokony hanampy amin'ny fanapahan-kevitra."
+
+  },
+
+  "Pondeuse": {
+
+    cycle: 140,
+
+    preparation: 14,
+
+    prospecting: 10,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Miova arakaraka ny tanjona: atody sa vente de sujet."
+
+  },
+
+  "Kisoa": {
+
+    cycle: 180,
+
+    preparation: 21,
+
+    prospecting: 14,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Araho indrindra ny lanja, alimentation ary prix marché."
+
+  },
+
+  "Osy": {
+
+    cycle: 180,
+
+    preparation: 21,
+
+    prospecting: 14,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Tsy daty raikitra ny vente; lanja sy tanjona no jerena."
+
+  },
+
+  "Ondry": {
+
+    cycle: 180,
+
+    preparation: 21,
+
+    prospecting: 14,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Araho ny lanja, santé ary tsena."
+
+  },
+
+  "Bitro": {
+
+    cycle: 90,
+
+    preparation: 10,
+
+    prospecting: 7,
+
+    publication: 5,
+
+    followup: 1,
+
+    weightNote:
+      "Miankina amin'ny karazana sy tanjona ny fotoana."
+
+  },
+
+  "Gana": {
+
+    cycle: 90,
+
+    preparation: 14,
+
+    prospecting: 10,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Araho ny lanja sy ny tsena."
+
+  },
+
+  "Gisa": {
+
+    cycle: 150,
+
+    preparation: 21,
+
+    prospecting: 14,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Ny lanja sy ny tsena no tena tokony hojerena."
+
+  },
+
+  "Vorontsiloza": {
+
+    cycle: 150,
+
+    preparation: 21,
+
+    prospecting: 14,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Miankina amin'ny lanja sy tanjona ny vente."
+
+  },
+
+  "Trondro": {
+
+    cycle: 180,
+
+    preparation: 21,
+
+    prospecting: 14,
+
+    publication: 7,
+
+    followup: 1,
+
+    weightNote:
+      "Ny poids moyen sy ny marché no tokony harahina."
+
+  },
+
+  "Omby": {
+
+    cycle: 365,
+
+    preparation: 30,
+
+    prospecting: 21,
+
+    publication: 14,
+
+    followup: 1,
+
+    weightNote:
+      "Miova be arakaraka ny âge, poids, race ary marché."
+
+  }
+
+};
+
+
+function renderCalendarTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "📅",
+      "Calendrier Mpiompy & Vente",
+      "Omano mialoha ny fiompiana, ny prospection ary ny vente."
     )}
 
-    <form id="offerForm">
 
-      <div class="form-grid">
+    <div class="tool-explanation">
 
-        <div class="form-group">
-          <label class="form-label">
-            Produit / Service
-          </label>
+      <h3>
+        🎯 Inona no ataon'ity outil ity?
+      </h3>
 
-          <input
-            id="offerProduct"
-            class="form-control"
-            type="text"
-            placeholder="Ohatra: Akoho Gasy"
-            required
-          >
-        </div>
+      <p>
+        Ampifandraisiny ny daty nanombohanao niompy
+        sy ny fotoana tokony hanomanana ny vente.
+      </p>
 
-        <div class="form-group">
-          <label class="form-label">
-            Client cible
-          </label>
+      <p>
+        Tsy hoe milaza hoe “ity daty ity dia tsy maintsy
+        mivarotra” izy. Manome <strong>période vinavinana</strong>
+        ary mampahatsiahy anao ny fotoana tokony hanombohana
+        mitady client.
+      </p>
 
-          <input
-            id="offerClient"
-            class="form-control"
-            type="text"
-            placeholder="Ohatra: Mpiompy vao manomboka"
-            required
-          >
-        </div>
 
-        <div class="form-group full">
-          <label class="form-label">
-            Olana / besoin
-          </label>
+      <div class="example-box">
 
-          <textarea
-            id="offerProblem"
-            class="form-control"
-            placeholder="Inona no olana ananan'ilay client?"
-            required
-          ></textarea>
-        </div>
+        <strong>Ohatra:</strong>
 
-        <div class="form-group full">
-          <label class="form-label">
-            Vahaolana / bénéfice
-          </label>
+        <p>
+          Nanomboka niompy:
+          <strong>05 Oktobra</strong>
+        </p>
 
-          <textarea
-            id="offerBenefit"
-            class="form-control"
-            placeholder="Inona no tombontsoa azony?"
-            required
-          ></textarea>
-        </div>
+        <p>
+          Préparation:
+          alohan'ny vente
+        </p>
 
-        <div class="form-group">
-          <label class="form-label">
-            Prix
-          </label>
+        <p>
+          Prospection:
+          manomboka mialoha
+        </p>
 
-          <input
-            id="offerPrice"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            CTA
-          </label>
-
-          <input
-            id="offerCTA"
-            class="form-control"
-            type="text"
-            value="Alefaso MP raha mila"
-          >
-        </div>
+        <p>
+          Publication:
+          rehefa manakaiky ny stock disponible
+        </p>
 
       </div>
 
-      <div class="form-actions">
 
-        <button
-          type="submit"
-          class="btn btn-primary"
+      <div class="important-note">
+
+        <strong>
+          ⚠️ Fanamarihana:
+        </strong>
+
+        <p>
+          Vinavina pédagogique ihany ireo daty.
+          Ny lanja tena izy, santé, alimentation,
+          coût ary prix marché no tokony hanapaka
+          ny décision farany.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <form
+      id="calendarForm"
+      class="tool-form"
+    >
+
+      <div class="form-group">
+
+        <label>
+          Karazana fiompiana
+        </label>
+
+        <select
+          name="animal"
+          id="calendarAnimal"
+          required
         >
-          Mamorona Offre
-        </button>
+
+          <option value="">
+            Safidio
+          </option>
+
+          ${Object.keys(ELEVAGE_RULES)
+            .map(
+              animal =>
+                `<option value="${escapeHTML(animal)}">
+                  ${escapeHTML(animal)}
+                </option>`
+            )
+            .join("")}
+
+        </select>
 
       </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Daty nanombohana
+        </label>
+
+        <input
+          type="date"
+          name="startDate"
+          value="${todayISO()}"
+          required
+        >
+
+        <small>
+          Daty tena nanombohanao ny fiompiana.
+        </small>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Isan'ny biby
+        </label>
+
+        <input
+          type="number"
+          name="quantity"
+          min="1"
+          placeholder="Ohatra: 50"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Lanja ankehitriny (raha fantatra)
+        </label>
+
+        <input
+          type="number"
+          name="weight"
+          min="0"
+          step="0.01"
+          placeholder="Ohatra: 1.2 kg"
+        >
+
+        <small>
+          Tsy voatery. Ampiasao rehefa fantatra.
+        </small>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Tanjona
+        </label>
+
+        <select name="goal">
+
+          <option value="Vente">
+            Vente
+          </option>
+
+          <option value="Reproduction">
+            Reproduction
+          </option>
+
+          <option value="Élevage">
+            Élevage
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix marché fantatra? (optionnel)
+        </label>
+
+        <input
+          type="number"
+          name="marketPrice"
+          min="0"
+          placeholder="Ohatra: 15000"
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Mamorona Calendrier
+      </button>
 
     </form>
 
-    <div id="offerResult" class="result-box"></div>
+
+    <div
+      id="calendarResult"
+      class="tool-result"
+    ></div>
+
   `;
+
+
+  $("#calendarForm")
+    .addEventListener(
+      "submit",
+      calculateCalendar
+    );
+
 }
 
 
-function createOffer() {
-  const product =
-    byId("offerProduct")?.value.trim();
+function calculateCalendar(event) {
 
-  const client =
-    byId("offerClient")?.value.trim();
+  event.preventDefault();
 
-  const problem =
-    byId("offerProblem")?.value.trim();
+  const data =
+    new FormData(
+      event.currentTarget
+    );
 
-  const benefit =
-    byId("offerBenefit")?.value.trim();
+  const animal =
+    data.get("animal");
 
-  const price =
-    numberValue(byId("offerPrice")?.value);
+  const startDate =
+    data.get("startDate");
 
-  const cta =
-    byId("offerCTA")?.value.trim()
-    || "Alefaso MP raha mila";
+  const quantity =
+    Number(data.get("quantity"));
 
-  const result =
-    byId("offerResult");
+  const weight =
+    Number(data.get("weight")) || null;
 
-  if (!result) {
+  const goal =
+    data.get("goal");
+
+  const marketPrice =
+    Number(data.get("marketPrice")) || null;
+
+
+  if (!animal || !startDate || quantity <= 0) {
+
+    showToast(
+      "Fenoy tsara ny informations ilaina.",
+      "error"
+    );
+
     return;
+
   }
 
-  result.classList.add("active");
 
-  result.innerHTML = `
-    <div class="result-title">
-      Offre vonona
-    </div>
+  const rules =
+    ELEVAGE_RULES[animal];
 
-    <div class="alert alert-info">
-      <strong>${escapeHTML(product)}</strong>
-      <br><br>
 
-      <strong>Ho an'ny:</strong>
-      ${escapeHTML(client)}
+  const estimatedSale =
+    addDays(
+      startDate,
+      rules.cycle
+    );
 
-      <br><br>
 
-      <strong>Olana:</strong>
-      ${escapeHTML(problem)}
+  const preparationDate =
+    addDays(
+      estimatedSale,
+      -rules.preparation
+    );
 
-      <br><br>
 
-      <strong>Vahaolana:</strong>
-      ${escapeHTML(benefit)}
+  const prospectingDate =
+    addDays(
+      estimatedSale,
+      -rules.prospecting
+    );
 
-      <br><br>
 
-      <strong>Prix:</strong>
-      ${formatAr(price)}
+  const publicationDate =
+    addDays(
+      estimatedSale,
+      -rules.publication
+    );
 
-      <br><br>
 
-      <strong>CTA:</strong>
-      ${escapeHTML(cta)}
-    </div>
+  const verificationDate =
+    addDays(
+      estimatedSale,
+      -3
+    );
 
-    <button
-      type="button"
-      class="btn btn-primary"
-      id="copyOffer"
-    >
-      Copier l'offre
-    </button>
-  `;
 
-  const copyButton =
-    byId("copyOffer");
+  const followupDate =
+    addDays(
+      estimatedSale,
+      rules.followup
+    );
 
-  if (copyButton) {
-    copyButton.addEventListener("click", () => {
-
-      const text =
-`OFFRE — ${product}
-
-Ho an'ny: ${client}
-
-Olana:
-${problem}
-
-Vahaolana:
-${benefit}
-
-Prix: ${formatAr(price)}
-
-${cta}`;
-
-      copyText(text);
-    });
-  }
-
-  showToast(
-    "Vita ny offre.",
-    "success"
-  );
-}
-
-
-/* =========================================================
-   14. PUBLICATION CREATOR
-   ========================================================= */
-
-function renderPublicationTool() {
-  return `
-    ${workspaceHeader(
-      "Publication",
-      "Mamoròna publication Facebook na WhatsApp mifototra amin'ny offre."
-    )}
-
-    <form id="publicationForm">
-
-      <div class="form-grid">
-
-        <div class="form-group">
-          <label class="form-label">
-            Canal
-          </label>
-
-          <select
-            id="publicationChannel"
-            class="form-control"
-          >
-            <option value="Facebook">
-              Facebook
-            </option>
-
-            <option value="WhatsApp">
-              WhatsApp
-            </option>
-
-            <option value="Marketplace">
-              Marketplace
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Produit
-          </label>
-
-          <input
-            id="publicationProduct"
-            class="form-control"
-            type="text"
-            placeholder="Ohatra: Akoho Gasy"
-            required
-          >
-        </div>
-
-        <div class="form-group full">
-          <label class="form-label">
-            Olana / Hook
-          </label>
-
-          <textarea
-            id="publicationHook"
-            class="form-control"
-            placeholder="Ohatra: Sahirana mahita akoho salama ve ianao?"
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-group full">
-          <label class="form-label">
-            Vahaolana / bénéfice
-          </label>
-
-          <textarea
-            id="publicationBenefit"
-            class="form-control"
-            placeholder="Lazao ny tombontsoa azon'ny client."
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            Prix
-          </label>
-
-          <input
-            id="publicationPrice"
-            class="form-control"
-            type="number"
-            min="0"
-            placeholder="Ar"
-          >
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">
-            CTA
-          </label>
-
-          <input
-            id="publicationCTA"
-            class="form-control"
-            type="text"
-            value="Alefaso MP raha mila fanazavana"
-          >
-        </div>
-
-      </div>
-
-      <div class="form-actions">
-
-        <button
-          type="submit"
-          class="btn btn-primary"
-        >
-          Mamorona Publication
-        </button>
-
-      </div>
-
-    </form>
-
-    <div id="publicationResult" class="result-box"></div>
-  `;
-}
-
-
-function createPublication() {
-  const channel =
-    byId("publicationChannel")?.value;
-
-  const product =
-    byId("publicationProduct")?.value.trim();
-
-  const hook =
-    byId("publicationHook")?.value.trim();
-
-  const benefit =
-    byId("publicationBenefit")?.value.trim();
-
-  const price =
-    numberValue(byId("publicationPrice")?.value);
-
-  const cta =
-    byId("publicationCTA")?.value.trim()
-    || "Alefaso MP raha mila";
-
-  const text =
-`${hook}
-
-Mitady ${product} ve ianao?
-
-${benefit}
-
-Prix:
-${formatAr(price)}
-
-${cta}
-
-#TantsahaMatihanina`;
-
-  const result =
-    byId("publicationResult");
-
-  if (!result) {
-    return;
-  }
-
-  result.classList.add("active");
-
-  result.innerHTML = `
-    <div class="result-title">
-      Publication — ${escapeHTML(channel)}
-    </div>
-
-    <div class="alert alert-info">
-      ${escapeHTML(text).replaceAll("\n", "<br>")}
-    </div>
-
-    <button
-      type="button"
-      class="btn btn-primary"
-      id="copyPublication"
-    >
-      Copier
-    </button>
-  `;
-
-  state.publications.unshift({
+
+  const plan = {
+
     id: Date.now(),
-    channel,
-    product,
-    text,
-    createdAt: today()
-  });
 
-  state.publications =
-    state.publications.slice(0, 100);
+    animal,
+
+    startDate,
+
+    quantity,
+
+    weight,
+
+    goal,
+
+    marketPrice,
+
+    estimatedSale,
+
+    preparationDate,
+
+    prospectingDate,
+
+    publicationDate,
+
+    verificationDate,
+
+    followupDate,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  state.calendarPlans.unshift(
+    plan
+  );
 
   saveState();
 
-  const copyButton =
-    byId("copyPublication");
 
-  if (copyButton) {
-    copyButton.addEventListener(
+  $("#calendarResult").innerHTML = `
+
+    <div class="result-card calendar-result">
+
+      <div class="result-card-header">
+
+        <span>
+          📅 ${escapeHTML(animal)}
+        </span>
+
+        <strong>
+          ${quantity} biby
+        </strong>
+
+      </div>
+
+
+      <div class="calendar-result-warning">
+
+        ⚠️
+        <span>
+          Ireo dia ireo dia
+          <strong>vinavina</strong>.
+          Hamarino hatrany ny lanja,
+          santé, coût ary prix marché.
+        </span>
+
+      </div>
+
+
+      <div class="calendar-timeline">
+
+
+        <div class="calendar-event">
+
+          <span class="calendar-event-icon">
+            🌱
+          </span>
+
+          <div>
+
+            <strong>
+              Fanombohana
+            </strong>
+
+            <small>
+              ${formatDate(startDate)}
+            </small>
+
+            <p>
+              Nanomboka ny fiompiana.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-event">
+
+          <span class="calendar-event-icon">
+            📊
+          </span>
+
+          <div>
+
+            <strong>
+              Préparation vente
+            </strong>
+
+            <small>
+              ${formatDate(preparationDate)}
+            </small>
+
+            <p>
+              Jereo ny lanja, coût,
+              santé ary prix marché.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-event">
+
+          <span class="calendar-event-icon">
+            🔎
+          </span>
+
+          <div>
+
+            <strong>
+              Manomboka mitady prospects
+            </strong>
+
+            <small>
+              ${formatDate(prospectingDate)}
+            </small>
+
+            <p>
+              Mitadiava client sy
+              précommandes raha mety.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-event">
+
+          <span class="calendar-event-icon">
+            📢
+          </span>
+
+          <div>
+
+            <strong>
+              Publication
+            </strong>
+
+            <small>
+              ${formatDate(publicationDate)}
+            </small>
+
+            <p>
+              Mamoaha publication
+              mifanaraka amin'ny stock.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-event">
+
+          <span class="calendar-event-icon">
+            ⚖️
+          </span>
+
+          <div>
+
+            <strong>
+              Contrôle final
+            </strong>
+
+            <small>
+              ${formatDate(verificationDate)}
+            </small>
+
+            <p>
+              Jereo indray ny lanja sy
+              ny condition avant vente.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-event calendar-event-main">
+
+          <span class="calendar-event-icon">
+            🛒
+          </span>
+
+          <div>
+
+            <strong>
+              Période de vente estimée
+            </strong>
+
+            <small>
+              Manodidina ny ${formatDate(estimatedSale)}
+            </small>
+
+            <p>
+              Tsy daty raikitra.
+              Ny lanja sy ny tsena no manamafy
+              ny fotoana tena mety.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="calendar-event">
+
+          <span class="calendar-event-icon">
+            🤝
+          </span>
+
+          <div>
+
+            <strong>
+              Suivi client
+            </strong>
+
+            <small>
+              ${formatDate(followupDate)}
+            </small>
+
+            <p>
+              Anontanio ny satisfaction
+              ary diniho ny repeat order.
+            </p>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+
+      <div class="calendar-action-plan">
+
+        <h3>
+          🎯 Plan Vente
+        </h3>
+
+        <ul>
+
+          <li>
+            <strong>
+              7–14 andro mialoha:
+            </strong>
+            manomboka mitady prospects.
+          </li>
+
+          <li>
+            <strong>
+              5–7 andro mialoha:
+            </strong>
+            mamoaka publication.
+          </li>
+
+          <li>
+            <strong>
+              3 andro mialoha:
+            </strong>
+            manao relance.
+          </li>
+
+          <li>
+            <strong>
+              1 andro mialoha:
+            </strong>
+            manamarina commandes.
+          </li>
+
+          <li>
+            <strong>
+              Jour de vente:
+            </strong>
+            vente + reçu.
+          </li>
+
+          <li>
+            <strong>
+              Aorian'ny vente:
+            </strong>
+            suivi + évaluation.
+          </li>
+
+        </ul>
+
+      </div>
+
+
+      <div class="calendar-note">
+
+        <strong>
+          ${escapeHTML(rules.weightNote)}
+        </strong>
+
+        ${
+          marketPrice
+            ? `
+              <p>
+                Prix marché nampidirinao:
+                <strong>
+                  ${formatAr(marketPrice)}
+                </strong>
+              </p>
+            `
+            : `
+              <p>
+                Tsy mbola nampiditra prix marché ianao.
+                Jereo ny tsena alohan'ny hametrahana prix.
+              </p>
+            `
+        }
+
+      </div>
+
+
+      <div class="result-actions">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="calendarOfferButton"
+        >
+          Hanamboatra Offre
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          id="calendarPublicationButton"
+        >
+          Hanao Publication
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  const offerButton =
+    $("#calendarOfferButton");
+
+  if (offerButton) {
+
+    offerButton.addEventListener(
       "click",
-      () => copyText(text)
+      () => openTool("offer")
     );
+
   }
 
+
+  const publicationButton =
+    $("#calendarPublicationButton");
+
+  if (publicationButton) {
+
+    publicationButton.addEventListener(
+      "click",
+      () => openTool("publication")
+    );
+
+  }
+
+
   showToast(
-    "Vita ny publication.",
+    "Calendrier de vente vita.",
     "success"
   );
+
 }
 
 
-/* =========================================================
-   15. CLIENT SIMULATION
-   ========================================================= */
+/* ============================================================
+   12. CREER UNE OFFRE
+============================================================ */
 
-const simulationScenarios = [
-  {
-    id: "price",
-    client:
-      "Lafo be izany tompoko. Misy mora kokoa ve?",
-    answer:
-      "Azoko tsara tompoko. Ny prix dia mifanaraka amin'ny kalitao sy ny zavatra tafiditra ao amin'ny offre. Raha tianao dia azoko hazavaina aminao aloha izay tena azonao amin'io prix io.",
-    lesson:
-      "Aza midina prix avy hatrany. Fantaro aloha ny objection ary avereno amin'ny valeur."
-  },
+function renderOfferTool(workspace) {
 
-  {
-    id: "think",
-    client:
-      "Mbola hieritreritra aho aloha.",
-    answer:
-      "Tsy maninona tompoko. Mba hahafahako manampy anao tsara, inona no mbola mampisalasala anao indrindra: ny prix, ny qualité sa ny fomba handraisana azy?",
-    lesson:
-      "Ny tanjona dia ny hahitana ny tena objection fa tsy hanery ny client."
-  },
+  workspace.innerHTML = `
 
-  {
-    id: "location",
-    client:
-      "Aiza no misy anareo?",
-    answer:
-      "Eto amin'ny [toerana] izahay tompoko. Raha tianao dia afaka omeko anao ny toerana sy ny fomba handraisana azy.",
-    lesson:
-      "Valio mazava ny toerana ary ampio next step."
-  },
-
-  {
-    id: "discount",
-    client:
-      "Misy remise ve?",
-    answer:
-      "Misy offre manokana raha misy quantité maromaro tompoko. Lazao ahy azafady hoe firy no ilainao dia hojereko izay mety aminao.",
-    lesson:
-      "Aza manome remise tsy misy antony. Ampifandraiso amin'ny quantité na offre."
-  },
-
-  {
-    id: "payment",
-    client:
-      "Alefaso aloha dia mandoa aho.",
-    answer:
-      "Mba hiarovana ny roa tonta dia arahintsika aloha ny fomba fandoavana sy ny fanamarinana ny commande. Rehefa voamarina dia afaka manomana ny livraison izahay.",
-    lesson:
-      "Ny confiance sy ny procédure mazava no miaro ny vendeur sy ny client."
-  }
-];
-
-
-function renderSimulationTool() {
-  return `
-    ${workspaceHeader(
-      "Simulation Client",
-      "Mianara mamaly objection sy mitarika discussion mankany amin'ny commande."
+    ${toolHeader(
+      "🎁",
+      "Créer une Offre",
+      "Avadiho ho offre mazava ny produit-nao."
     )}
 
-    <div class="form-group">
 
-      <label class="form-label">
-        Safidio ny scénario
-      </label>
+    <div class="tool-explanation">
 
-      <select
-        id="simulationScenario"
-        class="form-control"
-      >
+      <h3>
+        Tsy produit fotsiny no aseho.
+      </h3>
 
-        ${simulationScenarios.map(
-          scenario => `
-            <option value="${scenario.id}">
-              ${escapeHTML(scenario.client)}
-            </option>
-          `
-        ).join("")}
+      <p>
+        Ny offre dia tokony hamaly hoe:
+        iza no client, inona ny olany,
+        inona ny solution, inona ny valeur
+        ary inona no action tokony hataony.
+      </p>
 
-      </select>
+      <div class="formula-box">
+        Client → Problème → Solution → Valeur → Prix → CTA
+      </div>
 
     </div>
+
+
+    <form
+      id="offerForm"
+      class="tool-form"
+    >
+
+      <div class="form-group">
+
+        <label>
+          Produit / Service
+        </label>
+
+        <input
+          name="product"
+          placeholder="Ohatra: Akoho Gasy"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Client cible
+        </label>
+
+        <input
+          name="client"
+          placeholder="Ohatra: Mpiompy vao manomboka"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Problème
+        </label>
+
+        <textarea
+          name="problem"
+          rows="3"
+          placeholder="Inona ny olana ananan'ny client?"
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Solution
+        </label>
+
+        <textarea
+          name="solution"
+          rows="3"
+          placeholder="Ahoana no anampian'ny produit?"
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Valeur / Tombontsoa
+        </label>
+
+        <textarea
+          name="value"
+          rows="3"
+          placeholder="Inona no tombontsoa lehibe?"
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix
+        </label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          placeholder="Ohatra: 15000"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          CTA
+        </label>
+
+        <input
+          name="cta"
+          placeholder="Ohatra: Alefaso MP raha mila"
+          required
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Mamorona Offre
+      </button>
+
+    </form>
+
 
     <div
-      id="simulationClient"
-      class="alert alert-warning"
-      style="margin-top:18px"
+      id="offerResult"
+      class="tool-result"
     ></div>
 
-    <div class="form-group">
+  `;
 
-      <label class="form-label">
-        Soraty eto ny valinteninao
-      </label>
 
-      <textarea
-        id="simulationAnswer"
-        class="form-control"
-        placeholder="Inona no havalinao?"
-      ></textarea>
+  $("#offerForm")
+    .addEventListener(
+      "submit",
+      createOffer
+    );
 
-    </div>
+}
 
-    <div class="form-actions">
+
+function createOffer(event) {
+
+  event.preventDefault();
+
+  const data =
+    new FormData(
+      event.currentTarget
+    );
+
+
+  const offer = {
+
+    id: Date.now(),
+
+    product:
+      data.get("product"),
+
+    client:
+      data.get("client"),
+
+    problem:
+      data.get("problem"),
+
+    solution:
+      data.get("solution"),
+
+    value:
+      data.get("value"),
+
+    price:
+      Number(data.get("price")),
+
+    cta:
+      data.get("cta"),
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  state.offers.unshift(
+    offer
+  );
+
+  saveState();
+
+
+  $("#offerResult").innerHTML = `
+
+    <div class="result-card">
+
+      <div class="result-card-header">
+
+        <span>🎁 Offre</span>
+
+        <strong>
+          ${escapeHTML(offer.product)}
+        </strong>
+
+      </div>
+
+
+      <div class="generated-copy">
+
+        <p>
+          <strong>
+            ${escapeHTML(offer.product)}
+          </strong>
+        </p>
+
+        <p>
+          Ho an'ny
+          <strong>
+            ${escapeHTML(offer.client)}
+          </strong>,
+          raha sendra
+          ${escapeHTML(offer.problem)},
+          dia afaka manampy anao ny
+          ${escapeHTML(offer.product)}.
+        </p>
+
+        <p>
+          ${escapeHTML(offer.solution)}
+        </p>
+
+        <p>
+          <strong>
+            Tombontsoa:
+          </strong>
+          ${escapeHTML(offer.value)}
+        </p>
+
+        <p>
+          <strong>
+            Prix:
+          </strong>
+          ${formatAr(offer.price)}
+        </p>
+
+        <p>
+          <strong>
+            ${escapeHTML(offer.cta)}
+          </strong>
+        </p>
+
+      </div>
+
 
       <button
         type="button"
-        class="btn btn-primary"
-        id="evaluateSimulation"
+        class="btn btn-secondary"
+        id="copyOfferButton"
       >
-        Hamarino ny valiko
+        Adikao ny Offre
       </button>
 
     </div>
 
-    <div
-      id="simulationResult"
-      class="result-box"
-    ></div>
   `;
+
+
+  $("#copyOfferButton")
+    .addEventListener(
+      "click",
+      () => {
+
+        const text =
+          buildOfferText(offer);
+
+        copyText(text);
+
+      }
+    );
+
+
+  showToast(
+    "Offre vita.",
+    "success"
+  );
+
 }
 
 
-function updateSimulationClient() {
-  const select =
-    byId("simulationScenario");
+function buildOfferText(offer) {
 
-  const box =
-    byId("simulationClient");
-
-  if (!select || !box) {
-    return;
-  }
-
-  const scenario =
-    simulationScenarios.find(
-      item => item.id === select.value
-    );
-
-  if (!scenario) {
-    return;
-  }
-
-  box.innerHTML = `
-    <strong>CLIENT:</strong><br>
-    ${escapeHTML(scenario.client)}
-  `;
-}
-
-
-function evaluateSimulation() {
-  const select =
-    byId("simulationScenario");
-
-  const answer =
-    byId("simulationAnswer")
-      ?.value.trim();
-
-  const result =
-    byId("simulationResult");
-
-  if (!select || !result) {
-    return;
-  }
-
-  if (!answer) {
-    showToast(
-      "Soraty aloha ny valinteninao.",
-      "warning"
-    );
-
-    return;
-  }
-
-  const scenario =
-    simulationScenarios.find(
-      item => item.id === select.value
-    );
-
-  if (!scenario) {
-    return;
-  }
-
-  const words =
-    answer
-      .toLowerCase()
-      .split(/\s+/)
-      .filter(Boolean);
-
-  let score = 40;
-
-  const positiveWords = [
-    "azoko",
-    "mahatakatra",
-    "misaotra",
-    "tompoko",
-    "hazavaiko",
-    "fanazavana",
-    "prix",
-    "qualité",
-    "offre",
-    "inona",
-    "firifiry",
-    "ohatrinona",
-    "commande",
-    "commande"
-  ];
-
-  positiveWords.forEach(word => {
-    if (words.some(item => item.includes(word))) {
-      score += 5;
-    }
-  });
-
-  if (answer.length >= 80) {
-    score += 10;
-  }
-
-  if (answer.length >= 160) {
-    score += 5;
-  }
-
-  score = Math.min(score, 100);
-
-  let level;
-
-  if (score >= 80) {
-    level = "Tena tsara";
-  } else if (score >= 65) {
-    level = "Tsara";
-  } else if (score >= 50) {
-    level = "Mila fanatsarana";
-  } else {
-    level = "Avereno dinihina";
-  }
-
-  state.simulations.unshift({
-    id: Date.now(),
-    scenario: scenario.id,
-    answer,
-    score,
-    createdAt: today()
-  });
-
-  state.simulations =
-    state.simulations.slice(0, 100);
-
-  saveState();
-
-  result.classList.add("active");
-
-  result.innerHTML = `
-    <div class="result-title">
-      Score: ${score}/100 — ${level}
-    </div>
-
-    <div class="result-note">
-      <strong>Ohatra amin'ny valiny tsara:</strong>
-    </div>
-
-    <div class="alert alert-success">
-      ${escapeHTML(scenario.answer)}
-    </div>
-
-    <div class="result-note">
-      <strong>Lesona:</strong>
-      ${escapeHTML(scenario.lesson)}
-    </div>
-  `;
-}
-
-
-/* =========================================================
-   16. ORDER
-   ========================================================= */
-
-function renderOrderTool() {
   return `
-    ${workspaceHeader(
-      "Commande",
-      "Raketo ny commande mba hanarahana ny fivoaran'ny vente."
+${offer.product}
+
+Ho an'ny ${offer.client}.
+
+Olana:
+${offer.problem}
+
+Solution:
+${offer.solution}
+
+Tombontsoa:
+${offer.value}
+
+Prix:
+${formatAr(offer.price)}
+
+${offer.cta}
+  `.trim();
+
+}
+
+
+/* ============================================================
+   13. PUBLICATION
+============================================================ */
+
+function renderPublicationTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "📢",
+      "Créer une Publication",
+      "Mamoròna publication ho an'ny Facebook, WhatsApp na Marketplace."
     )}
 
-    <form id="orderForm">
 
-      <div class="form-grid">
+    <div class="tool-explanation">
 
-        <div class="form-group">
-          <label class="form-label">
-            Anaran'ny client
-          </label>
+      <h3>
+        🧠 Structure simple
+      </h3>
 
-          <input
-            id="orderClient"
-            class="form-control"
-            type="text"
-            placeholder="Anaran'ny client"
-            required
-          >
-        </div>
+      <div class="formula-box">
+        Hook → Problème → Solution → Offre → Preuve → Prix → CTA
+      </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Téléphone
-          </label>
+      <p>
+        Aza manomboka amin'ny prix fotsiny.
+        Ataovy mazava aloha ny olana sy ny tombontsoa.
+      </p>
 
-          <input
-            id="orderPhone"
-            class="form-control"
-            type="tel"
-            placeholder="034..."
-          >
-        </div>
+    </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Produit
-          </label>
 
-          <input
-            id="orderProduct"
-            class="form-control"
-            type="text"
-            placeholder="Ohatra: Akoho Gasy"
-            required
-          >
-        </div>
+    <form
+      id="publicationForm"
+      class="tool-form"
+    >
 
-        <div class="form-group">
-          <label class="form-label">
-            Quantité
-          </label>
+      <div class="form-group">
 
-          <input
-            id="orderQuantity"
-            class="form-control"
-            type="number"
-            min="1"
-            value="1"
-            required
-          >
-        </div>
+        <label>
+          Canal
+        </label>
 
-        <div class="form-group">
-          <label class="form-label">
-            Prix / unité
-          </label>
+        <select name="channel">
 
-          <input
-            id="orderUnitPrice"
-            class="form-control"
-            type="number"
-            min="0"
-            required
-          >
-        </div>
+          <option>Facebook</option>
+          <option>WhatsApp</option>
+          <option>Marketplace</option>
 
-        <div class="form-group">
-          <label class="form-label">
-            Coût total estimé
-          </label>
-
-          <input
-            id="orderCost"
-            class="form-control"
-            type="number"
-            min="0"
-          >
-        </div>
-
-        <div class="form-group full">
-          <label class="form-label">
-            Statut
-          </label>
-
-          <select
-            id="orderStatus"
-            class="form-control"
-          >
-            <option value="Commande">
-              Commande
-            </option>
-
-            <option value="Payée">
-              Payée
-            </option>
-
-            <option value="Livrée">
-              Livrée
-            </option>
-
-            <option value="Annulée">
-              Annulée
-            </option>
-          </select>
-        </div>
+        </select>
 
       </div>
 
-      <div class="form-actions">
 
-        <button
-          type="submit"
-          class="btn btn-primary"
+      <div class="form-group">
+
+        <label>
+          Produit
+        </label>
+
+        <input
+          name="product"
+          placeholder="Ohatra: Akoho Gasy"
+          required
         >
-          Enregistrer commande
-        </button>
 
       </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Client cible
+        </label>
+
+        <input
+          name="client"
+          placeholder="Iza no tianao hahita azy?"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Problème
+        </label>
+
+        <textarea
+          name="problem"
+          rows="3"
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Solution / Tombontsoa
+        </label>
+
+        <textarea
+          name="solution"
+          rows="3"
+          required
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Preuve / Information mampitombo confiance
+        </label>
+
+        <textarea
+          name="proof"
+          rows="2"
+          placeholder="Ohatra: lanja, quantité disponible, expérience..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix
+        </label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          CTA
+        </label>
+
+        <input
+          name="cta"
+          value="Alefaso MP raha mila"
+          required
+        >
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Mamorona Publication
+      </button>
 
     </form>
 
+
     <div
-      id="orderResult"
-      class="result-box"
+      id="publicationResult"
+      class="tool-result"
     ></div>
+
   `;
+
+
+  $("#publicationForm")
+    .addEventListener(
+      "submit",
+      createPublication
+    );
+
 }
 
 
-function saveOrder() {
-  const client =
-    byId("orderClient")?.value.trim();
+function createPublication(event) {
 
-  const phone =
-    byId("orderPhone")?.value.trim();
+  event.preventDefault();
 
-  const product =
-    byId("orderProduct")?.value.trim();
+  const data =
+    new FormData(
+      event.currentTarget
+    );
 
-  const quantity =
-    numberValue(byId("orderQuantity")?.value) || 1;
 
-  const unitPrice =
-    numberValue(byId("orderUnitPrice")?.value);
+  const publication = {
 
-  const cost =
-    numberValue(byId("orderCost")?.value);
-
-  const status =
-    byId("orderStatus")?.value || "Commande";
-
-  const revenue =
-    quantity * unitPrice;
-
-  const profit =
-    revenue - cost;
-
-  const order = {
     id: Date.now(),
-    client,
-    phone,
-    product,
-    quantity,
-    unitPrice,
-    cost,
-    revenue,
-    profit,
-    status,
-    paid: status === "Payée" || status === "Livrée",
-    createdAt: today()
+
+    channel:
+      data.get("channel"),
+
+    product:
+      data.get("product"),
+
+    client:
+      data.get("client"),
+
+    problem:
+      data.get("problem"),
+
+    solution:
+      data.get("solution"),
+
+    proof:
+      data.get("proof"),
+
+    price:
+      Number(data.get("price")),
+
+    cta:
+      data.get("cta"),
+
+    createdAt:
+      new Date().toISOString()
+
   };
 
-  state.orders.unshift(order);
 
-  state.orders =
-    state.orders.slice(0, 100);
-
-  state.funnel.orders += 1;
-
-  if (status === "Payée" || status === "Livrée") {
-    state.funnel.clients += 1;
-  }
+  state.publications.unshift(
+    publication
+  );
 
   saveState();
 
-  updateDashboard();
 
-  const result =
-    byId("orderResult");
+  const text =
+    buildPublicationText(
+      publication
+    );
 
-  if (!result) {
+
+  $("#publicationResult").innerHTML = `
+
+    <div class="result-card">
+
+      <div class="result-card-header">
+
+        <span>
+          📢 ${escapeHTML(publication.channel)}
+        </span>
+
+        <strong>
+          Publication prête
+        </strong>
+
+      </div>
+
+
+      <div class="generated-copy">
+
+        ${escapeHTML(text)
+          .replace(/\n/g, "<br>")}
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        id="copyPublicationButton"
+      >
+        Adikao ny Publication
+      </button>
+
+    </div>
+
+  `;
+
+
+  $("#copyPublicationButton")
+    .addEventListener(
+      "click",
+      () => copyText(text)
+    );
+
+
+  showToast(
+    "Publication vita.",
+    "success"
+  );
+
+}
+
+
+function buildPublicationText(item) {
+
+  return `
+🔥 ${item.product}
+
+${item.problem}
+
+${item.solution}
+
+${item.proof}
+
+💰 Prix:
+${formatAr(item.price)}
+
+📩 ${item.cta}
+  `.trim();
+
+}
+
+
+/* ============================================================
+   14. SIMULATION CLIENT
+============================================================ */
+
+const SIMULATION_SCENARIOS = [
+
+  {
+    id: "expensive",
+
+    title:
+      "Lafo loatra",
+
+    client:
+      "“Lafo be izany. Any amin'ny olona hafa mbola mora kokoa.”",
+
+    expected:
+      "Aza miady amin'ny client. Hazavao ny valeur, ny différence ary anontanio izay tena ilainy."
+
+  },
+
+  {
+    id: "think",
+
+    title:
+      "Mbola hieritreritra",
+
+    client:
+      "“Mbola hieritreritra aloha aho dia hiverina.”",
+
+    expected:
+      "Aza manery. Fantaro izay mampisalasala azy ary omeo information ilainy."
+
+  },
+
+  {
+    id: "discount",
+
+    title:
+      "Misy remise ve?",
+
+    client:
+      "“Misy remise ve raha maka betsaka?”",
+
+    expected:
+      "Fantaro aloha ny quantité sy ny marge vao manolotra remise."
+
+  },
+
+  {
+    id: "location",
+
+    title:
+      "Aiza no misy anareo?",
+
+    client:
+      "“Aiza no misy anareo? Afaka maka mivantana ve?”",
+
+    expected:
+      "Valio mazava ny toerana, disponibilité ary fomba fandraisana commande."
+
+  },
+
+  {
+    id: "pay-later",
+
+    title:
+      "Alefaso aloha",
+
+    client:
+      "“Alefaso aloha ilay produit dia mandoa aho rehefa tonga.”",
+
+    expected:
+      "Aza manaiky risika tsy voafehy. Hazavao mazava ny fepetra fandoavana sy livraison."
+
+  }
+
+];
+
+
+function renderSimulationTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "💬",
+      "Simulation Client",
+      "Manao pratique amin'ny objection sy closing."
+    )}
+
+
+    <div class="tool-explanation">
+
+      <h3>
+        🎯 Inona no tanjona?
+      </h3>
+
+      <p>
+        Tsy ampy ny mahafantatra théorie.
+        Mila mahay mamaly client koa ianao rehefa misy objection.
+      </p>
+
+      <p>
+        Safidio ny scenario, vakio ny hafatr'ilay client,
+        soraty ny valinteninao, ary jereo ny fanombanana.
+      </p>
+
+    </div>
+
+
+    <div class="simulation-selector">
+
+      ${SIMULATION_SCENARIOS
+        .map(
+          scenario => `
+            <button
+              type="button"
+              class="simulation-option"
+              data-simulation="${scenario.id}"
+            >
+              ${escapeHTML(scenario.title)}
+            </button>
+          `
+        )
+        .join("")}
+
+    </div>
+
+
+    <div
+      id="simulationArea"
+      class="simulation-area"
+    >
+
+      <div class="workspace-placeholder">
+
+        <h3>
+          Safidio aloha ny objection
+        </h3>
+
+        <p>
+          Hanomboka ny simulation rehefa misafidy scenario ianao.
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  $all("[data-simulation]")
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          renderSimulationScenario(
+            button.dataset.simulation
+          );
+
+        }
+      );
+
+    });
+
+}
+
+
+function renderSimulationScenario(id) {
+
+  const scenario =
+    SIMULATION_SCENARIOS.find(
+      item => item.id === id
+    );
+
+  if (!scenario) {
     return;
   }
 
-  result.classList.add("active");
+
+  const area =
+    $("#simulationArea");
+
+  area.innerHTML = `
+
+    <div class="simulation-card">
+
+      <span class="eyebrow">
+        CLIENT
+      </span>
+
+      <blockquote>
+        ${escapeHTML(scenario.client)}
+      </blockquote>
+
+
+      <form id="simulationForm">
+
+        <div class="form-group">
+
+          <label>
+            Inona no hamalianao?
+          </label>
+
+          <textarea
+            name="answer"
+            rows="6"
+            placeholder="Soraty eto ny valinteninao..."
+            required
+          ></textarea>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          Hamarino ny valiny
+        </button>
+
+      </form>
+
+
+      <div
+        id="simulationResult"
+        class="tool-result"
+      ></div>
+
+    </div>
+
+  `;
+
+
+  $("#simulationForm")
+    .addEventListener(
+      "submit",
+      event => {
+
+        event.preventDefault();
+
+        const answer =
+          new FormData(
+            event.currentTarget
+          ).get("answer");
+
+        evaluateSimulation(
+          scenario,
+          answer
+        );
+
+      }
+    );
+
+}
+
+
+function evaluateSimulation(
+  scenario,
+  answer
+) {
+
+  const text =
+    String(answer)
+      .toLowerCase();
+
+
+  let score = 0;
+
+  const positiveWords = [
+
+    "hoy",
+
+    "fantatro",
+
+    "azavao",
+
+    "tombony",
+
+    "valeur",
+
+    "olana",
+
+    "mila",
+
+    "prix",
+
+    "qualité",
+
+    "kalitao",
+
+    "commande",
+
+    "manazava",
+
+    "misy"
+
+  ];
+
+
+  positiveWords.forEach(
+    word => {
+
+      if (text.includes(word)) {
+        score += 1;
+      }
+
+    }
+  );
+
+
+  if (text.length >= 80) {
+    score += 1;
+  }
+
+
+  score =
+    Math.min(
+      10,
+      score
+    );
+
+
+  const saved = {
+
+    id: Date.now(),
+
+    scenario:
+      scenario.title,
+
+    answer,
+
+    score,
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  state.simulations.unshift(
+    saved
+  );
+
+  saveState();
+
+
+  const result =
+    $("#simulationResult");
+
 
   result.innerHTML = `
-    <div class="result-title">
-      Commande enregistrée
+
+    <div class="result-card">
+
+      <div class="score-display">
+
+        <span>
+          Score
+        </span>
+
+        <strong>
+          ${score}/10
+        </strong>
+
+      </div>
+
+
+      <div class="result-explanation">
+
+        <strong>
+          🧠 Torohevitra:
+        </strong>
+
+        <p>
+          ${escapeHTML(scenario.expected)}
+        </p>
+
+      </div>
+
+
+      ${
+        score >= 7
+          ? `
+            <div class="success-message">
+              ✅ Tsara ny orientation-n'ny valinteninao.
+            </div>
+          `
+          : `
+            <div class="warning-message">
+              💡 Mbola azo hatsaraina.
+              Aza mamaly amin'ny “prix” fotsiny;
+              fantaro aloha ny tena objection.
+            </div>
+          `
+      }
+
     </div>
 
-    <div class="result-value">
-      ${formatAr(revenue)}
-    </div>
-
-    <div class="result-note">
-      Client:
-      <strong>${escapeHTML(client)}</strong>
-    </div>
-
-    <div class="result-note">
-      ${escapeHTML(product)}
-      × ${quantity}
-    </div>
-
-    <div class="result-note">
-      Tombony estimé:
-      <strong>${formatAr(profit)}</strong>
-    </div>
-
-    <div class="badge badge-green">
-      ${escapeHTML(status)}
-    </div>
   `;
+
+
+  showToast(
+    "Simulation évaluée.",
+    "success"
+  );
+
+}
+
+
+/* ============================================================
+   15. COMMANDE
+============================================================ */
+
+function renderOrderTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "🛒",
+      "Commande",
+      "Raketo ny commande sy ny statut mba tsy hisy very."
+    )}
+
+
+    <div class="tool-explanation">
+
+      <h3>
+        Nahoana no raketina?
+      </h3>
+
+      <p>
+        Rehefa betsaka ny prospects sy commandes
+        dia mora very ny information.
+        Ny fiche commande dia manampy anao hanaraka
+        izay mbola miandry, izay efa voaloa ary izay vita.
+      </p>
+
+    </div>
+
+
+    <form
+      id="orderForm"
+      class="tool-form"
+    >
+
+      <div class="form-group">
+
+        <label>
+          Anaran'ny client
+        </label>
+
+        <input
+          name="client"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Produit
+        </label>
+
+        <input
+          name="product"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Quantité
+        </label>
+
+        <input
+          name="quantity"
+          type="number"
+          min="1"
+          value="1"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix / unité
+        </label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Statut
+        </label>
+
+        <select name="status">
+
+          <option value="En attente">
+            En attente
+          </option>
+
+          <option value="Confirmée">
+            Confirmée
+          </option>
+
+          <option value="Payée">
+            Payée
+          </option>
+
+          <option value="Livrée">
+            Livrée
+          </option>
+
+          <option value="Annulée">
+            Annulée
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+      >
+        Enregistrer Commande
+      </button>
+
+    </form>
+
+
+    <div
+      id="orderResult"
+      class="tool-result"
+    ></div>
+
+  `;
+
+
+  $("#orderForm")
+    .addEventListener(
+      "submit",
+      createOrder
+    );
+
+}
+
+
+function createOrder(event) {
+
+  event.preventDefault();
+
+  const data =
+    new FormData(
+      event.currentTarget
+    );
+
+
+  const quantity =
+    Number(data.get("quantity"));
+
+  const price =
+    Number(data.get("price"));
+
+  const order = {
+
+    id: Date.now(),
+
+    client:
+      data.get("client"),
+
+    product:
+      data.get("product"),
+
+    quantity,
+
+    price,
+
+    total:
+      quantity * price,
+
+    status:
+      data.get("status"),
+
+    createdAt:
+      new Date().toISOString()
+
+  };
+
+
+  state.orders.unshift(
+    order
+  );
+
+  saveState();
+
+
+  $("#orderResult").innerHTML = `
+
+    <div class="result-card">
+
+      <div class="result-card-header">
+
+        <span>🛒 Commande</span>
+
+        <strong>
+          ${escapeHTML(order.client)}
+        </strong>
+
+      </div>
+
+
+      <div class="result-grid">
+
+        <div>
+          <small>Produit</small>
+          <strong>
+            ${escapeHTML(order.product)}
+          </strong>
+        </div>
+
+        <div>
+          <small>Quantité</small>
+          <strong>
+            ${order.quantity}
+          </strong>
+        </div>
+
+        <div>
+          <small>Total</small>
+          <strong>
+            ${formatAr(order.total)}
+          </strong>
+        </div>
+
+        <div>
+          <small>Statut</small>
+          <strong>
+            ${escapeHTML(order.status)}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  updateDashboard();
 
   showToast(
     "Commande voatahiry.",
     "success"
   );
+
 }
 
 
-/* =========================================================
-   17. RECEIPT
-   ========================================================= */
+/* ============================================================
+   16. REÇU DE VENTE
+============================================================ */
 
-function renderReceiptTool() {
-  return `
-    ${workspaceHeader(
+function renderReceiptTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "🧾",
       "Reçu de Vente",
-      "Mamoròna reçu tsotra azo adika na alefa amin'ny client."
+      "Mamoròna reçu tsotra ho an'ny client."
     )}
 
-    <form id="receiptForm">
 
-      <div class="form-grid">
+    <div class="tool-explanation">
 
-        <div class="form-group">
-          <label class="form-label">
-            Client
-          </label>
+      <p>
+        Ampiasao rehefa mila manome preuve simple
+        momba ny vente sy ny paiement ianao.
+      </p>
 
-          <input
-            id="receiptClient"
-            class="form-control"
-            type="text"
-            placeholder="Anaran'ny client"
-          >
-        </div>
+    </div>
 
-        <div class="form-group">
-          <label class="form-label">
-            Produit
-          </label>
 
-          <input
-            id="receiptProduct"
-            class="form-control"
-            type="text"
-            placeholder="Produit"
-            required
-          >
-        </div>
+    <form
+      id="receiptForm"
+      class="tool-form"
+    >
 
-        <div class="form-group">
-          <label class="form-label">
-            Quantité
-          </label>
+      <div class="form-group">
 
-          <input
-            id="receiptQuantity"
-            class="form-control"
-            type="number"
-            min="1"
-            value="1"
-          >
-        </div>
+        <label>
+          Nom client
+        </label>
 
-        <div class="form-group">
-          <label class="form-label">
-            Prix unitaire
-          </label>
-
-          <input
-            id="receiptPrice"
-            class="form-control"
-            type="number"
-            min="0"
-            required
-          >
-        </div>
-
-        <div class="form-group full">
-          <label class="form-label">
-            Fanamarihana
-          </label>
-
-          <textarea
-            id="receiptNote"
-            class="form-control"
-            placeholder="Livraison, paiement, etc."
-          ></textarea>
-        </div>
-
-      </div>
-
-      <div class="form-actions">
-
-        <button
-          type="submit"
-          class="btn btn-primary"
+        <input
+          name="client"
+          required
         >
-          Créer reçu
-        </button>
 
       </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Produit
+        </label>
+
+        <input
+          name="product"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Quantité
+        </label>
+
+        <input
+          name="quantity"
+          type="number"
+          min="1"
+          value="1"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Prix / unité
+        </label>
+
+        <input
+          name="price"
+          type="number"
+          min="0"
+          required
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Paiement
+        </label>
+
+        <select name="payment">
+
+          <option>Cash</option>
+          <option>MVola</option>
+          <option>Orange Money</option>
+          <option>Airtel Money</option>
+          <option>Autre</option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+      >
+        Mamorona Reçu
+      </button>
 
     </form>
 
+
     <div
       id="receiptResult"
-      class="result-box"
+      class="tool-result"
     ></div>
+
   `;
+
+
+  $("#receiptForm")
+    .addEventListener(
+      "submit",
+      createReceipt
+    );
+
 }
 
 
-function createReceipt() {
-  const client =
-    byId("receiptClient")?.value.trim()
-    || "Client";
+function createReceipt(event) {
 
-  const product =
-    byId("receiptProduct")?.value.trim();
+  event.preventDefault();
+
+  const data =
+    new FormData(
+      event.currentTarget
+    );
+
 
   const quantity =
-    numberValue(byId("receiptQuantity")?.value) || 1;
+    Number(data.get("quantity"));
 
   const price =
-    numberValue(byId("receiptPrice")?.value);
-
-  const note =
-    byId("receiptNote")?.value.trim();
+    Number(data.get("price"));
 
   const total =
     quantity * price;
 
+
   const receiptNumber =
-    `TM-${Date.now().toString().slice(-8)}`;
+    `TM-${Date.now()
+      .toString()
+      .slice(-8)}`;
 
-  const text =
-`TANTSAHA MATIHANINA
-REÇU DE VENTE
 
-N°: ${receiptNumber}
-Date: ${new Date().toLocaleDateString("fr-FR")}
+  $("#receiptResult").innerHTML = `
 
-Client: ${client}
+    <div
+      class="receipt-preview"
+      id="receiptPreview"
+    >
 
-Produit: ${product}
-Quantité: ${quantity}
-Prix unitaire: ${formatAr(price)}
+      <div class="receipt-brand">
+        TANTSAHA MATIHANINA
+      </div>
 
-TOTAL: ${formatAr(total)}
+      <h3>
+        REÇU DE VENTE
+      </h3>
 
-${note ? `Note: ${note}\n` : ""}
+      <p>
+        N° ${receiptNumber}
+      </p>
 
-Misaotra tompoko.
-Mianatra • Mampihatra • Mahomby`;
+      <hr>
 
-  const result =
-    byId("receiptResult");
+      <p>
+        <strong>Client:</strong>
+        ${escapeHTML(data.get("client"))}
+      </p>
 
-  if (!result) {
-    return;
-  }
+      <p>
+        <strong>Produit:</strong>
+        ${escapeHTML(data.get("product"))}
+      </p>
 
-  result.classList.add("active");
+      <p>
+        <strong>Quantité:</strong>
+        ${quantity}
+      </p>
 
-  result.innerHTML = `
-    <div class="result-title">
-      Reçu ${receiptNumber}
+      <p>
+        <strong>Prix unitaire:</strong>
+        ${formatAr(price)}
+      </p>
+
+      <p>
+        <strong>Total:</strong>
+        ${formatAr(total)}
+      </p>
+
+      <p>
+        <strong>Paiement:</strong>
+        ${escapeHTML(data.get("payment"))}
+      </p>
+
+      <hr>
+
+      <p>
+        Misaotra tompoko.
+      </p>
+
+      <small>
+        ${new Date().toLocaleString("fr-FR")}
+      </small>
+
     </div>
 
-    <div class="alert alert-info">
-      ${escapeHTML(text).replaceAll("\n", "<br>")}
-    </div>
 
     <button
       type="button"
-      class="btn btn-primary"
-      id="copyReceipt"
+      class="btn btn-secondary"
+      id="printReceiptButton"
     >
-      Copier le reçu
+      🖨️ Hanao impression
     </button>
+
   `;
 
-  const copy =
-    byId("copyReceipt");
 
-  if (copy) {
-    copy.addEventListener(
+  $("#printReceiptButton")
+    .addEventListener(
       "click",
-      () => copyText(text)
+      () => {
+
+        const content =
+          $("#receiptPreview").innerHTML;
+
+        const printWindow =
+          window.open(
+            "",
+            "_blank",
+            "width=600,height=800"
+          );
+
+        if (!printWindow) {
+
+          showToast(
+            "Tsy afaka nanokatra fenêtre impression.",
+            "error"
+          );
+
+          return;
+
+        }
+
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Reçu de Vente</title>
+              <style>
+                body {
+                  font-family: Arial, sans-serif;
+                  padding: 30px;
+                  max-width: 500px;
+                  margin: auto;
+                }
+                hr {
+                  border: 0;
+                  border-top: 1px solid #ccc;
+                }
+              </style>
+            </head>
+            <body>
+              ${content}
+            </body>
+          </html>
+        `);
+
+        printWindow.document.close();
+
+        printWindow.focus();
+
+        setTimeout(() => {
+
+          printWindow.print();
+
+        }, 300);
+
+      }
     );
-  }
+
 
   showToast(
-    "Reçu créé.",
+    "Reçu voaforona.",
     "success"
   );
+
 }
 
 
-/* =========================================================
-   18. GUIDE
-   ========================================================= */
+/* ============================================================
+   17. GUIDE
+============================================================ */
 
-function renderGuideTool() {
-  return `
-    ${workspaceHeader(
-      "Guide Vente",
-      "Fomba fohy hampiasana ny Vente Lab."
+function renderGuideTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "📘",
+      "Guide Vente Lab",
+      "Torolalana fohy hahafantaranao izay tokony hatao."
     )}
 
-    <div class="alert alert-info">
-      <strong>Règle principale:</strong>
-      Vakio aloha ny lesona ao amin'ny WhatsApp Formation,
-      avy eo ampiharo eto amin'ny Lab,
-      farany alefaso ao amin'ny Retour & Évaluation ny vokatra.
+
+    <div class="guide-content">
+
+      <div class="guide-step">
+
+        <span>01</span>
+
+        <div>
+
+          <h3>
+            Vakio ny lesona
+          </h3>
+
+          <p>
+            Atombohy amin'ny Formation WhatsApp.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="guide-step">
+
+        <span>02</span>
+
+        <div>
+
+          <h3>
+            Safidio ny outil
+          </h3>
+
+          <p>
+            Ohatra: Kajy Prix, Offre na Calendrier.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="guide-step">
+
+        <span>03</span>
+
+        <div>
+
+          <h3>
+            Ampidiro ny données tena izy
+          </h3>
+
+          <p>
+            Aza mampiasa isa kisendrasendra rehefa
+            manao exercice réel.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="guide-step">
+
+        <span>04</span>
+
+        <div>
+
+          <h3>
+            Ampiharo amin'ny tsena
+          </h3>
+
+          <p>
+            Facebook, WhatsApp, Marketplace
+            na vente locale.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="guide-step">
+
+        <span>05</span>
+
+        <div>
+
+          <h3>
+            Raketo ny résultat
+          </h3>
+
+          <p>
+            Prospects → Réponses → Discussions
+            → Commandes → Clients.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="guide-step">
+
+        <span>06</span>
+
+        <div>
+
+          <h3>
+            Fenoy ny Retour
+          </h3>
+
+          <p>
+            Soraty izay nety, izay tsy nety
+            ary izay hatsarainao.
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
 
-    <div class="formation-list">
-
-      <div class="formation-day">
-        <div class="day-number">1</div>
-
-        <div class="day-content">
-          <h3>Fototry ny Vente</h3>
-          <p>
-            Fantaro fa tsy produit ihany no amidina,
-            fa valeur sy solution.
-          </p>
-        </div>
-      </div>
-
-      <div class="formation-day">
-        <div class="day-number">2</div>
-
-        <div class="day-content">
-          <h3>Client Cible</h3>
-          <p>
-            Fantaro hoe iza no tena mila ilay vokatra.
-          </p>
-        </div>
-      </div>
-
-      <div class="formation-day">
-        <div class="day-number">3</div>
-
-        <div class="day-content">
-          <h3>Offre & Prix</h3>
-          <p>
-            Amboary ny offre ary kajio ny tombony.
-          </p>
-        </div>
-      </div>
-
-      <div class="formation-day">
-        <div class="day-number">4</div>
-
-        <div class="day-content">
-          <h3>Publication</h3>
-          <p>
-            Hook → Problème → Solution → Offre → CTA.
-          </p>
-        </div>
-      </div>
-
-      <div class="formation-day">
-        <div class="day-number">5</div>
-
-        <div class="day-content">
-          <h3>Prospection</h3>
-          <p>
-            Comment → MP → Qualification → Discussion.
-          </p>
-        </div>
-      </div>
-
-      <div class="formation-day">
-        <div class="day-number">6</div>
-
-        <div class="day-content">
-          <h3>Objection & Closing</h3>
-          <p>
-            Mianara mamaly objection ary mitarika mankany amin'ny commande.
-          </p>
-        </div>
-      </div>
-
-      <div class="formation-day">
-        <div class="day-number">7</div>
-
-        <div class="day-content">
-          <h3>Suivi & Fidélisation</h3>
-          <p>
-            Araho ny client ary jereo ny résultat.
-          </p>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="form-actions">
-
-      <a
-        class="btn btn-primary"
-        href="${APP_CONFIG.whatsappGroup}"
-        target="_blank"
-        rel="noopener"
-      >
-        Miditra amin'ny Formation WhatsApp
-      </a>
-
-    </div>
   `;
+
 }
 
 
-/* =========================================================
-   19. CHALLENGE 7 DAYS
-   ========================================================= */
+/* ============================================================
+   18. CHALLENGE 7 JOURS
+============================================================ */
 
-function renderChallengeTool() {
-  return `
-    ${workspaceHeader(
+const CHALLENGE_DAYS = [
+
+  {
+    day: 1,
+    title: "Fantaro ny produit",
+    action:
+      "Soraty ny produit sy ny valeur amidinao."
+  },
+
+  {
+    day: 2,
+    title: "Fantaro ny client",
+    action:
+      "Farito ny client cible iray."
+  },
+
+  {
+    day: 3,
+    title: "Amboary ny offre",
+    action:
+      "Mamoròna offre misy prix sy CTA."
+  },
+
+  {
+    day: 4,
+    title: "Mamoaha publication",
+    action:
+      "Mamoaha publication iray."
+  },
+
+  {
+    day: 5,
+    title: "Mitadiava prospects",
+    action:
+      "Mitadiava prospects ary raketo ny réponses."
+  },
+
+  {
+    day: 6,
+    title: "Manao closing",
+    action:
+      "Manaova pratique amin'ny objection."
+  },
+
+  {
+    day: 7,
+    title: "Mandrefy",
+    action:
+      "Fenoy ny Retour & Évaluation."
+  }
+
+];
+
+
+function renderChallengeTool(workspace) {
+
+  workspace.innerHTML = `
+
+    ${toolHeader(
+      "🏆",
       "Challenge 7 Jours",
-      "Manao zavatra iray azo refesina isan'andro."
+      "Action iray azo refesina isan'andro."
     )}
 
-    <div class="formation-list">
 
-      ${[
-        ["Jour 1", "Farito ny produit sy ny valeur amidinao."],
-        ["Jour 2", "Farito ny client cible."],
-        ["Jour 3", "Kajio ny coût, prix ary tombony."],
-        ["Jour 4", "Mamoròna publication iray."],
-        ["Jour 5", "Mifandraisa amin'ny prospects."],
-        ["Jour 6", "Manaova simulation objection."],
-        ["Jour 7", "Ataovy ny suivi ary kajio ny résultat."]
-      ].map((item, index) => `
-        <div class="formation-day">
+    <div class="tool-explanation">
 
-          <div class="day-number">
-            ${index + 1}
-          </div>
+      <p>
+        Ny challenge dia natao hanampy anao
+        tsy hijanona amin'ny théorie.
+      </p>
 
-          <div class="day-content">
-
-            <h3>
-              ${item[0]}
-            </h3>
-
-            <p>
-              ${escapeHTML(item[1])}
-            </p>
-
-            <label class="check-item">
-              <input
-                type="checkbox"
-                class="challenge-check"
-                data-day="${index + 1}"
-              >
-
-              Vita
-            </label>
-
-          </div>
-
-        </div>
-      `).join("")}
+      <p>
+        Isan'andro dia manaova action iray,
+        avy eo jereo ny résultat.
+      </p>
 
     </div>
+
+
+    <div class="challenge-list">
+
+      ${CHALLENGE_DAYS
+        .map(
+          item => {
+
+            const done =
+              state.challenge[item.day] === true;
+
+            return `
+
+              <label class="challenge-item">
+
+                <input
+                  type="checkbox"
+                  data-challenge-day="${item.day}"
+                  ${done ? "checked" : ""}
+                >
+
+                <span class="challenge-check">
+                  ${done ? "✓" : ""}
+                </span>
+
+                <span>
+
+                  <strong>
+                    Jour ${item.day} —
+                    ${escapeHTML(item.title)}
+                  </strong>
+
+                  <small>
+                    ${escapeHTML(item.action)}
+                  </small>
+
+                </span>
+
+              </label>
+
+            `;
+
+          }
+        )
+        .join("")}
+
+    </div>
+
 
     <div
       id="challengeProgress"
-      class="result-box active"
+      class="challenge-progress"
     ></div>
+
   `;
+
+
+  $all("[data-challenge-day]")
+    .forEach(input => {
+
+      input.addEventListener(
+        "change",
+        () => {
+
+          const day =
+            input.dataset.challengeDay;
+
+          state.challenge[day] =
+            input.checked;
+
+          saveState();
+
+          updateChallengeProgress();
+
+        }
+      );
+
+    });
+
+
+  updateChallengeProgress();
+
 }
 
 
 function updateChallengeProgress() {
-  const checks =
-    $$(".challenge-check");
 
-  const completed =
-    checks.filter(
-      checkbox => checkbox.checked
-    ).length;
+  const box =
+    $("#challengeProgress");
 
-  const total =
-    checks.length;
-
-  const percent =
-    total > 0
-      ? (completed / total) * 100
-      : 0;
-
-  const result =
-    byId("challengeProgress");
-
-  if (!result) {
+  if (!box) {
     return;
   }
 
-  result.innerHTML = `
-    <div class="result-title">
-      Progression
+  const completed =
+    CHALLENGE_DAYS.filter(
+      item =>
+        state.challenge[item.day] === true
+    ).length;
+
+
+  const percentage =
+    Math.round(
+      completed /
+      CHALLENGE_DAYS.length *
+      100
+    );
+
+
+  box.innerHTML = `
+
+    <strong>
+      ${completed}/7 jours vita
+    </strong>
+
+    <div class="progress-track">
+
+      <i
+        style="width:${percentage}%"
+      ></i>
+
     </div>
 
-    <div class="result-value">
-      ${completed}/${total}
-    </div>
+    <small>
+      ${percentage}% progression
+    </small>
 
-    <div class="result-note">
-      ${percent.toFixed(0)}% vita
-    </div>
   `;
+
 }
 
 
-/* =========================================================
-   20. DEFAULT TOOL
-   ========================================================= */
-
-function renderDefaultTool() {
-  return `
-    ${workspaceHeader(
-      "Vente Lab",
-      "Misafidiana outil iray hanombohana."
-    )}
-
-    <div class="empty-state">
-      <div class="empty-icon">🧪</div>
-
-      <div class="empty-title">
-        Vente Lab
-      </div>
-
-      <div class="empty-description">
-        Safidio ny outil tianao hampiasaina.
-      </div>
-    </div>
-  `;
-}
-
-
-/* =========================================================
-   21. WORKSPACE EVENTS
-   ========================================================= */
-
-function bindWorkspaceEvents() {
-
-  /* Close */
-
-  const close =
-    $(".workspace-close");
-
-  if (close) {
-    close.addEventListener(
-      "click",
-      closeTool
-    );
-  }
-
-
-  /* Price */
-
-  const priceForm =
-    byId("priceForm");
-
-  if (priceForm) {
-
-    priceForm.addEventListener(
-      "submit",
-      event => {
-        event.preventDefault();
-        calculatePrice();
-      }
-    );
-
-  }
-
-
-  const clearPrice =
-    byId("clearPrice");
-
-  if (clearPrice) {
-
-    clearPrice.addEventListener(
-      "click",
-      () => {
-        byId("priceForm")?.reset();
-        byId("priceResult")?.classList.remove("active");
-      }
-    );
-
-  }
-
-
-  /* Elevage */
-
-  const elevageForm =
-    byId("elevageForm");
-
-  if (elevageForm) {
-
-    elevageForm.addEventListener(
-      "submit",
-      event => {
-        event.preventDefault();
-        calculateElevage();
-      }
-    );
-
-  }
-
-
-  /* Offer */
-
-  const offerForm =
-    byId("offerForm");
-
-  if (offerForm) {
-
-    offerForm.addEventListener(
-      "submit",
-      event => {
-        event.preventDefault();
-        createOffer();
-      }
-    );
-
-  }
-
-
-  /* Publication */
-
-  const publicationForm =
-    byId("publicationForm");
-
-  if (publicationForm) {
-
-    publicationForm.addEventListener(
-      "submit",
-      event => {
-        event.preventDefault();
-        createPublication();
-      }
-    );
-
-  }
-
-
-  /* Simulation */
-
-  const simulationSelect =
-    byId("simulationScenario");
-
-  if (simulationSelect) {
-
-    simulationSelect.addEventListener(
-      "change",
-      updateSimulationClient
-    );
-
-    updateSimulationClient();
-  }
-
-
-  const evaluate =
-    byId("evaluateSimulation");
-
-  if (evaluate) {
-
-    evaluate.addEventListener(
-      "click",
-      evaluateSimulation
-    );
-
-  }
-
-
-  /* Order */
-
-  const orderForm =
-    byId("orderForm");
-
-  if (orderForm) {
-
-    orderForm.addEventListener(
-      "submit",
-      event => {
-        event.preventDefault();
-        saveOrder();
-      }
-    );
-
-  }
-
-
-  /* Receipt */
-
-  const receiptForm =
-    byId("receiptForm");
-
-  if (receiptForm) {
-
-    receiptForm.addEventListener(
-      "submit",
-      event => {
-        event.preventDefault();
-        createReceipt();
-      }
-    );
-
-  }
-
-
-  /* Challenge */
-
-  $$(".challenge-check").forEach(
-    checkbox => {
-
-      checkbox.addEventListener(
-        "change",
-        updateChallengeProgress
-      );
-
-    }
-  );
-
-  if ($$(".challenge-check").length) {
-    updateChallengeProgress();
-  }
-}
-
-
-/* =========================================================
-   22. COPY TEXT
-   ========================================================= */
-
-async function copyText(text) {
-
-  try {
-
-    if (
-      navigator.clipboard &&
-      window.isSecureContext
-    ) {
-
-      await navigator.clipboard.writeText(
-        text
-      );
-
-    } else {
-
-      const textarea =
-        document.createElement("textarea");
-
-      textarea.value = text;
-
-      textarea.style.position = "fixed";
-      textarea.style.left = "-9999px";
-
-      document.body.appendChild(
-        textarea
-      );
-
-      textarea.select();
-
-      document.execCommand("copy");
-
-      textarea.remove();
-    }
-
-    showToast(
-      "Voakopia.",
-      "success"
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Erreur copie:",
-      error
-    );
-
-    showToast(
-      "Tsy afaka manao copie automatique.",
-      "error"
-    );
-  }
-}
-
-
-/* =========================================================
-   23. DASHBOARD
-   ========================================================= */
+/* ============================================================
+   19. DASHBOARD
+============================================================ */
 
 function updateDashboard() {
 
   const calculations =
-    state.calculations || [];
+    state.calculations;
+
+  const livestock =
+    state.livestockCalculations;
 
   const orders =
-    state.orders || [];
+    state.orders;
 
-  const totalCalculations =
-    calculations.length;
 
-  const totalOrders =
-    orders.length;
+  const statCalculations =
+    $("#statCalculations");
 
-  const paidOrders =
-    orders.filter(
-      order =>
-        order.status === "Payée" ||
-        order.status === "Livrée"
-    );
+  const statOrders =
+    $("#statOrders");
+
+  const statRevenue =
+    $("#statRevenue");
+
+  const statProfit =
+    $("#statProfit");
+
+
+  if (statCalculations) {
+
+    statCalculations.textContent =
+      calculations.length +
+      livestock.length;
+
+  }
+
+
+  if (statOrders) {
+
+    statOrders.textContent =
+      orders.length;
+
+  }
+
 
   const revenue =
-    paidOrders.reduce(
+    orders.reduce(
       (sum, order) =>
-        sum + numberValue(order.revenue),
+        sum + (
+          Number(order.total) || 0
+        ),
       0
     );
 
-  const estimatedProfit =
+
+  const profit =
     calculations.reduce(
-      (sum, calculation) =>
-        sum + numberValue(calculation.profit),
+      (sum, item) =>
+        sum + (
+          Number(item.profit) || 0
+        ),
+      0
+    )
+    +
+    livestock.reduce(
+      (sum, item) =>
+        sum + (
+          Number(item.profit) || 0
+        ),
       0
     );
 
-  const realizedProfit =
-    paidOrders.reduce(
-      (sum, order) =>
-        sum + numberValue(order.profit),
-      0
-    );
+
+  if (statRevenue) {
+
+    statRevenue.textContent =
+      formatAr(revenue);
+
+  }
 
 
-  /* Stats */
+  if (statProfit) {
 
-  setText(
-    "statCalculations",
-    formatNumber(totalCalculations)
-  );
+    statProfit.textContent =
+      formatAr(profit);
 
-  setText(
-    "statOrders",
-    formatNumber(totalOrders)
-  );
+  }
 
-  setText(
-    "statRevenue",
-    formatAr(revenue)
-  );
-
-  setText(
-    "statProfit",
-    formatAr(realizedProfit)
-  );
-
-
-  /* Optional alternative IDs */
-
-  setText(
-    "calculationsCount",
-    formatNumber(totalCalculations)
-  );
-
-  setText(
-    "ordersCount",
-    formatNumber(totalOrders)
-  );
-
-  setText(
-    "revenueValue",
-    formatAr(revenue)
-  );
-
-  setText(
-    "profitValue",
-    formatAr(realizedProfit)
-  );
-
-  setText(
-    "estimatedProfit",
-    formatAr(estimatedProfit)
-  );
-
-
-  updateFunnel();
 
   renderRecentCalculations();
 
   renderRecentOrders();
+
+  updateFunnel();
+
 }
 
-
-function setText(id, value) {
-
-  const element =
-    byId(id);
-
-  if (element) {
-    element.textContent = value;
-  }
-}
-
-
-/* =========================================================
-   24. RECENT CALCULATIONS
-   ========================================================= */
 
 function renderRecentCalculations() {
 
   const container =
-    byId("recentCalculations");
+    $("#recentCalculations");
 
   if (!container) {
     return;
   }
 
-  const items =
-    state.calculations.slice(0, 5);
 
-  if (!items.length) {
+  const all = [
+
+    ...state.calculations.map(
+      item => ({
+        ...item,
+        type: "Prix"
+      })
+    ),
+
+    ...state.livestockCalculations.map(
+      item => ({
+        ...item,
+        type: "Fiompiana"
+      })
+    )
+
+  ]
+  .sort(
+    (a, b) =>
+      new Date(b.createdAt) -
+      new Date(a.createdAt)
+  )
+  .slice(0, 5);
+
+
+  if (!all.length) {
 
     container.innerHTML = `
-      <div class="empty-state">
-
-        <div class="empty-icon">
-          🧮
-        </div>
-
-        <div class="empty-title">
-          Tsy mbola misy calcul
-        </div>
-
-        <div class="empty-description">
-          Ampiasao aloha ny Kajy Prix & Tombony.
-        </div>
-
-      </div>
+      <p class="empty-state">
+        Tsy mbola misy calcul.
+      </p>
     `;
 
     return;
+
   }
 
+
   container.innerHTML =
-    items.map(item => `
-      <div class="recent-item">
+    all
+      .map(
+        item => `
 
-        <div class="recent-main">
+          <div class="dashboard-item">
 
-          <div class="recent-title">
-            ${escapeHTML(item.product || item.type || "Calcul")}
+            <div>
+
+              <strong>
+                ${escapeHTML(
+                  item.product ||
+                  item.animal ||
+                  "Calcul"
+                )}
+              </strong>
+
+              <small>
+                ${escapeHTML(item.type)}
+              </small>
+
+            </div>
+
+            <strong>
+              ${formatAr(item.profit)}
+            </strong>
+
           </div>
 
-          <div class="recent-meta">
-            ${formatDate(item.createdAt)}
-          </div>
+        `
+      )
+      .join("");
 
-        </div>
-
-        <div class="recent-value">
-          ${formatAr(item.profit)}
-        </div>
-
-      </div>
-    `).join("");
 }
 
-
-/* =========================================================
-   25. RECENT ORDERS
-   ========================================================= */
 
 function renderRecentOrders() {
 
   const container =
-    byId("recentOrders");
+    $("#recentOrders");
 
   if (!container) {
     return;
   }
 
-  const items =
-    state.orders.slice(0, 5);
 
-  if (!items.length) {
+  const orders =
+    state.orders
+      .slice(0, 5);
+
+
+  if (!orders.length) {
 
     container.innerHTML = `
-      <div class="empty-state">
-
-        <div class="empty-icon">
-          🛒
-        </div>
-
-        <div class="empty-title">
-          Tsy mbola misy commande
-        </div>
-
-        <div class="empty-description">
-          Ny commande voatahiry eto dia hita eto.
-        </div>
-
-      </div>
+      <p class="empty-state">
+        Tsy mbola misy commande.
+      </p>
     `;
 
     return;
+
   }
 
+
   container.innerHTML =
-    items.map(item => `
-      <div class="recent-item">
+    orders
+      .map(
+        order => `
 
-        <div class="recent-main">
+          <div class="dashboard-item">
 
-          <div class="recent-title">
-            ${escapeHTML(item.client)}
+            <div>
+
+              <strong>
+                ${escapeHTML(order.client)}
+              </strong>
+
+              <small>
+                ${escapeHTML(order.product)}
+              </small>
+
+            </div>
+
+            <strong>
+              ${formatAr(order.total)}
+            </strong>
+
           </div>
 
-          <div class="recent-meta">
-            ${escapeHTML(item.product)}
-            · ${escapeHTML(item.status)}
-          </div>
+        `
+      )
+      .join("");
 
-        </div>
-
-        <div class="recent-value">
-          ${formatAr(item.revenue)}
-        </div>
-
-      </div>
-    `).join("");
 }
 
 
-/* =========================================================
-   26. FUNNEL
-   ========================================================= */
+/* ============================================================
+   20. FUNNEL
+============================================================ */
 
 function updateFunnel() {
 
-  const funnel =
-    state.funnel || defaultState.funnel;
-
-  updateFunnelItem(
-    "funnelProspects",
-    "funnelBarProspects",
-    funnel.prospects
-  );
-
-  updateFunnelItem(
-    "funnelResponses",
-    "funnelBarResponses",
-    funnel.responses
-  );
-
-  updateFunnelItem(
-    "funnelDiscussions",
-    "funnelBarDiscussions",
-    funnel.discussions
-  );
-
-  updateFunnelItem(
-    "funnelOrders",
-    "funnelBarOrders",
-    funnel.orders
-  );
-
-  updateFunnelItem(
-    "funnelClients",
-    "funnelBarClients",
-    funnel.clients
-  );
-}
+  const evaluations =
+    state.evaluations;
 
 
-function updateFunnelItem(
-  numberId,
-  barId,
-  value
-) {
+  const prospects =
+    evaluations.reduce(
+      (sum, item) =>
+        sum + (
+          Number(item.prospects) || 0
+        ),
+      0
+    );
+
+
+  const responses =
+    evaluations.reduce(
+      (sum, item) =>
+        sum + (
+          Number(item.responses) || 0
+        ),
+      0
+    );
+
+
+  const discussions =
+    evaluations.reduce(
+      (sum, item) =>
+        sum + (
+          Number(item.discussions) || 0
+        ),
+      0
+    );
+
+
+  const ordersFromEvaluation =
+    evaluations.reduce(
+      (sum, item) =>
+        sum + (
+          Number(item.orders) || 0
+        ),
+      0
+    );
+
+
+  const ordersFromTool =
+    state.orders.length;
+
+
+  const orders =
+    Math.max(
+      ordersFromEvaluation,
+      ordersFromTool
+    );
+
+
+  const clients =
+    state.orders.filter(
+      order =>
+        [
+          "Payée",
+          "Livrée"
+        ].includes(
+          order.status
+        )
+    ).length;
+
 
   setText(
-    numberId,
-    formatNumber(value)
+    "#funnelProspects",
+    prospects
   );
 
-  const bar =
-    byId(barId);
+  setText(
+    "#funnelResponses",
+    responses
+  );
 
-  if (!bar) {
-    return;
-  }
+  setText(
+    "#funnelDiscussions",
+    discussions
+  );
+
+  setText(
+    "#funnelOrders",
+    orders
+  );
+
+  setText(
+    "#funnelClients",
+    clients
+  );
+
 
   const max =
     Math.max(
-      state.funnel.prospects,
+      prospects,
+      responses,
+      discussions,
+      orders,
+      clients,
       1
     );
 
-  const percentage =
-    Math.min(
-      100,
-      (numberValue(value) / max) * 100
-    );
 
-  bar.style.width =
-    `${percentage}%`;
+  setWidth(
+    "#funnelBarProspects",
+    prospects,
+    max
+  );
+
+  setWidth(
+    "#funnelBarResponses",
+    responses,
+    max
+  );
+
+  setWidth(
+    "#funnelBarDiscussions",
+    discussions,
+    max
+  );
+
+  setWidth(
+    "#funnelBarOrders",
+    orders,
+    max
+  );
+
+  setWidth(
+    "#funnelBarClients",
+    clients,
+    max
+  );
+
 }
 
 
-/* =========================================================
-   27. EVALUATION
-   ========================================================= */
+function setText(
+  selector,
+  value
+) {
 
-function initEvaluation() {
+  const element =
+    $(selector);
+
+  if (element) {
+
+    element.textContent =
+      formatNumber(value);
+
+  }
+
+}
+
+
+function setWidth(
+  selector,
+  value,
+  max
+) {
+
+  const element =
+    $(selector);
+
+  if (!element) {
+    return;
+  }
+
+  const percentage =
+    max > 0
+      ? (value / max) * 100
+      : 0;
+
+  element.style.width =
+    `${Math.max(percentage, 2)}%`;
+
+}
+
+
+/* ============================================================
+   21. EVALUATION
+============================================================ */
+
+function initEvaluationForm() {
 
   const form =
-    byId("evaluationForm");
+    $("#evaluationForm");
 
   if (!form) {
     return;
   }
+
 
   form.addEventListener(
     "submit",
@@ -2846,67 +4692,56 @@ function initEvaluation() {
       const data =
         new FormData(form);
 
+
       const evaluation = {
+
         id: Date.now(),
 
         channel:
-          data.get("channel") || "",
+          data.get("channel"),
 
         publication:
-          data.get("publication") || "",
+          data.get("publication"),
 
         views:
-          numberValue(data.get("views")),
+          Number(data.get("views")) || 0,
 
         messages:
-          numberValue(data.get("messages")),
+          Number(data.get("messages")) || 0,
 
         prospects:
-          numberValue(data.get("prospects")),
+          Number(data.get("prospects")) || 0,
 
         responses:
-          numberValue(data.get("responses")),
+          Number(data.get("responses")) || 0,
 
         discussions:
-          numberValue(data.get("discussions")),
+          Number(data.get("discussions")) || 0,
 
         orders:
-          numberValue(data.get("orders")),
+          Number(data.get("orders")) || 0,
 
         revenue:
-          numberValue(data.get("revenue")),
+          Number(data.get("revenue")) || 0,
 
         profit:
-          numberValue(data.get("profit")),
+          Number(data.get("profit")) || 0,
 
         objection:
-          data.get("objection") || "",
+          data.get("objection"),
 
         lesson:
-          data.get("lesson") || "",
+          data.get("lesson"),
 
         createdAt:
-          today()
+          new Date().toISOString()
+
       };
+
 
       state.evaluations.unshift(
         evaluation
       );
-
-      state.evaluations =
-        state.evaluations.slice(0, 100);
-
-      state.funnel.prospects +=
-        evaluation.prospects;
-
-      state.funnel.responses +=
-        evaluation.responses;
-
-      state.funnel.discussions +=
-        evaluation.discussions;
-
-      state.funnel.orders +=
-        evaluation.orders;
 
       saveState();
 
@@ -2915,94 +4750,42 @@ function initEvaluation() {
       form.reset();
 
       showToast(
-        "Retour & Évaluation voatahiry.",
+        "Retour voatahiry. Jereo ny Dashboard.",
         "success"
       );
-    }
-  );
-}
-
-
-/* =========================================================
-   28. SIMPLE EVALUATION FALLBACK
-   ========================================================= */
-
-function initEvaluationButton() {
-
-  $$("[data-action='evaluation']").forEach(
-    button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const section =
-            byId("evaluation");
-
-          if (section) {
-            section.scrollIntoView({
-              behavior: "smooth"
-            });
-          }
-
-        }
-      );
 
     }
   );
+
 }
 
 
-/* =========================================================
-   29. SUPABASE INITIALIZATION
-   ========================================================= */
+/* ============================================================
+   22. REVIEWS SUPABASE
+============================================================ */
 
-function initSupabase() {
+async function loadReviews() {
 
-  if (
-    typeof window.supabase === "undefined"
-  ) {
+  const container =
+    $("#reviewsList");
 
-    console.warn(
-      "Supabase JS n'est pas chargé."
-    );
-
+  if (!container) {
     return;
   }
 
-  try {
-
-    supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_CONFIG.url,
-        SUPABASE_CONFIG.publishableKey
-      );
-
-    console.log(
-      "Supabase connecté."
-    );
-
-    loadApprovedReviews();
-
-  } catch (error) {
-
-    console.error(
-      "Erreur Supabase:",
-      error
-    );
-  }
-}
-
-
-/* =========================================================
-   30. LOAD APPROVED REVIEWS
-   ========================================================= */
-
-async function loadApprovedReviews() {
 
   if (!supabaseClient) {
+
+    container.innerHTML = `
+      <p class="empty-state">
+        Avis mbola tsy azo alaina izao.
+      </p>
+    `;
+
     return;
+
   }
+
 
   try {
 
@@ -3015,127 +4798,137 @@ async function loadApprovedReviews() {
         .select(
           "id,rating,name,learning,applied,result,message,created_at"
         )
-        .eq("status", "approved")
+        .eq(
+          "status",
+          "approved"
+        )
         .order(
           "created_at",
           {
             ascending: false
           }
         )
-        .limit(20);
+        .limit(12);
+
 
     if (error) {
       throw error;
     }
 
-    renderReviews(data || []);
+
+    if (!data || !data.length) {
+
+      container.innerHTML = `
+        <p class="empty-state">
+          Mbola tsy misy avis approuvé.
+        </p>
+      `;
+
+      return;
+
+    }
+
+
+    container.innerHTML =
+      data
+        .map(
+          review => `
+
+            <article class="review-card">
+
+              <div class="review-header">
+
+                <strong>
+                  ${escapeHTML(review.name)}
+                </strong>
+
+                <span>
+                  ${"⭐".repeat(
+                    Number(review.rating) || 0
+                  )}
+                </span>
+
+              </div>
+
+
+              ${
+                review.learning
+                  ? `
+                    <p>
+                      <strong>Nianarana:</strong>
+                      ${escapeHTML(review.learning)}
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              ${
+                review.applied
+                  ? `
+                    <p>
+                      <strong>Nampiharina:</strong>
+                      ${escapeHTML(review.applied)}
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              ${
+                review.result
+                  ? `
+                    <p>
+                      <strong>Résultat:</strong>
+                      ${escapeHTML(review.result)}
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              <blockquote>
+                ${escapeHTML(review.message)}
+              </blockquote>
+
+            </article>
+
+          `
+        )
+        .join("");
+
 
   } catch (error) {
 
-    console.error(
-      "Erreur chargement avis:",
+    console.warn(
+      "Impossible de charger les avis:",
       error
     );
-  }
-}
-
-
-/* =========================================================
-   31. RENDER REVIEWS
-   ========================================================= */
-
-function renderReviews(reviews) {
-
-  const container =
-    byId("reviewsList");
-
-  if (!container) {
-    return;
-  }
-
-  if (!reviews.length) {
 
     container.innerHTML = `
-      <div class="empty-state">
-
-        <div class="empty-icon">
-          ⭐
-        </div>
-
-        <div class="empty-title">
-          Mbola tsy misy avis public
-        </div>
-
-        <div class="empty-description">
-          Ny avis dia miseho rehefa ankatoavin'ny admin.
-        </div>
-
-      </div>
+      <p class="empty-state">
+        Tsy afaka naka avis izao.
+      </p>
     `;
 
-    return;
   }
 
-  container.innerHTML =
-    reviews.map(review => {
-
-      const rating =
-        Math.max(
-          1,
-          Math.min(
-            5,
-            numberValue(review.rating)
-          )
-        );
-
-      const stars =
-        "★".repeat(rating) +
-        "☆".repeat(5 - rating);
-
-      return `
-        <article class="review-card">
-
-          <div class="review-stars">
-            ${stars}
-          </div>
-
-          <div class="review-message">
-            ${escapeHTML(review.message)}
-          </div>
-
-          <div class="review-author">
-            ${escapeHTML(review.name)}
-          </div>
-
-          ${
-            review.result
-              ? `
-                <div class="review-result">
-                  ${escapeHTML(review.result)}
-                </div>
-              `
-              : ""
-          }
-
-        </article>
-      `;
-
-    }).join("");
 }
 
 
-/* =========================================================
-   32. REVIEW MODAL
-   ========================================================= */
+/* ============================================================
+   23. REVIEW FORM
+============================================================ */
 
 function initReviewForm() {
 
   const form =
-    byId("reviewForm");
+    $("#reviewForm");
 
   if (!form) {
     return;
   }
+
 
   form.addEventListener(
     "submit",
@@ -3143,82 +4936,80 @@ function initReviewForm() {
 
       event.preventDefault();
 
+
       if (!supabaseClient) {
 
         showToast(
-          "Supabase mbola tsy connecté.",
+          "Supabase tsy mbola disponible.",
           "error"
         );
 
         return;
+
       }
 
-      const formData =
+
+      const data =
         new FormData(form);
 
-      const consent =
-        formData.get("consent") === "on";
 
-      if (!consent) {
-
-        showToast(
-          "Tokony hanaiky ny publication ianao.",
-          "warning"
-        );
-
-        return;
-      }
-
-      const payload = {
+      const review = {
 
         name:
           String(
-            formData.get("name") || ""
+            data.get("name") || ""
           ).trim(),
 
         rating:
-          numberValue(
-            formData.get("rating")
+          Number(
+            data.get("rating")
           ),
 
         learning:
           String(
-            formData.get("learning") || ""
+            data.get("learning") || ""
           ).trim(),
 
         applied:
           String(
-            formData.get("applied") || ""
+            data.get("applied") || ""
           ).trim(),
 
         result:
           String(
-            formData.get("result") || ""
+            data.get("result") || ""
           ).trim(),
 
         message:
           String(
-            formData.get("message") || ""
+            data.get("message") || ""
           ).trim(),
 
-        consent: true,
+        consent:
+          data.get("consent") === "on",
 
-        status: "pending"
+        status:
+          "pending"
+
       };
 
+
       if (
-        !payload.name ||
-        !payload.rating ||
-        !payload.message
+        !review.name ||
+        !review.rating ||
+        !review.message ||
+        !review.consent
       ) {
 
         showToast(
-          "Fenoy aloha ny champs ilaina.",
-          "warning"
+          "Fenoy tsara ny champs ilaina.",
+          "error"
         );
 
         return;
+
       }
+
 
       try {
 
@@ -3227,344 +5018,351 @@ function initReviewForm() {
         } =
           await supabaseClient
             .from("vente_reviews")
-            .insert(payload);
+            .insert(
+              review
+            );
+
 
         if (error) {
           throw error;
         }
 
+
         form.reset();
 
-        closeModal();
+        closeModal(
+          "reviewModal"
+        );
+
 
         showToast(
-          "Misaotra! Nalefa ny avis-nao ary miandry validation.",
+          "Avis nalefa. Miandry validation.",
           "success"
         );
+
 
       } catch (error) {
 
         console.error(
-          "Erreur insertion review:",
           error
         );
 
         showToast(
-          "Nisy olana tamin'ny fandefasana avis.",
+          "Tsy voaray ilay avis. Avereno azafady.",
           "error"
         );
+
       }
+
     }
   );
+
 }
 
 
-/* =========================================================
-   33. MODAL
-   ========================================================= */
+/* ============================================================
+   24. MODALS
+============================================================ */
 
 function initModals() {
 
-  $$("[data-modal-open]").forEach(
-    button => {
+  $all("[data-modal-open]")
+    .forEach(button => {
 
       button.addEventListener(
         "click",
         () => {
 
-          const modalId =
+          const id =
             button.dataset.modalOpen;
 
-          openModal(modalId);
+          openModal(id);
+
         }
       );
 
-    }
-  );
+    });
 
 
-  $$("[data-modal-close]").forEach(
-    button => {
+  $all("[data-modal-close]")
+    .forEach(button => {
 
       button.addEventListener(
         "click",
-        closeModal
-      );
+        () => {
 
-    }
-  );
+          const modal =
+            button.closest(".modal");
 
-
-  $$(".modal-overlay").forEach(
-    overlay => {
-
-      overlay.addEventListener(
-        "click",
-        event => {
-
-          if (
-            event.target === overlay
-          ) {
-            closeModal();
+          if (!modal) {
+            return;
           }
+
+          closeModal(
+            modal.id
+          );
 
         }
       );
 
-    }
-  );
+    });
 
 
   document.addEventListener(
     "keydown",
     event => {
 
-      if (event.key === "Escape") {
-        closeModal();
+      if (
+        event.key !== "Escape"
+      ) {
+        return;
       }
+
+
+      $all(".modal")
+        .forEach(
+          modal => {
+
+            if (
+              modal.getAttribute(
+                "aria-hidden"
+              ) === "false"
+            ) {
+
+              closeModal(
+                modal.id
+              );
+
+            }
+
+          }
+        );
 
     }
   );
+
 }
 
 
 function openModal(id) {
 
   const modal =
-    byId(id);
+    document.getElementById(id);
 
   if (!modal) {
     return;
   }
 
-  modal.classList.add("active");
 
-  document.body.style.overflow =
-    "hidden";
+  modal.classList.add("open");
+
+  modal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "modal-open"
+  );
+
 }
 
 
-function closeModal() {
+function closeModal(id) {
 
-  $$(".modal-overlay.active")
-    .forEach(modal => {
-      modal.classList.remove("active");
-    });
+  const modal =
+    document.getElementById(id);
 
-  document.body.style.overflow =
-    "";
+  if (!modal) {
+    return;
+  }
+
+
+  modal.classList.remove("open");
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.classList.remove(
+    "modal-open"
+  );
+
 }
 
 
-/* =========================================================
-   34. EXTERNAL LINKS
-   ========================================================= */
+/* ============================================================
+   25. EXTERNAL LINKS
+============================================================ */
 
 function initExternalLinks() {
 
-  $$("[data-link='whatsapp-group']")
-    .forEach(link => {
+  const links = {
 
-      link.href =
-        APP_CONFIG.whatsappGroup;
+    "whatsapp-group":
+      TM_CONFIG.whatsappGroup,
 
-      link.target = "_blank";
-      link.rel = "noopener";
+    "whatsapp-purchase":
+      TM_CONFIG.whatsappPurchase,
 
-    });
+    "facebook":
+      TM_CONFIG.facebook
 
-
-  $$("[data-link='whatsapp-purchase']")
-    .forEach(link => {
-
-      link.href =
-        APP_CONFIG.whatsappPurchase;
-
-      link.target = "_blank";
-      link.rel = "noopener";
-
-    });
+  };
 
 
-  $$("[data-link='facebook']")
-    .forEach(link => {
+  $all("[data-link]")
+    .forEach(element => {
 
-      link.href =
-        APP_CONFIG.facebook;
+      const key =
+        element.dataset.link;
 
-      link.target = "_blank";
-      link.rel = "noopener";
+      if (!links[key]) {
+        return;
+      }
+
+      element.href =
+        links[key];
 
     });
+
 }
 
 
-/* =========================================================
-   35. FORMAT DATE
-   ========================================================= */
+/* ============================================================
+   26. COPY
+============================================================ */
 
-function formatDate(date) {
-
-  if (!date) {
-    return "";
-  }
+async function copyText(text) {
 
   try {
 
-    return new Date(date)
-      .toLocaleDateString(
-        "fr-FR",
-        {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric"
-        }
+    await navigator.clipboard.writeText(
+      text
+    );
+
+    showToast(
+      "Voadika ao amin'ny presse-papier.",
+      "success"
+    );
+
+  } catch (error) {
+
+    const textarea =
+      document.createElement("textarea");
+
+    textarea.value =
+      text;
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.select();
+
+    try {
+
+      document.execCommand(
+        "copy"
       );
 
-  } catch {
-    return "";
+      showToast(
+        "Voadika.",
+        "success"
+      );
+
+    } catch {
+
+      showToast(
+        "Tsy afaka nandika automatique. Adikao manually.",
+        "error"
+      );
+
+    }
+
+    textarea.remove();
+
   }
+
 }
 
 
-/* =========================================================
-   36. RESET LOCAL DATA
-   ========================================================= */
+/* ============================================================
+   27. RESET LOCAL DATA
+============================================================ */
 
 function resetLocalData() {
 
   const confirmed =
     window.confirm(
-      "Hamafa ny données rehetra ao amin'ity appareil ity ve?"
+      "Hofafana daholo ve ny données locales ao amin'ny Vente Lab?"
     );
 
   if (!confirmed) {
     return;
   }
 
+
   state =
-    structuredClone(defaultState);
+    defaultState();
 
   saveState();
 
   updateDashboard();
 
   showToast(
-    "Données voafafa.",
+    "Données locales voafafa.",
     "success"
   );
+
 }
 
 
-/* =========================================================
-   37. OPTIONAL RESET BUTTON
-   ========================================================= */
+/* ============================================================
+   28. GLOBAL KEYBOARD SHORTCUT
+============================================================ */
 
-function initResetButton() {
-
-  $$("[data-reset-local]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        resetLocalData
-      );
-
-    });
-}
-
-
-/* =========================================================
-   38. DASHBOARD AUTO REFRESH
-   ========================================================= */
-
-function initDashboard() {
-
-  updateDashboard();
-
-  window.addEventListener(
-    "storage",
-    event => {
-
-      if (
-        event.key === APP_CONFIG.storageKey
-      ) {
-
-        state =
-          loadState();
-
-        updateDashboard();
-      }
-
-    }
-  );
-}
-
-
-/* =========================================================
-   39. FORM ENTER PROTECTION
-   ========================================================= */
-
-function initFormProtection() {
+function initKeyboardShortcuts() {
 
   document.addEventListener(
     "keydown",
     event => {
 
       if (
-        event.key !== "Enter" ||
-        event.target.tagName !== "INPUT"
+        event.ctrlKey &&
+        event.key.toLowerCase() === "k"
       ) {
-        return;
-      }
 
-      const form =
-        event.target.closest("form");
+        event.preventDefault();
 
-      if (!form) {
-        return;
-      }
-
-      const submit =
-        form.querySelector(
-          'button[type="submit"]'
+        scrollToSection(
+          "lab"
         );
 
-      if (submit) {
-        event.preventDefault();
-        submit.click();
       }
 
     }
   );
+
 }
 
 
-/* =========================================================
-   40. INITIALIZATION
-   ========================================================= */
+/* ============================================================
+   29. INITIALIZATION
+============================================================ */
 
-function initApp() {
-
-  console.log(
-    "Tantsaha Matihanina — Vente Lab"
-  );
-
-  console.log(
-    "Mianatra • Mampihatra • Mahomby"
-  );
-
-  initMobileNavigation();
-
-  initSmoothScroll();
-
-  initToolWorkspace();
-
-  initEvaluation();
-
-  initEvaluationButton();
+async function initApp() {
 
   initSupabase();
+
+  initNavigation();
+
+  initSmoothLinks();
+
+  initTools();
+
+  initEvaluationForm();
 
   initReviewForm();
 
@@ -3572,17 +5370,18 @@ function initApp() {
 
   initExternalLinks();
 
-  initResetButton();
+  initKeyboardShortcuts();
 
-  initDashboard();
+  updateDashboard();
 
-  initFormProtection();
+  await loadReviews();
+
 }
 
 
-/* =========================================================
-   41. START
-   ========================================================= */
+/* ============================================================
+   30. START
+============================================================ */
 
 if (
   document.readyState === "loading"
