@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#123c2a">
-<meta name="description" content="Tantsaha Matihanina — Vente Lab | Mianatra • Mampihatra • Mahomby">
+<meta name="description" content="Tantsaha Matihanina — Formation Vente en Ligne + Laboratoire Pratique">
 <title>Tantsaha Matihanina — Vente Lab</title>
 
 <style>
@@ -21,7 +21,10 @@
   --border:#dfe7e1;
   --danger:#b42318;
   --success:#147a43;
+  --blue:#2458a6;
+  --bluebg:#eef4ff;
   --shadow:0 10px 30px rgba(18,60,42,.09);
+  --shadow2:0 20px 50px rgba(18,60,42,.15);
   --radius:18px;
 }
 
@@ -71,16 +74,20 @@ img{
   padding:70px 0;
 }
 
+.section.alt{
+  background:#eef5f1;
+}
+
 .section-head{
-  max-width:760px;
+  max-width:780px;
   margin:0 auto 35px;
   text-align:center;
 }
 
 .section-head h2{
-  font-size:clamp(26px,5vw,38px);
+  font-size:clamp(27px,5vw,40px);
   line-height:1.2;
-  margin-bottom:10px;
+  margin:10px 0;
 }
 
 .section-head p{
@@ -105,7 +112,7 @@ img{
 }
 
 .card{
-  background:var(--white);
+  background:#fff;
   border:1px solid var(--border);
   border-radius:var(--radius);
   padding:22px;
@@ -130,12 +137,17 @@ img{
   background:var(--green3);
   color:var(--green);
   font-size:12px;
-  font-weight:700;
+  font-weight:800;
 }
 
 .badge.gold{
   background:#fff4d5;
   color:#795900;
+}
+
+.badge.blue{
+  background:var(--bluebg);
+  color:var(--blue);
 }
 
 .btn{
@@ -147,7 +159,7 @@ img{
   padding:10px 16px;
   border-radius:12px;
   border:1px solid transparent;
-  font-weight:700;
+  font-weight:800;
   transition:.2s ease;
 }
 
@@ -175,6 +187,11 @@ img{
   color:var(--green);
 }
 
+.btn-blue{
+  background:var(--blue);
+  color:#fff;
+}
+
 .btn-danger{
   background:#fff0ef;
   color:var(--danger);
@@ -197,6 +214,18 @@ img{
   margin:15px 0;
 }
 
+.notice.green{
+  background:#edf9f1;
+  border-color:#bfe4cc;
+  color:#14552f;
+}
+
+.notice.blue{
+  background:#eef4ff;
+  border-color:#cbdafa;
+  color:#214d90;
+}
+
 .result{
   margin-top:15px;
   padding:15px;
@@ -212,7 +241,7 @@ img{
 }
 
 .empty{
-  padding:30px;
+  padding:25px;
   text-align:center;
   border:1px dashed var(--border);
   border-radius:16px;
@@ -226,7 +255,7 @@ img{
 
 .form-group label{
   display:block;
-  font-weight:700;
+  font-weight:800;
   margin-bottom:6px;
 }
 
@@ -252,6 +281,18 @@ select:focus{
 textarea{
   min-height:110px;
   resize:vertical;
+}
+
+.small{
+  font-size:13px;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+.strong{
+  font-weight:800;
 }
 
 /* HEADER */
@@ -327,9 +368,9 @@ header{
 /* HERO */
 
 .hero{
-  padding:70px 0 55px;
+  padding:75px 0 60px;
   background:
-    radial-gradient(circle at top right,rgba(215,166,42,.16),transparent 35%),
+    radial-gradient(circle at top right,rgba(215,166,42,.18),transparent 35%),
     linear-gradient(180deg,#fff 0%,#f5faf7 100%);
 }
 
@@ -369,7 +410,7 @@ header{
   color:#fff;
   border-radius:25px;
   padding:25px;
-  box-shadow:0 20px 45px rgba(18,60,42,.22);
+  box-shadow:var(--shadow2);
 }
 
 .hero-card p{
@@ -391,7 +432,34 @@ header{
   font-size:13px;
 }
 
-/* PRACTICE */
+/* HOW IT WORKS */
+
+.flow{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+}
+
+.flow-item{
+  text-align:center;
+  padding:18px 10px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:15px;
+}
+
+.flow-item strong{
+  display:block;
+  color:var(--green);
+  margin-top:6px;
+}
+
+.flow-item span{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* TOOLS */
 
 .tool-card{
   position:relative;
@@ -410,7 +478,48 @@ header{
   font-weight:800;
 }
 
-/* PROGRESS */
+/* STATS */
+
+.stat{
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:28px;
+  color:var(--green);
+}
+
+.stat span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.funnel{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
+
+.funnel-box{
+  text-align:center;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:15px 8px;
+}
+
+.funnel-box strong{
+  display:block;
+  font-size:25px;
+  color:var(--green);
+}
+
+.funnel-box small{
+  color:var(--muted);
+}
+
+/* FORMATION */
 
 .progress-wrap{
   margin-top:20px;
@@ -440,8 +549,8 @@ header{
 }
 
 .day-number{
-  width:34px;
-  height:34px;
+  width:38px;
+  height:38px;
   border-radius:50%;
   background:var(--green3);
   color:var(--green);
@@ -451,21 +560,58 @@ header{
   flex:none;
 }
 
-/* STATS */
-
-.stat{
-  text-align:center;
+.day.done .day-number{
+  background:var(--success);
+  color:#fff;
 }
 
-.stat strong{
-  display:block;
-  font-size:30px;
+.lesson-block{
+  margin-top:17px;
+  padding:15px;
+  background:#f7faf8;
+  border-radius:13px;
+  border:1px solid var(--border);
+}
+
+.lesson-block h4{
+  margin-bottom:5px;
   color:var(--green);
 }
 
-.stat span{
+.lesson-block p{
+  font-size:14px;
+}
+
+.lesson-list{
+  padding-left:20px;
   color:var(--muted);
-  font-size:13px;
+  font-size:14px;
+}
+
+.lesson-list li{
+  margin:4px 0;
+}
+
+.exercise{
+  background:#fff9e8;
+  border-color:#eed37c;
+}
+
+.real-task{
+  background:#eef7ff;
+  border-color:#cbdcf2;
+}
+
+.expected{
+  background:#edf9f1;
+  border-color:#bfe4cc;
+}
+
+.day-actions{
+  margin-top:17px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
 }
 
 /* REVIEW */
@@ -496,6 +642,15 @@ header{
   color:#999;
   text-decoration:line-through;
   font-size:14px;
+}
+
+.feature-list{
+  padding-left:20px;
+  color:var(--muted);
+}
+
+.feature-list li{
+  margin:5px 0;
 }
 
 /* FOOTER */
@@ -542,7 +697,7 @@ footer p{
 }
 
 .modal{
-  width:min(650px,100%);
+  width:min(720px,100%);
   max-height:92vh;
   overflow:auto;
   background:#fff;
@@ -575,9 +730,32 @@ footer p{
   padding:20px;
 }
 
+.scenario{
+  background:#f5f8f6;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:15px;
+}
+
+.scenario strong{
+  color:var(--green);
+}
+
+/* RECEIPT */
+
+.receipt{
+  max-width:400px;
+  margin:auto;
+  border:1px dashed #999;
+  padding:20px;
+  background:#fff;
+  font-family:monospace;
+}
+
 /* MOBILE */
 
-@media(max-width:850px){
+@media(max-width:900px){
   .nav-links{
     position:absolute;
     top:70px;
@@ -617,6 +795,14 @@ footer p{
     grid-template-columns:1fr 1fr;
   }
 
+  .flow{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .funnel{
+    grid-template-columns:repeat(3,1fr);
+  }
+
   .footer-grid{
     grid-template-columns:1fr;
   }
@@ -651,13 +837,23 @@ footer p{
   .mini-tools{
     grid-template-columns:1fr;
   }
+
+  .flow{
+    grid-template-columns:1fr;
+  }
+
+  .funnel{
+    grid-template-columns:1fr 1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= HEADER ================= -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header>
   <div class="container navbar">
@@ -670,29 +866,39 @@ footer p{
       </div>
     </a>
 
-    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">☰</button>
+    <button
+      class="menu-btn"
+      onclick="toggleMenu()"
+      aria-label="Menu"
+    >
+      ☰
+    </button>
 
     <nav class="nav-links" id="navLinks">
       <a href="#accueil" onclick="closeMenu()">Accueil</a>
+      <a href="#methode" onclick="closeMenu()">🔄 Méthode</a>
       <a href="#outils" onclick="closeMenu()">🧪 Pratique</a>
       <a href="#vente" onclick="closeMenu()">📊 Ny Vente-ko</a>
       <a href="#formation" onclick="closeMenu()">🎓 Formation</a>
-      <a href="#retour" onclick="closeMenu()">📊 Retour</a>
+      <a href="#retour" onclick="closeMenu()">📈 Retour</a>
       <a href="#avis" onclick="closeMenu()">⭐ Avis</a>
-      <a href="#fiompiana" onclick="closeMenu()">🐔 Fiompiana</a>
-      <a href="#boky" onclick="closeMenu()">📘 Boky</a>
+      <a href="#boky" onclick="closeMenu()">📘 Support</a>
     </nav>
 
   </div>
 </header>
 
 
-<!-- ================= HERO ================= -->
+<!-- =========================================================
+     HERO
+========================================================= -->
 
 <section class="hero" id="accueil">
+
   <div class="container hero-grid">
 
     <div>
+
       <div class="hero-label">
         TANTSAHA MATIHANINA • VENTE LAB
       </div>
@@ -704,18 +910,27 @@ footer p{
       </h1>
 
       <p class="hero-copy">
-        Laboratoire pratique ho an'ny olona te hahay hivarotra vokatra,
-        hamorona offre, hitantana prospect ary hanatsara tsikelikely
-        ny système de vente.
+        <strong>Formation Vente en Ligne + Laboratoire Pratique</strong>
+        ho an'ny olona te hahay hivarotra amin'ny
+        Facebook, WhatsApp ary Marketplace,
+        hamorona offre, hitantana prospect ary
+        hanatsara tsikelikely ny système de vente.
       </p>
 
       <div class="actions">
-        <a class="btn btn-primary" href="#outils">
-          🧪 Hanomboka Pratique
+
+        <a
+          class="btn btn-primary"
+          href="#formation"
+        >
+          🎓 Hanomboka Formation
         </a>
 
-        <a class="btn btn-gold" href="#formation">
-          🎓 Formation 7 Jours
+        <a
+          class="btn btn-gold"
+          href="#outils"
+        >
+          🧪 Hanomboka Pratique
         </a>
 
         <a
@@ -726,188 +941,429 @@ footer p{
         >
           👍 Facebook
         </a>
+
       </div>
+
+      <div class="notice green" style="margin-top:22px;">
+
+        <strong>🎯 Tanjona:</strong>
+
+        Tsy ny hahalala théorie fotsiny,
+        fa ny hahavita mampihatra technique iray
+        ary hahita résultat tena izy.
+
+      </div>
+
     </div>
 
+
     <div class="hero-card">
-      <span class="badge gold">LABORATOIRE</span>
+
+      <span class="badge gold">
+        FORMATION + LAB
+      </span>
 
       <h2 style="margin-top:12px;">
-        🛠️ Outils azo ampiasaina
+        🛠️ Ahoana no fiasany?
       </h2>
 
       <p style="margin-top:8px;">
-        Ampiasao mivantana ireo outils rehefa avy mianatra
-        ny lesona mifandraika aminy.
+        Mianatra ao amin'ny WhatsApp,
+        mampihatra eto amin'ny Vente Lab,
+        avy eo mandefa ny résultat.
       </p>
 
       <div class="mini-tools">
-        <div class="mini-tool">🧮 Kajy Prix & Tombony</div>
-        <div class="mini-tool">💡 Créer une Offre</div>
-        <div class="mini-tool">📢 Publication</div>
-        <div class="mini-tool">💬 Simulation Client</div>
-        <div class="mini-tool">🛒 Commande</div>
-        <div class="mini-tool">🧾 Reçu de Vente</div>
+
+        <div class="mini-tool">
+          🎓 Lesona 7 Jours
+        </div>
+
+        <div class="mini-tool">
+          🧪 Exercices pratiques
+        </div>
+
+        <div class="mini-tool">
+          📱 Facebook / WhatsApp
+        </div>
+
+        <div class="mini-tool">
+          💬 Simulation Client
+        </div>
+
+        <div class="mini-tool">
+          📊 Mesure des résultats
+        </div>
+
+        <div class="mini-tool">
+          🔄 Amélioration continue
+        </div>
+
       </div>
+
     </div>
 
   </div>
+
 </section>
 
 
-<!-- ================= PRACTICE ================= -->
+<!-- =========================================================
+     METHOD
+========================================================= -->
 
-<section class="section" id="outils">
+<section class="section" id="methode">
+
   <div class="container">
 
     <div class="section-head">
-      <span class="badge gold">🧪 LABORATOIRE</span>
 
-      <h2 style="margin-top:10px;">
+      <span class="badge gold">
+        🔄 MÉTHODE
+      </span>
+
+      <h2>
+        Tsy mianatra fotsiny — mampihatra
+      </h2>
+
+      <p>
+        Ny système dia natao hanaraka ny tena parcours
+        iainan'ny mpivarotra.
+      </p>
+
+    </div>
+
+
+    <div class="flow">
+
+      <div class="flow-item">
+        🎓
+        <strong>Mianatra</strong>
+        <span>Lesona sy technique</span>
+      </div>
+
+      <div class="flow-item">
+        ✍️
+        <strong>Manao Exercice</strong>
+        <span>Fanazaran-tena</span>
+      </div>
+
+      <div class="flow-item">
+        🧪
+        <strong>Mampihatra</strong>
+        <span>Vente Lab</span>
+      </div>
+
+      <div class="flow-item">
+        📊
+        <strong>Mandrefy</strong>
+        <span>Résultat réel</span>
+      </div>
+
+      <div class="flow-item">
+        🔄
+        <strong>Manatsara</strong>
+        <span>Retour & Évaluation</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     TOOLS
+========================================================= -->
+
+<section class="section alt" id="outils">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <span class="badge gold">
+        🧪 LABORATOIRE
+      </span>
+
+      <h2>
         Pratique — Laboratoire de Vente
       </h2>
 
       <p>
-        Tsy Excel no tanjona. Ireo fitaovana eto dia exercice
-        pratique mifandray amin'ny formation.
+        Tsy Excel no tanjona.
+        Ireo fitaovana eto dia exercices pratiques
+        mifandray amin'ny formation.
       </p>
+
     </div>
+
 
     <div class="grid grid-3">
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">🧮</div>
-        <h3>Kajy Prix & Tombony</h3>
+
+        <h3>
+          Kajy Prix & Tombony
+        </h3>
+
         <p>
-          Kajio ny coût, prix de vente, bénéfice ary marge.
+          Kajio ny coût, prix de vente,
+          bénéfice ary marge.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('profitModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('profitModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">🐔</div>
-        <h3>Kajy Fiompiana</h3>
+
+        <h3>
+          Kajy Fiompiana
+        </h3>
+
         <p>
-          Tombano ny coût sy ny vokatra amin'ny fiompiana.
+          Ohatra pratique amin'ny coût
+          sy tombony amin'ny fiompiana.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('animalModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('animalModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">💡</div>
-        <h3>Créer une Offre</h3>
+
+        <h3>
+          Créer une Offre
+        </h3>
+
         <p>
-          Mamorona offre mazava sy mora takatry ny client.
+          Mamorona offre mazava:
+          valeur + prix + avantage + CTA.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('offerModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('offerModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">📢</div>
-        <h3>Publication</h3>
+
+        <h3>
+          Publication
+        </h3>
+
         <p>
-          Manomàna publication ho an'ny Facebook, WhatsApp na Marketplace.
+          Mamorona publication ho an'ny
+          Facebook, WhatsApp na Marketplace.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('publicationModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('publicationModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">💬</div>
-        <h3>Simulation Client</h3>
+
+        <h3>
+          Simulation Client
+        </h3>
+
         <p>
-          Manaova entraînement amin'ny fifandraisana amin'ny prospect.
+          Manaova entraînement amin'ny
+          objection sy closing.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('simulationModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('simulationModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">🛒</div>
-        <h3>Commande</h3>
+
+        <h3>
+          Commande
+        </h3>
+
         <p>
-          Tehirizo ny commande sy ny état-n'ny vente.
+          Tehirizo ny commande sy ny
+          état-n'ny vente.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('orderModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('orderModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">🧾</div>
-        <h3>Reçu de Vente</h3>
+
+        <h3>
+          Reçu de Vente
+        </h3>
+
         <p>
-          Mamorona reçu tsotra misy référence sy paiement.
+          Mamorona reçu misy référence,
+          total ary paiement.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('receiptModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('receiptModal')"
+        >
           Hanomboka
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">📚</div>
-        <h3>Guide</h3>
+
+        <h3>
+          Guide Pratique
+        </h3>
+
         <p>
-          Torolalana fohy momba ny dingana amin'ny vente.
+          Fitsipika sy étapes fototra
+          amin'ny vente professionnelle.
         </p>
-        <button class="btn btn-primary" style="margin-top:15px"
-                onclick="openModal('guideModal')">
+
+        <button
+          class="btn btn-primary"
+          style="margin-top:15px"
+          onclick="openModal('guideModal')"
+        >
           Hijery
         </button>
+
       </div>
 
+
       <div class="card tool-card">
+
         <div class="tool-icon">🎯</div>
-        <h3>Challenge 7 Jours</h3>
+
+        <h3>
+          Challenge 7 Jours
+        </h3>
+
         <p>
-          Ataovy tsikelikely ny pratique ary araho ny progression.
+          Ataovy tsikelikely ny pratique
+          ary araho ny progression.
         </p>
-        <a href="#formation" class="btn btn-primary" style="margin-top:15px">
+
+        <a
+          href="#formation"
+          class="btn btn-primary"
+          style="margin-top:15px"
+        >
           Hanomboka
         </a>
+
       </div>
 
     </div>
 
-    <div class="notice" style="margin-top:25px;">
+
+    <div class="notice">
+
       <strong>⚠️ Fitsipika:</strong>
-      Vakio aloha ny lesona ao amin'ny WhatsApp Formation,
-      avy eo ampiharo eto, ary farany alefaso ao amin'ny
-      <strong>Retour & Évaluation</strong> ny tena vokatra azonao.
+
+      Vakio aloha ny lesona,
+      ataovy ny exercice,
+      ampiharo eto,
+      avy eo alefaso ao amin'ny
+      <strong>Retour & Évaluation</strong>
+      ny résultat tena izy.
+
     </div>
 
   </div>
+
 </section>
 
 
-<!-- ================= DASHBOARD ================= -->
+<!-- =========================================================
+     DASHBOARD
+========================================================= -->
 
 <section class="section" id="vente">
+
   <div class="container">
 
     <div class="section-head">
-      <span class="badge">📊 SUIVI</span>
-      <h2 style="margin-top:10px;">Ny Vente-ko</h2>
+
+      <span class="badge">
+        📊 SUIVI
+      </span>
+
+      <h2>
+        Ny Vente-ko
+      </h2>
+
       <p>
-        Ity dashboard ity dia mitahiry locally ao amin'ny téléphone-nao
-        ireo calculs sy commandes nataonao.
+        Ity dashboard ity dia mitahiry locally ao amin'ny
+        téléphone-nao ny données de pratique.
       </p>
+
     </div>
+
 
     <div class="grid grid-4">
 
@@ -923,7 +1379,7 @@ footer p{
 
       <div class="card stat">
         <strong id="statRevenue">0 Ar</strong>
-        <span>CA payé</span>
+        <span>CA réellement payé</span>
       </div>
 
       <div class="card stat">
@@ -933,42 +1389,126 @@ footer p{
 
     </div>
 
+
+    <div class="notice blue">
+
+      <strong>ℹ️ Fanazavana:</strong>
+
+      Ny <strong>Tombony calculé</strong>
+      dia avy amin'ny simulation/calcul.
+      Tsy midika ho tombony tena voaray izy io.
+      Ny <strong>CA payé</strong> kosa dia avy amin'ireo
+      commandes voamarika ho <strong>paid</strong> na
+      <strong>completed</strong>.
+
+    </div>
+
+
+    <div class="card" style="margin-top:20px;">
+
+      <h3>
+        📈 Funnel de Vente
+      </h3>
+
+      <p class="small muted">
+        Ampidiro ao amin'ny Retour & Évaluation
+        ny tena isa azonao rehefa manao campagne.
+      </p>
+
+      <div class="funnel" style="margin-top:15px;">
+
+        <div class="funnel-box">
+          <strong id="funnelProspects">0</strong>
+          <small>Prospects</small>
+        </div>
+
+        <div class="funnel-box">
+          <strong id="funnelResponses">0</strong>
+          <small>Réponses</small>
+        </div>
+
+        <div class="funnel-box">
+          <strong id="funnelDiscussions">0</strong>
+          <small>Discussions</small>
+        </div>
+
+        <div class="funnel-box">
+          <strong id="funnelOrders">0</strong>
+          <small>Commandes</small>
+        </div>
+
+        <div class="funnel-box">
+          <strong id="funnelClients">0</strong>
+          <small>Clients</small>
+        </div>
+
+      </div>
+
+    </div>
+
+
     <div class="grid grid-2" style="margin-top:20px;">
 
       <div class="card">
-        <h3>🧮 Calculs farany</h3>
-        <div id="calculationsList" style="margin-top:15px;"></div>
+
+        <h3>
+          🧮 Calculs farany
+        </h3>
+
+        <div
+          id="calculationsList"
+          style="margin-top:15px;"
+        ></div>
+
       </div>
 
+
       <div class="card">
-        <h3>🛒 Commandes farany</h3>
-        <div id="ordersList" style="margin-top:15px;"></div>
+
+        <h3>
+          🛒 Commandes farany
+        </h3>
+
+        <div
+          id="ordersList"
+          style="margin-top:15px;"
+        ></div>
+
       </div>
 
     </div>
 
   </div>
+
 </section>
 
 
-<!-- ================= FORMATION ================= -->
+<!-- =========================================================
+     FORMATION 7 DAYS
+========================================================= -->
 
-<section class="section" id="formation">
+<section class="section alt" id="formation">
+
   <div class="container">
 
     <div class="section-head">
-      <span class="badge gold">🎓 FORMATION</span>
 
-      <h2 style="margin-top:10px;">
-        Formation Technique de Vente — 7 Jours
+      <span class="badge gold">
+        🎓 FORMATION
+      </span>
+
+      <h2>
+        Formation Vente en Ligne — 7 Jours
       </h2>
 
       <p>
-        Ny WhatsApp no toerana hianarana sy hahazoana accompagnement.
-        Ny site kosa no laboratoire hanaovana pratique.
+        Ny WhatsApp no toerana hianarana sy hahazoana
+        accompagnement. Ny site kosa no
+        laboratoire hanaovana pratique.
       </p>
 
       <div class="actions" style="justify-content:center;">
+
         <a
           class="btn btn-primary"
           href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
@@ -977,1336 +1517,1722 @@ footer p{
         >
           🎓 Miditra amin'ny Formation WhatsApp
         </a>
+
       </div>
+
     </div>
+
 
     <div class="card">
 
-      <div style="display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;">
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          gap:15px;
+          flex-wrap:wrap;
+        "
+      >
+
         <div>
-          <strong>Progression</strong>
-          <div id="progressText" style="color:var(--muted);font-size:13px;">
+
+          <strong>
+            Progression
+          </strong>
+
+          <div
+            id="progressText"
+            class="small muted"
+          >
             0 / 7 jours
           </div>
+
         </div>
 
-        <button class="btn btn-light" onclick="resetProgress()">
+        <button
+          class="btn btn-light"
+          onclick="resetProgress()"
+        >
           Réinitialiser
         </button>
+
       </div>
 
       <div class="progress-wrap">
+
         <div class="progress-bar">
-          <div class="progress-fill" id="progressFill"></div>
+
+          <div
+            class="progress-fill"
+            id="progressFill"
+          ></div>
+
         </div>
-      </div>
-
-    </div>
-
-    <div class="grid grid-2" style="margin-top:20px;">
-
-      <div class="card day" id="day1">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">1</div>
-          <div>
-            <h3>Fototry ny Vente</h3>
-            <p>Fantaro ny maha samy hafa ny produit sy ny valeur.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(1)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card day" id="day2">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">2</div>
-          <div>
-            <h3>Client Cible</h3>
-            <p>Fantaro hoe iza marina no olona mety hividy.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(2)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card day" id="day3">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">3</div>
-          <div>
-            <h3>Offre & Prix</h3>
-            <p>Amboary ny offre, prix ary bénéfice.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(3)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card day" id="day4">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">4</div>
-          <div>
-            <h3>Publication</h3>
-            <p>Mamorona publication mifanaraka amin'ny client cible.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(4)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card day" id="day5">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">5</div>
-          <div>
-            <h3>Prospection & Discussion</h3>
-            <p>Ianaro ny fomba firesaka sy fanontaniana amin'ny client.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(5)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card day" id="day6">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">6</div>
-          <div>
-            <h3>Objection & Closing</h3>
-            <p>Valio ny objection ary tariho amin'ny commande ny client.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(6)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card day" id="day7">
-        <div style="display:flex;gap:12px;">
-          <div class="day-number">7</div>
-          <div>
-            <h3>Suivi & Fidélisation</h3>
-            <p>Araho ny client ary amboary ny relation maharitra.</p>
-            <button class="btn btn-light" style="margin-top:12px"
-                    onclick="completeDay(7)">
-              ✓ Vita
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" style="background:var(--green);color:#fff;">
-        <span class="badge gold">ACTION</span>
-        <h3 style="margin-top:12px;">🧪 Vita ny lesona?</h3>
-        <p style="color:#dbe9e1;">
-          Mankanesa any amin'ny Pratique, ampiharo amin'ny tena
-          produit-nao, ary avereno eto ny tena vokatra.
-        </p>
-
-        <a href="#outils"
-           class="btn btn-gold"
-           style="margin-top:15px;">
-          🧪 Hanao Pratique
-        </a>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= RETOUR ================= -->
-
-<section class="section" id="retour">
-  <div class="container">
-
-    <div class="section-head">
-      <span class="badge">📊 RETOUR & ÉVALUATION</span>
-
-      <h2 style="margin-top:10px;">
-        Inona no tena vokatra azonao?
-      </h2>
-
-      <p>
-        Aorian'ny pratique dia zarao ny expérience réelle:
-        izay nampiharinao, ny valiny ary ny olana mbola misy.
-      </p>
-    </div>
-
-    <div class="grid grid-3">
-
-      <div class="card">
-        <div class="tool-icon">🎯</div>
-        <h3>1. Technique nampiharina</h3>
-        <p>
-          Lazao hoe inona amin'ireo technique no tena nampiasainao.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="tool-icon">📈</div>
-        <h3>2. Vokatra</h3>
-        <p>
-          Ohatra: prospects 10, réponses 4, commandes 1.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="tool-icon">⚠️</div>
-        <h3>3. Olana</h3>
-        <p>
-          Lazao izay mbola sarotra aminao mba hahafahana manatsara azy.
-        </p>
-      </div>
-
-    </div>
-
-    <div class="card" style="margin-top:20px;">
-
-      <h3>📋 Fomba fanaovana Retour</h3>
-
-      <div class="notice">
-        <strong>Ohatra:</strong><br>
-        Technique nampiharina: présentation de l'offre.<br>
-        Prospects: 10.<br>
-        Réponses: 4.<br>
-        Commandes: 1.<br>
-        Olana: Mbola sahirana aho rehefa miteny hoe "lafo loatra".
-      </div>
-
-      <div class="actions">
-
-        <a
-          class="btn btn-primary"
-          href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
-          target="_blank"
-          rel="noopener"
-        >
-          💬 Hiverina any WhatsApp
-        </a>
-
-        <button
-          class="btn btn-gold"
-          onclick="openModal('reviewModal')"
-        >
-          ⭐ Hametraka Avis
-        </button>
 
       </div>
 
     </div>
 
-  </div>
-</section>
-
-
-<!-- ================= AVIS ================= -->
-
-<section class="section" id="avis">
-  <div class="container">
-
-    <div class="section-head">
-
-      <span class="badge gold">⭐ AVIS & TÉMOIGNAGE</span>
-
-      <h2 style="margin-top:10px;">
-        Ny Hevitry ny Mpianatra
-      </h2>
-
-      <p>
-        Vitao ny formation, ampiharo izay nianaranao,
-        ary zarao aminay amin'ny fahitsiana ny expérience-nao.
-      </p>
-
-    </div>
-
-    <div class="grid grid-2">
-
-      <div class="card">
-
-        <span class="badge gold">
-          RETOUR RÉEL
-        </span>
-
-        <h3 style="margin-top:10px;">
-          ✍️ Zarao ny expérience-nao
-        </h3>
-
-        <p>
-          Tsy mila lava. Lazao fotsiny izay nianaranao,
-          izay nampiharinao ary, raha misy, ny vokatra azonao.
-        </p>
-
-        <div class="actions">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('reviewModal')"
-          >
-            ✍️ Hametraka Avis
-          </button>
-
-          <a
-            target="_blank"
-            rel="noopener"
-            class="btn btn-light"
-            href="https://www.facebook.com/share/1Zfiu8oj3m/"
-          >
-            👍 Hitsidika ny Page Facebook
-          </a>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <span class="badge">
-          FIANARANA
-        </span>
-
-        <h3 style="margin-top:10px;">
-          🤝 Manampy ny mpianatra hafa
-        </h3>
-
-        <p>
-          Ny témoignage tena izy dia manampy ireo olona mbola
-          misalasala hahafantatra ny expérience réelle amin'ny formation.
-        </p>
-
-        <div class="result">
-          ⭐ Tsy mangataka avis 5 étoiles an-tery izahay.
-          Ny zava-dehibe dia ny fahitsiana sy ny expérience réelle.
-        </div>
-
-      </div>
-
-    </div>
 
     <div
-      id="reviewConnectionStatus"
-      class="notice"
+      class="grid grid-2"
       style="margin-top:20px;"
     >
-      ⏳ Mampifandray amin'ny Supabase...
-    </div>
-
-    <div
-      id="reviewList"
-      class="grid grid-3"
-      style="margin-top:20px;"
-    ></div>
-
-  </div>
-</section>
 
 
-<!-- ================= FIOMPIANA ================= -->
+      <!-- DAY 1 -->
 
-<section class="section" id="fiompiana">
-  <div class="container">
+      <div
+        class="card day"
+        id="day1"
+      >
 
-    <div class="section-head">
+        <div style="display:flex;gap:12px;">
 
-      <span class="badge">
-        🐔 TANTSAHA
-      </span>
-
-      <h2 style="margin-top:10px;">
-        Vente mifandray amin'ny Fiompiana
-      </h2>
-
-      <p>
-        Azo ampiharina amin'ny akoho, kisoa, osy, ondry,
-        tantely, trondro, legioma ary vokatra hafa ny technique.
-      </p>
-
-    </div>
-
-    <div class="grid grid-3">
-
-      <div class="card">
-        <h3>🐔 Akoho</h3>
-        <p>
-          Ohatra: Akoho Gasy, pondeuse, poulet de chair.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>🐖 Kisoa</h3>
-        <p>
-          Vente par pièce, poids, commande na réservation.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>🍯 Tantely</h3>
-        <p>
-          Azo ampiasaina amin'ny vente locale sy vente en ligne.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>🐐 Osy & Ondry</h3>
-        <p>
-          Offre, prix, négociation ary livraison.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>🐟 Trondro</h3>
-        <p>
-          Publication mifototra amin'ny quantité sy disponibilité.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>🌽 Vokatra fambolena</h3>
-        <p>
-          Vary, katsaka, legioma sy vokatra hafa.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= PROCESS ================= -->
-
-<section class="section" id="process">
-  <div class="container">
-
-    <div class="section-head">
-      <span class="badge gold">🔄 MÉTHODE</span>
-      <h2 style="margin-top:10px;">
-        Mianatra → Mampihatra → Mahomby
-      </h2>
-    </div>
-
-    <div class="grid grid-3">
-
-      <div class="card">
-        <div class="tool-icon">🎓</div>
-        <h3>Mianatra</h3>
-        <p>
-          Lesona sy accompagnement ao amin'ny WhatsApp.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="tool-icon">🧪</div>
-        <h3>Mampihatra</h3>
-        <p>
-          Exercice sy simulation ao amin'ny Vente Lab.
-        </p>
-      </div>
-
-      <div class="card">
-        <div class="tool-icon">📈</div>
-        <h3>Mahomby</h3>
-        <p>
-          Refeso ny vokatra ary amboary izay mbola tsy mandeha.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= PROJET ================= -->
-
-<section class="section" id="projet">
-  <div class="container">
-
-    <div class="card" style="background:var(--green);color:#fff;">
-
-      <span class="badge gold">
-        🌱 TANTSAHA MATIHANINA
-      </span>
-
-      <h2 style="margin-top:15px;">
-        Tsy mianatra fotsiny.
-        Mampihatra.
-      </h2>
-
-      <p style="color:#dbe9e1;margin-top:10px;">
-        Ny tanjona dia tsy hoe mahavita mamaky lesona fotsiny,
-        fa mahavita mampiasa azy amin'ny activité réelle.
-      </p>
-
-      <div class="actions">
-
-        <a
-          class="btn btn-gold"
-          href="#formation"
-        >
-          🎓 Hanomboka Formation
-        </a>
-
-        <a
-          class="btn btn-light"
-          href="#outils"
-        >
-          🧪 Hanao Pratique
-        </a>
-
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= BOOK ================= -->
-
-<section class="section" id="boky">
-  <div class="container">
-
-    <div class="section-head">
-
-      <span class="badge gold">
-        📘 SUPPORT AVANCÉ
-      </span>
-
-      <h2 style="margin-top:10px;">
-        Te handalina lalindalina kokoa?
-      </h2>
-
-      <p>
-        Ny PDF dia support complémentaire ho an'izay te hanohy
-        sy handalina kokoa rehefa vita ny formation.
-      </p>
-
-    </div>
-
-    <div class="card book-card">
-
-      <div class="grid grid-2" style="align-items:center;">
-
-        <div>
-
-          <span class="badge gold">
-            GUIDE PRATIQUE
-          </span>
-
-          <h2 style="margin-top:12px;">
-            Vente en Ligne & Vente Locale
-          </h2>
-
-          <p style="margin-top:10px;">
-            Débutant → Professionnel
-          </p>
-
-          <p style="margin-top:10px;">
-            52 pages • modèles • scripts • fiches • challenges
-            • quiz • cas pratiques
-          </p>
-
-          <div style="margin-top:18px;">
-            <div class="old-price">
-              Support complémentaire
-            </div>
-
-            <div class="price">
-              5 000 Ar
-            </div>
+          <div class="day-number">
+            1
           </div>
 
-          <div class="actions">
+          <div>
 
-            <a
-              class="btn btn-primary"
-              href="https://wa.me/261385651378?text=Liana%20hividy%20ny%20PDF%20Formation%20Vente%20en%20Ligne%20-%205%20000%20Ar"
-              target="_blank"
-              rel="noopener"
-            >
-              📘 Hividy — 5 000 Ar
-            </a>
+            <span class="badge">
+              JOUR 1
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Fototry ny Vente
+            </h3>
+
+            <p>
+              Product ≠ Value.
+              Fantaro hoe nahoana no mividy ny client.
+            </p>
 
           </div>
 
         </div>
 
-        <div class="card">
 
-          <h3>📚 Ao anatiny</h3>
+        <div class="lesson-block">
 
-          <ul style="margin:15px 0 0 20px;color:var(--muted);">
+          <h4>
+            🎯 Tanjona
+          </h4>
 
-            <li>Fototry ny vente professionnelle</li>
-            <li>Client cible</li>
-            <li>Offre & présentation</li>
-            <li>Publication</li>
-            <li>Prospection</li>
-            <li>Objections</li>
-            <li>Négociation</li>
-            <li>Closing</li>
-            <li>Commande & paiement</li>
-            <li>Suivi & fidélisation</li>
-            <li>Scripts de conversation</li>
-            <li>Challenge 7 jours</li>
+          <p>
+            Mahay manazava ny
+            <strong>valeur</strong>
+            omen'ny vokatra fa tsy mitanisa
+            caractéristiques fotsiny.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Lesona
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              Produit: inona no amidinao?
+            </li>
+
+            <li>
+              Problème: inona no olana ananan'ny client?
+            </li>
+
+            <li>
+              Valeur: inona no vokatra tadiaviny?
+            </li>
+
+            <li>
+              Pourquoi acheter maintenant?
+            </li>
 
           </ul>
 
         </div>
 
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Soraty amin'ny fehezanteny iray:
+            <strong>
+              “Manampy an'i [client] hahazo [résultat]
+              amin'ny alalan'ny [produit] izahay.”
+            </strong>
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Alefaso amin'ny olona iray na prospect
+            ilay présentation ary jereo ny réaction.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Mahavita manazava ny valeur-n'ny produit
+            ao anatin'ny 20–30 secondes.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(1)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <button
+            class="btn btn-light"
+            onclick="scrollToTool('profitModal')"
+          >
+            🧪 Pratique
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAY 2 -->
+
+      <div
+        class="card day"
+        id="day2"
+      >
+
+        <div style="display:flex;gap:12px;">
+
+          <div class="day-number">
+            2
+          </div>
+
+          <div>
+
+            <span class="badge">
+              JOUR 2
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Client Cible
+            </h3>
+
+            <p>
+              Tsy ny olona rehetra no client-nao.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            🎯 Tanjona
+          </h4>
+
+          <p>
+            Mahafantatra tsara hoe iza no tena
+            olona tokony hifandraisana sy hivarotana.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Lesona
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              Iza ilay client?
+            </li>
+
+            <li>
+              Inona ny olany?
+            </li>
+
+            <li>
+              Inona no tadiaviny?
+            </li>
+
+            <li>
+              Ohatrinona ny budget-ny?
+            </li>
+
+            <li>
+              Aiza izy no hita: Facebook, WhatsApp, Marketplace?
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Ohatra:
+            <strong>Produit = zanak'akoho Gasy.</strong>
+            Client = olona vao manomboka miompy,
+            mila zanak'akoho salama sy torohevitra.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Misafidiana client cible iray
+            ary mitadiava prospect 5 mifanaraka aminy.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Mahavita manoratra persona tsotra
+            sy mahafantatra hoe aiza no hitadiavana azy.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(2)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <button
+            class="btn btn-light"
+            onclick="openModal('offerModal')"
+          >
+            💡 Créer une Offre
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAY 3 -->
+
+      <div
+        class="card day"
+        id="day3"
+      >
+
+        <div style="display:flex;gap:12px;">
+
+          <div class="day-number">
+            3
+          </div>
+
+          <div>
+
+            <span class="badge">
+              JOUR 3
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Offre & Prix
+            </h3>
+
+            <p>
+              Ny prix irery tsy mbola offre.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            🎯 Tanjona
+          </h4>
+
+          <p>
+            Mahavita mamorona offre misy
+            valeur, prix, avantage ary CTA.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Lesona
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              Coût réel
+            </li>
+
+            <li>
+              Prix de vente
+            </li>
+
+            <li>
+              Marge
+            </li>
+
+            <li>
+              Bonus / avantage
+            </li>
+
+            <li>
+              Urgence raha tena misy
+            </li>
+
+            <li>
+              Call-to-action
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Mamorona offre iray amin'ny
+            <strong>Créer une Offre</strong>
+            ary kajio ny tombony amin'ny
+            <strong>Kajy Prix & Tombony</strong>.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Asehoy amin'ny prospect iray
+            ilay offre fa aza manomboka amin'ny
+            “Mividiana”.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Offre iray mazava,
+            misy prix sy tombony azo hazavaina.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(3)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <button
+            class="btn btn-light"
+            onclick="openModal('profitModal')"
+          >
+            🧮 Kajy
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAY 4 -->
+
+      <div
+        class="card day"
+        id="day4"
+      >
+
+        <div style="display:flex;gap:12px;">
+
+          <div class="day-number">
+            4
+          </div>
+
+          <div>
+
+            <span class="badge">
+              JOUR 4
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Publication & Copywriting
+            </h3>
+
+            <p>
+              Publication iray tsy tokony ho
+              prix fotsiny.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            🎯 Tanjona
+          </h4>
+
+          <p>
+            Mahay manoratra publication izay
+            mitarika ny olona hifandray aminao.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Structure
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              <strong>Hook</strong> — Misarika attention
+            </li>
+
+            <li>
+              <strong>Problème</strong> — Lazao ny olana
+            </li>
+
+            <li>
+              <strong>Solution</strong> — Asehoy ny vahaolana
+            </li>
+
+            <li>
+              <strong>Offre</strong> — Inona no omena?
+            </li>
+
+            <li>
+              <strong>Preuve</strong> — Raha misy
+            </li>
+
+            <li>
+              <strong>Prix</strong>
+            </li>
+
+            <li>
+              <strong>CTA</strong> — Inona no tokony hataon'ny client?
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Mamorona publication iray amin'ny
+            <strong>Publication Lab</strong>.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Alefaso ao amin'ny Facebook na WhatsApp
+            ilay publication.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Publication iray manana structure
+            mazava sy CTA iray.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(4)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <button
+            class="btn btn-light"
+            onclick="openModal('publicationModal')"
+          >
+            📢 Publication
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAY 5 -->
+
+      <div
+        class="card day"
+        id="day5"
+      >
+
+        <div style="display:flex;gap:12px;">
+
+          <div class="day-number">
+            5
+          </div>
+
+          <div>
+
+            <span class="badge">
+              JOUR 5
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Prospection & Discussion
+            </h3>
+
+            <p>
+              Ny prospecting dia tsy spam.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            🎯 Tanjona
+          </h4>
+
+          <p>
+            Mahay manomboka conversation,
+            mametraka fanontaniana ary
+            mamantatra ny besoin.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Flow
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              Salama / introduction
+            </li>
+
+            <li>
+              Fanontaniana momba ny besoin
+            </li>
+
+            <li>
+              Écoute
+            </li>
+
+            <li>
+              Proposition mifanaraka amin'ny besoin
+            </li>
+
+            <li>
+              CTA / prochaine étape
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Manorata fanontaniana 3 azonao apetraka
+            amin'ny prospect alohan'ny hivarotana.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Mitadiava prospects 10 ary
+            raketo hoe firy no namaly.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Mahay manavaka:
+            prospect → réponse → discussion.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(5)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <button
+            class="btn btn-light"
+            onclick="openModal('simulationModal')"
+          >
+            💬 Simulation
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAY 6 -->
+
+      <div
+        class="card day"
+        id="day6"
+      >
+
+        <div style="display:flex;gap:12px;">
+
+          <div class="day-number">
+            6
+          </div>
+
+          <div>
+
+            <span class="badge">
+              JOUR 6
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Objection & Closing
+            </h3>
+
+            <p>
+              “Lafo”, “hieritreritra aho”,
+              “misy remise ve?”
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            🎯 Tanjona
+          </h4>
+
+          <p>
+            Tsy hiady amin'ny objection,
+            fa hahatakatra azy sy hamaly am-pahendrena.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Méthode
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              <strong>Henoy</strong>
+            </li>
+
+            <li>
+              <strong>Fantaro</strong> ny tena antony
+            </li>
+
+            <li>
+              <strong>Valio</strong> amin'ny valeur
+            </li>
+
+            <li>
+              <strong>Confirm</strong> fa voavaly ny ahiahy
+            </li>
+
+            <li>
+              <strong>Close</strong> amin'ny prochaine étape
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Ampiasao ny
+            <strong>Simulation Client</strong>
+            ary valio ireo objection samihafa.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Miresaha amin'ny prospect iray
+            ary raketo izay objection lehibe indrindra.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Mahavita mamaly objection iray
+            tsy mampihena prix avy hatrany.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(6)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <button
+            class="btn btn-light"
+            onclick="openModal('simulationModal')"
+          >
+            💬 Entraînement
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- DAY 7 -->
+
+      <div
+        class="card day"
+        id="day7"
+      >
+
+        <div style="display:flex;gap:12px;">
+
+          <div class="day-number">
+            7
+          </div>
+
+          <div>
+
+            <span class="badge">
+              JOUR 7
+            </span>
+
+            <h3 style="margin-top:7px;">
+              Suivi & Fidélisation
+            </h3>
+
+            <p>
+              Ny vente tsy mifarana amin'ny paiement.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            🎯 Tanjona
+          </h4>
+
+          <p>
+            Mahay manao suivi,
+            mandrefy conversion,
+            ary manatsara ny système.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            📖 Lesona
+          </h4>
+
+          <ul class="lesson-list">
+
+            <li>
+              Follow-up
+            </li>
+
+            <li>
+              Satisfaction client
+            </li>
+
+            <li>
+              Réachat
+            </li>
+
+            <li>
+              Recommandation
+            </li>
+
+            <li>
+              Mesure des résultats
+            </li>
+
+            <li>
+              Amélioration continue
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div class="lesson-block exercise">
+
+          <h4>
+            ✍️ Exercice
+          </h4>
+
+          <p>
+            Fenoy ny
+            <strong>Retour & Évaluation</strong>
+            amin'ny résultat tena azonao nandritra ny challenge.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block real-task">
+
+          <h4>
+            📱 Asa tena atao
+          </h4>
+
+          <p>
+            Ataovy:
+            <strong>Prospects → Réponses → Discussions → Commandes → Clients</strong>.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block expected">
+
+          <h4>
+            📊 Vokatra andrasana
+          </h4>
+
+          <p>
+            Mahafantatra izay mandeha,
+            izay tsy mandeha,
+            ary izay tokony hatsaraina.
+          </p>
+
+        </div>
+
+
+        <div class="day-actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="completeDay(7)"
+          >
+            ✓ Marquer terminé
+          </button>
+
+          <a
+            class="btn btn-light"
+            href="#retour"
+          >
+            📈 Faire mon Retour
+          </a>
+
+        </div>
+
       </div>
 
     </div>
 
   </div>
+
 </section>
 
 
-<!-- ================= PREMIUM ================= -->
+<!-- =========================================================
+     RETOUR & EVALUATION
+========================================================= -->
 
-<section class="section" id="premium">
+<section class="section" id="retour">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <span class="badge gold">
+        📈 RETOUR & ÉVALUATION
+      </span>
+
+      <h2>
+        Inona marina no vokatra azonao?
+      </h2>
+
+      <p>
+        Eto no ivon'ny learning loop:
+        Technique → Action → Résultat → Analyse → Amélioration.
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-2">
+
+
+      <div class="card">
+
+        <h3>
+          📊 Résultat de mon Challenge
+        </h3>
+
+        <p class="small muted">
+          Fenoy araka izay tena nitranga.
+          Aza mamorona chiffre mba hahazoana résultat tsara.
+        </p>
+
+
+        <div class="form-group" style="margin-top:18px;">
+
+          <label>
+            Technique nampiharina
+          </label>
+
+          <input
+            id="evalTechnique"
+            placeholder="Ex: Publication + suivi MP"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Canal
+          </label>
+
+          <select id="evalChannel">
+
+            <option value="Facebook">
+              Facebook
+            </option>
+
+            <option value="WhatsApp">
+              WhatsApp
+            </option>
+
+            <option value="Marketplace">
+              Marketplace
+            </option>
+
+            <option value="Autre">
+              Autre
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="grid grid-2">
+
+          <div class="form-group">
+
+            <label>
+              Publications / actions
+            </label>
+
+            <input
+              type="number"
+              id="evalActions"
+              min="0"
+              value="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Vues
+            </label>
+
+            <input
+              type="number"
+              id="evalViews"
+              min="0"
+              value="0"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="grid grid-2">
+
+          <div class="form-group">
+
+            <label>
+              Prospects
+            </label>
+
+            <input
+              type="number"
+              id="evalProspects"
+              min="0"
+              value="10"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Réponses
+            </label>
+
+            <input
+              type="number"
+              id="evalResponses"
+              min="0"
+              value="0"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="grid grid-2">
+
+          <div class="form-group">
+
+            <label>
+              Discussions
+            </label>
+
+            <input
+              type="number"
+              id="evalDiscussions"
+              min="0"
+              value="0"
+            >
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              Commandes
+            </label>
+
+            <input
+              type="number"
+              id="evalOrders"
+              min="0"
+              value="0"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Clients réellement obtenus
+          </label>
+
+          <input
+            type="number"
+            id="evalClients"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            CA réellement payé (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="evalRevenue"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Objection principale
+          </label>
+
+          <select id="evalObjection">
+
+            <option value="">
+              — Safidio —
+            </option>
+
+            <option value="Lafo loatra">
+              “Lafo loatra”
+            </option>
+
+            <option value="Mbola hieritreritra">
+              “Mbola hieritreritra aho”
+            </option>
+
+            <option value="Mila remise">
+              “Misy remise ve?”
+            </option>
+
+            <option value="Tsy matoky">
+              “Tsy mbola matoky”
+            </option>
+
+            <option value="Tsy mamaly">
+              Tsy mamaly
+            </option>
+
+            <option value="Autre">
+              Autre
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Inona ny olana lehibe indrindra?
+          </label>
+
+          <textarea
+            id="evalProblem"
+            placeholder="Inona no tena sarotra taminao?"
+          ></textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Inona no zavatra iray hatsarainao manaraka?
+          </label>
+
+          <textarea
+            id="evalLesson"
+            placeholder="Ex: Hanao follow-up 24h aorian'ny discussion."
+          ></textarea>
+
+        </div>
+
+
+        <button
+          class="btn btn-primary"
+          onclick="saveEvaluation()"
+        >
+          💾 Tehirizo ny Retour
+        </button>
+
+
+        <div id="evaluationResult"></div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>
+          📌 Ohatra amin'ny Funnel
+        </h3>
+
+        <div class="notice green">
+
+          <strong>Exemple:</strong>
+
+          <br><br>
+
+          20 prospects
+
+          →
+
+          8 réponses
+
+          →
+
+          4 discussions
+
+          →
+
+          2 commandes
+
+          →
+
+          1 client payé
+
+        </div>
+
+
+        <h3 style="margin-top:20px;">
+          🧠 Ahoana no famakiana azy?
+        </h3>
+
+        <div class="lesson-block">
+
+          <h4>
+            1. Betsaka prospects fa vitsy réponse
+          </h4>
+
+          <p>
+            Jereo ny hook,
+            client cible ary publication.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            2. Betsaka réponse fa vitsy commande
+          </h4>
+
+          <p>
+            Jereo ny conversation,
+            qualification, offre ary objection handling.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            3. Betsaka commande fa vitsy paiement
+          </h4>
+
+          <p>
+            Jereo ny confiance,
+            modalité de paiement,
+            livraison ary follow-up.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <h4>
+            4. Misy client fa tsy miverina
+          </h4>
+
+          <p>
+            Jereo ny satisfaction,
+            suivi ary fidélisation.
+          </p>
+
+        </div>
+
+
+        <div class="notice">
+
+          <strong>🎯 Fitsipika:</strong>
+
+          Aza miteny hoe
+          “tsy mahomby ny vente-ko”
+          fotsiny.
+
+          Fantaro aloha hoe
+          <strong>aiza amin'ny funnel</strong>
+          no misy olana.
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     AVIS
+========================================================= -->
+
+<section class="section alt" id="avis">
+
   <div class="container">
 
     <div class="section-head">
 
       <span class="badge">
-        🚀 PROGRESSION
+        ⭐ AVIS
       </span>
 
-      <h2 style="margin-top:10px;">
-        Dingana manaraka
+      <h2>
+        Ny Hevitry ny Mpianatra
       </h2>
 
       <p>
-        Rehefa mahafehy ny fototra ianao dia afaka mandroso
-        amin'ny vente plus professionnelle sy système plus complet.
+        Avis tena izy ihany no tiana aseho.
+        Tsy voatery ho 5 étoiles.
       </p>
 
-    </div>
-
-    <div class="grid grid-3">
-
-      <div class="card">
-        <h3>📊 Suivi</h3>
-        <p>
-          Araho ny prospects, commandes ary vokatra.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>🤝 Accompagnement</h3>
-        <p>
-          Zarao ny olana ary mahazoa feedback.
-        </p>
-      </div>
-
-      <div class="card">
-        <h3>📘 Support avancé</h3>
-        <p>
-          Ampiasao ny PDF sy ireo modèles rehefa mila approfondissement.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-  <div class="container">
-
-    <div class="footer-grid">
-
-      <div>
-        <div class="logo" style="color:#fff;">
-          <div class="logo-mark">🌱</div>
-          <div>
-            Tantsaha Matihanina
-            <small style="color:#c9d9d0;">
-              Mianatra • Mampihatra • Mahomby
-            </small>
-          </div>
-        </div>
-
-        <p style="margin-top:15px;">
-          Miara-miasa ho an'ny fampandrosoana
-          ny eny ambanivohitra isika.
-        </p>
-      </div>
-
-      <div>
-        <h3>Formation</h3>
-
-        <p style="margin-top:10px;">
-          🎓 Formation 7 Jours
-        </p>
-
-        <p>
-          🧪 Pratique
-        </p>
-
-        <p>
-          📊 Retour & Évaluation
-        </p>
-      </div>
-
-      <div>
-        <h3>Contact</h3>
-
-        <p style="margin-top:10px;">
-          WhatsApp:
-          +261 38 56 513 78
-        </p>
-
-        <div class="actions">
-
-          <a
-            class="btn btn-gold"
-            href="https://wa.me/261385651378"
-            target="_blank"
-            rel="noopener"
-          >
-            💬 WhatsApp
-          </a>
-
-          <a
-            class="btn btn-light"
-            href="https://www.facebook.com/share/1Zfiu8oj3m/"
-            target="_blank"
-            rel="noopener"
-          >
-            👍 Facebook
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-    <div class="footer-bottom">
-      © 2026 Tantsaha Matihanina / Auteur Freddy
-    </div>
-
-  </div>
-
-</footer>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: PROFIT -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="profitModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>🧮 Kajy Prix & Tombony</h3>
-      <button class="close-btn" onclick="closeModal('profitModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="form-group">
-        <label>Produit</label>
-        <input id="profitProduct" placeholder="Ohatra: Tantely">
-      </div>
-
-      <div class="form-group">
-        <label>Coût total (Ar)</label>
-        <input id="profitCost" type="number" min="0" placeholder="50000">
-      </div>
-
-      <div class="form-group">
-        <label>Prix de vente (Ar)</label>
-        <input id="profitPrice" type="number" min="0" placeholder="80000">
-      </div>
-
-      <div class="form-group">
-        <label>Quantité</label>
-        <input id="profitQty" type="number" min="1" value="1">
-      </div>
-
-      <button class="btn btn-primary" onclick="calculateProfit()">
-        🧮 Kajio
-      </button>
-
-      <div id="profitResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: ANIMAL -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="animalModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>🐔 Kajy Fiompiana</h3>
-      <button class="close-btn" onclick="closeModal('animalModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="form-group">
-        <label>Karazana</label>
-        <select id="animalType">
-          <option>Akoho Gasy</option>
-          <option>Pondeuse</option>
-          <option>Poulet de chair</option>
-          <option>Kisoa</option>
-          <option>Osy</option>
-          <option>Ondry</option>
-          <option>Bitro</option>
-          <option>Vorontsiloza</option>
-          <option>Gana</option>
-          <option>Gisa</option>
-          <option>Trondro</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Isan'ny biby</label>
-        <input id="animalQty" type="number" min="1" value="1">
-      </div>
-
-      <div class="form-group">
-        <label>Coût total (Ar)</label>
-        <input id="animalCost" type="number" min="0" placeholder="100000">
-      </div>
-
-      <div class="form-group">
-        <label>Vente totale vinavinaina (Ar)</label>
-        <input id="animalRevenue" type="number" min="0" placeholder="180000">
-      </div>
-
-      <button class="btn btn-primary" onclick="calculateAnimal()">
-        🧮 Kajio
-      </button>
-
-      <div id="animalResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: OFFER -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="offerModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>💡 Créer une Offre</h3>
-      <button class="close-btn" onclick="closeModal('offerModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="form-group">
-        <label>Produit / Service</label>
-        <input id="offerProduct" placeholder="Ohatra: Tantely naturel">
-      </div>
-
-      <div class="form-group">
-        <label>Client cible</label>
-        <input id="offerTarget" placeholder="Ohatra: Mpanjifa tia vokatra naturel">
-      </div>
-
-      <div class="form-group">
-        <label>Valeur / avantage</label>
-        <textarea id="offerValue"
-          placeholder="Inona no tombony azon'ny client?"></textarea>
-      </div>
-
-      <div class="form-group">
-        <label>Prix</label>
-        <input id="offerPrice" type="number" min="0" placeholder="15000">
-      </div>
-
-      <div class="form-group">
-        <label>Bonus / condition</label>
-        <input id="offerBonus" placeholder="Ohatra: Livraison selon zone">
-      </div>
-
-      <button class="btn btn-primary" onclick="createOffer()">
-        ✨ Créer l'offre
-      </button>
-
-      <div id="offerResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: PUBLICATION -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="publicationModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>📢 Préparer une Publication</h3>
-      <button class="close-btn" onclick="closeModal('publicationModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="form-group">
-        <label>Canal</label>
-
-        <select id="publicationChannel">
-
-          <option>Facebook / Page</option>
-          <option>Groupe Facebook</option>
-          <option>WhatsApp Status</option>
-          <option>WhatsApp Groupe</option>
-          <option>Marketplace</option>
-
-        </select>
-
-      </div>
-
-      <div class="form-group">
-        <label>Produit</label>
-        <input id="publicationProduct" placeholder="Ohatra: Atody akoho">
-      </div>
-
-      <div class="form-group">
-        <label>Client cible</label>
-        <input id="publicationTarget" placeholder="Ohatra: Mpanjifa ao an-tanàna">
-      </div>
-
-      <div class="form-group">
-        <label>Offre</label>
-        <input id="publicationOffer" placeholder="Ohatra: Atody vaovao">
-      </div>
-
-      <div class="form-group">
-        <label>Prix</label>
-        <input id="publicationPrice" type="number" min="0" placeholder="5000">
-      </div>
-
-      <div class="form-group">
-        <label>Message / détail</label>
-        <textarea id="publicationMessage"
-          placeholder="Lazao ny détail ilain'ny client..."></textarea>
-      </div>
-
-      <button class="btn btn-primary" onclick="createPublication()">
-        📢 Préparer
-      </button>
-
-      <div id="publicationResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: SIMULATION -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="simulationModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>💬 Simulation Client</h3>
-      <button class="close-btn" onclick="closeModal('simulationModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="notice">
-        Miezaha hamaly toy ny hoe client tena izy no miresaka aminao.
-      </div>
-
-      <div class="card" style="box-shadow:none;background:#f7faf8;">
-        <strong>Client:</strong>
-
-        <p style="margin-top:8px;">
-          “Mahaliana ahy ilay produit fa toa lafo ihany.”
-        </p>
-      </div>
-
-      <div class="form-group" style="margin-top:15px;">
-        <label>Valinteninao</label>
-        <textarea
-          id="simulationAnswer"
-          placeholder="Soraty eto ny valinteninao..."></textarea>
-      </div>
-
-      <button class="btn btn-primary" onclick="evaluateSimulation()">
-        🎯 Hamarino
-      </button>
-
-      <div id="simulationResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: ORDER -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="orderModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>🛒 Nouvelle Commande</h3>
-      <button class="close-btn" onclick="closeModal('orderModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="form-group">
-        <label>Client</label>
-        <input id="orderClient" placeholder="Anaran'ny client">
-      </div>
-
-      <div class="form-group">
-        <label>Produit</label>
-        <input id="orderProduct" placeholder="Produit">
-      </div>
-
-      <div class="form-group">
-        <label>Quantité</label>
-        <input id="orderQty" type="number" min="1" value="1">
-      </div>
-
-      <div class="form-group">
-        <label>Prix unitaire (Ar)</label>
-        <input id="orderUnitPrice" type="number" min="0" placeholder="10000">
-      </div>
-
-      <div class="form-group">
-        <label>Statut</label>
-        <select id="orderStatus">
-          <option value="pending">En attente</option>
-          <option value="paid">Payé</option>
-          <option value="completed">Terminé</option>
-          <option value="cancelled">Annulé</option>
-        </select>
-      </div>
-
-      <button class="btn btn-primary" onclick="makeOrder()">
-        🛒 Enregistrer
-      </button>
-
-      <div id="orderResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: RECEIPT -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="receiptModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>🧾 Reçu de Vente</h3>
-      <button class="close-btn" onclick="closeModal('receiptModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="form-group">
-        <label>Client</label>
-        <input id="receiptClient" placeholder="Nom du client">
-      </div>
-
-      <div class="form-group">
-        <label>Produit</label>
-        <input id="receiptProduct" placeholder="Produit">
-      </div>
-
-      <div class="form-group">
-        <label>Quantité</label>
-        <input id="receiptQty" type="number" min="1" value="1">
-      </div>
-
-      <div class="form-group">
-        <label>Prix unitaire (Ar)</label>
-        <input id="receiptUnitPrice" type="number" min="0" placeholder="10000">
-      </div>
-
-      <div class="form-group">
-        <label>Moyen de paiement</label>
-        <select id="receiptPayment">
-          <option>Espèces</option>
-          <option>MVola</option>
-          <option>Orange Money</option>
-          <option>Airtel Money</option>
-          <option>Virement</option>
-          <option>Autre</option>
-        </select>
-      </div>
-
-      <button class="btn btn-primary" onclick="makeReceipt()">
-        🧾 Créer Reçu
-      </button>
-
-      <div id="receiptResult"></div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: GUIDE -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="guideModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-      <h3>📚 Guide Vente</h3>
-      <button class="close-btn" onclick="closeModal('guideModal')">×</button>
-    </div>
-
-    <div class="modal-body">
-
-      <div class="card" style="box-shadow:none;">
-        <h3>1️⃣ Fantaro ny client</h3>
-        <p>
-          Aza manomboka amin'ny produit fotsiny.
-          Fantaro aloha izay ilain'ny client.
-        </p>
-      </div>
-
-      <div class="card" style="box-shadow:none;margin-top:10px;">
-        <h3>2️⃣ Asehoy ny valeur</h3>
-        <p>
-          Lazao izay tombony azony fa tsy prix fotsiny.
-        </p>
-      </div>
-
-      <div class="card" style="box-shadow:none;margin-top:10px;">
-        <h3>3️⃣ Valio ny objection</h3>
-        <p>
-          Aza miady amin'ny client. Henoy aloha ny antony.
-        </p>
-      </div>
-
-      <div class="card" style="box-shadow:none;margin-top:10px;">
-        <h3>4️⃣ Closing</h3>
-        <p>
-          Rehefa vonona ny client dia ataovy mazava ny commande,
-          paiement ary livraison.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- ========================================================= -->
-<!-- MODAL: REVIEW -->
-<!-- ========================================================= -->
-
-<div class="modal-overlay" id="reviewModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <h3>⭐ Hametraka Avis</h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('reviewModal')"
+      <div
+        id="reviewConnectionStatus"
+        class="notice blue"
+        style="text-align:left;"
       >
-        ×
-      </button>
+        ⏳ Mampifandray amin'ny Supabase...
+      </div>
 
     </div>
 
-    <div class="modal-body">
 
-      <div class="notice">
+    <div
+      class="grid grid-3"
+      id="reviewList"
+    >
+      <div class="empty">
+        Mampiditra avis...
+      </div>
+    </div>
 
-        🙏 Zarao amin'ny fahitsiana ny expérience-nao.
 
-        <br><br>
+    <div
+      class="card"
+      style="margin-top:25px;"
+    >
 
-        Hojerena aloha ny avis vao hiseho ampahibemaso
-        ao amin'ny site.
+      <h3>
+        ⭐ Hizara ny expérience-nao
+      </h3>
+
+      <p class="small muted">
+        Ny avis alefanao dia
+        <strong>pending</strong>
+        aloha ary hojeren'ny admin
+        vao hiseho ampahibemaso.
+      </p>
+
+
+      <div
+        class="grid grid-2"
+        style="margin-top:18px;"
+      >
+
+        <div class="form-group">
+
+          <label>
+            Anarana
+          </label>
+
+          <input
+            id="reviewName"
+            maxlength="80"
+            placeholder="Anaranao"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Évaluation
+          </label>
+
+          <select id="reviewRating">
+
+            <option value="5">
+              ⭐⭐⭐⭐⭐ — Excellent
+            </option>
+
+            <option value="4">
+              ⭐⭐⭐⭐ — Tsara
+            </option>
+
+            <option value="3">
+              ⭐⭐⭐ — Antonony
+            </option>
+
+            <option value="2">
+              ⭐⭐ — Mbola mila fanatsarana
+            </option>
+
+            <option value="1">
+              ⭐ — Tsy nahafa-po
+            </option>
+
+          </select>
+
+        </div>
 
       </div>
 
-      <div class="form-group">
-
-        <label for="reviewRating">
-          Naoty
-        </label>
-
-        <select id="reviewRating">
-
-          <option value="5">
-            ⭐⭐⭐⭐⭐ — Tena nahasoa
-          </option>
-
-          <option value="4">
-            ⭐⭐⭐⭐ — Nahafa-po
-          </option>
-
-          <option value="3">
-            ⭐⭐⭐ — Tsara
-          </option>
-
-          <option value="2">
-            ⭐⭐ — Mbola mila fanatsarana
-          </option>
-
-          <option value="1">
-            ⭐ — Tsy nahafa-po
-          </option>
-
-        </select>
-
-      </div>
 
       <div class="form-group">
 
-        <label for="reviewName">
-          Anarana / Prénom
-        </label>
-
-        <input
-          id="reviewName"
-          maxlength="80"
-          placeholder="Ohatra: Jean"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="reviewLearning">
+        <label>
           Inona no nianaranao?
         </label>
 
         <input
           id="reviewLearning"
-          placeholder="Ohatra: Technique de vente"
+          maxlength="300"
+          placeholder="Ex: Client cible sy publication"
         >
 
       </div>
 
+
       <div class="form-group">
 
-        <label for="reviewApplied">
+        <label>
           Inona no nampiharinao?
         </label>
 
-        <textarea
+        <input
           id="reviewApplied"
-          placeholder="Ohatra: Nampiasa ilay méthode rehefa niresaka tamin'ny client aho."
-        ></textarea>
+          maxlength="500"
+          placeholder="Ex: Nanao publication misy Hook + CTA"
+        >
 
       </div>
 
+
       <div class="form-group">
 
-        <label for="reviewResult">
-          Inona no vokatra azonao?
+        <label>
+          Inona ny vokatra?
         </label>
 
-        <textarea
+        <input
           id="reviewResult"
-          placeholder="Ohatra: Nahazo réponses bebe kokoa avy amin'ny prospects aho."
-        ></textarea>
+          maxlength="500"
+          placeholder="Ex: Nahazo prospects 10, réponses 4"
+        >
 
       </div>
 
+
       <div class="form-group">
 
-        <label for="reviewMessage">
-          Témoignage-nao
+        <label>
+          Témoignage
         </label>
 
         <textarea
           id="reviewMessage"
           maxlength="2000"
-          placeholder="Lazao amin'ny teny tsotra ny expérience-nao..."
+          placeholder="Lazao amin'ny teny fohy ny expérience-nao..."
         ></textarea>
 
       </div>
 
-      <div class="form-group">
 
-        <label style="display:flex;gap:8px;align-items:flex-start;font-weight:500;">
+      <label
+        style="
+          display:flex;
+          gap:9px;
+          align-items:flex-start;
+          font-size:13px;
+          color:var(--muted);
+        "
+      >
 
-          <input
-            type="checkbox"
-            id="reviewConsent"
-            style="width:auto;margin-top:4px;"
-          >
+        <input
+          type="checkbox"
+          id="reviewConsent"
+          style="width:auto;margin-top:5px;"
+        >
 
-          <span>
-            Manaiky hampiseho ity avis ity ao amin'ny site aho.
-          </span>
+        <span>
+          Manaiky aho fa azo aseho ampahibemaso
+          ao amin'ny site ity avis ity rehefa
+          voamarina.
+        </span>
 
-        </label>
+      </label>
 
-      </div>
-
-      <div id="reviewSubmitResult"></div>
 
       <div class="actions">
 
@@ -2317,12 +3243,1147 @@ footer p{
           ⭐ Alefa ny Avis
         </button>
 
-        <button
-          class="btn btn-light"
-          onclick="closeModal('reviewModal')"
+      </div>
+
+
+      <div id="reviewSubmitResult"></div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     FIOMPIANA
+========================================================= -->
+
+<section class="section" id="fiompiana">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <span class="badge gold">
+        🌱 TANTSAHA
+      </span>
+
+      <h2>
+        Vente mifandray amin'ny tontolon'ny Tantsaha
+      </h2>
+
+      <p>
+        Ny technique de vente dia azo ampiharina amin'ny
+        vokatra sy services samihafa.
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <h3>🐔 Akoho</h3>
+        <p>
+          Zanak'akoho, akoho gasy,
+          pondeuse, poulet de chair.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🐖 Kisoa</h3>
+        <p>
+          Vente, commande,
+          offre ary suivi client.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🍯 Tantely</h3>
+        <p>
+          Produit apicole,
+          pack, offre ary fidélisation.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🐐 Osy & Ondry</h3>
+        <p>
+          Prospection locale,
+          confiance ary négociation.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🐟 Trondro</h3>
+        <p>
+          Vente locale sy
+          commande mialoha.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>🌾 Vokatra fambolena</h3>
+        <p>
+          Vary, katsaka, legioma
+          ary vokatra hafa.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div
+      class="notice green"
+      style="margin-top:25px;"
+    >
+
+      <strong>
+        Mianatra → Mampihatra → Mahomby
+      </strong>
+
+      <br>
+
+      Ny tanjona dia ny hampifandray
+      ny fahalalana amin'ny pratique tena izy.
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     SUPPORT AVANCE
+========================================================= -->
+
+<section class="section alt" id="boky">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <span class="badge gold">
+        📘 SUPPORT AVANCÉ
+      </span>
+
+      <h2>
+        Guide Pratique Vente en Ligne & Vente Locale
+      </h2>
+
+      <p>
+        Rehefa vita ny fototra sy ny pratique,
+        ity no support fanampiny ho an'izay te hiditra lalindalina kokoa.
+      </p>
+
+    </div>
+
+
+    <div class="card book-card">
+
+      <div class="grid grid-2">
+
+        <div>
+
+          <span class="badge gold">
+            SUPPORT COMPLÉMENTAIRE
+          </span>
+
+          <h2 style="margin-top:12px;">
+            Vente Professionnelle
+          </h2>
+
+          <p style="margin-top:10px;">
+            Débutant → Professionnel
+          </p>
+
+          <div style="margin-top:15px;">
+
+            <span class="price">
+              5 000 Ar
+            </span>
+
+          </div>
+
+
+          <ul
+            class="feature-list"
+            style="margin-top:15px;"
+          >
+
+            <li>
+              Fototry ny vente professionnelle
+            </li>
+
+            <li>
+              Client cible
+            </li>
+
+            <li>
+              Offre & présentation
+            </li>
+
+            <li>
+              Publication
+            </li>
+
+            <li>
+              Prospection
+            </li>
+
+            <li>
+              Objections
+            </li>
+
+            <li>
+              Négociation
+            </li>
+
+            <li>
+              Closing
+            </li>
+
+            <li>
+              Commande & paiement
+            </li>
+
+            <li>
+              Suivi & fidélisation
+            </li>
+
+            <li>
+              Scripts de conversation
+            </li>
+
+            <li>
+              Challenge 7 jours
+            </li>
+
+          </ul>
+
+        </div>
+
+
+        <div>
+
+          <div class="notice">
+
+            <strong>
+              💡 Nahoana no support complémentaire?
+            </strong>
+
+            <br><br>
+
+            Tsy tiana hatao toy ny hoe
+            “mividiana boky dia izay”.
+
+            Ny formation sy ny pratique no fototra;
+            ity guide ity kosa dia fanampiana
+            hoentina miverimberina rehefa miasa.
+
+          </div>
+
+
+          <h3>
+            📱 Ahoana no ahazoana azy?
+          </h3>
+
+          <p
+            class="muted"
+            style="margin-top:8px;"
+          >
+            Mifandraisa amin'ny WhatsApp
+            raha mila fanazavana sy fomba fandoavana.
+          </p>
+
+
+          <div class="actions">
+
+            <a
+              class="btn btn-gold"
+              href="https://wa.me/261385651378?text=Salama%20tompoko%2C%20LIANA%20amin%27ny%20Guide%20Vente%20Professionnelle%205000%20Ar%20aho."
+              target="_blank"
+              rel="noopener"
+            >
+              💬 Hiresaka amin'ny WhatsApp
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div>
+
+        <h2>
+          🌱 Tantsaha Matihanina
+        </h2>
+
+        <p style="margin-top:8px;">
+          Mianatra • Mampihatra • Mahomby
+        </p>
+
+        <p style="margin-top:12px;">
+          Miara-miasa ho an'ny fampandrosoana
+          ny eny ambanivohitra isika.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Formation
+        </h3>
+
+        <p style="margin-top:8px;">
+          🎓 7 Jours
+        </p>
+
+        <p>
+          🧪 Vente Lab
+        </p>
+
+        <p>
+          📈 Retour & Évaluation
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Contact
+        </h3>
+
+        <p style="margin-top:8px;">
+          📱 +261 38 56 513 78
+        </p>
+
+        <p style="margin-top:7px;">
+          📘 Facebook
+        </p>
+
+        <div class="actions">
+
+          <a
+            class="btn btn-gold"
+            href="https://wa.me/261385651378"
+            target="_blank"
+            rel="noopener"
+          >
+            WhatsApp
+          </a>
+
+          <a
+            class="btn btn-light"
+            href="https://www.facebook.com/share/1Zfiu8oj3m/"
+            target="_blank"
+            rel="noopener"
+          >
+            Facebook
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+      © 2026 Tantsaha Matihanina / Auteur Freddy
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- =========================================================
+     MODAL — PROFIT
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="profitModal"
+  onclick="overlayClose(event,'profitModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        🧮 Kajy Prix & Tombony
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('profitModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>
+          Nom du produit
+        </label>
+
+        <input
+          id="profitProduct"
+          placeholder="Ex: Zanaka akoho Gasy"
         >
-          Hanafoana
-        </button>
+
+      </div>
+
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>
+            Coût total (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="profitCost"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Prix de vente total (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="profitSale"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Quantité
+        </label>
+
+        <input
+          type="number"
+          id="profitQty"
+          min="1"
+          value="1"
+        >
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="calculateProfit()"
+      >
+        🧮 Kajio
+      </button>
+
+
+      <div id="profitResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL — ANIMAL
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="animalModal"
+  onclick="overlayClose(event,'animalModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        🐔 Kajy Fiompiana
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('animalModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>
+          Karazana
+        </label>
+
+        <select id="animalType">
+
+          <option>
+            Akoho Gasy
+          </option>
+
+          <option>
+            Pondeuse
+          </option>
+
+          <option>
+            Poulet de chair
+          </option>
+
+          <option>
+            Kisoa
+          </option>
+
+          <option>
+            Osy
+          </option>
+
+          <option>
+            Ondry
+          </option>
+
+          <option>
+            Bitro
+          </option>
+
+          <option>
+            Trondro
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>
+            Isan'ny biby
+          </label>
+
+          <input
+            type="number"
+            id="animalQty"
+            min="1"
+            value="10"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Coût total (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="animalCost"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Vola andrasana amin'ny vente (Ar)
+        </label>
+
+        <input
+          type="number"
+          id="animalRevenue"
+          min="0"
+          value="0"
+        >
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="calculateAnimal()"
+      >
+        🧮 Kajio
+      </button>
+
+
+      <div id="animalResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL — OFFER
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="offerModal"
+  onclick="overlayClose(event,'offerModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        💡 Créer une Offre
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('offerModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>
+          Produit / Service
+        </label>
+
+        <input
+          id="offerProduct"
+          placeholder="Ex: Pack zanak'akoho"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Client cible
+        </label>
+
+        <input
+          id="offerTarget"
+          placeholder="Ex: Olona vao manomboka miompy"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Problème / besoin
+        </label>
+
+        <input
+          id="offerProblem"
+          placeholder="Ex: Mitady zanak'akoho salama"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Solution / valeur
+        </label>
+
+        <textarea
+          id="offerValue"
+          placeholder="Inona no tena azon'ny client?"
+        ></textarea>
+
+      </div>
+
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>
+            Prix (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="offerPrice"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Bonus / avantage
+          </label>
+
+          <input
+            id="offerBonus"
+            placeholder="Ex: Conseil après-vente"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          CTA
+        </label>
+
+        <input
+          id="offerCTA"
+          value="Mandefasa message raha liana"
+        >
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="createOffer()"
+      >
+        💡 Mamorona Offre
+      </button>
+
+
+      <div id="offerResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL — PUBLICATION
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="publicationModal"
+  onclick="overlayClose(event,'publicationModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        📢 Publication Lab
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('publicationModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="notice">
+
+        <strong>
+          Structure:
+        </strong>
+
+        Hook → Problème → Solution →
+        Offre → Preuve → Prix → CTA
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Canal
+        </label>
+
+        <select id="publicationChannel">
+
+          <option>
+            Facebook
+          </option>
+
+          <option>
+            WhatsApp
+          </option>
+
+          <option>
+            Marketplace
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Hook
+        </label>
+
+        <input
+          id="publicationHook"
+          placeholder="Ex: Mitady zanak'akoho salama ve ianao?"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Problème
+        </label>
+
+        <input
+          id="publicationProblem"
+          placeholder="Lazao ny olana"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Produit / Solution
+        </label>
+
+        <input
+          id="publicationProduct"
+          placeholder="Produit na service"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Offre
+        </label>
+
+        <input
+          id="publicationOffer"
+          placeholder="Inona no atolotra?"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Preuve / confiance
+        </label>
+
+        <input
+          id="publicationProof"
+          placeholder="Ex: Disponible / suivi / expérience..."
+        >
+
+      </div>
+
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>
+            Prix (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="publicationPrice"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            CTA
+          </label>
+
+          <input
+            id="publicationCTA"
+            value="Mandefasa MP raha liana"
+          >
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="generatePublication()"
+      >
+        📢 Générer
+      </button>
+
+
+      <div id="publicationResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL — SIMULATION
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="simulationModal"
+  onclick="overlayClose(event,'simulationModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        💬 Simulation Client
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('simulationModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="scenario">
+
+        <span class="badge gold">
+          SCÉNARIO
+        </span>
+
+        <h3 style="margin-top:10px;">
+          Client:
+        </h3>
+
+        <p>
+          “Lafo be izany tompoko.
+          Mbola hahita hafa aloha aho.”
+        </p>
+
+      </div>
+
+
+      <div class="scenario">
+
+        <strong>
+          ❌ Aza atao:
+        </strong>
+
+        <p style="margin-top:6px;">
+          “Ka raha lafo aminao dia tsy afaka mividy ianao.”
+        </p>
+
+      </div>
+
+
+      <div class="scenario">
+
+        <strong>
+          🎯 Eritrereto:
+        </strong>
+
+        <p style="margin-top:6px;">
+          Inona no tena antony?
+          Prix ve?
+          Tsy matoky ve?
+          Tsy hitany ve ny valeur?
+          Sa mila comparaison?
+        </p>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Soraty ny valinteninao
+        </label>
+
+        <textarea
+          id="simulationAnswer"
+          placeholder="Inona no havalinao?"
+        ></textarea>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="evaluateSimulation()"
+      >
+        🎯 Évaluer
+      </button>
+
+
+      <div id="simulationResult"></div>
+
+
+      <div style="margin-top:25px;">
+
+        <h3>
+          🧪 Scénarios hafa
+        </h3>
+
+
+        <div class="lesson-block">
+
+          <strong>
+            1. “Mbola hieritreritra aho.”
+          </strong>
+
+          <p>
+            Fantaro izay mbola mampisalasala azy.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <strong>
+            2. “Misy remise ve?”
+          </strong>
+
+          <p>
+            Aza manome remise avy hatrany.
+            Hazavao aloha ny valeur.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <strong>
+            3. “Aiza no misy anareo?”
+          </strong>
+
+          <p>
+            Valio mazava ny toerana sy ny
+            fomba hifandraisana / livraison.
+          </p>
+
+        </div>
+
+
+        <div class="lesson-block">
+
+          <strong>
+            4. “Alefaso aloha dia mandoa aho.”
+          </strong>
+
+          <p>
+            Hazavao am-pahendrena ny
+            modalité de paiement sy ny fiarovana
+            ny roa tonta.
+          </p>
+
+        </div>
 
       </div>
 
@@ -2333,49 +4394,740 @@ footer p{
 </div>
 
 
-<!-- ========================================================= -->
-<!-- SUPABASE -->
-<!-- ========================================================= -->
+<!-- =========================================================
+     MODAL — ORDER
+========================================================= -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<div
+  class="modal-overlay"
+  id="orderModal"
+  onclick="overlayClose(event,'orderModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        🛒 Commande
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('orderModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>
+          Client
+        </label>
+
+        <input
+          id="orderClient"
+          placeholder="Nom du client"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Produit
+        </label>
+
+        <input
+          id="orderProduct"
+          placeholder="Produit"
+        >
+
+      </div>
+
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>
+            Quantité
+          </label>
+
+          <input
+            type="number"
+            id="orderQty"
+            min="1"
+            value="1"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Prix unitaire (Ar)
+          </label>
+
+          <input
+            type="number"
+            id="orderUnitPrice"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Statut
+        </label>
+
+        <select id="orderStatus">
+
+          <option value="pending">
+            Pending
+          </option>
+
+          <option value="confirmed">
+            Confirmed
+          </option>
+
+          <option value="paid">
+            Paid
+          </option>
+
+          <option value="completed">
+            Completed
+          </option>
+
+          <option value="cancelled">
+            Cancelled
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="makeOrder()"
+      >
+        🛒 Tehirizo
+      </button>
+
+
+      <div id="orderResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL — RECEIPT
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="receiptModal"
+  onclick="overlayClose(event,'receiptModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        🧾 Reçu de Vente
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('receiptModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>
+          Client
+        </label>
+
+        <input
+          id="receiptClient"
+          placeholder="Nom du client"
+        >
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Produit
+        </label>
+
+        <input
+          id="receiptProduct"
+          placeholder="Produit"
+        >
+
+      </div>
+
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>
+            Quantité
+          </label>
+
+          <input
+            type="number"
+            id="receiptQty"
+            min="1"
+            value="1"
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Prix unitaire
+          </label>
+
+          <input
+            type="number"
+            id="receiptUnitPrice"
+            min="0"
+            value="0"
+          >
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Paiement
+        </label>
+
+        <select id="receiptPayment">
+
+          <option>
+            MVola
+          </option>
+
+          <option>
+            Orange Money
+          </option>
+
+          <option>
+            Airtel Money
+          </option>
+
+          <option>
+            Espèces
+          </option>
+
+          <option>
+            Autre
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <button
+        class="btn btn-primary"
+        onclick="makeReceipt()"
+      >
+        🧾 Générer Reçu
+      </button>
+
+
+      <div id="receiptResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL — GUIDE
+========================================================= -->
+
+<div
+  class="modal-overlay"
+  id="guideModal"
+  onclick="overlayClose(event,'guideModal')"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>
+        📚 Guide Vente
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('guideModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="lesson-block">
+
+        <h4>
+          1️⃣ Fantaro ny client
+        </h4>
+
+        <p>
+          Aza manomboka amin'ny produit.
+          Atombohy amin'ny olona sy ny besoin-ny.
+        </p>
+
+      </div>
+
+
+      <div class="lesson-block">
+
+        <h4>
+          2️⃣ Hazavao ny valeur
+        </h4>
+
+        <p>
+          Tsy hoe “Ity ny produit”.
+          Fa hoe “Ity no olana vahan'ity produit ity”.
+        </p>
+
+      </div>
+
+
+      <div class="lesson-block">
+
+        <h4>
+          3️⃣ Mamorona offre
+        </h4>
+
+        <p>
+          Valeur + prix + avantage + CTA.
+        </p>
+
+      </div>
+
+
+      <div class="lesson-block">
+
+        <h4>
+          4️⃣ Publication
+        </h4>
+
+        <p>
+          Hook → Problème → Solution →
+          Offre → Preuve → Prix → CTA.
+        </p>
+
+      </div>
+
+
+      <div class="lesson-block">
+
+        <h4>
+          5️⃣ Conversation
+        </h4>
+
+        <p>
+          Henoy aloha.
+          Mametraha fanontaniana.
+          Avy eo vao manolotra.
+        </p>
+
+      </div>
+
+
+      <div class="lesson-block">
+
+        <h4>
+          6️⃣ Objection
+        </h4>
+
+        <p>
+          Tsy ady ny objection.
+          Izy io dia information.
+        </p>
+
+      </div>
+
+
+      <div class="lesson-block">
+
+        <h4>
+          7️⃣ Suivi
+        </h4>
+
+        <p>
+          Client tsy tokony ho very
+          rehefa vita ny transaction.
+        </p>
+
+      </div>
+
+
+      <div class="notice green">
+
+        <strong>
+          Mianatra → Mampihatra → Mahomby
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
 <script>
 
-/* ============================================================
-   SUPABASE CONFIG
-   Tantsaha Matihanina
-============================================================ */
+/* =========================================================
+   CONFIG
+========================================================= */
+
+const STORAGE_KEY =
+  "tm_vente_lab_v4";
+
+const PROGRESS_KEY =
+  "tm_vente_lab_progress_v4";
+
+const EVALUATION_KEY =
+  "tm_vente_lab_evaluations_v4";
+
+
+/* =========================================================
+   SUPABASE
+========================================================= */
 
 const SUPABASE_URL =
   "https://sdzybetralbaincrxddf.supabase.co";
 
-const SUPABASE_PUBLISHABLE_KEY =
+const SUPABASE_KEY =
   "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+
+let supabaseClient = null;
+
+
+/*
+  Chargement sécurisé du client Supabase.
+  Raha tsy misy connexion Internet,
+  mbola mandeha foana ny partie locale.
+*/
+
+const supabaseScript =
+  document.createElement("script");
+
+supabaseScript.src =
+  "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+
+supabaseScript.onload =
+  function(){
+
+    try{
+
+      if(
+        window.supabase &&
+        window.supabase.createClient
+      ){
+
+        supabaseClient =
+          window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+          );
+
+        loadApprovedReviews();
+
+      }
+
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  };
+
+document.head.appendChild(
+  supabaseScript
+);
+
+
+/* =========================================================
+   BASIC HELPERS
+========================================================= */
+
+function money(value){
+
+  const number =
+    Number(value) || 0;
+
+  return (
+    number.toLocaleString(
+      "fr-FR"
+    ) + " Ar"
   );
 
+}
 
-/* ============================================================
-   LOCAL APP DATA
-============================================================ */
 
-const STORAGE_KEY =
-  "tm_vente_lab_v10";
+function escapeHtml(value){
 
-const PROGRESS_KEY =
-  "tm_vente_lab_progress_v1";
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
+}
+
+
+function formatDate(date){
+
+  if(!date){
+    return "";
+  }
+
+  try{
+
+    return new Date(date)
+      .toLocaleDateString(
+        "fr-FR"
+      );
+
+  }catch(error){
+
+    return "";
+
+  }
+
+}
+
+
+function copyText(text){
+
+  if(
+    navigator.clipboard &&
+    navigator.clipboard.writeText
+  ){
+
+    navigator.clipboard
+      .writeText(text)
+      .then(function(){
+
+        alert(
+          "✅ Voaray tao amin'ny presse-papier."
+        );
+
+      })
+      .catch(function(){
+
+        fallbackCopy(text);
+
+      });
+
+  }else{
+
+    fallbackCopy(text);
+
+  }
+
+}
+
+
+function fallbackCopy(text){
+
+  const textarea =
+    document.createElement("textarea");
+
+  textarea.value =
+    text;
+
+  document.body.appendChild(
+    textarea
+  );
+
+  textarea.select();
+
+  try{
+
+    document.execCommand("copy");
+
+    alert(
+      "✅ Voaray tao amin'ny presse-papier."
+    );
+
+  }catch(error){
+
+    alert(
+      "Tsy afaka copier automatique. Select-o dia copier-o."
+    );
+
+  }
+
+  textarea.remove();
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function toggleMenu(){
+
+  const nav =
+    document.getElementById(
+      "navLinks"
+    );
+
+  nav.classList.toggle(
+    "open"
+  );
+
+}
+
+
+function closeMenu(){
+
+  const nav =
+    document.getElementById(
+      "navLinks"
+    );
+
+  nav.classList.remove(
+    "open"
+  );
+
+}
+
+
+function openModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(!modal){
+    return;
+  }
+
+  modal.classList.add(
+    "active"
+  );
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(!modal){
+    return;
+  }
+
+  modal.classList.remove(
+    "active"
+  );
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+function overlayClose(event,id){
+
+  if(
+    event.target.id === id
+  ){
+
+    closeModal(id);
+
+  }
+
+}
+
+
+function scrollToTool(id){
+
+  openModal(id);
+
+}
+
+
+/* =========================================================
+   LOCAL DATA
+========================================================= */
 
 function defaultData(){
 
   return {
+
     calculations:[],
+
     orders:[],
-    receipts:[]
+
+    receipts:[],
+
+    evaluations:[]
+
   };
 
 }
@@ -2385,10 +5137,51 @@ function loadData(){
 
   try{
 
-    return JSON.parse(
-      localStorage.getItem(STORAGE_KEY)
-      || JSON.stringify(defaultData())
-    );
+    const raw =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
+
+    if(!raw){
+
+      return defaultData();
+
+    }
+
+    const data =
+      JSON.parse(raw);
+
+    return {
+
+      calculations:
+        Array.isArray(
+          data.calculations
+        )
+        ? data.calculations
+        : [],
+
+      orders:
+        Array.isArray(
+          data.orders
+        )
+        ? data.orders
+        : [],
+
+      receipts:
+        Array.isArray(
+          data.receipts
+        )
+        ? data.receipts
+        : [],
+
+      evaluations:
+        Array.isArray(
+          data.evaluations
+        )
+        ? data.evaluations
+        : []
+
+    };
 
   }catch(error){
 
@@ -2409,226 +5202,76 @@ function saveData(data){
 }
 
 
-/* ============================================================
-   UTILITIES
-============================================================ */
-
-function money(value){
-
-  const number =
-    Number(value) || 0;
-
-  return number.toLocaleString(
-    "fr-FR"
-  ) + " Ar";
-
-}
-
-
-function escapeHtml(value){
-
-  return String(value ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-function formatDate(date){
-
-  try{
-
-    return new Date(date).toLocaleDateString(
-      "fr-FR",
-      {
-        day:"2-digit",
-        month:"2-digit",
-        year:"numeric"
-      }
-    );
-
-  }catch(error){
-
-    return "";
-
-  }
-
-}
-
-
-/* ============================================================
-   MOBILE MENU
-============================================================ */
-
-function toggleMenu(){
-
-  document
-    .getElementById("navLinks")
-    .classList.toggle("open");
-
-}
-
-
-function closeMenu(){
-
-  document
-    .getElementById("navLinks")
-    .classList.remove("open");
-
-}
-
-
-/* ============================================================
-   MODALS
-============================================================ */
-
-function openModal(id){
-
-  const modal =
-    document.getElementById(id);
-
-  if(modal){
-
-    modal.classList.add("active");
-
-  }
-
-}
-
-
-function closeModal(id){
-
-  const modal =
-    document.getElementById(id);
-
-  if(modal){
-
-    modal.classList.remove("active");
-
-  }
-
-}
-
-
-document.addEventListener(
-  "click",
-  function(event){
-
-    if(
-      event.target.classList.contains(
-        "modal-overlay"
-      )
-    ){
-
-      event.target.classList.remove(
-        "active"
-      );
-
-    }
-
-  }
-);
-
-
-/* ============================================================
-   COPY
-============================================================ */
-
-async function copyText(text){
-
-  try{
-
-    await navigator.clipboard.writeText(text);
-
-    alert("✅ Voacopyé.");
-
-  }catch(error){
-
-    const textarea =
-      document.createElement("textarea");
-
-    textarea.value = text;
-
-    document.body.appendChild(
-      textarea
-    );
-
-    textarea.select();
-
-    document.execCommand("copy");
-
-    textarea.remove();
-
-    alert("✅ Voacopyé.");
-
-  }
-
-}
-
-
-/* ============================================================
-   PROFIT
-============================================================ */
+/* =========================================================
+   PROFIT CALCULATOR
+========================================================= */
 
 function calculateProfit(){
 
   const product =
-    document.getElementById("profitProduct")
-      .value.trim();
+    document
+      .getElementById(
+        "profitProduct"
+      )
+      .value
+      .trim();
 
   const cost =
     Number(
-      document.getElementById("profitCost")
+      document
+        .getElementById(
+          "profitCost"
+        )
         .value
     ) || 0;
 
-  const price =
+  const sale =
     Number(
-      document.getElementById("profitPrice")
+      document
+        .getElementById(
+          "profitSale"
+        )
         .value
     ) || 0;
 
   const qty =
     Number(
-      document.getElementById("profitQty")
+      document
+        .getElementById(
+          "profitQty"
+        )
         .value
     ) || 1;
 
+
   if(!product){
 
-    alert("Ampidiro ny produit.");
+    alert(
+      "Ampidiro aloha ny produit."
+    );
 
     return;
 
   }
 
-  if(cost < 0 || price < 0 || qty <= 0){
-
-    alert("Hamarino ny isa.");
-
-    return;
-
-  }
-
-  const totalCost =
-    cost * qty;
-
-  const revenue =
-    price * qty;
 
   const profit =
-    revenue - totalCost;
+    sale - cost;
 
   const margin =
-    revenue > 0
-      ? (profit / revenue) * 100
+    sale > 0
+      ? (profit / sale) * 100
       : 0;
+
+  const unitCost =
+    cost / qty;
+
+  const unitSale =
+    sale / qty;
 
   const data =
     loadData();
+
 
   data.calculations.unshift({
 
@@ -2638,32 +5281,39 @@ function calculateProfit(){
 
     cost,
 
-    price,
+    sale,
 
     qty,
-
-    totalCost,
-
-    revenue,
 
     profit,
 
     margin,
 
-    date:new Date().toISOString()
+    date:
+      new Date().toISOString()
 
   });
 
+
   data.calculations =
-    data.calculations.slice(0,50);
+    data.calculations.slice(
+      0,
+      100
+    );
+
 
   saveData(data);
+
 
   document.getElementById(
     "profitResult"
   ).innerHTML = `
 
-    <div class="result ${profit >= 0 ? "profit" : ""}">
+    <div class="result ${
+      profit >= 0
+        ? "profit"
+        : ""
+    }">
 
       <strong>
         ${escapeHtml(product)}
@@ -2672,16 +5322,135 @@ function calculateProfit(){
       <br><br>
 
       Coût total:
-      <strong>${money(totalCost)}</strong>
+      <strong>${money(cost)}</strong>
 
       <br>
 
-      CA:
+      Vente totale:
+      <strong>${money(sale)}</strong>
+
+      <br>
+
+      Coût unitaire:
+      <strong>${money(unitCost)}</strong>
+
+      <br>
+
+      Prix unitaire:
+      <strong>${money(unitSale)}</strong>
+
+      <br>
+
+      ${profit >= 0
+        ? "Tombony"
+        : "Fatiantoka"}:
+
+      <strong>
+        ${money(profit)}
+      </strong>
+
+      <br>
+
+      Marge:
+      <strong>
+        ${margin.toFixed(2)}%
+      </strong>
+
+    </div>
+
+  `;
+
+
+  refreshDashboard();
+
+}
+
+
+/* =========================================================
+   ANIMAL CALCULATOR
+========================================================= */
+
+function calculateAnimal(){
+
+  const type =
+    document
+      .getElementById(
+        "animalType"
+      )
+      .value;
+
+  const qty =
+    Number(
+      document
+        .getElementById(
+          "animalQty"
+        )
+        .value
+    ) || 1;
+
+  const cost =
+    Number(
+      document
+        .getElementById(
+          "animalCost"
+        )
+        .value
+    ) || 0;
+
+  const revenue =
+    Number(
+      document
+        .getElementById(
+          "animalRevenue"
+        )
+        .value
+    ) || 0;
+
+
+  const profit =
+    revenue - cost;
+
+  const margin =
+    revenue > 0
+      ? (profit / revenue) * 100
+      : 0;
+
+
+  document.getElementById(
+    "animalResult"
+  ).innerHTML = `
+
+    <div class="result ${
+      profit >= 0
+        ? "profit"
+        : ""
+    }">
+
+      <strong>
+        ${escapeHtml(type)}
+      </strong>
+
+      <br><br>
+
+      Isan:
+      <strong>${qty}</strong>
+
+      <br>
+
+      Coût:
+      <strong>${money(cost)}</strong>
+
+      <br>
+
+      Vola andrasana:
       <strong>${money(revenue)}</strong>
 
       <br>
 
-      Tombony:
+      ${profit >= 0
+        ? "Tombony"
+        : "Fatiantoka"}:
+
       <strong>${money(profit)}</strong>
 
       <br>
@@ -2693,191 +5462,111 @@ function calculateProfit(){
 
   `;
 
-  refreshDashboard();
-
 }
 
 
-/* ============================================================
-   ANIMAL
-============================================================ */
-
-function calculateAnimal(){
-
-  const type =
-    document.getElementById("animalType")
-      .value;
-
-  const qty =
-    Number(
-      document.getElementById("animalQty")
-        .value
-    ) || 1;
-
-  const cost =
-    Number(
-      document.getElementById("animalCost")
-        .value
-    ) || 0;
-
-  const revenue =
-    Number(
-      document.getElementById("animalRevenue")
-        .value
-    ) || 0;
-
-  const profit =
-    revenue - cost;
-
-  const unitCost =
-    qty > 0
-      ? cost / qty
-      : 0;
-
-  const unitRevenue =
-    qty > 0
-      ? revenue / qty
-      : 0;
-
-  const unitProfit =
-    qty > 0
-      ? profit / qty
-      : 0;
-
-  const data =
-    loadData();
-
-  data.calculations.unshift({
-
-    id:Date.now(),
-
-    product:"Fiompiana - " + type,
-
-    cost,
-
-    price:unitRevenue,
-
-    qty,
-
-    totalCost:cost,
-
-    revenue,
-
-    profit,
-
-    margin:
-      revenue > 0
-        ? (profit / revenue) * 100
-        : 0,
-
-    date:new Date().toISOString()
-
-  });
-
-  data.calculations =
-    data.calculations.slice(0,50);
-
-  saveData(data);
-
-  document.getElementById(
-    "animalResult"
-  ).innerHTML = `
-
-    <div class="result ${profit >= 0 ? "profit" : ""}">
-
-      <strong>
-        ${escapeHtml(type)}
-      </strong>
-
-      <br><br>
-
-      Isan'ny biby:
-      <strong>${qty}</strong>
-
-      <br>
-
-      Coût / biby:
-      <strong>${money(unitCost)}</strong>
-
-      <br>
-
-      Vente / biby:
-      <strong>${money(unitRevenue)}</strong>
-
-      <br>
-
-      Tombony / biby:
-      <strong>${money(unitProfit)}</strong>
-
-      <br><br>
-
-      Tombony total:
-      <strong>${money(profit)}</strong>
-
-    </div>
-
-  `;
-
-  refreshDashboard();
-
-}
-
-
-/* ============================================================
+/* =========================================================
    OFFER
-============================================================ */
+========================================================= */
 
 function createOffer(){
 
   const product =
-    document.getElementById("offerProduct")
-      .value.trim();
+    document
+      .getElementById(
+        "offerProduct"
+      )
+      .value
+      .trim();
 
   const target =
-    document.getElementById("offerTarget")
-      .value.trim();
+    document
+      .getElementById(
+        "offerTarget"
+      )
+      .value
+      .trim();
+
+  const problem =
+    document
+      .getElementById(
+        "offerProblem"
+      )
+      .value
+      .trim();
 
   const value =
-    document.getElementById("offerValue")
-      .value.trim();
+    document
+      .getElementById(
+        "offerValue"
+      )
+      .value
+      .trim();
 
   const price =
     Number(
-      document.getElementById("offerPrice")
+      document
+        .getElementById(
+          "offerPrice"
+        )
         .value
     ) || 0;
 
   const bonus =
-    document.getElementById("offerBonus")
-      .value.trim();
+    document
+      .getElementById(
+        "offerBonus"
+      )
+      .value
+      .trim();
 
-  if(!product || !target || !value){
+  const cta =
+    document
+      .getElementById(
+        "offerCTA"
+      )
+      .value
+      .trim();
+
+
+  if(
+    !product ||
+    !target ||
+    !value
+  ){
 
     alert(
-      "Fenoy aloha ny produit, client cible ary valeur."
+      "Fenoy farafahakeliny ny produit, client cible ary valeur."
     );
 
     return;
 
   }
 
+
   const text =
 
-`🌱 ${product}
+`💡 OFFRE
+
+🌱 Produit:
+${product}
 
 🎯 Ho an'ny:
 ${target}
 
-✨ Tombony:
+❗ Olana:
+${problem || "—"}
+
+✅ Solution / Valeur:
 ${value}
+
+🎁 Bonus:
+${bonus || "—"}
 
 💰 Prix:
 ${money(price)}
 
-🎁 Condition:
-${bonus || "Araka ny fifanarahana"}
-
-📩 Raha liana ianao dia manorata aminay.`;
+📩 ${cta}`;
 
 
   document.getElementById(
@@ -2886,17 +5575,15 @@ ${bonus || "Araka ny fifanarahana"}
 
     <div class="result">
 
-      <strong>Offre vonona:</strong>
-
-      <div
-        id="offerCopyTarget"
-        style="white-space:pre-line;margin-top:10px;"
-      >
-        ${escapeHtml(text)}
-      </div>
+      <pre
+        style="
+          white-space:pre-wrap;
+          font-family:inherit;
+        "
+      >${escapeHtml(text)}</pre>
 
       <button
-        class="btn btn-light"
+        class="btn btn-primary"
         style="margin-top:12px"
         onclick='copyText(${JSON.stringify(text)})'
       >
@@ -2910,49 +5597,85 @@ ${bonus || "Araka ny fifanarahana"}
 }
 
 
-/* ============================================================
+/* =========================================================
    PUBLICATION
-============================================================ */
+========================================================= */
 
-function createPublication(){
+function generatePublication(){
 
   const channel =
-    document.getElementById(
-      "publicationChannel"
-    ).value;
+    document
+      .getElementById(
+        "publicationChannel"
+      )
+      .value;
+
+  const hook =
+    document
+      .getElementById(
+        "publicationHook"
+      )
+      .value
+      .trim();
+
+  const problem =
+    document
+      .getElementById(
+        "publicationProblem"
+      )
+      .value
+      .trim();
 
   const product =
-    document.getElementById(
-      "publicationProduct"
-    ).value.trim();
-
-  const target =
-    document.getElementById(
-      "publicationTarget"
-    ).value.trim();
+    document
+      .getElementById(
+        "publicationProduct"
+      )
+      .value
+      .trim();
 
   const offer =
-    document.getElementById(
-      "publicationOffer"
-    ).value.trim();
+    document
+      .getElementById(
+        "publicationOffer"
+      )
+      .value
+      .trim();
+
+  const proof =
+    document
+      .getElementById(
+        "publicationProof"
+      )
+      .value
+      .trim();
 
   const price =
     Number(
-      document.getElementById(
-        "publicationPrice"
-      ).value
+      document
+        .getElementById(
+          "publicationPrice"
+        )
+        .value
     ) || 0;
 
-  const message =
-    document.getElementById(
-      "publicationMessage"
-    ).value.trim();
+  const cta =
+    document
+      .getElementById(
+        "publicationCTA"
+      )
+      .value
+      .trim();
 
 
-  if(!product || !offer){
+  if(
+    !hook ||
+    !product ||
+    !offer
+  ){
 
     alert(
-      "Fenoy aloha ny produit sy ny offre."
+      "Fenoy farafahakeliny ny Hook, produit ary offre."
     );
 
     return;
@@ -2962,20 +5685,24 @@ function createPublication(){
 
   const text =
 
-`📢 ${offer}
+`${hook}
 
-🌱 Produit:
+❗ ${problem || "Manana olana ve ianao amin'ity?"}
+
+✅ Vahaolana:
 ${product}
 
-🎯 Ho an'ny:
-${target || "Mpanjifa liana"}
+💡 Offre:
+${offer}
 
-💰 Vidiny:
+${proof
+  ? "🔎 " + proof
+  : ""}
+
+💰 Prix:
 ${money(price)}
 
-${message}
-
-📩 Raha liana ianao dia mandefasa message.
+📩 ${cta}
 
 #TantsahaMatihanina`;
 
@@ -2990,11 +5717,13 @@ ${message}
         ${escapeHtml(channel)}
       </span>
 
-      <div
-        style="white-space:pre-line;margin-top:12px;"
-      >
-        ${escapeHtml(text)}
-      </div>
+      <pre
+        style="
+          white-space:pre-wrap;
+          font-family:inherit;
+          margin-top:12px;
+        "
+      >${escapeHtml(text)}</pre>
 
       <div class="actions">
 
@@ -3005,14 +5734,6 @@ ${message}
           📋 Copier
         </button>
 
-        <a
-          class="btn btn-light"
-          href="#retour"
-          onclick="closeModal('publicationModal')"
-        >
-          📊 Hanao Retour
-        </a>
-
       </div>
 
     </div>
@@ -3022,16 +5743,20 @@ ${message}
 }
 
 
-/* ============================================================
+/* =========================================================
    SIMULATION
-============================================================ */
+========================================================= */
 
 function evaluateSimulation(){
 
   const answer =
-    document.getElementById(
-      "simulationAnswer"
-    ).value.trim();
+    document
+      .getElementById(
+        "simulationAnswer"
+      )
+      .value
+      .trim();
+
 
   if(!answer){
 
@@ -3047,48 +5772,91 @@ function evaluateSimulation(){
   const lower =
     answer.toLowerCase();
 
+
   let score = 0;
 
-  if(
-    lower.includes("lafo") ||
-    lower.includes("prix")
-  ){
+  const goodSignals = [
+
+    "azoko",
+
+    "fantatro",
+
+    "inona",
+
+    "antony",
+
+    "budget",
+
+    "besoin",
+
+    "tombony",
+
+    "valeur",
+
+    "qualité",
+
+    "mahazo",
+
+    "maninona"
+
+  ];
+
+
+  goodSignals.forEach(
+    function(word){
+
+      if(
+        lower.includes(word)
+      ){
+
+        score++;
+
+      }
+
+    }
+  );
+
+
+  const hasRespect =
+    lower.includes("tompoko") ||
+    lower.includes("azafady") ||
+    lower.includes("misaotra");
+
+
+  if(hasRespect){
 
     score++;
 
   }
 
-  if(
-    lower.includes("tombony") ||
-    lower.includes("valeur") ||
-    lower.includes("qualité")
-  ){
 
-    score++;
-
-  }
-
-  if(
-    lower.includes("inona") ||
-    lower.includes("izay")
-  ){
-
-    score++;
-
-  }
+  let level;
+  let advice;
 
 
-  let message = "";
+  if(score >= 4){
 
-  if(score >= 2){
+    level =
+      "🟢 Tsara";
 
-    message =
-      "🟢 Tsara. Miezaka mamaly ny objection ianao ary mampiditra valeur.";
+    advice =
+      "Mihaino, mitady ny tena objection ary mampifandray amin'ny valeur ianao. Tohizo.";
+
+  }else if(score >= 2){
+
+    level =
+      "🟡 Antonony";
+
+    advice =
+      "Misy tsara, fa aza miresaka prix fotsiny. Mametraha fanontaniana hahafantarana ny tena antony.";
 
   }else{
 
-    message =
-      "🟡 Mbola mila fanazaran-tena. Aza miady amin'ny prix fotsiny; fantaro aloha ny antony mahatonga azy hilaza hoe lafo.";
+    level =
+      "🔴 Mila fanazaran-tena";
+
+    advice =
+      "Aza mamaly avy hatrany amin'ny remise. Henoy aloha, fantaro ny olana, avy eo asehoy ny valeur.";
 
   }
 
@@ -3100,13 +5868,30 @@ function evaluateSimulation(){
     <div class="result">
 
       <strong>
-        ${message}
+        ${level}
+      </strong>
+
+      <br>
+
+      Score:
+      <strong>
+        ${score}
       </strong>
 
       <p style="margin-top:10px;">
-        Fitsipika:
-        Henoy → Fantaro → Valio → Tariho amin'ny solution.
+        ${escapeHtml(advice)}
       </p>
+
+      <div class="notice green">
+
+        <strong>
+          Méthode:
+        </strong>
+
+        Henoy → Fantaro → Valio →
+        Confirm → Close
+
+      </div>
 
     </div>
 
@@ -3115,43 +5900,58 @@ function evaluateSimulation(){
 }
 
 
-/* ============================================================
+/* =========================================================
    ORDER
-============================================================ */
+========================================================= */
 
 function makeOrder(){
 
   const client =
-    document.getElementById(
-      "orderClient"
-    ).value.trim();
+    document
+      .getElementById(
+        "orderClient"
+      )
+      .value
+      .trim();
 
   const product =
-    document.getElementById(
-      "orderProduct"
-    ).value.trim();
+    document
+      .getElementById(
+        "orderProduct"
+      )
+      .value
+      .trim();
 
   const qty =
     Number(
-      document.getElementById(
-        "orderQty"
-      ).value
+      document
+        .getElementById(
+          "orderQty"
+        )
+        .value
     ) || 1;
 
   const unitPrice =
     Number(
-      document.getElementById(
-        "orderUnitPrice"
-      ).value
+      document
+        .getElementById(
+          "orderUnitPrice"
+        )
+        .value
     ) || 0;
 
   const status =
-    document.getElementById(
-      "orderStatus"
-    ).value;
+    document
+      .getElementById(
+        "orderStatus"
+      )
+      .value;
 
 
-  if(!client || !product){
+  if(
+    !client ||
+    !product
+  ){
 
     alert(
       "Fenoy ny client sy produit."
@@ -3186,13 +5986,17 @@ function makeOrder(){
 
     status,
 
-    date:new Date().toISOString()
+    date:
+      new Date().toISOString()
 
   });
 
 
   data.orders =
-    data.orders.slice(0,100);
+    data.orders.slice(
+      0,
+      100
+    );
 
 
   saveData(data);
@@ -3209,17 +6013,23 @@ function makeOrder(){
       <br><br>
 
       Client:
-      <strong>${escapeHtml(client)}</strong>
+      <strong>
+        ${escapeHtml(client)}
+      </strong>
 
       <br>
 
       Total:
-      <strong>${money(total)}</strong>
+      <strong>
+        ${money(total)}
+      </strong>
 
       <br>
 
       Statut:
-      <strong>${escapeHtml(status)}</strong>
+      <strong>
+        ${escapeHtml(status)}
+      </strong>
 
     </div>
 
@@ -3231,43 +6041,58 @@ function makeOrder(){
 }
 
 
-/* ============================================================
+/* =========================================================
    RECEIPT
-============================================================ */
+========================================================= */
 
 function makeReceipt(){
 
   const client =
-    document.getElementById(
-      "receiptClient"
-    ).value.trim();
+    document
+      .getElementById(
+        "receiptClient"
+      )
+      .value
+      .trim();
 
   const product =
-    document.getElementById(
-      "receiptProduct"
-    ).value.trim();
+    document
+      .getElementById(
+        "receiptProduct"
+      )
+      .value
+      .trim();
 
   const qty =
     Number(
-      document.getElementById(
-        "receiptQty"
-      ).value
+      document
+        .getElementById(
+          "receiptQty"
+        )
+        .value
     ) || 1;
 
   const unitPrice =
     Number(
-      document.getElementById(
-        "receiptUnitPrice"
-      ).value
+      document
+        .getElementById(
+          "receiptUnitPrice"
+        )
+        .value
     ) || 0;
 
   const payment =
-    document.getElementById(
-      "receiptPayment"
-    ).value;
+    document
+      .getElementById(
+        "receiptPayment"
+      )
+      .value;
 
 
-  if(!client || !product){
+  if(
+    !client ||
+    !product
+  ){
 
     alert(
       "Fenoy ny client sy produit."
@@ -3310,13 +6135,17 @@ function makeReceipt(){
 
     payment,
 
-    date:new Date().toISOString()
+    date:
+      new Date().toISOString()
 
   });
 
 
   data.receipts =
-    data.receipts.slice(0,100);
+    data.receipts.slice(
+      0,
+      100
+    );
 
 
   saveData(data);
@@ -3345,10 +6174,13 @@ Merci.`;
     "receiptResult"
   ).innerHTML = `
 
-    <div class="result">
+    <div class="receipt">
 
       <pre
-        style="white-space:pre-wrap;font-family:inherit;"
+        style="
+          white-space:pre-wrap;
+          font-family:inherit;
+        "
       >${escapeHtml(receiptText)}</pre>
 
       <button
@@ -3366,9 +6198,9 @@ Merci.`;
 }
 
 
-/* ============================================================
+/* =========================================================
    DASHBOARD
-============================================================ */
+========================================================= */
 
 function refreshDashboard(){
 
@@ -3390,20 +6222,27 @@ function refreshDashboard(){
 
   const revenue =
     data.orders
-      .filter(function(order){
+      .filter(
+        function(order){
 
-        return (
-          order.status === "paid" ||
-          order.status === "completed"
-        );
+          return (
+            order.status === "paid" ||
+            order.status === "completed"
+          );
 
-      })
-      .reduce(function(total,order){
+        }
+      )
+      .reduce(
+        function(total,order){
 
-        return total +
-          (Number(order.total) || 0);
+          return (
+            total +
+            (Number(order.total) || 0)
+          );
 
-      },0);
+        },
+        0
+      );
 
 
   document.getElementById(
@@ -3414,12 +6253,17 @@ function refreshDashboard(){
 
   const profit =
     data.calculations
-      .reduce(function(total,item){
+      .reduce(
+        function(total,item){
 
-        return total +
-          (Number(item.profit) || 0);
+          return (
+            total +
+            (Number(item.profit) || 0)
+          );
 
-      },0);
+        },
+        0
+      );
 
 
   document.getElementById(
@@ -3429,7 +6273,10 @@ function refreshDashboard(){
 
 
   renderCalculations();
+
   renderOrders();
+
+  renderFunnel();
 
 }
 
@@ -3445,12 +6292,15 @@ function renderCalculations(){
     loadData();
 
 
-  if(!data.calculations.length){
+  if(
+    !data.calculations.length
+  ){
 
-    box.innerHTML =
-      `<div class="empty">
+    box.innerHTML = `
+      <div class="empty">
         Mbola tsy misy calcul.
-      </div>`;
+      </div>
+    `;
 
     return;
 
@@ -3460,39 +6310,50 @@ function renderCalculations(){
   box.innerHTML =
     data.calculations
       .slice(0,5)
-      .map(function(item){
+      .map(
+        function(item){
 
-        return `
+          return `
 
-          <div
-            style="
-              padding:12px 0;
-              border-bottom:1px solid var(--border);
-            "
-          >
+            <div
+              style="
+                padding:12px 0;
+                border-bottom:1px solid var(--border);
+              "
+            >
 
-            <strong>
-              ${escapeHtml(item.product)}
-            </strong>
-
-            <br>
-
-            <small style="color:var(--muted);">
-              ${formatDate(item.date)}
-            </small>
-
-            <div style="margin-top:5px;">
-              Tombony:
               <strong>
-                ${money(item.profit)}
+                ${escapeHtml(
+                  item.product
+                )}
               </strong>
+
+              <br>
+
+              <small class="muted">
+                ${formatDate(
+                  item.date
+                )}
+              </small>
+
+              <div style="margin-top:5px;">
+
+                Tombony calculé:
+
+                <strong>
+                  ${money(
+                    item.profit
+                  )}
+                </strong>
+
+              </div>
+
             </div>
 
-          </div>
+          `;
 
-        `;
-
-      })
+        }
+      )
       .join("");
 
 }
@@ -3509,12 +6370,15 @@ function renderOrders(){
     loadData();
 
 
-  if(!data.orders.length){
+  if(
+    !data.orders.length
+  ){
 
-    box.innerHTML =
-      `<div class="empty">
+    box.innerHTML = `
+      <div class="empty">
         Mbola tsy misy commande.
-      </div>`;
+      </div>
+    `;
 
     return;
 
@@ -3524,48 +6388,392 @@ function renderOrders(){
   box.innerHTML =
     data.orders
       .slice(0,5)
-      .map(function(order){
+      .map(
+        function(order){
 
-        return `
+          return `
 
-          <div
-            style="
-              padding:12px 0;
-              border-bottom:1px solid var(--border);
-            "
-          >
+            <div
+              style="
+                padding:12px 0;
+                border-bottom:1px solid var(--border);
+              "
+            >
 
-            <strong>
-              ${escapeHtml(order.product)}
-            </strong>
+              <strong>
+                ${escapeHtml(
+                  order.product
+                )}
+              </strong>
 
-            <br>
+              <br>
 
-            <small>
-              ${escapeHtml(order.client)}
-            </small>
+              <small>
+                ${escapeHtml(
+                  order.client
+                )}
+              </small>
 
-            <div style="margin-top:5px;">
-              ${money(order.total)}
+              <div style="margin-top:5px;">
+                ${money(
+                  order.total
+                )}
+              </div>
+
+              <small class="muted">
+                ${escapeHtml(
+                  order.status
+                )}
+              </small>
+
             </div>
 
-            <small style="color:var(--muted);">
-              ${escapeHtml(order.status)}
-            </small>
+          `;
 
-          </div>
-
-        `;
-
-      })
+        }
+      )
       .join("");
 
 }
 
 
-/* ============================================================
+/* =========================================================
+   EVALUATION
+========================================================= */
+
+function saveEvaluation(){
+
+  const technique =
+    document
+      .getElementById(
+        "evalTechnique"
+      )
+      .value
+      .trim();
+
+  const channel =
+    document
+      .getElementById(
+        "evalChannel"
+      )
+      .value;
+
+  const actions =
+    Number(
+      document
+        .getElementById(
+          "evalActions"
+        )
+        .value
+    ) || 0;
+
+  const views =
+    Number(
+      document
+        .getElementById(
+          "evalViews"
+        )
+        .value
+    ) || 0;
+
+  const prospects =
+    Number(
+      document
+        .getElementById(
+          "evalProspects"
+        )
+        .value
+    ) || 0;
+
+  const responses =
+    Number(
+      document
+        .getElementById(
+          "evalResponses"
+        )
+        .value
+    ) || 0;
+
+  const discussions =
+    Number(
+      document
+        .getElementById(
+          "evalDiscussions"
+        )
+        .value
+    ) || 0;
+
+  const orders =
+    Number(
+      document
+        .getElementById(
+          "evalOrders"
+        )
+        .value
+    ) || 0;
+
+  const clients =
+    Number(
+      document
+        .getElementById(
+          "evalClients"
+        )
+        .value
+    ) || 0;
+
+  const revenue =
+    Number(
+      document
+        .getElementById(
+          "evalRevenue"
+        )
+        .value
+    ) || 0;
+
+  const objection =
+    document
+      .getElementById(
+        "evalObjection"
+      )
+      .value;
+
+  const problem =
+    document
+      .getElementById(
+        "evalProblem"
+      )
+      .value
+      .trim();
+
+  const lesson =
+    document
+      .getElementById(
+        "evalLesson"
+      )
+      .value
+      .trim();
+
+
+  if(!technique){
+
+    alert(
+      "Ampidiro aloha ny technique nampiharina."
+    );
+
+    return;
+
+  }
+
+
+  const data =
+    loadData();
+
+
+  const evaluation = {
+
+    id:Date.now(),
+
+    technique,
+
+    channel,
+
+    actions,
+
+    views,
+
+    prospects,
+
+    responses,
+
+    discussions,
+
+    orders,
+
+    clients,
+
+    revenue,
+
+    objection,
+
+    problem,
+
+    lesson,
+
+    date:
+      new Date().toISOString()
+
+  };
+
+
+  data.evaluations.unshift(
+    evaluation
+  );
+
+
+  data.evaluations =
+    data.evaluations.slice(
+      0,
+      100
+    );
+
+
+  saveData(data);
+
+
+  updateFunnelFromEvaluation(
+    evaluation
+  );
+
+
+  const responseRate =
+    prospects > 0
+      ? (
+          responses /
+          prospects
+        ) * 100
+      : 0;
+
+  const orderRate =
+    prospects > 0
+      ? (
+          orders /
+          prospects
+        ) * 100
+      : 0;
+
+  const clientRate =
+    prospects > 0
+      ? (
+          clients /
+          prospects
+        ) * 100
+      : 0;
+
+
+  document.getElementById(
+    "evaluationResult"
+  ).innerHTML = `
+
+    <div class="result profit">
+
+      ✅ <strong>Retour voatahiry.</strong>
+
+      <br><br>
+
+      📊 Résultat:
+
+      <br>
+
+      Réponse:
+      <strong>
+        ${responseRate.toFixed(1)}%
+      </strong>
+
+      <br>
+
+      Commande / Prospect:
+      <strong>
+        ${orderRate.toFixed(1)}%
+      </strong>
+
+      <br>
+
+      Client / Prospect:
+      <strong>
+        ${clientRate.toFixed(1)}%
+      </strong>
+
+      <br>
+
+      CA payé:
+      <strong>
+        ${money(revenue)}
+      </strong>
+
+      <br><br>
+
+      <strong>
+        🎯 Ny dingana manaraka:
+      </strong>
+
+      <br>
+
+      ${
+        lesson ||
+        "Jereo ny funnel ary fantaro izay étape tokony hatsaraina."
+      }
+
+    </div>
+
+  `;
+
+
+  refreshDashboard();
+
+}
+
+
+function updateFunnelFromEvaluation(
+  evaluation
+){
+
+  document.getElementById(
+    "funnelProspects"
+  ).textContent =
+    evaluation.prospects;
+
+  document.getElementById(
+    "funnelResponses"
+  ).textContent =
+    evaluation.responses;
+
+  document.getElementById(
+    "funnelDiscussions"
+  ).textContent =
+    evaluation.discussions;
+
+  document.getElementById(
+    "funnelOrders"
+  ).textContent =
+    evaluation.orders;
+
+  document.getElementById(
+    "funnelClients"
+  ).textContent =
+    evaluation.clients;
+
+}
+
+
+function renderFunnel(){
+
+  const data =
+    loadData();
+
+
+  if(
+    !data.evaluations.length
+  ){
+
+    return;
+
+  }
+
+
+  const latest =
+    data.evaluations[0];
+
+
+  updateFunnelFromEvaluation(
+    latest
+  );
+
+}
+
+
+/* =========================================================
    PROGRESSION
-============================================================ */
+========================================================= */
 
 function loadProgress(){
 
@@ -3586,11 +6794,15 @@ function loadProgress(){
 }
 
 
-function saveProgress(progress){
+function saveProgress(
+  progress
+){
 
   localStorage.setItem(
     PROGRESS_KEY,
-    JSON.stringify(progress)
+    JSON.stringify(
+      progress
+    )
   );
 
 }
@@ -3602,11 +6814,17 @@ function completeDay(day){
     loadProgress();
 
 
-  if(progress.includes(day)){
+  if(
+    progress.includes(day)
+  ){
 
     progress =
       progress.filter(
-        item => item !== day
+        function(item){
+
+          return item !== day;
+
+        }
       );
 
   }else{
@@ -3617,11 +6835,18 @@ function completeDay(day){
 
 
   progress.sort(
-    (a,b) => a-b
+    function(a,b){
+
+      return a-b;
+
+    }
   );
 
 
-  saveProgress(progress);
+  saveProgress(
+    progress
+  );
+
 
   renderProgress();
 
@@ -3634,22 +6859,35 @@ function renderProgress(){
     loadProgress();
 
 
-  for(let i=1;i<=7;i++){
+  for(
+    let i=1;
+    i<=7;
+    i++
+  ){
 
     const element =
       document.getElementById(
         "day" + i
       );
 
-    if(!element) continue;
+    if(!element){
+      continue;
+    }
 
-    if(progress.includes(i)){
 
-      element.classList.add("done");
+    if(
+      progress.includes(i)
+    ){
+
+      element.classList.add(
+        "done"
+      );
 
     }else{
 
-      element.classList.remove("done");
+      element.classList.remove(
+        "done"
+      );
 
     }
 
@@ -3663,16 +6901,31 @@ function renderProgress(){
     (count / 7) * 100;
 
 
-  document.getElementById(
-    "progressFill"
-  ).style.width =
-    percent + "%";
+  const fill =
+    document.getElementById(
+      "progressFill"
+    );
+
+  if(fill){
+
+    fill.style.width =
+      percent + "%";
+
+  }
 
 
-  document.getElementById(
-    "progressText"
-  ).textContent =
-    count + " / 7 jours";
+  const text =
+    document.getElementById(
+      "progressText"
+    );
+
+  if(text){
+
+    text.textContent =
+      count +
+      " / 7 jours";
+
+  }
 
 }
 
@@ -3689,18 +6942,20 @@ function resetProgress(){
 
   }
 
+
   localStorage.removeItem(
     PROGRESS_KEY
   );
+
 
   renderProgress();
 
 }
 
 
-/* ============================================================
+/* =========================================================
    SUPABASE — REVIEWS
-============================================================ */
+========================================================= */
 
 async function loadApprovedReviews(){
 
@@ -3708,6 +6963,36 @@ async function loadApprovedReviews(){
     document.getElementById(
       "reviewConnectionStatus"
     );
+
+
+  const box =
+    document.getElementById(
+      "reviewList"
+    );
+
+
+  if(
+    !statusBox ||
+    !box
+  ){
+
+    return;
+
+  }
+
+
+  if(!supabaseClient){
+
+    statusBox.innerHTML = `
+      🟡 Mode local:
+      Supabase mbola miandry connexion.
+    `;
+
+    renderReviews([]);
+
+    return;
+
+  }
 
 
   try{
@@ -3718,7 +7003,9 @@ async function loadApprovedReviews(){
     } =
       await supabaseClient
 
-        .from("vente_reviews")
+        .from(
+          "vente_reviews"
+        )
 
         .select(
           "id,rating,name,learning,applied,result,message,created_at"
@@ -3742,13 +7029,14 @@ async function loadApprovedReviews(){
     if(error){
 
       console.error(
-        "Supabase reviews error:",
+        "Supabase review error:",
         error
       );
 
+
       statusBox.innerHTML = `
-        ⚠️ Tsy afaka naka avis avy amin'ny
-        Supabase amin'izao fotoana izao.
+        ⚠️ Tsy afaka naka avis
+        avy amin'ny Supabase amin'izao fotoana izao.
       `;
 
       renderReviews([]);
@@ -3760,7 +7048,7 @@ async function loadApprovedReviews(){
 
     statusBox.innerHTML = `
       🟢 <strong>Supabase connecté.</strong>
-      Ny avis voamarina dia alaina mivantana avy amin'ny database.
+      Ny avis voamarina ihany no aseho.
     `;
 
 
@@ -3773,6 +7061,7 @@ async function loadApprovedReviews(){
 
     console.error(error);
 
+
     statusBox.innerHTML = `
       ⚠️ Olana tamin'ny connexion Supabase.
     `;
@@ -3784,11 +7073,13 @@ async function loadApprovedReviews(){
 }
 
 
-/* ============================================================
+/* =========================================================
    RENDER REVIEWS
-============================================================ */
+========================================================= */
 
-function renderReviews(reviews){
+function renderReviews(
+  reviews
+){
 
   const box =
     document.getElementById(
@@ -3812,13 +7103,14 @@ function renderReviews(reviews){
         style="grid-column:1/-1;"
       >
 
-        ⭐ Mbola tsy misy avis voamarina eto.
+        ⭐ Mbola tsy misy avis
+        voamarina eto.
 
         <br><br>
 
         Rehefa misy mpianatra mizara
-        expérience réelle ary voamarina ilay avis,
-        dia hiseho eto.
+        expérience réelle ary voamarina
+        ilay avis dia hiseho eto.
 
       </div>
 
@@ -3832,107 +7124,127 @@ function renderReviews(reviews){
   box.innerHTML =
     reviews
       .slice(0,9)
-      .map(function(item){
+      .map(
+        function(item){
 
-        const rating =
-          Math.max(
-            1,
-            Math.min(
-              5,
-              Number(item.rating) || 1
-            )
-          );
+          const rating =
+            Math.max(
+              1,
+              Math.min(
+                5,
+                Number(
+                  item.rating
+                ) || 1
+              )
+            );
 
 
-        const stars =
-          "⭐".repeat(rating);
+          const stars =
+            "⭐".repeat(
+              rating
+            );
 
 
-        return `
+          return `
 
-          <div class="card">
+            <div class="card">
 
-            <div
-              class="review-stars"
-              style="margin-bottom:6px;"
-            >
-              ${stars}
+              <div
+                class="review-stars"
+                style="margin-bottom:6px;"
+              >
+                ${stars}
+              </div>
+
+              <h3>
+                ${escapeHtml(
+                  item.name
+                )}
+              </h3>
+
+              <div
+                class="review-status"
+              >
+                ${escapeHtml(
+                  item.learning ||
+                  "Formation Vente"
+                )}
+              </div>
+
+              <p style="margin-top:12px;">
+                “${escapeHtml(
+                  item.message
+                )}”
+              </p>
+
+              ${
+                item.applied
+                ? `
+                  <p
+                    style="
+                      margin-top:10px;
+                      font-size:13px;
+                    "
+                  >
+                    <strong>
+                      Nampiharina:
+                    </strong>
+
+                    ${escapeHtml(
+                      item.applied
+                    )}
+                  </p>
+                `
+                : ""
+              }
+
+              ${
+                item.result
+                ? `
+                  <p
+                    style="
+                      margin-top:7px;
+                      font-size:13px;
+                    "
+                  >
+                    <strong>
+                      Vokatra:
+                    </strong>
+
+                    ${escapeHtml(
+                      item.result
+                    )}
+                  </p>
+                `
+                : ""
+              }
+
+              <small
+                style="
+                  display:block;
+                  margin-top:13px;
+                  color:var(--muted);
+                "
+              >
+                ${formatDate(
+                  item.created_at
+                )}
+              </small>
+
             </div>
 
-            <h3>
-              ${escapeHtml(item.name)}
-            </h3>
+          `;
 
-            <div
-              class="review-status"
-            >
-              ${escapeHtml(
-                item.learning ||
-                "Formation Vente"
-              )}
-            </div>
-
-            <p style="margin-top:12px;">
-              “${escapeHtml(
-                item.message
-              )}”
-            </p>
-
-            ${
-              item.applied
-              ? `
-                <p
-                  style="
-                    margin-top:10px;
-                    font-size:13px;
-                  "
-                >
-                  <strong>Nampiharina:</strong>
-                  ${escapeHtml(item.applied)}
-                </p>
-              `
-              : ""
-            }
-
-            ${
-              item.result
-              ? `
-                <p
-                  style="
-                    margin-top:7px;
-                    font-size:13px;
-                  "
-                >
-                  <strong>Vokatra:</strong>
-                  ${escapeHtml(item.result)}
-                </p>
-              `
-              : ""
-            }
-
-            <small
-              style="
-                display:block;
-                margin-top:13px;
-                color:var(--muted);
-              "
-            >
-              ${formatDate(item.created_at)}
-            </small>
-
-          </div>
-
-        `;
-
-      })
+        }
+      )
       .join("");
 
 }
 
 
-/* ============================================================
-   SUBMIT REVIEW TO SUPABASE
-============================================================ */
+/* =========================================================
+   SUBMIT REVIEW
+========================================================= */
 
 async function submitReview(){
 
@@ -3944,41 +7256,52 @@ async function submitReview(){
 
   const rating =
     Number(
-      document.getElementById(
-        "reviewRating"
-      ).value
+      document
+        .getElementById(
+          "reviewRating"
+        )
+        .value
     ) || 5;
 
-
   const name =
-    document.getElementById(
-      "reviewName"
-    ).value.trim();
-
+    document
+      .getElementById(
+        "reviewName"
+      )
+      .value
+      .trim();
 
   const learning =
-    document.getElementById(
-      "reviewLearning"
-    ).value.trim();
-
+    document
+      .getElementById(
+        "reviewLearning"
+      )
+      .value
+      .trim();
 
   const applied =
-    document.getElementById(
-      "reviewApplied"
-    ).value.trim();
-
+    document
+      .getElementById(
+        "reviewApplied"
+      )
+      .value
+      .trim();
 
   const resultText =
-    document.getElementById(
-      "reviewResult"
-    ).value.trim();
-
+    document
+      .getElementById(
+        "reviewResult"
+      )
+      .value
+      .trim();
 
   const message =
-    document.getElementById(
-      "reviewMessage"
-    ).value.trim();
-
+    document
+      .getElementById(
+        "reviewMessage"
+      )
+      .value
+      .trim();
 
   const consent =
     document.getElementById(
@@ -4019,6 +7342,35 @@ async function submitReview(){
   }
 
 
+  if(!supabaseClient){
+
+    resultBox.innerHTML = `
+
+      <div
+        class="result"
+        style="
+          color:var(--danger);
+          background:#fff3f2;
+        "
+      >
+
+        ❌ Tsy mbola misy connexion
+        amin'ny Supabase.
+
+        <br><br>
+
+        Hamarino aloha ny connexion Internet
+        dia andramo indray.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
   resultBox.innerHTML = `
 
     <div class="notice">
@@ -4035,7 +7387,9 @@ async function submitReview(){
     } =
       await supabaseClient
 
-        .from("vente_reviews")
+        .from(
+          "vente_reviews"
+        )
 
         .insert({
 
@@ -4051,19 +7405,23 @@ async function submitReview(){
           name,
 
           learning:
-            learning || null,
+            learning ||
+            null,
 
           applied:
-            applied || null,
+            applied ||
+            null,
 
           result:
-            resultText || null,
+            resultText ||
+            null,
 
           message,
 
           consent:true,
 
-          status:"pending"
+          status:
+            "pending"
 
         });
 
@@ -4074,6 +7432,7 @@ async function submitReview(){
         "Supabase insert error:",
         error
       );
+
 
       resultBox.innerHTML = `
 
@@ -4151,7 +7510,10 @@ async function submitReview(){
 
   }catch(error){
 
-    console.error(error);
+    console.error(
+      error
+    );
+
 
     resultBox.innerHTML = `
 
@@ -4174,9 +7536,44 @@ async function submitReview(){
 }
 
 
-/* ============================================================
+/* =========================================================
+   ESCAPE / KEYBOARD
+========================================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Escape"
+    ){
+
+      document
+        .querySelectorAll(
+          ".modal-overlay.active"
+        )
+        .forEach(
+          function(modal){
+
+            modal.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
    INITIALIZATION
-============================================================ */
+========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -4186,7 +7583,7 @@ document.addEventListener(
 
     renderProgress();
 
-    loadApprovedReviews();
+    renderFunnel();
 
   }
 );
