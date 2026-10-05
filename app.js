@@ -1,5399 +1,3192 @@
 /* ============================================================
    TANTSAHA MATIHANINA • VENTE LAB
-   APP.JS — VERSION COMPLETE
-
-   Modules:
-   - Mobile navigation
-   - Smooth navigation
-   - Tool workspace
-   - Prix & Tombony
-   - Kajy Fiompiana
-   - Calendrier Mpiompy & Vente
-   - Créer une Offre
-   - Publication
-   - Simulation Client
-   - Commande
-   - Reçu
-   - Guide
-   - Challenge 7 Jours
-   - Dashboard
-   - Funnel
-   - Retour & Évaluation
-   - Supabase Reviews
-   - Modal
-   - LocalStorage
+   APP.JS — VERSION PRATIQUE COMPLETE
+   Mianatra • Mampihatra • Mahomby
 ============================================================ */
 
+(function () {
+  "use strict";
 
-/* ============================================================
-   1. CONFIGURATION
-============================================================ */
+  /* ==========================================================
+     1. CONFIGURATION
+  ========================================================== */
 
-const TM_CONFIG = {
+  const CONFIG = {
+    brand: "TANTSAHA MATIHANINA",
+    whatsappGroup:
+      "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
+    whatsappPurchase:
+      "https://wa.me/261385651378",
+    facebook:
+      "https://www.facebook.com/share/1Zfiu8oj3m/",
+    pdfPrice: 5000,
 
-  whatsappGroup:
-    "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
+    supabaseUrl:
+      "https://sdzybetralbaincrxddf.supabase.co",
 
-  whatsappPurchase:
-    "https://wa.me/261385651378",
-
-  facebook:
-    "https://www.facebook.com/share/1Zfiu8oj3m/",
-
-  supabaseUrl:
-    "https://sdzybetralbaincrxddf.supabase.co",
-
-  supabaseKey:
-    "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy"
-
-};
-
-
-/* ============================================================
-   2. SUPABASE
-============================================================ */
-
-let supabaseClient = null;
-
-function initSupabase() {
-
-  try {
-
-    if (
-      window.supabase &&
-      typeof window.supabase.createClient === "function"
-    ) {
-
-      supabaseClient = window.supabase.createClient(
-        TM_CONFIG.supabaseUrl,
-        TM_CONFIG.supabaseKey
-      );
-
-    }
-
-  } catch (error) {
-
-    console.warn(
-      "Supabase non disponible:",
-      error
-    );
-
-  }
-
-}
-
-
-/* ============================================================
-   3. LOCAL STORAGE
-============================================================ */
-
-const STORAGE_KEY =
-  "tantsaha_matihanina_vente_lab_v2";
-
-
-function defaultState() {
-
-  return {
-
-    calculations: [],
-
-    livestockCalculations: [],
-
-    calendarPlans: [],
-
-    offers: [],
-
-    publications: [],
-
-    simulations: [],
-
-    orders: [],
-
-    evaluations: [],
-
-    challenge: {},
-
-    lastUpdated: null
-
+    supabaseKey:
+      "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy"
   };
 
-}
+  const STORAGE_KEY = "tm_vente_lab_state_v3";
 
+  /* ==========================================================
+     2. STATE
+  ========================================================== */
 
-function loadState() {
+  const defaultState = {
+    calculations: [],
+    orders: [],
+    evaluations: [],
+    localReviews: [],
+    prospects: [],
+    calendarPlans: [],
+    lastActivity: null
+  };
 
-  try {
+  let state = loadState();
 
-    const raw =
-      localStorage.getItem(STORAGE_KEY);
+  let supabaseClient = null;
 
-    if (!raw) {
+  /* ==========================================================
+     3. INIT SUPABASE
+  ========================================================== */
 
-      return defaultState();
+  function initSupabase() {
+    try {
+      if (
+        window.supabase &&
+        typeof window.supabase.createClient === "function"
+      ) {
+        supabaseClient = window.supabase.createClient(
+          CONFIG.supabaseUrl,
+          CONFIG.supabaseKey
+        );
+      }
+    } catch (error) {
+      console.warn("Supabase non disponible:", error);
+      supabaseClient = null;
+    }
+  }
 
+  /* ==========================================================
+     4. STORAGE
+  ========================================================== */
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+
+      if (!raw) {
+        return structuredCloneSafe(defaultState);
+      }
+
+      const parsed = JSON.parse(raw);
+
+      return {
+        ...structuredCloneSafe(defaultState),
+        ...parsed
+      };
+    } catch (error) {
+      console.warn("Erreur localStorage:", error);
+      return structuredCloneSafe(defaultState);
+    }
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(state)
+      );
+    } catch (error) {
+      console.warn("Impossible de sauvegarder:", error);
+    }
+  }
+
+  function structuredCloneSafe(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  function todayISO() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function formatDate(date) {
+    if (!date) return "—";
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return "—";
     }
 
-    const parsed =
-      JSON.parse(raw);
-
-    return {
-      ...defaultState(),
-      ...parsed
-    };
-
-  } catch (error) {
-
-    console.warn(
-      "Erreur localStorage:",
-      error
-    );
-
-    return defaultState();
-
-  }
-
-}
-
-
-let state = loadState();
-
-
-function saveState() {
-
-  state.lastUpdated =
-    new Date().toISOString();
-
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(state)
-  );
-
-}
-
-
-/* ============================================================
-   4. HELPERS
-============================================================ */
-
-function $(selector) {
-
-  return document.querySelector(selector);
-
-}
-
-
-function $all(selector) {
-
-  return Array.from(
-    document.querySelectorAll(selector)
-  );
-
-}
-
-
-function escapeHTML(value) {
-
-  if (value === null || value === undefined) {
-    return "";
-  }
-
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-function formatNumber(value) {
-
-  const number =
-    Number(value) || 0;
-
-  return new Intl.NumberFormat(
-    "fr-FR"
-  ).format(number);
-
-}
-
-
-function formatAr(value) {
-
-  return `${formatNumber(value)} Ar`;
-
-}
-
-
-function round(value, decimals = 2) {
-
-  const factor =
-    Math.pow(10, decimals);
-
-  return Math.round(
-    (Number(value) || 0) * factor
-  ) / factor;
-
-}
-
-
-function todayISO() {
-
-  const date =
-    new Date();
-
-  return date.toISOString()
-    .split("T")[0];
-
-}
-
-
-function parseDate(dateString) {
-
-  const date =
-    new Date(`${dateString}T00:00:00`);
-
-  return date;
-
-}
-
-
-function formatDate(dateString) {
-
-  if (!dateString) {
-    return "—";
-  }
-
-  const date =
-    parseDate(dateString);
-
-  if (Number.isNaN(date.getTime())) {
-    return dateString;
-  }
-
-  return new Intl.DateTimeFormat(
-    "fr-FR",
-    {
+    return d.toLocaleDateString("fr-FR", {
       day: "2-digit",
-      month: "long",
+      month: "2-digit",
       year: "numeric"
+    });
+  }
+
+  function formatMoney(value) {
+    const number = Number(value) || 0;
+
+    return number.toLocaleString("fr-FR") + " Ar";
+  }
+
+  function numberValue(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : 0;
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  /* ==========================================================
+     5. TOAST
+  ========================================================== */
+
+  function showToast(message, type = "success") {
+    let toast = document.getElementById("toast");
+
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toast";
+      toast.className = "toast";
+      document.body.appendChild(toast);
     }
-  ).format(date);
 
-}
+    toast.textContent = message;
+    toast.className = `toast toast-${type} show`;
 
+    clearTimeout(showToast.timer);
 
-function addDays(dateString, days) {
-
-  const date =
-    parseDate(dateString);
-
-  date.setDate(
-    date.getDate() + Number(days)
-  );
-
-  return date
-    .toISOString()
-    .split("T")[0];
-
-}
-
-
-function showToast(
-  message,
-  type = "success"
-) {
-
-  const container =
-    $("#toastContainer");
-
-  if (!container) {
-    return;
+    showToast.timer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3500);
   }
 
-  const toast =
-    document.createElement("div");
+  /* ==========================================================
+     6. MOBILE NAVIGATION
+  ========================================================== */
 
-  toast.className =
-    `toast toast-${type}`;
+  function initNavigation() {
+    const toggle = document.querySelector(".nav-toggle");
+    const nav = document.querySelector(".main-nav");
 
-  toast.textContent =
-    message;
+    if (!toggle || !nav) return;
 
-  container.appendChild(toast);
-
-  setTimeout(() => {
-
-    toast.classList.add("show");
-
-  }, 20);
-
-  setTimeout(() => {
-
-    toast.classList.remove("show");
-
-    setTimeout(() => {
-      toast.remove();
-    }, 300);
-
-  }, 3500);
-
-}
-
-
-function scrollToSection(id) {
-
-  const element =
-    document.getElementById(id);
-
-  if (!element) {
-    return;
-  }
-
-  element.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-
-}
-
-
-/* ============================================================
-   5. MOBILE NAVIGATION
-============================================================ */
-
-function initNavigation() {
-
-  const toggle =
-    $(".nav-toggle");
-
-  const nav =
-    $(".main-nav");
-
-  if (!toggle || !nav) {
-    return;
-  }
-
-  toggle.addEventListener(
-    "click",
-    () => {
-
-      const open =
-        nav.classList.toggle("open");
-
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("open");
       toggle.setAttribute(
         "aria-expanded",
-        String(open)
+        nav.classList.contains("open")
       );
-
-    }
-  );
-
-
-  $all(".main-nav a")
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          nav.classList.remove("open");
-
-          toggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
-
-        }
-      );
-
     });
 
-}
-
-
-/* ============================================================
-   6. SMOOTH LINKS
-============================================================ */
-
-function initSmoothLinks() {
-
-  $all('a[href^="#"]')
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        event => {
-
-          const href =
-            link.getAttribute("href");
-
-          if (
-            !href ||
-            href === "#"
-          ) {
-            return;
-          }
-
-          const target =
-            document.querySelector(href);
-
-          if (!target) {
-            return;
-          }
-
-          event.preventDefault();
-
-          target.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-          });
-
-        }
-      );
-
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
     });
-
-}
-
-
-/* ============================================================
-   7. TOOL WORKSPACE
-============================================================ */
-
-function openTool(tool) {
-
-  const workspace =
-    $("#toolWorkspace");
-
-  if (!workspace) {
-    return;
   }
 
-  const renderers = {
+  /* ==========================================================
+     7. SMOOTH SCROLL
+  ========================================================== */
 
-    price:
-      renderPriceTool,
+  function initSmoothScroll() {
+    document.addEventListener("click", (event) => {
+      const link = event.target.closest('a[href^="#"]');
 
-    elevage:
-      renderLivestockTool,
+      if (!link) return;
 
-    calendar:
-      renderCalendarTool,
+      const id = link.getAttribute("href");
 
-    offer:
-      renderOfferTool,
+      if (!id || id === "#") return;
 
-    publication:
-      renderPublicationTool,
+      const target = document.querySelector(id);
 
-    simulation:
-      renderSimulationTool,
+      if (!target) return;
 
-    order:
-      renderOrderTool,
+      event.preventDefault();
 
-    receipt:
-      renderReceiptTool,
-
-    guide:
-      renderGuideTool,
-
-    challenge:
-      renderChallengeTool
-
-  };
-
-
-  const renderer =
-    renderers[tool];
-
-  if (!renderer) {
-
-    workspace.innerHTML = `
-      <div class="workspace-placeholder">
-        <h3>Outil mbola tsy voaomana</h3>
-        <p>
-          Havaozina tsy ho ela ity fonctionnalité ity.
-        </p>
-      </div>
-    `;
-
-    return;
-
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
   }
 
-  renderer(workspace);
+  /* ==========================================================
+     8. EXTERNAL LINKS
+  ========================================================== */
 
-  setTimeout(() => {
+  function initExternalLinks() {
+    document.querySelectorAll("[data-external]").forEach((element) => {
+      element.addEventListener("click", () => {
+        const destination = element.dataset.external;
 
-    workspace.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
+        if (!destination) return;
+
+        window.open(destination, "_blank", "noopener,noreferrer");
+      });
     });
 
-  }, 50);
-
-}
-
-
-function initTools() {
-
-  $all("[data-tool]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const tool =
-            button.dataset.tool;
-
-          openTool(tool);
-
-        }
-      );
-
+    document.querySelectorAll("[data-whatsapp]").forEach((element) => {
+      element.addEventListener("click", () => {
+        window.open(
+          CONFIG.whatsappPurchase,
+          "_blank",
+          "noopener,noreferrer"
+        );
+      });
     });
-
-}
-
-
-/* ============================================================
-   8. TOOL HEADER
-============================================================ */
-
-function toolHeader(
-  icon,
-  title,
-  description
-) {
-
-  return `
-
-    <div class="workspace-header">
-
-      <div class="workspace-icon">
-        ${icon}
-      </div>
-
-      <div>
-
-        <span class="eyebrow">
-          VENTE LAB
-        </span>
-
-        <h2>
-          ${escapeHTML(title)}
-        </h2>
-
-        <p>
-          ${escapeHTML(description)}
-        </p>
-
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ============================================================
-   9. PRIX & TOMBONY
-============================================================ */
-
-function renderPriceTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "🧮",
-      "Kajy Prix & Tombony",
-      "Fantaro aloha ny coût sy ny tombony alohan'ny hivarotana."
-    )}
-
-    <div class="tool-explanation">
-
-      <h3>Inona no ataon'ity outil ity?</h3>
-
-      <p>
-        Izy ity dia manampy anao hahafantatra
-        hoe ohatrinona ny vola lany, ny CA,
-        ny tombony ary ny marge.
-      </p>
-
-      <h3>Rahoviana no ampiasaina?</h3>
-
-      <p>
-        Ampiasao izy alohan'ny hametrahana prix
-        na hamoahana publication.
-      </p>
-
-      <div class="example-box">
-
-        <strong>Ohatra:</strong>
-
-        <p>
-          Coût total = 100 000 Ar
-        </p>
-
-        <p>
-          Prix = 15 000 Ar / unité
-        </p>
-
-        <p>
-          Raha 10 no amidy:
-          CA = 150 000 Ar
-        </p>
-
-        <p>
-          Tombony = 50 000 Ar
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <form id="priceForm" class="tool-form">
-
-      <div class="form-group">
-
-        <label>
-          Anaran'ny vokatra
-        </label>
-
-        <input
-          name="product"
-          type="text"
-          placeholder="Ohatra: Akoho Gasy"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Isan'ny vokatra
-        </label>
-
-        <input
-          name="quantity"
-          type="number"
-          min="1"
-          value="1"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Coût total
-        </label>
-
-        <input
-          name="cost"
-          type="number"
-          min="0"
-          placeholder="Ohatra: 60000"
-          required
-        >
-
-        <small>
-          Vola tena lany amin'ny vokatra rehetra.
-        </small>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix de vente / unité
-        </label>
-
-        <input
-          name="price"
-          type="number"
-          min="0"
-          placeholder="Ohatra: 15000"
-          required
-        >
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
-        Kajio ny tombony
-      </button>
-
-    </form>
-
-
-    <div
-      id="priceResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#priceForm")
-    .addEventListener(
-      "submit",
-      calculatePrice
-    );
-
-}
-
-
-function calculatePrice(event) {
-
-  event.preventDefault();
-
-  const form =
-    event.currentTarget;
-
-  const data =
-    new FormData(form);
-
-  const product =
-    data.get("product");
-
-  const quantity =
-    Number(data.get("quantity"));
-
-  const cost =
-    Number(data.get("cost"));
-
-  const price =
-    Number(data.get("price"));
-
-  if (
-    quantity <= 0 ||
-    cost < 0 ||
-    price < 0
-  ) {
-
-    showToast(
-      "Jereo tsara ny isa nampidirina.",
-      "error"
-    );
-
-    return;
-
   }
 
+  /* ==========================================================
+     9. TOOL WORKSPACE
+  ========================================================== */
 
-  const revenue =
-    quantity * price;
+  function initTools() {
+    const buttons = document.querySelectorAll("[data-tool]");
+    const workspace = document.getElementById("toolWorkspace");
 
-  const profit =
-    revenue - cost;
+    if (!workspace || !buttons.length) return;
 
-  const margin =
-    revenue > 0
-      ? (profit / revenue) * 100
-      : 0;
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const tool = button.dataset.tool;
 
-  const unitCost =
-    cost / quantity;
+        openTool(tool);
 
-  const result =
-    {
+        workspace.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      });
+    });
+  }
 
-      id: Date.now(),
+  function openTool(tool) {
+    const workspace = document.getElementById("toolWorkspace");
 
-      product,
+    if (!workspace) return;
 
-      quantity,
-
-      cost,
-
-      price,
-
-      revenue,
-
-      profit,
-
-      margin: round(margin),
-
-      unitCost: round(unitCost),
-
-      createdAt:
-        new Date().toISOString()
-
+    const tools = {
+      price: renderPriceTool,
+      livestock: renderLivestockTool,
+      offer: renderOfferTool,
+      publication: renderPublicationTool,
+      simulation: renderSimulationTool,
+      order: renderOrderTool,
+      receipt: renderReceiptTool,
+      guide: renderGuideTool,
+      challenge: renderChallengeTool,
+      calendar: renderCalendarTool
     };
 
-
-  state.calculations.unshift(
-    result
-  );
-
-  saveState();
-
-  const resultBox =
-    $("#priceResult");
-
-  resultBox.innerHTML = `
-
-    <div class="result-card">
-
-      <div class="result-card-header">
-
-        <span>
-          📊 Résultat
-        </span>
-
-        <strong>
-          ${escapeHTML(product)}
-        </strong>
-
-      </div>
-
-
-      <div class="result-grid">
-
-        <div>
-          <small>Coût total</small>
-          <strong>${formatAr(cost)}</strong>
+    if (!tools[tool]) {
+      workspace.innerHTML = `
+        <div class="workspace-empty">
+          <h3>Outil mbola tsy voaomana</h3>
+          <p>Hampidirina amin'ny version manaraka.</p>
         </div>
+      `;
+      return;
+    }
 
-        <div>
-          <small>CA</small>
-          <strong>${formatAr(revenue)}</strong>
-        </div>
+    tools[tool](workspace);
 
-        <div>
-          <small>Tombony</small>
-          <strong>${formatAr(profit)}</strong>
-        </div>
-
-        <div>
-          <small>Marge</small>
-          <strong>${formatNumber(result.margin)} %</strong>
-        </div>
-
-      </div>
-
-
-      <div class="result-explanation">
-
-        ${
-          profit > 0
-            ? `
-              <strong>✅ Misy tombony.</strong>
-              <p>
-                Amin'ity prix ity dia
-                ${formatAr(profit)}
-                ny tombony vinavinana.
-              </p>
-            `
-            : profit === 0
-              ? `
-                <strong>⚠️ Tsy misy tombony.</strong>
-                <p>
-                  Mitovy ny CA sy ny coût.
-                  Mila dinihina indray ny prix.
-                </p>
-              `
-              : `
-                <strong>❌ Perte.</strong>
-                <p>
-                  Ambany noho ny coût ny CA.
-                  Aza maika hivarotra amin'ity prix ity.
-                </p>
-              `
-        }
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  updateDashboard();
-
-  showToast(
-    "Calcul vita ary voatahiry.",
-    "success"
-  );
-
-}
-
-
-/* ============================================================
-   10. KAJY FIOMPIANA
-============================================================ */
-
-function renderLivestockTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "🐔",
-      "Kajy Fiompiana",
-      "Kajio ny coût, prix de vente ary tombony amin'ny fiompiana."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <h3>Inona no tokony ho fantatra?</h3>
-
-      <p>
-        Tsy ny vidin'ny biby ihany no coût.
-        Tokony hojerena koa ny sakafo sy ny dépenses hafa.
-      </p>
-
-      <div class="example-box">
-
-        <strong>Ohatra:</strong>
-
-        <p>
-          Biby = 10
-        </p>
-
-        <p>
-          Achat = 100 000 Ar
-        </p>
-
-        <p>
-          Sakafo = 60 000 Ar
-        </p>
-
-        <p>
-          Autres = 10 000 Ar
-        </p>
-
-        <p>
-          Coût total = 170 000 Ar
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <form id="livestockForm" class="tool-form">
-
-      <div class="form-group">
-
-        <label>
-          Karazana fiompiana
-        </label>
-
-        <select name="animal" required>
-
-          <option value="">
-            Safidio
-          </option>
-
-          <option>Akoho Gasy</option>
-          <option>Poulet de chair</option>
-          <option>Pondeuse</option>
-          <option>Kisoa</option>
-          <option>Osy</option>
-          <option>Ondry</option>
-          <option>Bitro</option>
-          <option>Gana</option>
-          <option>Gisa</option>
-          <option>Vorontsiloza</option>
-          <option>Trondro</option>
-          <option>Omby</option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Isan'ny biby
-        </label>
-
-        <input
-          name="quantity"
-          type="number"
-          min="1"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Coût achat
-        </label>
-
-        <input
-          name="purchase"
-          type="number"
-          min="0"
-          value="0"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Coût sakafo
-        </label>
-
-        <input
-          name="feed"
-          type="number"
-          min="0"
-          value="0"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Autres coûts
-        </label>
-
-        <input
-          name="other"
-          type="number"
-          min="0"
-          value="0"
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix de vente / biby
-        </label>
-
-        <input
-          name="price"
-          type="number"
-          min="0"
-          required
-        >
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
-        Kajio ny fiompiana
-      </button>
-
-    </form>
-
-
-    <div
-      id="livestockResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#livestockForm")
-    .addEventListener(
-      "submit",
-      calculateLivestock
-    );
-
-}
-
-
-function calculateLivestock(event) {
-
-  event.preventDefault();
-
-  const data =
-    new FormData(
-      event.currentTarget
-    );
-
-  const animal =
-    data.get("animal");
-
-  const quantity =
-    Number(data.get("quantity"));
-
-  const purchase =
-    Number(data.get("purchase")) || 0;
-
-  const feed =
-    Number(data.get("feed")) || 0;
-
-  const other =
-    Number(data.get("other")) || 0;
-
-  const price =
-    Number(data.get("price")) || 0;
-
-
-  const totalCost =
-    purchase + feed + other;
-
-  const revenue =
-    quantity * price;
-
-  const profit =
-    revenue - totalCost;
-
-  const margin =
-    revenue > 0
-      ? (profit / revenue) * 100
-      : 0;
-
-  const costPerAnimal =
-    quantity > 0
-      ? totalCost / quantity
-      : 0;
-
-
-  const result = {
-
-    id: Date.now(),
-
-    animal,
-
-    quantity,
-
-    purchase,
-
-    feed,
-
-    other,
-
-    totalCost,
-
-    price,
-
-    revenue,
-
-    profit,
-
-    margin: round(margin),
-
-    costPerAnimal:
-      round(costPerAnimal),
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  state.livestockCalculations.unshift(
-    result
-  );
-
-  saveState();
-
-
-  $("#livestockResult").innerHTML = `
-
-    <div class="result-card">
-
-      <div class="result-card-header">
-
-        <span>🐔 ${escapeHTML(animal)}</span>
-
-        <strong>
-          ${quantity} biby
-        </strong>
-
-      </div>
-
-
-      <div class="result-grid">
-
-        <div>
-          <small>Coût total</small>
-          <strong>${formatAr(totalCost)}</strong>
-        </div>
-
-        <div>
-          <small>Coût / biby</small>
-          <strong>${formatAr(costPerAnimal)}</strong>
-        </div>
-
-        <div>
-          <small>CA</small>
-          <strong>${formatAr(revenue)}</strong>
-        </div>
-
-        <div>
-          <small>Tombony</small>
-          <strong>${formatAr(profit)}</strong>
-        </div>
-
-      </div>
-
-
-      <div class="result-explanation">
-
-        ${
-          profit > 0
-            ? `
-              <strong>✅ Fiompiana mahazo tombony.</strong>
-              <p>
-                Tombony vinavinana:
-                ${formatAr(profit)}.
-              </p>
-            `
-            : `
-              <strong>⚠️ Mila dinihina.</strong>
-              <p>
-                Tsy mbola tsara ny différence
-                entre coût sy CA.
-              </p>
-            `
-        }
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  updateDashboard();
-
-  showToast(
-    "Kajy fiompiana vita.",
-    "success"
-  );
-
-}
-
-
-/* ============================================================
-   11. CALENDRIER MPIOMPY & VENTE
-============================================================ */
-
-/*
-   IMPORTANT:
-   Ireo durations ireo dia "base pédagogique".
-   Tsy daty ara-pahasalamana raikitra.
-   Ny tena fotoana dia miankina amin'ny race,
-   alimentation, santé, poids ary marché.
-*/
-
-const ELEVAGE_RULES = {
-
-  "Poulet de chair": {
-
-    cycle: 45,
-
-    preparation: 7,
-
-    prospecting: 7,
-
-    publication: 5,
-
-    followup: 1,
-
-    weightNote:
-      "Jereo ny lanja sy ny toe-pahasalamana alohan'ny vente."
-
-  },
-
-  "Akoho Gasy": {
-
-    cycle: 120,
-
-    preparation: 14,
-
-    prospecting: 10,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Ny taona sy lanja no tokony hanampy amin'ny fanapahan-kevitra."
-
-  },
-
-  "Pondeuse": {
-
-    cycle: 140,
-
-    preparation: 14,
-
-    prospecting: 10,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Miova arakaraka ny tanjona: atody sa vente de sujet."
-
-  },
-
-  "Kisoa": {
-
-    cycle: 180,
-
-    preparation: 21,
-
-    prospecting: 14,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Araho indrindra ny lanja, alimentation ary prix marché."
-
-  },
-
-  "Osy": {
-
-    cycle: 180,
-
-    preparation: 21,
-
-    prospecting: 14,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Tsy daty raikitra ny vente; lanja sy tanjona no jerena."
-
-  },
-
-  "Ondry": {
-
-    cycle: 180,
-
-    preparation: 21,
-
-    prospecting: 14,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Araho ny lanja, santé ary tsena."
-
-  },
-
-  "Bitro": {
-
-    cycle: 90,
-
-    preparation: 10,
-
-    prospecting: 7,
-
-    publication: 5,
-
-    followup: 1,
-
-    weightNote:
-      "Miankina amin'ny karazana sy tanjona ny fotoana."
-
-  },
-
-  "Gana": {
-
-    cycle: 90,
-
-    preparation: 14,
-
-    prospecting: 10,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Araho ny lanja sy ny tsena."
-
-  },
-
-  "Gisa": {
-
-    cycle: 150,
-
-    preparation: 21,
-
-    prospecting: 14,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Ny lanja sy ny tsena no tena tokony hojerena."
-
-  },
-
-  "Vorontsiloza": {
-
-    cycle: 150,
-
-    preparation: 21,
-
-    prospecting: 14,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Miankina amin'ny lanja sy tanjona ny vente."
-
-  },
-
-  "Trondro": {
-
-    cycle: 180,
-
-    preparation: 21,
-
-    prospecting: 14,
-
-    publication: 7,
-
-    followup: 1,
-
-    weightNote:
-      "Ny poids moyen sy ny marché no tokony harahina."
-
-  },
-
-  "Omby": {
-
-    cycle: 365,
-
-    preparation: 30,
-
-    prospecting: 21,
-
-    publication: 14,
-
-    followup: 1,
-
-    weightNote:
-      "Miova be arakaraka ny âge, poids, race ary marché."
-
+    workspace.dataset.activeTool = tool;
   }
 
-};
+  /* ==========================================================
+     10. PRICE & PROFIT
+  ========================================================== */
 
-
-function renderCalendarTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "📅",
-      "Calendrier Mpiompy & Vente",
-      "Omano mialoha ny fiompiana, ny prospection ary ny vente."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <h3>
-        🎯 Inona no ataon'ity outil ity?
-      </h3>
-
-      <p>
-        Ampifandraisiny ny daty nanombohanao niompy
-        sy ny fotoana tokony hanomanana ny vente.
-      </p>
-
-      <p>
-        Tsy hoe milaza hoe “ity daty ity dia tsy maintsy
-        mivarotra” izy. Manome <strong>période vinavinana</strong>
-        ary mampahatsiahy anao ny fotoana tokony hanombohana
-        mitady client.
-      </p>
-
-
-      <div class="example-box">
-
-        <strong>Ohatra:</strong>
-
+  function renderPriceTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
+        <span class="eyebrow">LAB 01</span>
+        <h2>Kajy Prix & Tombony</h2>
         <p>
-          Nanomboka niompy:
-          <strong>05 Oktobra</strong>
+          Fantaro aloha ny coût, ny prix de vente ary ny tombony
+          vao mamorona offre.
         </p>
-
-        <p>
-          Préparation:
-          alohan'ny vente
-        </p>
-
-        <p>
-          Prospection:
-          manomboka mialoha
-        </p>
-
-        <p>
-          Publication:
-          rehefa manakaiky ny stock disponible
-        </p>
-
       </div>
 
+      <form id="priceForm" class="lab-form">
 
-      <div class="important-note">
-
-        <strong>
-          ⚠️ Fanamarihana:
-        </strong>
-
-        <p>
-          Vinavina pédagogique ihany ireo daty.
-          Ny lanja tena izy, santé, alimentation,
-          coût ary prix marché no tokony hanapaka
-          ny décision farany.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <form
-      id="calendarForm"
-      class="tool-form"
-    >
-
-      <div class="form-group">
-
-        <label>
-          Karazana fiompiana
-        </label>
-
-        <select
-          name="animal"
-          id="calendarAnimal"
-          required
-        >
-
-          <option value="">
-            Safidio
-          </option>
-
-          ${Object.keys(ELEVAGE_RULES)
-            .map(
-              animal =>
-                `<option value="${escapeHTML(animal)}">
-                  ${escapeHTML(animal)}
-                </option>`
-            )
-            .join("")}
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Daty nanombohana
-        </label>
-
-        <input
-          type="date"
-          name="startDate"
-          value="${todayISO()}"
-          required
-        >
-
-        <small>
-          Daty tena nanombohanao ny fiompiana.
-        </small>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Isan'ny biby
-        </label>
-
-        <input
-          type="number"
-          name="quantity"
-          min="1"
-          placeholder="Ohatra: 50"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Lanja ankehitriny (raha fantatra)
-        </label>
-
-        <input
-          type="number"
-          name="weight"
-          min="0"
-          step="0.01"
-          placeholder="Ohatra: 1.2 kg"
-        >
-
-        <small>
-          Tsy voatery. Ampiasao rehefa fantatra.
-        </small>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Tanjona
-        </label>
-
-        <select name="goal">
-
-          <option value="Vente">
-            Vente
-          </option>
-
-          <option value="Reproduction">
-            Reproduction
-          </option>
-
-          <option value="Élevage">
-            Élevage
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix marché fantatra? (optionnel)
-        </label>
-
-        <input
-          type="number"
-          name="marketPrice"
-          min="0"
-          placeholder="Ohatra: 15000"
-        >
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
-        Mamorona Calendrier
-      </button>
-
-    </form>
-
-
-    <div
-      id="calendarResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#calendarForm")
-    .addEventListener(
-      "submit",
-      calculateCalendar
-    );
-
-}
-
-
-function calculateCalendar(event) {
-
-  event.preventDefault();
-
-  const data =
-    new FormData(
-      event.currentTarget
-    );
-
-  const animal =
-    data.get("animal");
-
-  const startDate =
-    data.get("startDate");
-
-  const quantity =
-    Number(data.get("quantity"));
-
-  const weight =
-    Number(data.get("weight")) || null;
-
-  const goal =
-    data.get("goal");
-
-  const marketPrice =
-    Number(data.get("marketPrice")) || null;
-
-
-  if (!animal || !startDate || quantity <= 0) {
-
-    showToast(
-      "Fenoy tsara ny informations ilaina.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const rules =
-    ELEVAGE_RULES[animal];
-
-
-  const estimatedSale =
-    addDays(
-      startDate,
-      rules.cycle
-    );
-
-
-  const preparationDate =
-    addDays(
-      estimatedSale,
-      -rules.preparation
-    );
-
-
-  const prospectingDate =
-    addDays(
-      estimatedSale,
-      -rules.prospecting
-    );
-
-
-  const publicationDate =
-    addDays(
-      estimatedSale,
-      -rules.publication
-    );
-
-
-  const verificationDate =
-    addDays(
-      estimatedSale,
-      -3
-    );
-
-
-  const followupDate =
-    addDays(
-      estimatedSale,
-      rules.followup
-    );
-
-
-  const plan = {
-
-    id: Date.now(),
-
-    animal,
-
-    startDate,
-
-    quantity,
-
-    weight,
-
-    goal,
-
-    marketPrice,
-
-    estimatedSale,
-
-    preparationDate,
-
-    prospectingDate,
-
-    publicationDate,
-
-    verificationDate,
-
-    followupDate,
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  state.calendarPlans.unshift(
-    plan
-  );
-
-  saveState();
-
-
-  $("#calendarResult").innerHTML = `
-
-    <div class="result-card calendar-result">
-
-      <div class="result-card-header">
-
-        <span>
-          📅 ${escapeHTML(animal)}
-        </span>
-
-        <strong>
-          ${quantity} biby
-        </strong>
-
-      </div>
-
-
-      <div class="calendar-result-warning">
-
-        ⚠️
-        <span>
-          Ireo dia ireo dia
-          <strong>vinavina</strong>.
-          Hamarino hatrany ny lanja,
-          santé, coût ary prix marché.
-        </span>
-
-      </div>
-
-
-      <div class="calendar-timeline">
-
-
-        <div class="calendar-event">
-
-          <span class="calendar-event-icon">
-            🌱
-          </span>
-
-          <div>
-
-            <strong>
-              Fanombohana
-            </strong>
-
-            <small>
-              ${formatDate(startDate)}
-            </small>
-
-            <p>
-              Nanomboka ny fiompiana.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="calendar-event">
-
-          <span class="calendar-event-icon">
-            📊
-          </span>
-
-          <div>
-
-            <strong>
-              Préparation vente
-            </strong>
-
-            <small>
-              ${formatDate(preparationDate)}
-            </small>
-
-            <p>
-              Jereo ny lanja, coût,
-              santé ary prix marché.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="calendar-event">
-
-          <span class="calendar-event-icon">
-            🔎
-          </span>
-
-          <div>
-
-            <strong>
-              Manomboka mitady prospects
-            </strong>
-
-            <small>
-              ${formatDate(prospectingDate)}
-            </small>
-
-            <p>
-              Mitadiava client sy
-              précommandes raha mety.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="calendar-event">
-
-          <span class="calendar-event-icon">
-            📢
-          </span>
-
-          <div>
-
-            <strong>
-              Publication
-            </strong>
-
-            <small>
-              ${formatDate(publicationDate)}
-            </small>
-
-            <p>
-              Mamoaha publication
-              mifanaraka amin'ny stock.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="calendar-event">
-
-          <span class="calendar-event-icon">
-            ⚖️
-          </span>
-
-          <div>
-
-            <strong>
-              Contrôle final
-            </strong>
-
-            <small>
-              ${formatDate(verificationDate)}
-            </small>
-
-            <p>
-              Jereo indray ny lanja sy
-              ny condition avant vente.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="calendar-event calendar-event-main">
-
-          <span class="calendar-event-icon">
-            🛒
-          </span>
-
-          <div>
-
-            <strong>
-              Période de vente estimée
-            </strong>
-
-            <small>
-              Manodidina ny ${formatDate(estimatedSale)}
-            </small>
-
-            <p>
-              Tsy daty raikitra.
-              Ny lanja sy ny tsena no manamafy
-              ny fotoana tena mety.
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <div class="calendar-event">
-
-          <span class="calendar-event-icon">
-            🤝
-          </span>
-
-          <div>
-
-            <strong>
-              Suivi client
-            </strong>
-
-            <small>
-              ${formatDate(followupDate)}
-            </small>
-
-            <p>
-              Anontanio ny satisfaction
-              ary diniho ny repeat order.
-            </p>
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-
-      <div class="calendar-action-plan">
-
-        <h3>
-          🎯 Plan Vente
-        </h3>
-
-        <ul>
-
-          <li>
-            <strong>
-              7–14 andro mialoha:
-            </strong>
-            manomboka mitady prospects.
-          </li>
-
-          <li>
-            <strong>
-              5–7 andro mialoha:
-            </strong>
-            mamoaka publication.
-          </li>
-
-          <li>
-            <strong>
-              3 andro mialoha:
-            </strong>
-            manao relance.
-          </li>
-
-          <li>
-            <strong>
-              1 andro mialoha:
-            </strong>
-            manamarina commandes.
-          </li>
-
-          <li>
-            <strong>
-              Jour de vente:
-            </strong>
-            vente + reçu.
-          </li>
-
-          <li>
-            <strong>
-              Aorian'ny vente:
-            </strong>
-            suivi + évaluation.
-          </li>
-
-        </ul>
-
-      </div>
-
-
-      <div class="calendar-note">
-
-        <strong>
-          ${escapeHTML(rules.weightNote)}
-        </strong>
-
-        ${
-          marketPrice
-            ? `
-              <p>
-                Prix marché nampidirinao:
-                <strong>
-                  ${formatAr(marketPrice)}
-                </strong>
-              </p>
-            `
-            : `
-              <p>
-                Tsy mbola nampiditra prix marché ianao.
-                Jereo ny tsena alohan'ny hametrahana prix.
-              </p>
-            `
-        }
-
-      </div>
-
-
-      <div class="result-actions">
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          id="calendarOfferButton"
-        >
-          Hanamboatra Offre
-        </button>
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          id="calendarPublicationButton"
-        >
-          Hanao Publication
-        </button>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  const offerButton =
-    $("#calendarOfferButton");
-
-  if (offerButton) {
-
-    offerButton.addEventListener(
-      "click",
-      () => openTool("offer")
-    );
-
-  }
-
-
-  const publicationButton =
-    $("#calendarPublicationButton");
-
-  if (publicationButton) {
-
-    publicationButton.addEventListener(
-      "click",
-      () => openTool("publication")
-    );
-
-  }
-
-
-  showToast(
-    "Calendrier de vente vita.",
-    "success"
-  );
-
-}
-
-
-/* ============================================================
-   12. CREER UNE OFFRE
-============================================================ */
-
-function renderOfferTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "🎁",
-      "Créer une Offre",
-      "Avadiho ho offre mazava ny produit-nao."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <h3>
-        Tsy produit fotsiny no aseho.
-      </h3>
-
-      <p>
-        Ny offre dia tokony hamaly hoe:
-        iza no client, inona ny olany,
-        inona ny solution, inona ny valeur
-        ary inona no action tokony hataony.
-      </p>
-
-      <div class="formula-box">
-        Client → Problème → Solution → Valeur → Prix → CTA
-      </div>
-
-    </div>
-
-
-    <form
-      id="offerForm"
-      class="tool-form"
-    >
-
-      <div class="form-group">
-
-        <label>
-          Produit / Service
-        </label>
-
-        <input
-          name="product"
-          placeholder="Ohatra: Akoho Gasy"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Client cible
-        </label>
-
-        <input
-          name="client"
-          placeholder="Ohatra: Mpiompy vao manomboka"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Problème
-        </label>
-
-        <textarea
-          name="problem"
-          rows="3"
-          placeholder="Inona ny olana ananan'ny client?"
-          required
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Solution
-        </label>
-
-        <textarea
-          name="solution"
-          rows="3"
-          placeholder="Ahoana no anampian'ny produit?"
-          required
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Valeur / Tombontsoa
-        </label>
-
-        <textarea
-          name="value"
-          rows="3"
-          placeholder="Inona no tombontsoa lehibe?"
-          required
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix
-        </label>
-
-        <input
-          name="price"
-          type="number"
-          min="0"
-          placeholder="Ohatra: 15000"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          CTA
-        </label>
-
-        <input
-          name="cta"
-          placeholder="Ohatra: Alefaso MP raha mila"
-          required
-        >
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
-        Mamorona Offre
-      </button>
-
-    </form>
-
-
-    <div
-      id="offerResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#offerForm")
-    .addEventListener(
-      "submit",
-      createOffer
-    );
-
-}
-
-
-function createOffer(event) {
-
-  event.preventDefault();
-
-  const data =
-    new FormData(
-      event.currentTarget
-    );
-
-
-  const offer = {
-
-    id: Date.now(),
-
-    product:
-      data.get("product"),
-
-    client:
-      data.get("client"),
-
-    problem:
-      data.get("problem"),
-
-    solution:
-      data.get("solution"),
-
-    value:
-      data.get("value"),
-
-    price:
-      Number(data.get("price")),
-
-    cta:
-      data.get("cta"),
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  state.offers.unshift(
-    offer
-  );
-
-  saveState();
-
-
-  $("#offerResult").innerHTML = `
-
-    <div class="result-card">
-
-      <div class="result-card-header">
-
-        <span>🎁 Offre</span>
-
-        <strong>
-          ${escapeHTML(offer.product)}
-        </strong>
-
-      </div>
-
-
-      <div class="generated-copy">
-
-        <p>
-          <strong>
-            ${escapeHTML(offer.product)}
-          </strong>
-        </p>
-
-        <p>
-          Ho an'ny
-          <strong>
-            ${escapeHTML(offer.client)}
-          </strong>,
-          raha sendra
-          ${escapeHTML(offer.problem)},
-          dia afaka manampy anao ny
-          ${escapeHTML(offer.product)}.
-        </p>
-
-        <p>
-          ${escapeHTML(offer.solution)}
-        </p>
-
-        <p>
-          <strong>
-            Tombontsoa:
-          </strong>
-          ${escapeHTML(offer.value)}
-        </p>
-
-        <p>
-          <strong>
-            Prix:
-          </strong>
-          ${formatAr(offer.price)}
-        </p>
-
-        <p>
-          <strong>
-            ${escapeHTML(offer.cta)}
-          </strong>
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        class="btn btn-secondary"
-        id="copyOfferButton"
-      >
-        Adikao ny Offre
-      </button>
-
-    </div>
-
-  `;
-
-
-  $("#copyOfferButton")
-    .addEventListener(
-      "click",
-      () => {
-
-        const text =
-          buildOfferText(offer);
-
-        copyText(text);
-
-      }
-    );
-
-
-  showToast(
-    "Offre vita.",
-    "success"
-  );
-
-}
-
-
-function buildOfferText(offer) {
-
-  return `
-${offer.product}
-
-Ho an'ny ${offer.client}.
-
-Olana:
-${offer.problem}
-
-Solution:
-${offer.solution}
-
-Tombontsoa:
-${offer.value}
-
-Prix:
-${formatAr(offer.price)}
-
-${offer.cta}
-  `.trim();
-
-}
-
-
-/* ============================================================
-   13. PUBLICATION
-============================================================ */
-
-function renderPublicationTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "📢",
-      "Créer une Publication",
-      "Mamoròna publication ho an'ny Facebook, WhatsApp na Marketplace."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <h3>
-        🧠 Structure simple
-      </h3>
-
-      <div class="formula-box">
-        Hook → Problème → Solution → Offre → Preuve → Prix → CTA
-      </div>
-
-      <p>
-        Aza manomboka amin'ny prix fotsiny.
-        Ataovy mazava aloha ny olana sy ny tombontsoa.
-      </p>
-
-    </div>
-
-
-    <form
-      id="publicationForm"
-      class="tool-form"
-    >
-
-      <div class="form-group">
-
-        <label>
-          Canal
-        </label>
-
-        <select name="channel">
-
-          <option>Facebook</option>
-          <option>WhatsApp</option>
-          <option>Marketplace</option>
-
-        </select>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Produit
-        </label>
-
-        <input
-          name="product"
-          placeholder="Ohatra: Akoho Gasy"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Client cible
-        </label>
-
-        <input
-          name="client"
-          placeholder="Iza no tianao hahita azy?"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Problème
-        </label>
-
-        <textarea
-          name="problem"
-          rows="3"
-          required
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Solution / Tombontsoa
-        </label>
-
-        <textarea
-          name="solution"
-          rows="3"
-          required
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Preuve / Information mampitombo confiance
-        </label>
-
-        <textarea
-          name="proof"
-          rows="2"
-          placeholder="Ohatra: lanja, quantité disponible, expérience..."
-        ></textarea>
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix
-        </label>
-
-        <input
-          name="price"
-          type="number"
-          min="0"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          CTA
-        </label>
-
-        <input
-          name="cta"
-          value="Alefaso MP raha mila"
-          required
-        >
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
-        Mamorona Publication
-      </button>
-
-    </form>
-
-
-    <div
-      id="publicationResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#publicationForm")
-    .addEventListener(
-      "submit",
-      createPublication
-    );
-
-}
-
-
-function createPublication(event) {
-
-  event.preventDefault();
-
-  const data =
-    new FormData(
-      event.currentTarget
-    );
-
-
-  const publication = {
-
-    id: Date.now(),
-
-    channel:
-      data.get("channel"),
-
-    product:
-      data.get("product"),
-
-    client:
-      data.get("client"),
-
-    problem:
-      data.get("problem"),
-
-    solution:
-      data.get("solution"),
-
-    proof:
-      data.get("proof"),
-
-    price:
-      Number(data.get("price")),
-
-    cta:
-      data.get("cta"),
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  state.publications.unshift(
-    publication
-  );
-
-  saveState();
-
-
-  const text =
-    buildPublicationText(
-      publication
-    );
-
-
-  $("#publicationResult").innerHTML = `
-
-    <div class="result-card">
-
-      <div class="result-card-header">
-
-        <span>
-          📢 ${escapeHTML(publication.channel)}
-        </span>
-
-        <strong>
-          Publication prête
-        </strong>
-
-      </div>
-
-
-      <div class="generated-copy">
-
-        ${escapeHTML(text)
-          .replace(/\n/g, "<br>")}
-
-      </div>
-
-
-      <button
-        type="button"
-        class="btn btn-secondary"
-        id="copyPublicationButton"
-      >
-        Adikao ny Publication
-      </button>
-
-    </div>
-
-  `;
-
-
-  $("#copyPublicationButton")
-    .addEventListener(
-      "click",
-      () => copyText(text)
-    );
-
-
-  showToast(
-    "Publication vita.",
-    "success"
-  );
-
-}
-
-
-function buildPublicationText(item) {
-
-  return `
-🔥 ${item.product}
-
-${item.problem}
-
-${item.solution}
-
-${item.proof}
-
-💰 Prix:
-${formatAr(item.price)}
-
-📩 ${item.cta}
-  `.trim();
-
-}
-
-
-/* ============================================================
-   14. SIMULATION CLIENT
-============================================================ */
-
-const SIMULATION_SCENARIOS = [
-
-  {
-    id: "expensive",
-
-    title:
-      "Lafo loatra",
-
-    client:
-      "“Lafo be izany. Any amin'ny olona hafa mbola mora kokoa.”",
-
-    expected:
-      "Aza miady amin'ny client. Hazavao ny valeur, ny différence ary anontanio izay tena ilainy."
-
-  },
-
-  {
-    id: "think",
-
-    title:
-      "Mbola hieritreritra",
-
-    client:
-      "“Mbola hieritreritra aloha aho dia hiverina.”",
-
-    expected:
-      "Aza manery. Fantaro izay mampisalasala azy ary omeo information ilainy."
-
-  },
-
-  {
-    id: "discount",
-
-    title:
-      "Misy remise ve?",
-
-    client:
-      "“Misy remise ve raha maka betsaka?”",
-
-    expected:
-      "Fantaro aloha ny quantité sy ny marge vao manolotra remise."
-
-  },
-
-  {
-    id: "location",
-
-    title:
-      "Aiza no misy anareo?",
-
-    client:
-      "“Aiza no misy anareo? Afaka maka mivantana ve?”",
-
-    expected:
-      "Valio mazava ny toerana, disponibilité ary fomba fandraisana commande."
-
-  },
-
-  {
-    id: "pay-later",
-
-    title:
-      "Alefaso aloha",
-
-    client:
-      "“Alefaso aloha ilay produit dia mandoa aho rehefa tonga.”",
-
-    expected:
-      "Aza manaiky risika tsy voafehy. Hazavao mazava ny fepetra fandoavana sy livraison."
-
-  }
-
-];
-
-
-function renderSimulationTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "💬",
-      "Simulation Client",
-      "Manao pratique amin'ny objection sy closing."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <h3>
-        🎯 Inona no tanjona?
-      </h3>
-
-      <p>
-        Tsy ampy ny mahafantatra théorie.
-        Mila mahay mamaly client koa ianao rehefa misy objection.
-      </p>
-
-      <p>
-        Safidio ny scenario, vakio ny hafatr'ilay client,
-        soraty ny valinteninao, ary jereo ny fanombanana.
-      </p>
-
-    </div>
-
-
-    <div class="simulation-selector">
-
-      ${SIMULATION_SCENARIOS
-        .map(
-          scenario => `
-            <button
-              type="button"
-              class="simulation-option"
-              data-simulation="${scenario.id}"
-            >
-              ${escapeHTML(scenario.title)}
-            </button>
-          `
-        )
-        .join("")}
-
-    </div>
-
-
-    <div
-      id="simulationArea"
-      class="simulation-area"
-    >
-
-      <div class="workspace-placeholder">
-
-        <h3>
-          Safidio aloha ny objection
-        </h3>
-
-        <p>
-          Hanomboka ny simulation rehefa misafidy scenario ianao.
-        </p>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  $all("[data-simulation]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          renderSimulationScenario(
-            button.dataset.simulation
-          );
-
-        }
-      );
-
-    });
-
-}
-
-
-function renderSimulationScenario(id) {
-
-  const scenario =
-    SIMULATION_SCENARIOS.find(
-      item => item.id === id
-    );
-
-  if (!scenario) {
-    return;
-  }
-
-
-  const area =
-    $("#simulationArea");
-
-  area.innerHTML = `
-
-    <div class="simulation-card">
-
-      <span class="eyebrow">
-        CLIENT
-      </span>
-
-      <blockquote>
-        ${escapeHTML(scenario.client)}
-      </blockquote>
-
-
-      <form id="simulationForm">
-
-        <div class="form-group">
+        <div class="form-grid">
 
           <label>
-            Inona no hamalianao?
+            Vokatra
+            <input
+              type="text"
+              name="product"
+              placeholder="Ohatra: Akoho Gasy"
+              required
+            >
           </label>
 
-          <textarea
-            name="answer"
-            rows="6"
-            placeholder="Soraty eto ny valinteninao..."
-            required
-          ></textarea>
+          <label>
+            Isan'ny vokatra
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              value="1"
+              required
+            >
+          </label>
+
+          <label>
+            Coût total
+            <input
+              type="number"
+              name="cost"
+              min="0"
+              placeholder="Ohatra: 60000"
+              required
+            >
+          </label>
+
+          <label>
+            Prix de vente / unité
+            <input
+              type="number"
+              name="price"
+              min="0"
+              placeholder="Ohatra: 30000"
+              required
+            >
+          </label>
 
         </div>
 
+        <button class="btn btn-primary" type="submit">
+          🧮 Kajio ny tombony
+        </button>
+      </form>
+
+      <div id="priceResult" class="lab-result"></div>
+    `;
+
+    const form = document.getElementById("priceForm");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const data = new FormData(form);
+
+      const product = data.get("product");
+      const quantity = numberValue(data.get("quantity"));
+      const cost = numberValue(data.get("cost"));
+      const price = numberValue(data.get("price"));
+
+      const revenue = quantity * price;
+      const profit = revenue - cost;
+
+      const margin =
+        revenue > 0
+          ? (profit / revenue) * 100
+          : 0;
+
+      const result = {
+        date: new Date().toISOString(),
+        product,
+        quantity,
+        cost,
+        price,
+        revenue,
+        profit,
+        margin
+      };
+
+      state.calculations.push(result);
+      state.lastActivity = new Date().toISOString();
+
+      saveState();
+
+      renderPriceResult(result);
+      updateDashboard();
+
+      showToast("Kajy vita ary voatahiry.");
+    });
+  }
+
+  function renderPriceResult(result) {
+    const box = document.getElementById("priceResult");
+
+    if (!box) return;
+
+    const positive = result.profit >= 0;
+
+    box.innerHTML = `
+      <div class="result-card ${positive ? "result-positive" : "result-negative"}">
+
+        <div class="result-title">
+          ${positive ? "✅ Mahazo tombony" : "⚠️ Misy fatiantoka"}
+        </div>
+
+        <div class="result-grid">
+
+          <div>
+            <span>Vola miditra</span>
+            <strong>${formatMoney(result.revenue)}</strong>
+          </div>
+
+          <div>
+            <span>Coût</span>
+            <strong>${formatMoney(result.cost)}</strong>
+          </div>
+
+          <div>
+            <span>Tombony</span>
+            <strong>${formatMoney(result.profit)}</strong>
+          </div>
+
+          <div>
+            <span>Margin</span>
+            <strong>${result.margin.toFixed(2)}%</strong>
+          </div>
+
+        </div>
+
+        <div class="result-advice">
+          ${
+            positive
+              ? "Afaka mandroso amin'ny famoronana offre sy publication ianao."
+              : "Avereno jerena ny coût na ny prix de vente alohan'ny hivarotana."
+          }
+        </div>
+
+      </div>
+    `;
+  }
+
+  /* ==========================================================
+     11. LIVESTOCK CALCULATOR
+  ========================================================== */
+
+  function renderLivestockTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
+        <span class="eyebrow">LAB 02</span>
+        <h2>Kajy Fiompiana</h2>
+
+        <p>
+          Ampidiro ny karazana biby, isan'ny biby ary ny dépenses
+          hahitana ny coût sy ny potentiel de vente.
+        </p>
+      </div>
+
+      <form id="livestockForm" class="lab-form">
+
+        <div class="form-grid">
+
+          <label>
+            Karazana
+            <select name="animal" required>
+              <option value="">-- Misafidiana --</option>
+              <option>Akoho Gasy</option>
+              <option>Pondeuse</option>
+              <option>Poulet de chair</option>
+              <option>Kisoa</option>
+              <option>Osy</option>
+              <option>Ondry</option>
+              <option>Bitro</option>
+              <option>Gana</option>
+              <option>Gisa</option>
+              <option>Vorontsiloza</option>
+              <option>Omby</option>
+            </select>
+          </label>
+
+          <label>
+            Isan'ny biby
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              value="10"
+              required
+            >
+          </label>
+
+          <label>
+            Coût sakafo
+            <input
+              type="number"
+              name="feed"
+              min="0"
+              value="0"
+            >
+          </label>
+
+          <label>
+            Fanafody / vaksiny
+            <input
+              type="number"
+              name="health"
+              min="0"
+              value="0"
+            >
+          </label>
+
+          <label>
+            Achat biby
+            <input
+              type="number"
+              name="purchase"
+              min="0"
+              value="0"
+            >
+          </label>
+
+          <label>
+            Dépenses hafa
+            <input
+              type="number"
+              name="other"
+              min="0"
+              value="0"
+            >
+          </label>
+
+          <label>
+            Prix de vente / biby
+            <input
+              type="number"
+              name="salePrice"
+              min="0"
+              value="0"
+            >
+          </label>
+
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+          🐓 Kajio ny fiompiana
+        </button>
+
+      </form>
+
+      <div id="livestockResult" class="lab-result"></div>
+    `;
+
+    document
+      .getElementById("livestockForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data = new FormData(event.currentTarget);
+
+        const animal = data.get("animal");
+        const quantity = numberValue(data.get("quantity"));
+        const feed = numberValue(data.get("feed"));
+        const health = numberValue(data.get("health"));
+        const purchase = numberValue(data.get("purchase"));
+        const other = numberValue(data.get("other"));
+        const salePrice = numberValue(data.get("salePrice"));
+
+        const cost =
+          feed +
+          health +
+          purchase +
+          other;
+
+        const revenue =
+          quantity * salePrice;
+
+        const profit =
+          revenue - cost;
+
+        const costPerAnimal =
+          quantity > 0
+            ? cost / quantity
+            : 0;
+
+        const result = {
+          date: new Date().toISOString(),
+          animal,
+          quantity,
+          feed,
+          health,
+          purchase,
+          other,
+          salePrice,
+          cost,
+          revenue,
+          profit,
+          costPerAnimal
+        };
+
+        state.calculations.push(result);
+        state.lastActivity = new Date().toISOString();
+
+        saveState();
+
+        document.getElementById("livestockResult").innerHTML = `
+          <div class="result-card">
+
+            <div class="result-title">
+              ${escapeHTML(animal)} — Résultat
+            </div>
+
+            <div class="result-grid">
+
+              <div>
+                <span>Isan'ny biby</span>
+                <strong>${quantity}</strong>
+              </div>
+
+              <div>
+                <span>Coût total</span>
+                <strong>${formatMoney(cost)}</strong>
+              </div>
+
+              <div>
+                <span>Coût / biby</span>
+                <strong>${formatMoney(costPerAnimal)}</strong>
+              </div>
+
+              <div>
+                <span>Vola miditra</span>
+                <strong>${formatMoney(revenue)}</strong>
+              </div>
+
+              <div>
+                <span>Tombony</span>
+                <strong>${formatMoney(profit)}</strong>
+              </div>
+
+            </div>
+
+            <div class="result-advice">
+              ${
+                profit > 0
+                  ? "Tsara: afaka manohy amin'ny préparation de vente ianao."
+                  : "Tandremo: mety tsy hahazo tombony amin'ity prix ity."
+              }
+            </div>
+
+          </div>
+        `;
+
+        updateDashboard();
+
+        showToast("Kajy fiompiana vita.");
+      });
+  }
+
+  /* ==========================================================
+     12. CALENDRIER MPIOMPY & VENTE
+  ========================================================== */
+
+  const animalProfiles = {
+    "Akoho Gasy": {
+      defaultDays: 150,
+      minDays: 120,
+      maxDays: 210
+    },
+
+    "Pondeuse": {
+      defaultDays: 140,
+      minDays: 120,
+      maxDays: 180
+    },
+
+    "Poulet de chair": {
+      defaultDays: 45,
+      minDays: 35,
+      maxDays: 60
+    },
+
+    "Kisoa": {
+      defaultDays: 180,
+      minDays: 150,
+      maxDays: 240
+    },
+
+    "Bitro": {
+      defaultDays: 90,
+      minDays: 70,
+      maxDays: 120
+    },
+
+    "Gana": {
+      defaultDays: 100,
+      minDays: 80,
+      maxDays: 130
+    },
+
+    "Gisa": {
+      defaultDays: 150,
+      minDays: 120,
+      maxDays: 200
+    },
+
+    "Vorontsiloza": {
+      defaultDays: 150,
+      minDays: 120,
+      maxDays: 200
+    },
+
+    "Osy": {
+      defaultDays: 240,
+      minDays: 180,
+      maxDays: 300
+    },
+
+    "Ondry": {
+      defaultDays: 240,
+      minDays: 180,
+      maxDays: 300
+    }
+  };
+
+  function renderCalendarTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 10 • OUTIL STRATÉGIQUE</span>
+
+        <h2>📅 Calendrier Mpiompy & Vente</h2>
+
+        <p>
+          Tsy ny daty hivarotana ihany no kajiana.
+          Hamboarina miaraka aminao ny plan:
+          fiompiana → préparation → prospection → publication
+          → commande → vente → suivi.
+        </p>
+
+      </div>
+
+      <div class="info-box">
+
+        <strong>Ahoana no fampiasana azy?</strong>
+
+        <ol>
+          <li>Safidio ny karazana biby.</li>
+          <li>Apidiro ny daty nanombohana.</li>
+          <li>Raha fantatra dia ampidiro ny taona/andro ananany.</li>
+          <li>Raha fantatra dia ampidiro ny lanja.</li>
+          <li>Tsindrio <strong>Hamorona Calendrier</strong>.</li>
+        </ol>
+
+        <p>
+          ⚠️ Tombana ihany ny daty. Ny lanja, fahasalamana,
+          sakafo, tahan'ny fitomboana ary vidin'ny tsena no
+          tokony hanamafy ny tena fotoana hivarotana.
+        </p>
+
+      </div>
+
+      <form id="calendarForm" class="lab-form">
+
+        <div class="form-grid">
+
+          <label>
+            Karazana biby
+            <select name="animal" required>
+              <option value="">-- Misafidiana --</option>
+              <option>Akoho Gasy</option>
+              <option>Pondeuse</option>
+              <option>Poulet de chair</option>
+              <option>Kisoa</option>
+              <option>Bitro</option>
+              <option>Gana</option>
+              <option>Gisa</option>
+              <option>Vorontsiloza</option>
+              <option>Osy</option>
+              <option>Ondry</option>
+            </select>
+          </label>
+
+          <label>
+            Isan'ny biby
+            <input
+              type="number"
+              name="quantity"
+              min="1"
+              value="10"
+              required
+            >
+          </label>
+
+          <label>
+            Daty nanombohana
+            <input
+              type="date"
+              name="startDate"
+              value="${todayISO()}"
+              required
+            >
+          </label>
+
+          <label>
+            Taona/andro ananan'ny biby izao
+            <input
+              type="number"
+              name="currentAge"
+              min="0"
+              placeholder="Ohatra: 30"
+            >
+            <small>
+              Azo avela ho 0 raha vao manomboka.
+            </small>
+          </label>
+
+          <label>
+            Unité
+            <select name="ageUnit">
+              <option value="days">Andro</option>
+              <option value="weeks">Herinandro</option>
+              <option value="months">Volana</option>
+            </select>
+          </label>
+
+          <label>
+            Lanja ankehitriny (kg)
+            <input
+              type="number"
+              name="weight"
+              min="0"
+              step="0.01"
+              placeholder="Raha fantatra"
+            >
+          </label>
+
+          <label>
+            Coût efa lany (Ar)
+            <input
+              type="number"
+              name="cost"
+              min="0"
+              value="0"
+            >
+          </label>
+
+          <label>
+            Prix vinavinana / biby (Ar)
+            <input
+              type="number"
+              name="salePrice"
+              min="0"
+              value="0"
+            >
+          </label>
+
+        </div>
+
+        <label class="checkbox-row">
+          <input
+            type="checkbox"
+            name="marketReady"
+          >
+          <span>
+            Efa manana mpividy / marché kendrena ve?
+          </span>
+        </label>
 
         <button
           class="btn btn-primary"
           type="submit"
         >
-          Hamarino ny valiny
+          📅 Hamorona Calendrier
         </button>
 
       </form>
 
-
-      <div
-        id="simulationResult"
-        class="tool-result"
-      ></div>
-
-    </div>
-
-  `;
-
-
-  $("#simulationForm")
-    .addEventListener(
-      "submit",
-      event => {
-
-        event.preventDefault();
-
-        const answer =
-          new FormData(
-            event.currentTarget
-          ).get("answer");
-
-        evaluateSimulation(
-          scenario,
-          answer
-        );
-
-      }
-    );
-
-}
-
-
-function evaluateSimulation(
-  scenario,
-  answer
-) {
-
-  const text =
-    String(answer)
-      .toLowerCase();
-
-
-  let score = 0;
-
-  const positiveWords = [
-
-    "hoy",
-
-    "fantatro",
-
-    "azavao",
-
-    "tombony",
-
-    "valeur",
-
-    "olana",
-
-    "mila",
-
-    "prix",
-
-    "qualité",
-
-    "kalitao",
-
-    "commande",
-
-    "manazava",
-
-    "misy"
-
-  ];
-
-
-  positiveWords.forEach(
-    word => {
-
-      if (text.includes(word)) {
-        score += 1;
-      }
-
-    }
-  );
-
-
-  if (text.length >= 80) {
-    score += 1;
-  }
-
-
-  score =
-    Math.min(
-      10,
-      score
-    );
-
-
-  const saved = {
-
-    id: Date.now(),
-
-    scenario:
-      scenario.title,
-
-    answer,
-
-    score,
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  state.simulations.unshift(
-    saved
-  );
-
-  saveState();
-
-
-  const result =
-    $("#simulationResult");
-
-
-  result.innerHTML = `
-
-    <div class="result-card">
-
-      <div class="score-display">
-
-        <span>
-          Score
-        </span>
-
-        <strong>
-          ${score}/10
-        </strong>
-
-      </div>
-
-
-      <div class="result-explanation">
-
-        <strong>
-          🧠 Torohevitra:
-        </strong>
-
-        <p>
-          ${escapeHTML(scenario.expected)}
-        </p>
-
-      </div>
-
-
-      ${
-        score >= 7
-          ? `
-            <div class="success-message">
-              ✅ Tsara ny orientation-n'ny valinteninao.
-            </div>
-          `
-          : `
-            <div class="warning-message">
-              💡 Mbola azo hatsaraina.
-              Aza mamaly amin'ny “prix” fotsiny;
-              fantaro aloha ny tena objection.
-            </div>
-          `
-      }
-
-    </div>
-
-  `;
-
-
-  showToast(
-    "Simulation évaluée.",
-    "success"
-  );
-
-}
-
-
-/* ============================================================
-   15. COMMANDE
-============================================================ */
-
-function renderOrderTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "🛒",
-      "Commande",
-      "Raketo ny commande sy ny statut mba tsy hisy very."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <h3>
-        Nahoana no raketina?
-      </h3>
-
-      <p>
-        Rehefa betsaka ny prospects sy commandes
-        dia mora very ny information.
-        Ny fiche commande dia manampy anao hanaraka
-        izay mbola miandry, izay efa voaloa ary izay vita.
-      </p>
-
-    </div>
-
-
-    <form
-      id="orderForm"
-      class="tool-form"
-    >
-
-      <div class="form-group">
-
-        <label>
-          Anaran'ny client
-        </label>
-
-        <input
-          name="client"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Produit
-        </label>
-
-        <input
-          name="product"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Quantité
-        </label>
-
-        <input
-          name="quantity"
-          type="number"
-          min="1"
-          value="1"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix / unité
-        </label>
-
-        <input
-          name="price"
-          type="number"
-          min="0"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Statut
-        </label>
-
-        <select name="status">
-
-          <option value="En attente">
-            En attente
-          </option>
-
-          <option value="Confirmée">
-            Confirmée
-          </option>
-
-          <option value="Payée">
-            Payée
-          </option>
-
-          <option value="Livrée">
-            Livrée
-          </option>
-
-          <option value="Annulée">
-            Annulée
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-      >
-        Enregistrer Commande
-      </button>
-
-    </form>
-
-
-    <div
-      id="orderResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#orderForm")
-    .addEventListener(
-      "submit",
-      createOrder
-    );
-
-}
-
-
-function createOrder(event) {
-
-  event.preventDefault();
-
-  const data =
-    new FormData(
-      event.currentTarget
-    );
-
-
-  const quantity =
-    Number(data.get("quantity"));
-
-  const price =
-    Number(data.get("price"));
-
-  const order = {
-
-    id: Date.now(),
-
-    client:
-      data.get("client"),
-
-    product:
-      data.get("product"),
-
-    quantity,
-
-    price,
-
-    total:
-      quantity * price,
-
-    status:
-      data.get("status"),
-
-    createdAt:
-      new Date().toISOString()
-
-  };
-
-
-  state.orders.unshift(
-    order
-  );
-
-  saveState();
-
-
-  $("#orderResult").innerHTML = `
-
-    <div class="result-card">
-
-      <div class="result-card-header">
-
-        <span>🛒 Commande</span>
-
-        <strong>
-          ${escapeHTML(order.client)}
-        </strong>
-
-      </div>
-
-
-      <div class="result-grid">
-
-        <div>
-          <small>Produit</small>
-          <strong>
-            ${escapeHTML(order.product)}
-          </strong>
-        </div>
-
-        <div>
-          <small>Quantité</small>
-          <strong>
-            ${order.quantity}
-          </strong>
-        </div>
-
-        <div>
-          <small>Total</small>
-          <strong>
-            ${formatAr(order.total)}
-          </strong>
-        </div>
-
-        <div>
-          <small>Statut</small>
-          <strong>
-            ${escapeHTML(order.status)}
-          </strong>
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-
-  updateDashboard();
-
-  showToast(
-    "Commande voatahiry.",
-    "success"
-  );
-
-}
-
-
-/* ============================================================
-   16. REÇU DE VENTE
-============================================================ */
-
-function renderReceiptTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "🧾",
-      "Reçu de Vente",
-      "Mamoròna reçu tsotra ho an'ny client."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <p>
-        Ampiasao rehefa mila manome preuve simple
-        momba ny vente sy ny paiement ianao.
-      </p>
-
-    </div>
-
-
-    <form
-      id="receiptForm"
-      class="tool-form"
-    >
-
-      <div class="form-group">
-
-        <label>
-          Nom client
-        </label>
-
-        <input
-          name="client"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Produit
-        </label>
-
-        <input
-          name="product"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Quantité
-        </label>
-
-        <input
-          name="quantity"
-          type="number"
-          min="1"
-          value="1"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Prix / unité
-        </label>
-
-        <input
-          name="price"
-          type="number"
-          min="0"
-          required
-        >
-
-      </div>
-
-
-      <div class="form-group">
-
-        <label>
-          Paiement
-        </label>
-
-        <select name="payment">
-
-          <option>Cash</option>
-          <option>MVola</option>
-          <option>Orange Money</option>
-          <option>Airtel Money</option>
-          <option>Autre</option>
-
-        </select>
-
-      </div>
-
-
-      <button
-        class="btn btn-primary"
-        type="submit"
-      >
-        Mamorona Reçu
-      </button>
-
-    </form>
-
-
-    <div
-      id="receiptResult"
-      class="tool-result"
-    ></div>
-
-  `;
-
-
-  $("#receiptForm")
-    .addEventListener(
-      "submit",
-      createReceipt
-    );
-
-}
-
-
-function createReceipt(event) {
-
-  event.preventDefault();
-
-  const data =
-    new FormData(
-      event.currentTarget
-    );
-
-
-  const quantity =
-    Number(data.get("quantity"));
-
-  const price =
-    Number(data.get("price"));
-
-  const total =
-    quantity * price;
-
-
-  const receiptNumber =
-    `TM-${Date.now()
-      .toString()
-      .slice(-8)}`;
-
-
-  $("#receiptResult").innerHTML = `
-
-    <div
-      class="receipt-preview"
-      id="receiptPreview"
-    >
-
-      <div class="receipt-brand">
-        TANTSAHA MATIHANINA
-      </div>
-
-      <h3>
-        REÇU DE VENTE
-      </h3>
-
-      <p>
-        N° ${receiptNumber}
-      </p>
-
-      <hr>
-
-      <p>
-        <strong>Client:</strong>
-        ${escapeHTML(data.get("client"))}
-      </p>
-
-      <p>
-        <strong>Produit:</strong>
-        ${escapeHTML(data.get("product"))}
-      </p>
-
-      <p>
-        <strong>Quantité:</strong>
-        ${quantity}
-      </p>
-
-      <p>
-        <strong>Prix unitaire:</strong>
-        ${formatAr(price)}
-      </p>
-
-      <p>
-        <strong>Total:</strong>
-        ${formatAr(total)}
-      </p>
-
-      <p>
-        <strong>Paiement:</strong>
-        ${escapeHTML(data.get("payment"))}
-      </p>
-
-      <hr>
-
-      <p>
-        Misaotra tompoko.
-      </p>
-
-      <small>
-        ${new Date().toLocaleString("fr-FR")}
-      </small>
-
-    </div>
-
-
-    <button
-      type="button"
-      class="btn btn-secondary"
-      id="printReceiptButton"
-    >
-      🖨️ Hanao impression
-    </button>
-
-  `;
-
-
-  $("#printReceiptButton")
-    .addEventListener(
-      "click",
-      () => {
-
-        const content =
-          $("#receiptPreview").innerHTML;
-
-        const printWindow =
-          window.open(
-            "",
-            "_blank",
-            "width=600,height=800"
-          );
-
-        if (!printWindow) {
-
-          showToast(
-            "Tsy afaka nanokatra fenêtre impression.",
-            "error"
-          );
-
-          return;
-
-        }
-
-        printWindow.document.write(`
-          <html>
-            <head>
-              <title>Reçu de Vente</title>
-              <style>
-                body {
-                  font-family: Arial, sans-serif;
-                  padding: 30px;
-                  max-width: 500px;
-                  margin: auto;
-                }
-                hr {
-                  border: 0;
-                  border-top: 1px solid #ccc;
-                }
-              </style>
-            </head>
-            <body>
-              ${content}
-            </body>
-          </html>
-        `);
-
-        printWindow.document.close();
-
-        printWindow.focus();
-
-        setTimeout(() => {
-
-          printWindow.print();
-
-        }, 300);
-
-      }
-    );
-
-
-  showToast(
-    "Reçu voaforona.",
-    "success"
-  );
-
-}
-
-
-/* ============================================================
-   17. GUIDE
-============================================================ */
-
-function renderGuideTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "📘",
-      "Guide Vente Lab",
-      "Torolalana fohy hahafantaranao izay tokony hatao."
-    )}
-
-
-    <div class="guide-content">
-
-      <div class="guide-step">
-
-        <span>01</span>
-
-        <div>
-
-          <h3>
-            Vakio ny lesona
-          </h3>
-
-          <p>
-            Atombohy amin'ny Formation WhatsApp.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="guide-step">
-
-        <span>02</span>
-
-        <div>
-
-          <h3>
-            Safidio ny outil
-          </h3>
-
-          <p>
-            Ohatra: Kajy Prix, Offre na Calendrier.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="guide-step">
-
-        <span>03</span>
-
-        <div>
-
-          <h3>
-            Ampidiro ny données tena izy
-          </h3>
-
-          <p>
-            Aza mampiasa isa kisendrasendra rehefa
-            manao exercice réel.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="guide-step">
-
-        <span>04</span>
-
-        <div>
-
-          <h3>
-            Ampiharo amin'ny tsena
-          </h3>
-
-          <p>
-            Facebook, WhatsApp, Marketplace
-            na vente locale.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="guide-step">
-
-        <span>05</span>
-
-        <div>
-
-          <h3>
-            Raketo ny résultat
-          </h3>
-
-          <p>
-            Prospects → Réponses → Discussions
-            → Commandes → Clients.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <div class="guide-step">
-
-        <span>06</span>
-
-        <div>
-
-          <h3>
-            Fenoy ny Retour
-          </h3>
-
-          <p>
-            Soraty izay nety, izay tsy nety
-            ary izay hatsarainao.
-          </p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  `;
-
-}
-
-
-/* ============================================================
-   18. CHALLENGE 7 JOURS
-============================================================ */
-
-const CHALLENGE_DAYS = [
-
-  {
-    day: 1,
-    title: "Fantaro ny produit",
-    action:
-      "Soraty ny produit sy ny valeur amidinao."
-  },
-
-  {
-    day: 2,
-    title: "Fantaro ny client",
-    action:
-      "Farito ny client cible iray."
-  },
-
-  {
-    day: 3,
-    title: "Amboary ny offre",
-    action:
-      "Mamoròna offre misy prix sy CTA."
-  },
-
-  {
-    day: 4,
-    title: "Mamoaha publication",
-    action:
-      "Mamoaha publication iray."
-  },
-
-  {
-    day: 5,
-    title: "Mitadiava prospects",
-    action:
-      "Mitadiava prospects ary raketo ny réponses."
-  },
-
-  {
-    day: 6,
-    title: "Manao closing",
-    action:
-      "Manaova pratique amin'ny objection."
-  },
-
-  {
-    day: 7,
-    title: "Mandrefy",
-    action:
-      "Fenoy ny Retour & Évaluation."
-  }
-
-];
-
-
-function renderChallengeTool(workspace) {
-
-  workspace.innerHTML = `
-
-    ${toolHeader(
-      "🏆",
-      "Challenge 7 Jours",
-      "Action iray azo refesina isan'andro."
-    )}
-
-
-    <div class="tool-explanation">
-
-      <p>
-        Ny challenge dia natao hanampy anao
-        tsy hijanona amin'ny théorie.
-      </p>
-
-      <p>
-        Isan'andro dia manaova action iray,
-        avy eo jereo ny résultat.
-      </p>
-
-    </div>
-
-
-    <div class="challenge-list">
-
-      ${CHALLENGE_DAYS
-        .map(
-          item => {
-
-            const done =
-              state.challenge[item.day] === true;
-
-            return `
-
-              <label class="challenge-item">
-
-                <input
-                  type="checkbox"
-                  data-challenge-day="${item.day}"
-                  ${done ? "checked" : ""}
-                >
-
-                <span class="challenge-check">
-                  ${done ? "✓" : ""}
-                </span>
-
-                <span>
-
-                  <strong>
-                    Jour ${item.day} —
-                    ${escapeHTML(item.title)}
-                  </strong>
-
-                  <small>
-                    ${escapeHTML(item.action)}
-                  </small>
-
-                </span>
-
-              </label>
-
-            `;
-
-          }
-        )
-        .join("")}
-
-    </div>
-
-
-    <div
-      id="challengeProgress"
-      class="challenge-progress"
-    ></div>
-
-  `;
-
-
-  $all("[data-challenge-day]")
-    .forEach(input => {
-
-      input.addEventListener(
-        "change",
-        () => {
-
-          const day =
-            input.dataset.challengeDay;
-
-          state.challenge[day] =
-            input.checked;
-
-          saveState();
-
-          updateChallengeProgress();
-
-        }
-      );
-
-    });
-
-
-  updateChallengeProgress();
-
-}
-
-
-function updateChallengeProgress() {
-
-  const box =
-    $("#challengeProgress");
-
-  if (!box) {
-    return;
-  }
-
-  const completed =
-    CHALLENGE_DAYS.filter(
-      item =>
-        state.challenge[item.day] === true
-    ).length;
-
-
-  const percentage =
-    Math.round(
-      completed /
-      CHALLENGE_DAYS.length *
-      100
-    );
-
-
-  box.innerHTML = `
-
-    <strong>
-      ${completed}/7 jours vita
-    </strong>
-
-    <div class="progress-track">
-
-      <i
-        style="width:${percentage}%"
-      ></i>
-
-    </div>
-
-    <small>
-      ${percentage}% progression
-    </small>
-
-  `;
-
-}
-
-
-/* ============================================================
-   19. DASHBOARD
-============================================================ */
-
-function updateDashboard() {
-
-  const calculations =
-    state.calculations;
-
-  const livestock =
-    state.livestockCalculations;
-
-  const orders =
-    state.orders;
-
-
-  const statCalculations =
-    $("#statCalculations");
-
-  const statOrders =
-    $("#statOrders");
-
-  const statRevenue =
-    $("#statRevenue");
-
-  const statProfit =
-    $("#statProfit");
-
-
-  if (statCalculations) {
-
-    statCalculations.textContent =
-      calculations.length +
-      livestock.length;
-
-  }
-
-
-  if (statOrders) {
-
-    statOrders.textContent =
-      orders.length;
-
-  }
-
-
-  const revenue =
-    orders.reduce(
-      (sum, order) =>
-        sum + (
-          Number(order.total) || 0
-        ),
-      0
-    );
-
-
-  const profit =
-    calculations.reduce(
-      (sum, item) =>
-        sum + (
-          Number(item.profit) || 0
-        ),
-      0
-    )
-    +
-    livestock.reduce(
-      (sum, item) =>
-        sum + (
-          Number(item.profit) || 0
-        ),
-      0
-    );
-
-
-  if (statRevenue) {
-
-    statRevenue.textContent =
-      formatAr(revenue);
-
-  }
-
-
-  if (statProfit) {
-
-    statProfit.textContent =
-      formatAr(profit);
-
-  }
-
-
-  renderRecentCalculations();
-
-  renderRecentOrders();
-
-  updateFunnel();
-
-}
-
-
-function renderRecentCalculations() {
-
-  const container =
-    $("#recentCalculations");
-
-  if (!container) {
-    return;
-  }
-
-
-  const all = [
-
-    ...state.calculations.map(
-      item => ({
-        ...item,
-        type: "Prix"
-      })
-    ),
-
-    ...state.livestockCalculations.map(
-      item => ({
-        ...item,
-        type: "Fiompiana"
-      })
-    )
-
-  ]
-  .sort(
-    (a, b) =>
-      new Date(b.createdAt) -
-      new Date(a.createdAt)
-  )
-  .slice(0, 5);
-
-
-  if (!all.length) {
-
-    container.innerHTML = `
-      <p class="empty-state">
-        Tsy mbola misy calcul.
-      </p>
+      <div id="calendarResult" class="lab-result"></div>
     `;
 
-    return;
+    const form =
+      document.getElementById("calendarForm");
 
-  }
-
-
-  container.innerHTML =
-    all
-      .map(
-        item => `
-
-          <div class="dashboard-item">
-
-            <div>
-
-              <strong>
-                ${escapeHTML(
-                  item.product ||
-                  item.animal ||
-                  "Calcul"
-                )}
-              </strong>
-
-              <small>
-                ${escapeHTML(item.type)}
-              </small>
-
-            </div>
-
-            <strong>
-              ${formatAr(item.profit)}
-            </strong>
-
-          </div>
-
-        `
-      )
-      .join("");
-
-}
-
-
-function renderRecentOrders() {
-
-  const container =
-    $("#recentOrders");
-
-  if (!container) {
-    return;
-  }
-
-
-  const orders =
-    state.orders
-      .slice(0, 5);
-
-
-  if (!orders.length) {
-
-    container.innerHTML = `
-      <p class="empty-state">
-        Tsy mbola misy commande.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  container.innerHTML =
-    orders
-      .map(
-        order => `
-
-          <div class="dashboard-item">
-
-            <div>
-
-              <strong>
-                ${escapeHTML(order.client)}
-              </strong>
-
-              <small>
-                ${escapeHTML(order.product)}
-              </small>
-
-            </div>
-
-            <strong>
-              ${formatAr(order.total)}
-            </strong>
-
-          </div>
-
-        `
-      )
-      .join("");
-
-}
-
-
-/* ============================================================
-   20. FUNNEL
-============================================================ */
-
-function updateFunnel() {
-
-  const evaluations =
-    state.evaluations;
-
-
-  const prospects =
-    evaluations.reduce(
-      (sum, item) =>
-        sum + (
-          Number(item.prospects) || 0
-        ),
-      0
-    );
-
-
-  const responses =
-    evaluations.reduce(
-      (sum, item) =>
-        sum + (
-          Number(item.responses) || 0
-        ),
-      0
-    );
-
-
-  const discussions =
-    evaluations.reduce(
-      (sum, item) =>
-        sum + (
-          Number(item.discussions) || 0
-        ),
-      0
-    );
-
-
-  const ordersFromEvaluation =
-    evaluations.reduce(
-      (sum, item) =>
-        sum + (
-          Number(item.orders) || 0
-        ),
-      0
-    );
-
-
-  const ordersFromTool =
-    state.orders.length;
-
-
-  const orders =
-    Math.max(
-      ordersFromEvaluation,
-      ordersFromTool
-    );
-
-
-  const clients =
-    state.orders.filter(
-      order =>
-        [
-          "Payée",
-          "Livrée"
-        ].includes(
-          order.status
-        )
-    ).length;
-
-
-  setText(
-    "#funnelProspects",
-    prospects
-  );
-
-  setText(
-    "#funnelResponses",
-    responses
-  );
-
-  setText(
-    "#funnelDiscussions",
-    discussions
-  );
-
-  setText(
-    "#funnelOrders",
-    orders
-  );
-
-  setText(
-    "#funnelClients",
-    clients
-  );
-
-
-  const max =
-    Math.max(
-      prospects,
-      responses,
-      discussions,
-      orders,
-      clients,
-      1
-    );
-
-
-  setWidth(
-    "#funnelBarProspects",
-    prospects,
-    max
-  );
-
-  setWidth(
-    "#funnelBarResponses",
-    responses,
-    max
-  );
-
-  setWidth(
-    "#funnelBarDiscussions",
-    discussions,
-    max
-  );
-
-  setWidth(
-    "#funnelBarOrders",
-    orders,
-    max
-  );
-
-  setWidth(
-    "#funnelBarClients",
-    clients,
-    max
-  );
-
-}
-
-
-function setText(
-  selector,
-  value
-) {
-
-  const element =
-    $(selector);
-
-  if (element) {
-
-    element.textContent =
-      formatNumber(value);
-
-  }
-
-}
-
-
-function setWidth(
-  selector,
-  value,
-  max
-) {
-
-  const element =
-    $(selector);
-
-  if (!element) {
-    return;
-  }
-
-  const percentage =
-    max > 0
-      ? (value / max) * 100
-      : 0;
-
-  element.style.width =
-    `${Math.max(percentage, 2)}%`;
-
-}
-
-
-/* ============================================================
-   21. EVALUATION
-============================================================ */
-
-function initEvaluationForm() {
-
-  const form =
-    $("#evaluationForm");
-
-  if (!form) {
-    return;
-  }
-
-
-  form.addEventListener(
-    "submit",
-    event => {
-
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
 
-      const data =
-        new FormData(form);
+      const data = new FormData(form);
 
+      const animal = data.get("animal");
+      const quantity = numberValue(data.get("quantity"));
+      const startDate = data.get("startDate");
+      const currentAge = numberValue(data.get("currentAge"));
+      const ageUnit = data.get("ageUnit");
+      const weight = numberValue(data.get("weight"));
+      const cost = numberValue(data.get("cost"));
+      const salePrice = numberValue(data.get("salePrice"));
+      const marketReady =
+        data.get("marketReady") === "on";
 
-      const evaluation = {
+      const profile =
+        animalProfiles[animal] || {
+          defaultDays: 90,
+          minDays: 60,
+          maxDays: 120
+        };
 
-        id: Date.now(),
+      let ageDays = currentAge;
 
-        channel:
-          data.get("channel"),
+      if (ageUnit === "weeks") {
+        ageDays = currentAge * 7;
+      }
 
-        publication:
-          data.get("publication"),
+      if (ageUnit === "months") {
+        ageDays = currentAge * 30;
+      }
 
-        views:
-          Number(data.get("views")) || 0,
+      /*
+        Ny "startDate" dia raisina ho daty nanombohana
+        ny fiompiana/lot.
+        Raha misy age > 0 dia esorina amin'ny durée cible.
+      */
 
-        messages:
-          Number(data.get("messages")) || 0,
+      let remainingDays =
+        profile.defaultDays - ageDays;
 
-        prospects:
-          Number(data.get("prospects")) || 0,
+      if (remainingDays < 7) {
+        remainingDays = 7;
+      }
 
-        responses:
-          Number(data.get("responses")) || 0,
+      /*
+        Lanja dia ampiasaina ho signal fanitsiana kely,
+        fa TSY milaza fa vonona hivarotra noho ny lanja fotsiny.
+      */
 
-        discussions:
-          Number(data.get("discussions")) || 0,
+      if (weight > 0) {
+        if (
+          animal === "Poulet de chair" &&
+          weight >= 1.8
+        ) {
+          remainingDays = Math.min(
+            remainingDays,
+            14
+          );
+        }
 
-        orders:
-          Number(data.get("orders")) || 0,
+        if (
+          animal === "Akoho Gasy" &&
+          weight >= 1.2
+        ) {
+          remainingDays = Math.min(
+            remainingDays,
+            30
+          );
+        }
+      }
 
-        revenue:
-          Number(data.get("revenue")) || 0,
+      const saleDate =
+        addDays(startDate, remainingDays);
 
-        profit:
-          Number(data.get("profit")) || 0,
+      const prospectDate =
+        addDays(saleDate, -14);
 
-        objection:
-          data.get("objection"),
+      const publicationDate =
+        addDays(saleDate, -7);
 
-        lesson:
-          data.get("lesson"),
+      const followupDate =
+        addDays(saleDate, -3);
+
+      const confirmationDate =
+        addDays(saleDate, -1);
+
+      const afterSaleDate =
+        addDays(saleDate, 1);
+
+      const revenue =
+        quantity * salePrice;
+
+      const estimatedProfit =
+        revenue - cost;
+
+      const plan = {
+        id: "cal_" + Date.now(),
 
         createdAt:
-          new Date().toISOString()
+          new Date().toISOString(),
 
+        animal,
+        quantity,
+        startDate,
+        currentAge,
+        ageUnit,
+        ageDays,
+        weight,
+        cost,
+        salePrice,
+        marketReady,
+
+        remainingDays,
+
+        saleDate,
+        prospectDate,
+        publicationDate,
+        followupDate,
+        confirmationDate,
+        afterSaleDate,
+
+        revenue,
+        estimatedProfit
       };
 
-
-      state.evaluations.unshift(
-        evaluation
-      );
+      state.calendarPlans.push(plan);
+      state.lastActivity =
+        new Date().toISOString();
 
       saveState();
 
-      updateDashboard();
-
-      form.reset();
+      renderCalendarResult(plan);
 
       showToast(
-        "Retour voatahiry. Jereo ny Dashboard.",
-        "success"
+        "Calendrier de vente voaforona."
       );
-
-    }
-  );
-
-}
-
-
-/* ============================================================
-   22. REVIEWS SUPABASE
-============================================================ */
-
-async function loadReviews() {
-
-  const container =
-    $("#reviewsList");
-
-  if (!container) {
-    return;
+    });
   }
 
+  function addDays(dateString, days) {
+    const date = new Date(dateString + "T12:00:00");
 
-  if (!supabaseClient) {
-
-    container.innerHTML = `
-      <p class="empty-state">
-        Avis mbola tsy azo alaina izao.
-      </p>
-    `;
-
-    return;
-
-  }
-
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("vente_reviews")
-        .select(
-          "id,rating,name,learning,applied,result,message,created_at"
-        )
-        .eq(
-          "status",
-          "approved"
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        )
-        .limit(12);
-
-
-    if (error) {
-      throw error;
-    }
-
-
-    if (!data || !data.length) {
-
-      container.innerHTML = `
-        <p class="empty-state">
-          Mbola tsy misy avis approuvé.
-        </p>
-      `;
-
-      return;
-
-    }
-
-
-    container.innerHTML =
-      data
-        .map(
-          review => `
-
-            <article class="review-card">
-
-              <div class="review-header">
-
-                <strong>
-                  ${escapeHTML(review.name)}
-                </strong>
-
-                <span>
-                  ${"⭐".repeat(
-                    Number(review.rating) || 0
-                  )}
-                </span>
-
-              </div>
-
-
-              ${
-                review.learning
-                  ? `
-                    <p>
-                      <strong>Nianarana:</strong>
-                      ${escapeHTML(review.learning)}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                review.applied
-                  ? `
-                    <p>
-                      <strong>Nampiharina:</strong>
-                      ${escapeHTML(review.applied)}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                review.result
-                  ? `
-                    <p>
-                      <strong>Résultat:</strong>
-                      ${escapeHTML(review.result)}
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              <blockquote>
-                ${escapeHTML(review.message)}
-              </blockquote>
-
-            </article>
-
-          `
-        )
-        .join("");
-
-
-  } catch (error) {
-
-    console.warn(
-      "Impossible de charger les avis:",
-      error
+    date.setDate(
+      date.getDate() + Number(days)
     );
 
-    container.innerHTML = `
-      <p class="empty-state">
-        Tsy afaka naka avis izao.
-      </p>
+    return date.toISOString().slice(0, 10);
+  }
+
+  function renderCalendarResult(plan) {
+    const box =
+      document.getElementById("calendarResult");
+
+    if (!box) return;
+
+    const profitClass =
+      plan.estimatedProfit >= 0
+        ? "result-positive"
+        : "result-negative";
+
+    box.innerHTML = `
+      <div class="result-card ${profitClass}">
+
+        <div class="result-title">
+          📅 Plan de Vente —
+          ${escapeHTML(plan.animal)}
+        </div>
+
+        <div class="result-summary">
+
+          <p>
+            <strong>${plan.quantity}</strong>
+            biby
+          </p>
+
+          <p>
+            Daty tombanana:
+            <strong>${formatDate(plan.saleDate)}</strong>
+          </p>
+
+          <p>
+            Fotoana mbola ilaina:
+            <strong>${plan.remainingDays} andro</strong>
+          </p>
+
+        </div>
+
+        <div class="calendar-timeline">
+
+          ${calendarEvent(
+            "🔎",
+            "Mitady prospects",
+            plan.prospectDate,
+            "Atombohy ny fitadiavana olona tena mety hividy."
+          )}
+
+          ${calendarEvent(
+            "📢",
+            "Publication",
+            plan.publicationDate,
+            "Asehoy ny biby/vokatra, ny tombony ary ny CTA."
+          )}
+
+          ${calendarEvent(
+            "💬",
+            "Relance",
+            plan.followupDate,
+            "Mifandraisa indray amin'ireo olona namaly."
+          )}
+
+          ${calendarEvent(
+            "📦",
+            "Confirmation",
+            plan.confirmationDate,
+            "Hamafiso ny quantité, prix, toerana ary fotoana."
+          )}
+
+          ${calendarEvent(
+            "💰",
+            "Vente",
+            plan.saleDate,
+            "Ataovy ny vente ary mamoròna reçu."
+          )}
+
+          ${calendarEvent(
+            "🤝",
+            "Suivi après-vente",
+            plan.afterSaleDate,
+            "Anontanio raha afa-po ny client ary tadiavo ny prochaine commande."
+          )}
+
+        </div>
+
+        <div class="result-grid">
+
+          <div>
+            <span>Coût efa lany</span>
+            <strong>${formatMoney(plan.cost)}</strong>
+          </div>
+
+          <div>
+            <span>CA vinavinana</span>
+            <strong>${formatMoney(plan.revenue)}</strong>
+          </div>
+
+          <div>
+            <span>Tombony vinavinana</span>
+            <strong>${formatMoney(plan.estimatedProfit)}</strong>
+          </div>
+
+        </div>
+
+        <div class="result-advice">
+
+          <strong>👉 Dingana manaraka:</strong>
+
+          ${
+            plan.marketReady
+              ? "Efa manana marché kendrena ianao. Atombohy ny qualification des prospects."
+              : "Mbola tsy manana mpividy voamarina ianao. Aza miandry ny andro hivarotana vao mitady client."
+          }
+
+        </div>
+
+        <div class="result-actions">
+
+          <button
+            class="btn btn-secondary"
+            type="button"
+            data-open-next="offer"
+          >
+            ✍️ Mamorona Offre
+          </button>
+
+          <button
+            class="btn btn-secondary"
+            type="button"
+            data-open-next="publication"
+          >
+            📢 Mamorona Publication
+          </button>
+
+          <button
+            class="btn btn-secondary"
+            type="button"
+            data-open-next="order"
+          >
+            📦 Commande
+          </button>
+
+        </div>
+
+        <div class="warning-box">
+          ⚠️ <strong>Zava-dehibe:</strong>
+          estimation pédagogique ity calendrier ity.
+          Tsy tokony hamidy noho ny daty fotsiny ny biby.
+          Jereo hatrany ny lanja, fahasalamana,
+          sakafo, coût réel ary prix marché.
+        </div>
+
+      </div>
     `;
 
+    box
+      .querySelectorAll("[data-open-next]")
+      .forEach((button) => {
+        button.addEventListener("click", () => {
+          const tool =
+            button.dataset.openNext;
+
+          openTool(tool);
+
+          document
+            .getElementById("toolWorkspace")
+            ?.scrollIntoView({
+              behavior: "smooth"
+            });
+        });
+      });
   }
 
-}
+  function calendarEvent(
+    icon,
+    title,
+    date,
+    description
+  ) {
+    return `
+      <div class="calendar-event">
 
+        <div class="calendar-event-icon">
+          ${icon}
+        </div>
 
-/* ============================================================
-   23. REVIEW FORM
-============================================================ */
+        <div class="calendar-event-content">
 
-function initReviewForm() {
+          <strong>${title}</strong>
 
-  const form =
-    $("#reviewForm");
+          <span class="calendar-date">
+            ${formatDate(date)}
+          </span>
 
-  if (!form) {
-    return;
+          <p>
+            ${description}
+          </p>
+
+        </div>
+
+      </div>
+    `;
   }
 
+  /* ==========================================================
+     13. OFFER CREATOR
+  ========================================================== */
 
-  form.addEventListener(
-    "submit",
-    async event => {
+  function renderOfferTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
 
-      event.preventDefault();
+        <span class="eyebrow">LAB 03</span>
 
+        <h2>✍️ Créer une Offre</h2>
 
-      if (!supabaseClient) {
+        <p>
+          Ataovy mazava ny vokatra, ny tombony,
+          ny prix ary ny antso ho amin'ny action.
+        </p>
 
-        showToast(
-          "Supabase tsy mbola disponible.",
-          "error"
-        );
+      </div>
 
-        return;
+      <form id="offerForm" class="lab-form">
 
-      }
+        <div class="form-grid">
 
+          <label>
+            Vokatra
+            <input
+              name="product"
+              placeholder="Akoho Gasy"
+              required
+            >
+          </label>
 
-      const data =
-        new FormData(form);
+          <label>
+            Client cible
+            <input
+              name="client"
+              placeholder="Mpianakavy / restaurant / revendeur"
+              required
+            >
+          </label>
 
+          <label>
+            Tombony lehibe
+            <input
+              name="benefit"
+              placeholder="Vonona hatao sakafo..."
+              required
+            >
+          </label>
 
-      const review = {
+          <label>
+            Prix
+            <input
+              type="number"
+              name="price"
+              placeholder="30000"
+              required
+            >
+          </label>
 
-        name:
-          String(
-            data.get("name") || ""
-          ).trim(),
+          <label>
+            Quantité
+            <input
+              type="number"
+              name="quantity"
+              value="1"
+            >
+          </label>
 
-        rating:
-          Number(
-            data.get("rating")
-          ),
+          <label>
+            Toerana
+            <input
+              name="location"
+              placeholder="Mahanoro..."
+            >
+          </label>
 
-        learning:
-          String(
-            data.get("learning") || ""
-          ).trim(),
+        </div>
 
-        applied:
-          String(
-            data.get("applied") || ""
-          ).trim(),
+        <button class="btn btn-primary" type="submit">
+          ✨ Mamorona Offre
+        </button>
 
-        result:
-          String(
-            data.get("result") || ""
-          ).trim(),
+      </form>
 
-        message:
-          String(
-            data.get("message") || ""
-          ).trim(),
+      <div id="offerResult" class="lab-result"></div>
+    `;
 
-        consent:
-          data.get("consent") === "on",
+    document
+      .getElementById("offerForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
 
-        status:
-          "pending"
+        const data =
+          new FormData(event.currentTarget);
 
-      };
+        const product =
+          data.get("product");
 
+        const client =
+          data.get("client");
 
-      if (
-        !review.name ||
-        !review.rating ||
-        !review.message ||
-        !review.consent
-      ) {
+        const benefit =
+          data.get("benefit");
 
-        showToast(
-          "Fenoy tsara ny champs ilaina.",
-          "error"
-        );
+        const price =
+          numberValue(data.get("price"));
 
-        return;
+        const quantity =
+          numberValue(data.get("quantity"));
 
-      }
+        const location =
+          data.get("location");
 
+        const offer = `
+🔥 OFFRE DISPONIBLE — ${product}
 
-      try {
+Mitady ${client} ve ianao?
 
-        const {
-          error
-        } =
-          await supabaseClient
-            .from("vente_reviews")
-            .insert(
-              review
+✅ ${benefit}
+
+📦 Quantité: ${quantity}
+💰 Prix: ${formatMoney(price)}
+📍 Toerana: ${location || "Antsoy/MP"}
+
+📩 Raha liana ianao dia manorata MP
+na mifandraisa aminay.
+        `.trim();
+
+        document.getElementById(
+          "offerResult"
+        ).innerHTML = `
+          <div class="result-card">
+
+            <div class="result-title">
+              Offre vonona
+            </div>
+
+            <pre class="generated-text">${escapeHTML(offer)}</pre>
+
+            <button
+              class="btn btn-secondary"
+              type="button"
+              id="copyOffer"
+            >
+              📋 Adikao
+            </button>
+
+          </div>
+        `;
+
+        document
+          .getElementById("copyOffer")
+          .addEventListener("click", () => {
+            copyText(offer);
+          });
+
+        showToast("Offre voaforona.");
+      });
+  }
+
+  /* ==========================================================
+     14. PUBLICATION
+  ========================================================== */
+
+  function renderPublicationTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 04</span>
+
+        <h2>📢 Publication</h2>
+
+        <p>
+          Ampiasao ny formule:
+          Hook → Problème → Solution → Offre → Preuve → Prix → CTA.
+        </p>
+
+      </div>
+
+      <form id="publicationForm" class="lab-form">
+
+        <div class="form-grid">
+
+          <label>
+            Vokatra
+            <input
+              name="product"
+              placeholder="Poulet de chair"
+              required
+            >
+          </label>
+
+          <label>
+            Olana / besoin
+            <input
+              name="problem"
+              placeholder="Mitady akoho vonona..."
+              required
+            >
+          </label>
+
+          <label>
+            Solution / tombony
+            <input
+              name="solution"
+              placeholder="Akoho salama..."
+              required
+            >
+          </label>
+
+          <label>
+            Prix
+            <input
+              type="number"
+              name="price"
+              required
+            >
+          </label>
+
+          <label>
+            Quantité disponible
+            <input
+              type="number"
+              name="quantity"
+              value="10"
+            >
+          </label>
+
+          <label>
+            Toerana
+            <input
+              name="location"
+              placeholder="Toerana"
+            >
+          </label>
+
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          📢 Mamorona Publication
+        </button>
+
+      </form>
+
+      <div id="publicationResult"
+           class="lab-result">
+      </div>
+    `;
+
+    document
+      .getElementById("publicationForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data =
+          new FormData(event.currentTarget);
+
+        const product =
+          data.get("product");
+
+        const problem =
+          data.get("problem");
+
+        const solution =
+          data.get("solution");
+
+        const price =
+          numberValue(data.get("price"));
+
+        const quantity =
+          numberValue(data.get("quantity"));
+
+        const location =
+          data.get("location");
+
+        const publication = `
+🔥 MITADY ${product} VE IANAO?
+
+${problem}
+
+✅ Vahaolana:
+${solution}
+
+📦 Disponible: ${quantity}
+
+💰 Prix: ${formatMoney(price)}
+
+📍 ${location || "Toerana araka ny fifanarahana"}
+
+📩 Manorata MP raha liana.
+
+⚠️ Quantité voafetra — aza miandry ela.
+        `.trim();
+
+        document.getElementById(
+          "publicationResult"
+        ).innerHTML = `
+          <div class="result-card">
+
+            <div class="result-title">
+              Publication vonona
+            </div>
+
+            <pre class="generated-text">${escapeHTML(publication)}</pre>
+
+            <button
+              class="btn btn-secondary"
+              type="button"
+              id="copyPublication"
+            >
+              📋 Adikao
+            </button>
+
+          </div>
+        `;
+
+        document
+          .getElementById("copyPublication")
+          .addEventListener("click", () => {
+            copyText(publication);
+          });
+
+        showToast("Publication voaforona.");
+      });
+  }
+
+  /* ==========================================================
+     15. SIMULATION CLIENT
+  ========================================================== */
+
+  const simulationScenarios = [
+    {
+      client:
+        "Lafo loatra ilay izy.",
+      options: [
+        "Eny, lafo tokoa.",
+        "Azafady tompoko, inona no budget noeritreretinao? Afaka jerentsika izay quantité mifanaraka aminy.",
+        "Tsy afaka mampidina prix aho."
+      ],
+      correct: 1
+    },
+
+    {
+      client:
+        "Mbola hieritreritra aho.",
+      options: [
+        "Eny ary.",
+        "Tsy maninona tompoko. Inona indrindra no mbola tianao hohamarinina alohan'ny hanapahanao hevitra?",
+        "Raha tsy mividy ianao dia tsy maninona."
+      ],
+      correct: 1
+    },
+
+    {
+      client:
+        "Misy remise ve?",
+      options: [
+        "Eny, ahena fotsiny.",
+        "Miankina amin'ny quantité tompoko. Firy no ilainao dia kajiantsika izay offre mety?",
+        "Tsy misy remise mihitsy."
+      ],
+      correct: 1
+    },
+
+    {
+      client:
+        "Aiza no misy anareo?",
+      options: [
+        "Eto Madagascar.",
+        "Aiza no misy anao tompoko? Dia hojereko ny toerana sy ny fomba hahazoanao azy.",
+        "Aza manahy fa halefanay."
+      ],
+      correct: 1
+    },
+
+    {
+      client:
+        "Alefaso aloha dia mandoa aho.",
+      options: [
+        "Eny, halefako.",
+        "Andao aloha hamafisina ny commande sy ny fomba fandoavana ary ny fandefasana mba samy ho voaaro.",
+        "Tsy azo atao."
+      ],
+      correct: 1
+    }
+  ];
+
+  function renderSimulationTool(container) {
+    const scenario =
+      simulationScenarios[
+        Math.floor(
+          Math.random() *
+          simulationScenarios.length
+        )
+      ];
+
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 05</span>
+
+        <h2>💬 Simulation Client</h2>
+
+        <p>
+          Mifidiana ny valiny tsara indrindra.
+          Ny tanjona dia tsy ny hanery ny client,
+          fa ny hahafantarana ny tena objection.
+        </p>
+
+      </div>
+
+      <div class="simulation-card">
+
+        <div class="client-message">
+          <span>CLIENT</span>
+          <strong>
+            "${escapeHTML(scenario.client)}"
+          </strong>
+        </div>
+
+        <div class="simulation-options">
+
+          ${scenario.options
+            .map(
+              (option, index) => `
+                <button
+                  type="button"
+                  class="simulation-option"
+                  data-answer="${index}"
+                >
+                  ${escapeHTML(option)}
+                </button>
+              `
+            )
+            .join("")}
+
+        </div>
+
+        <div
+          id="simulationResult"
+          class="lab-result"
+        ></div>
+
+      </div>
+    `;
+
+    container
+      .querySelectorAll("[data-answer]")
+      .forEach((button) => {
+        button.addEventListener("click", () => {
+          const answer =
+            Number(button.dataset.answer);
+
+          const result =
+            document.getElementById(
+              "simulationResult"
             );
 
+          if (answer === scenario.correct) {
+            result.innerHTML = `
+              <div class="result-card result-positive">
+                <div class="result-title">
+                  ✅ Tsara!
+                </div>
+                <p>
+                  Ny tanjona dia ny hahafantatra
+                  ny besoin sy hanohy ny discussion.
+                </p>
+              </div>
+            `;
+          } else {
+            result.innerHTML = `
+              <div class="result-card result-negative">
+                <div class="result-title">
+                  ⚠️ Mbola azo hatsaraina
+                </div>
+                <p>
+                  Aza mamaly amin'ny fanoherana avy hatrany.
+                  Miezaha mamantatra ny tena olana.
+                </p>
+              </div>
+            `;
+          }
+        });
+      });
+  }
 
-        if (error) {
-          throw error;
-        }
+  /* ==========================================================
+     16. ORDER
+  ========================================================== */
 
+  function renderOrderTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 06</span>
+
+        <h2>📦 Commande</h2>
+
+        <p>
+          Rehefa efa vonona ny client dia aza avela
+          hikorontana ny informations.
+        </p>
+
+      </div>
+
+      <form id="orderForm" class="lab-form">
+
+        <div class="form-grid">
+
+          <label>
+            Anaran'ny client
+            <input
+              name="client"
+              required
+            >
+          </label>
+
+          <label>
+            Téléphone
+            <input
+              name="phone"
+              required
+            >
+          </label>
+
+          <label>
+            Vokatra
+            <input
+              name="product"
+              required
+            >
+          </label>
+
+          <label>
+            Quantité
+            <input
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              required
+            >
+          </label>
+
+          <label>
+            Prix / unité
+            <input
+              type="number"
+              name="price"
+              required
+            >
+          </label>
+
+          <label>
+            Toerana
+            <input
+              name="location"
+            >
+          </label>
+
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          📦 Enregistrer Commande
+        </button>
+
+      </form>
+
+      <div
+        id="orderResult"
+        class="lab-result"
+      ></div>
+    `;
+
+    document
+      .getElementById("orderForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data =
+          new FormData(event.currentTarget);
+
+        const order = {
+          id:
+            "CMD-" +
+            Date.now(),
+
+          createdAt:
+            new Date().toISOString(),
+
+          client:
+            data.get("client"),
+
+          phone:
+            data.get("phone"),
+
+          product:
+            data.get("product"),
+
+          quantity:
+            numberValue(data.get("quantity")),
+
+          price:
+            numberValue(data.get("price")),
+
+          location:
+            data.get("location"),
+
+          status:
+            "nouvelle"
+        };
+
+        order.total =
+          order.quantity *
+          order.price;
+
+        state.orders.push(order);
+        state.lastActivity =
+          new Date().toISOString();
+
+        saveState();
+
+        document.getElementById(
+          "orderResult"
+        ).innerHTML = `
+          <div class="result-card result-positive">
+
+            <div class="result-title">
+              ✅ Commande enregistrée
+            </div>
+
+            <p>
+              Référence:
+              <strong>${escapeHTML(order.id)}</strong>
+            </p>
+
+            <p>
+              Total:
+              <strong>${formatMoney(order.total)}</strong>
+            </p>
+
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-open-next="receipt"
+            >
+              🧾 Créer le reçu
+            </button>
+
+          </div>
+        `;
+
+        const next =
+          document.querySelector(
+            "[data-open-next='receipt']"
+          );
+
+        next?.addEventListener("click", () => {
+          openTool("receipt");
+        });
+
+        updateDashboard();
+
+        showToast("Commande voatahiry.");
+      });
+  }
+
+  /* ==========================================================
+     17. RECEIPT
+  ========================================================== */
+
+  function renderReceiptTool(container) {
+    const lastOrder =
+      state.orders[state.orders.length - 1];
+
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 07</span>
+
+        <h2>🧾 Reçu de Vente</h2>
+
+        <p>
+          Reçu tsotra azo aseho amin'ny client
+          na tehirizina ho preuve de vente.
+        </p>
+
+      </div>
+
+      <form id="receiptForm" class="lab-form">
+
+        <div class="form-grid">
+
+          <label>
+            Client
+            <input
+              name="client"
+              value="${escapeHTML(lastOrder?.client || "")}"
+              required
+            >
+          </label>
+
+          <label>
+            Produit
+            <input
+              name="product"
+              value="${escapeHTML(lastOrder?.product || "")}"
+              required
+            >
+          </label>
+
+          <label>
+            Quantité
+            <input
+              type="number"
+              name="quantity"
+              value="${lastOrder?.quantity || 1}"
+              required
+            >
+          </label>
+
+          <label>
+            Prix unitaire
+            <input
+              type="number"
+              name="price"
+              value="${lastOrder?.price || 0}"
+              required
+            >
+          </label>
+
+          <label>
+            Vendeur
+            <input
+              name="seller"
+              value="Tantsaha Matihanina"
+            >
+          </label>
+
+          <label>
+            Date
+            <input
+              type="date"
+              name="date"
+              value="${todayISO()}"
+            >
+          </label>
+
+        </div>
+
+        <button
+          class="btn btn-primary"
+          type="submit"
+        >
+          🧾 Générer le Reçu
+        </button>
+
+      </form>
+
+      <div
+        id="receiptResult"
+        class="lab-result"
+      ></div>
+    `;
+
+    document
+      .getElementById("receiptForm")
+      .addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const data =
+          new FormData(event.currentTarget);
+
+        const client =
+          data.get("client");
+
+        const product =
+          data.get("product");
+
+        const quantity =
+          numberValue(data.get("quantity"));
+
+        const price =
+          numberValue(data.get("price"));
+
+        const seller =
+          data.get("seller");
+
+        const date =
+          data.get("date");
+
+        const total =
+          quantity * price;
+
+        const receiptHTML = `
+          <div class="receipt">
+
+            <div class="receipt-header">
+              <strong>TANTSAHA MATIHANINA</strong>
+              <span>REÇU DE VENTE</span>
+            </div>
+
+            <div class="receipt-body">
+
+              <p>
+                <strong>Date:</strong>
+                ${formatDate(date)}
+              </p>
+
+              <p>
+                <strong>Client:</strong>
+                ${escapeHTML(client)}
+              </p>
+
+              <hr>
+
+              <p>
+                ${escapeHTML(product)}
+                × ${quantity}
+              </p>
+
+              <p>
+                Prix unitaire:
+                ${formatMoney(price)}
+              </p>
+
+              <hr>
+
+              <p class="receipt-total">
+                TOTAL:
+                ${formatMoney(total)}
+              </p>
+
+            </div>
+
+            <div class="receipt-footer">
+              Merci pour votre confiance.
+              <br>
+              ${escapeHTML(seller)}
+            </div>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-secondary"
+            id="printReceipt"
+          >
+            🖨️ Imprimer / PDF
+          </button>
+        `;
+
+        document.getElementById(
+          "receiptResult"
+        ).innerHTML = receiptHTML;
+
+        document
+          .getElementById("printReceipt")
+          .addEventListener("click", () => {
+            window.print();
+          });
+
+        showToast("Reçu vonona.");
+      });
+  }
+
+  /* ==========================================================
+     18. GUIDE
+  ========================================================== */
+
+  function renderGuideTool(container) {
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 08</span>
+
+        <h2>📘 Guide Pratique</h2>
+
+        <p>
+          Tsy tokony hamaky fotsiny ianao.
+          Araho ity ordre ity rehefa manao vente.
+        </p>
+
+      </div>
+
+      <div class="guide-steps">
+
+        ${guideStep(
+          "1",
+          "Fantaro ny vokatra",
+          "Inona no amidinao? Inona no mampiavaka azy?"
+        )}
+
+        ${guideStep(
+          "2",
+          "Fantaro ny client",
+          "Iza no tena mila azy? Inona ny olany?"
+        )}
+
+        ${guideStep(
+          "3",
+          "Kajio ny prix",
+          "Fantaro ny coût, prix, CA ary tombony."
+        )}
+
+        ${guideStep(
+          "4",
+          "Mamorona offre",
+          "Asehoy mazava ny bénéfice, prix ary CTA."
+        )}
+
+        ${guideStep(
+          "5",
+          "Publieo",
+          "Aza publication tsy misy objectif."
+        )}
+
+        ${guideStep(
+          "6",
+          "Prospecte",
+          "Valio ny message ary qualification-o ny prospect."
+        )}
+
+        ${guideStep(
+          "7",
+          "Close",
+          "Ataovy mazava ny quantité, prix, livraison ary paiement."
+        )}
+
+        ${guideStep(
+          "8",
+          "Suivi",
+          "Aza tapahana ny relation rehefa vita ny vente."
+        )}
+
+      </div>
+    `;
+  }
+
+  function guideStep(number, title, description) {
+    return `
+      <div class="guide-step">
+
+        <div class="guide-number">
+          ${number}
+        </div>
+
+        <div>
+          <strong>${title}</strong>
+          <p>${description}</p>
+        </div>
+
+      </div>
+    `;
+  }
+
+  /* ==========================================================
+     19. CHALLENGE 7 DAYS
+  ========================================================== */
+
+  const challengeDays = [
+    {
+      day: 1,
+      title: "Fototry ny Vente",
+      task:
+        "Farito ny vokatrao, client cible ary tombony iray."
+    },
+
+    {
+      day: 2,
+      title: "Client Cible",
+      task:
+        "Soraty ny olona tena mety hividy sy ny olany."
+    },
+
+    {
+      day: 3,
+      title: "Offre & Prix",
+      task:
+        "Kajio ny coût, prix, CA ary tombony."
+    },
+
+    {
+      day: 4,
+      title: "Publication",
+      task:
+        "Mamoròna publication mampiasa Hook → Offre → CTA."
+    },
+
+    {
+      day: 5,
+      title: "Prospection",
+      task:
+        "Mitadiava prospects 5 ary qualification-o."
+    },
+
+    {
+      day: 6,
+      title: "Objection & Closing",
+      task:
+        "Manaova simulation amin'ny objection 3."
+    },
+
+    {
+      day: 7,
+      title: "Suivi",
+      task:
+        "Araho client iray ary soraty izay lesona azonao."
+    }
+  ];
+
+  function renderChallengeTool(container) {
+    const completed =
+      JSON.parse(
+        localStorage.getItem(
+          "tm_vente_challenge"
+        ) || "[]"
+      );
+
+    container.innerHTML = `
+      <div class="workspace-header">
+
+        <span class="eyebrow">LAB 09</span>
+
+        <h2>🔥 Challenge 7 Jours</h2>
+
+        <p>
+          7 andro. 7 pratique.
+          Ny tanjona dia ny hianatra amin'ny fanaovana.
+        </p>
+
+      </div>
+
+      <div class="challenge-list">
+
+        ${challengeDays
+          .map(
+            (item) => `
+              <div
+                class="challenge-item ${
+                  completed.includes(item.day)
+                    ? "completed"
+                    : ""
+                }"
+              >
+
+                <div class="challenge-day">
+                  J${item.day}
+                </div>
+
+                <div class="challenge-content">
+
+                  <strong>
+                    ${item.title}
+                  </strong>
+
+                  <p>
+                    ${item.task}
+                  </p>
+
+                </div>
+
+                <button
+                  type="button"
+                  class="btn btn-small challenge-complete"
+                  data-day="${item.day}"
+                >
+                  ${
+                    completed.includes(item.day)
+                      ? "✓ Vita"
+                      : "Vitaiko"
+                  }
+                </button>
+
+              </div>
+            `
+          )
+          .join("")}
+
+      </div>
+    `;
+
+    container
+      .querySelectorAll(".challenge-complete")
+      .forEach((button) => {
+        button.addEventListener("click", () => {
+          const day =
+            Number(button.dataset.day);
+
+          let current =
+            JSON.parse(
+              localStorage.getItem(
+                "tm_vente_challenge"
+              ) || "[]"
+            );
+
+          if (current.includes(day)) {
+            current =
+              current.filter(
+                (item) => item !== day
+              );
+          } else {
+            current.push(day);
+          }
+
+          localStorage.setItem(
+            "tm_vente_challenge",
+            JSON.stringify(current)
+          );
+
+          renderChallengeTool(container);
+
+          showToast(
+            current.includes(day)
+              ? `Jour ${day} vita.`
+              : `Jour ${day} averina atao.`
+          );
+        });
+      });
+  }
+
+  /* ==========================================================
+     20. COPY
+  ========================================================== */
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+
+      showToast("Voadika.");
+    } catch (error) {
+      const textarea =
+        document.createElement("textarea");
+
+      textarea.value = text;
+      document.body.appendChild(textarea);
+
+      textarea.select();
+
+      document.execCommand("copy");
+
+      textarea.remove();
+
+      showToast("Voadika.");
+    }
+  }
+
+  /* ==========================================================
+     21. DASHBOARD
+  ========================================================== */
+
+  function updateDashboard() {
+    const calculations =
+      state.calculations || [];
+
+    const orders =
+      state.orders || [];
+
+    const calculationCount =
+      document.getElementById(
+        "statCalculations"
+      );
+
+    const orderCount =
+      document.getElementById(
+        "statOrders"
+      );
+
+    const revenueElement =
+      document.getElementById(
+        "statRevenue"
+      );
+
+    const profitElement =
+      document.getElementById(
+        "statProfit"
+      );
+
+    if (calculationCount) {
+      calculationCount.textContent =
+        calculations.length;
+    }
+
+    if (orderCount) {
+      orderCount.textContent =
+        orders.length;
+    }
+
+    const revenue =
+      orders.reduce(
+        (sum, order) =>
+          sum + numberValue(order.total),
+        0
+      );
+
+    const profit =
+      calculations.reduce(
+        (sum, item) =>
+          sum + numberValue(item.profit),
+        0
+      );
+
+    if (revenueElement) {
+      revenueElement.textContent =
+        formatMoney(revenue);
+    }
+
+    if (profitElement) {
+      profitElement.textContent =
+        formatMoney(profit);
+    }
+
+    updateRecentCalculations();
+    updateRecentOrders();
+    updateFunnel();
+  }
+
+  function updateRecentCalculations() {
+    const box =
+      document.getElementById(
+        "recentCalculations"
+      );
+
+    if (!box) return;
+
+    const items =
+      [...state.calculations]
+        .slice(-5)
+        .reverse();
+
+    if (!items.length) {
+      box.innerHTML =
+        "<p>Aucun calcul mbola vita.</p>";
+      return;
+    }
+
+    box.innerHTML = items
+      .map(
+        (item) => `
+          <div class="dashboard-item">
+
+            <strong>
+              ${escapeHTML(
+                item.product ||
+                item.animal ||
+                "Calcul"
+              )}
+            </strong>
+
+            <span>
+              Tombony:
+              ${formatMoney(item.profit)}
+            </span>
+
+            <small>
+              ${formatDate(item.date)}
+            </small>
+
+          </div>
+        `
+      )
+      .join("");
+  }
+
+  function updateRecentOrders() {
+    const box =
+      document.getElementById(
+        "recentOrders"
+      );
+
+    if (!box) return;
+
+    const items =
+      [...state.orders]
+        .slice(-5)
+        .reverse();
+
+    if (!items.length) {
+      box.innerHTML =
+        "<p>Aucune commande mbola voatahiry.</p>";
+      return;
+    }
+
+    box.innerHTML = items
+      .map(
+        (order) => `
+          <div class="dashboard-item">
+
+            <strong>
+              ${escapeHTML(order.client)}
+            </strong>
+
+            <span>
+              ${escapeHTML(order.product)}
+              × ${order.quantity}
+            </span>
+
+            <small>
+              ${formatMoney(order.total)}
+            </small>
+
+          </div>
+        `
+      )
+      .join("");
+  }
+
+  /* ==========================================================
+     22. FUNNEL
+  ========================================================== */
+
+  function updateFunnel() {
+    const counts = {
+      prospects:
+        state.prospects?.length || 0,
+
+      responses:
+        state.prospects?.filter(
+          (p) => p.responded
+        ).length || 0,
+
+      discussions:
+        state.prospects?.filter(
+          (p) => p.discussion
+        ).length || 0,
+
+      orders:
+        state.orders?.length || 0,
+
+      clients:
+        new Set(
+          (state.orders || [])
+            .map((o) => o.phone)
+            .filter(Boolean)
+        ).size
+    };
+
+    const max =
+      Math.max(
+        1,
+        ...Object.values(counts)
+      );
+
+    const mappings = [
+      ["Prospects", counts.prospects],
+      ["Responses", counts.responses],
+      ["Discussions", counts.discussions],
+      ["Orders", counts.orders],
+      ["Clients", counts.clients]
+    ];
+
+    mappings.forEach(([name, value]) => {
+      const id =
+        name.charAt(0).toLowerCase() +
+        name.slice(1);
+
+      const numberElement =
+        document.getElementById(
+          "funnel" + name
+        );
+
+      const barElement =
+        document.getElementById(
+          "funnelBar" + name
+        );
+
+      if (numberElement) {
+        numberElement.textContent =
+          value;
+      }
+
+      if (barElement) {
+        barElement.style.width =
+          `${Math.max(
+            5,
+            (value / max) * 100
+          )}%`;
+      }
+    });
+  }
+
+  /* ==========================================================
+     23. EVALUATION
+  ========================================================== */
+
+  function initEvaluation() {
+    const form =
+      document.getElementById(
+        "evaluationForm"
+      );
+
+    if (!form) return;
+
+    form.addEventListener(
+      "submit",
+      (event) => {
+        event.preventDefault();
+
+        const data =
+          new FormData(form);
+
+        const evaluation =
+          Object.fromEntries(data.entries());
+
+        evaluation.createdAt =
+          new Date().toISOString();
+
+        state.evaluations.push(
+          evaluation
+        );
+
+        saveState();
 
         form.reset();
 
-        closeModal(
-          "reviewModal"
-        );
-
-
         showToast(
-          "Avis nalefa. Miandry validation.",
-          "success"
+          "Evaluation voatahiry. Misaotra!"
         );
+      }
+    );
+  }
 
+  /* ==========================================================
+     24. REVIEWS
+  ========================================================== */
 
-      } catch (error) {
+  async function loadReviews() {
+    const box =
+      document.getElementById(
+        "reviewsList"
+      );
 
-        console.error(
+    if (!box) return;
+
+    if (!supabaseClient) {
+      renderLocalReviews(box);
+      return;
+    }
+
+    try {
+      const { data, error } =
+        await supabaseClient
+          .from("vente_reviews")
+          .select(
+            "id,name,rating,learning,applied,result,message,created_at"
+          )
+          .eq("status", "approved")
+          .order(
+            "created_at",
+            {
+              ascending: false
+            }
+          )
+          .limit(20);
+
+      if (error) {
+        console.warn(
+          "Reviews error:",
           error
         );
 
-        showToast(
-          "Tsy voaray ilay avis. Avereno azafady.",
-          "error"
-        );
-
-      }
-
-    }
-  );
-
-}
-
-
-/* ============================================================
-   24. MODALS
-============================================================ */
-
-function initModals() {
-
-  $all("[data-modal-open]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const id =
-            button.dataset.modalOpen;
-
-          openModal(id);
-
-        }
-      );
-
-    });
-
-
-  $all("[data-modal-close]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const modal =
-            button.closest(".modal");
-
-          if (!modal) {
-            return;
-          }
-
-          closeModal(
-            modal.id
-          );
-
-        }
-      );
-
-    });
-
-
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key !== "Escape"
-      ) {
+        renderLocalReviews(box);
         return;
       }
 
-
-      $all(".modal")
-        .forEach(
-          modal => {
-
-            if (
-              modal.getAttribute(
-                "aria-hidden"
-              ) === "false"
-            ) {
-
-              closeModal(
-                modal.id
-              );
-
-            }
-
-          }
-        );
-
-    }
-  );
-
-}
-
-
-function openModal(id) {
-
-  const modal =
-    document.getElementById(id);
-
-  if (!modal) {
-    return;
-  }
-
-
-  modal.classList.add("open");
-
-  modal.setAttribute(
-    "aria-hidden",
-    "false"
-  );
-
-  document.body.classList.add(
-    "modal-open"
-  );
-
-}
-
-
-function closeModal(id) {
-
-  const modal =
-    document.getElementById(id);
-
-  if (!modal) {
-    return;
-  }
-
-
-  modal.classList.remove("open");
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  document.body.classList.remove(
-    "modal-open"
-  );
-
-}
-
-
-/* ============================================================
-   25. EXTERNAL LINKS
-============================================================ */
-
-function initExternalLinks() {
-
-  const links = {
-
-    "whatsapp-group":
-      TM_CONFIG.whatsappGroup,
-
-    "whatsapp-purchase":
-      TM_CONFIG.whatsappPurchase,
-
-    "facebook":
-      TM_CONFIG.facebook
-
-  };
-
-
-  $all("[data-link]")
-    .forEach(element => {
-
-      const key =
-        element.dataset.link;
-
-      if (!links[key]) {
+      if (!data || !data.length) {
+        renderLocalReviews(box);
         return;
       }
 
-      element.href =
-        links[key];
-
-    });
-
-}
-
-
-/* ============================================================
-   26. COPY
-============================================================ */
-
-async function copyText(text) {
-
-  try {
-
-    await navigator.clipboard.writeText(
-      text
-    );
-
-    showToast(
-      "Voadika ao amin'ny presse-papier.",
-      "success"
-    );
-
-  } catch (error) {
-
-    const textarea =
-      document.createElement("textarea");
-
-    textarea.value =
-      text;
-
-    document.body.appendChild(
-      textarea
-    );
-
-    textarea.select();
-
-    try {
-
-      document.execCommand(
-        "copy"
+      box.innerHTML =
+        data
+          .map(renderReview)
+          .join("");
+    } catch (error) {
+      console.warn(
+        "Review loading error:",
+        error
       );
 
-      showToast(
-        "Voadika.",
-        "success"
+      renderLocalReviews(box);
+    }
+  }
+
+  function renderLocalReviews(box) {
+    const reviews =
+      state.localReviews || [];
+
+    if (!reviews.length) {
+      box.innerHTML = `
+        <div class="empty-state">
+          <p>
+            Tsy mbola misy avis eto.
+            Aoka ianao ho voalohany hizara expérience.
+          </p>
+        </div>
+      `;
+
+      return;
+    }
+
+    box.innerHTML =
+      reviews
+        .map(renderReview)
+        .join("");
+  }
+
+  function renderReview(review) {
+    const stars =
+      "★".repeat(
+        numberValue(review.rating)
+      ) +
+      "☆".repeat(
+        5 - numberValue(review.rating)
       );
 
-    } catch {
+    return `
+      <article class="review-card">
 
+        <div class="review-stars">
+          ${stars}
+        </div>
+
+        <strong>
+          ${escapeHTML(review.name)}
+        </strong>
+
+        ${
+          review.message
+            ? `<p>${escapeHTML(
+                review.message
+              )}</p>`
+            : ""
+        }
+
+        ${
+          review.learning
+            ? `
+              <small>
+                Nianarako:
+                ${escapeHTML(
+                  review.learning
+                )}
+              </small>
+            `
+            : ""
+        }
+
+        ${
+          review.result
+            ? `
+              <small>
+                Résultat:
+                ${escapeHTML(
+                  review.result
+                )}
+              </small>
+            `
+            : ""
+        }
+
+      </article>
+    `;
+  }
+
+  async function submitReview(form) {
+    const data =
+      new FormData(form);
+
+    const review = {
+      name:
+        String(
+          data.get("name") || ""
+        ).trim(),
+
+      rating:
+        numberValue(
+          data.get("rating")
+        ),
+
+      learning:
+        String(
+          data.get("learning") || ""
+        ).trim(),
+
+      applied:
+        String(
+          data.get("applied") || ""
+        ).trim(),
+
+      result:
+        String(
+          data.get("result") || ""
+        ).trim(),
+
+      message:
+        String(
+          data.get("message") || ""
+        ).trim(),
+
+      consent:
+        data.get("consent") === "on",
+
+      status:
+        "pending"
+    };
+
+    if (!review.name) {
       showToast(
-        "Tsy afaka nandika automatique. Adikao manually.",
+        "Ampidiro aloha ny anaranao.",
         "error"
       );
-
+      return;
     }
 
-    textarea.remove();
+    if (
+      review.rating < 1 ||
+      review.rating > 5
+    ) {
+      showToast(
+        "Misafidiana note 1 hatramin'ny 5.",
+        "error"
+      );
+      return;
+    }
 
-  }
+    if (!review.consent) {
+      showToast(
+        "Tokony hanaiky ny publication ianao.",
+        "error"
+      );
+      return;
+    }
 
-}
+    if (supabaseClient) {
+      try {
+        const { error } =
+          await supabaseClient
+            .from("vente_reviews")
+            .insert(review);
 
+        if (!error) {
+          showToast(
+            "Avis voaray. Hojerena alohan'ny publication."
+          );
 
-/* ============================================================
-   27. RESET LOCAL DATA
-============================================================ */
+          form.reset();
 
-function resetLocalData() {
+          closeModal();
 
-  const confirmed =
-    window.confirm(
-      "Hofafana daholo ve ny données locales ao amin'ny Vente Lab?"
+          return;
+        }
+
+        console.warn(
+          "Supabase review insert error:",
+          error
+        );
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+
+    /*
+      Fallback local raha tsy misy Supabase.
+    */
+
+    state.localReviews.push({
+      ...review,
+      created_at:
+        new Date().toISOString()
+    });
+
+    saveState();
+
+    showToast(
+      "Avis voatahiry ao amin'ity appareil ity."
     );
 
-  if (!confirmed) {
-    return;
+    form.reset();
+
+    closeModal();
+
+    loadReviews();
   }
 
+  /* ==========================================================
+     25. REVIEW MODAL
+  ========================================================== */
 
-  state =
-    defaultState();
+  function initReviewModal() {
+    const modal =
+      document.getElementById(
+        "reviewModal"
+      );
 
-  saveState();
+    if (!modal) return;
 
-  updateDashboard();
+    document
+      .querySelectorAll(
+        '[data-modal-open="reviewModal"]'
+      )
+      .forEach((button) => {
+        button.addEventListener(
+          "click",
+          () => {
+            modal.classList.add("open");
+          }
+        );
+      });
 
-  showToast(
-    "Données locales voafafa.",
-    "success"
-  );
+    modal
+      .querySelectorAll("[data-modal-close]")
+      .forEach((button) => {
+        button.addEventListener(
+          "click",
+          closeModal
+        );
+      });
 
-}
+    modal.addEventListener(
+      "click",
+      (event) => {
+        if (
+          event.target === modal
+        ) {
+          closeModal();
+        }
+      }
+    );
 
+    const form =
+      document.getElementById(
+        "reviewForm"
+      );
 
-/* ============================================================
-   28. GLOBAL KEYBOARD SHORTCUT
-============================================================ */
+    if (form) {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          event.preventDefault();
 
-function initKeyboardShortcuts() {
+          submitReview(form);
+        }
+      );
+    }
+  }
 
-  document.addEventListener(
-    "keydown",
-    event => {
+  function closeModal() {
+    const modal =
+      document.getElementById(
+        "reviewModal"
+      );
 
-      if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "k"
-      ) {
+    modal?.classList.remove("open");
+  }
 
-        event.preventDefault();
+  /* ==========================================================
+     26. RESET
+  ========================================================== */
 
-        scrollToSection(
-          "lab"
+  function initReset() {
+    const reset =
+      document.querySelector(
+        "[data-reset-data]"
+      );
+
+    if (!reset) return;
+
+    reset.addEventListener(
+      "click",
+      () => {
+        const confirmed =
+          window.confirm(
+            "Hofafana daholo ve ny données ao amin'ity appareil ity?"
+          );
+
+        if (!confirmed) return;
+
+        localStorage.removeItem(
+          STORAGE_KEY
         );
 
+        localStorage.removeItem(
+          "tm_vente_challenge"
+        );
+
+        state =
+          structuredCloneSafe(
+            defaultState
+          );
+
+        updateDashboard();
+
+        showToast(
+          "Données voafafa."
+        );
       }
+    );
+  }
 
+  /* ==========================================================
+     27. LAST ACTIVITY
+  ========================================================== */
+
+  function recordActivity() {
+    state.lastActivity =
+      new Date().toISOString();
+
+    saveState();
+  }
+
+  /* ==========================================================
+     28. KEYBOARD SHORTCUTS
+  ========================================================== */
+
+  function initKeyboard() {
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key === "Escape"
+        ) {
+          closeModal();
+        }
+      }
+    );
+  }
+
+  /* ==========================================================
+     29. INITIAL TOOL
+  ========================================================== */
+
+  function initDefaultTool() {
+    const workspace =
+      document.getElementById(
+        "toolWorkspace"
+      );
+
+    if (!workspace) return;
+
+    /*
+      Tsy manokatra outil automatique
+      raha mbola tsy misafidy ny utilisateur.
+    */
+
+    if (
+      workspace.innerHTML.trim() === ""
+    ) {
+      workspace.innerHTML = `
+        <div class="workspace-empty">
+
+          <div class="workspace-empty-icon">
+            🧪
+          </div>
+
+          <h3>
+            Vonona hanao pratique?
+          </h3>
+
+          <p>
+            Safidio etsy ambony ny outil
+            tianao hampiasaina.
+          </p>
+
+        </div>
+      `;
     }
-  );
+  }
 
-}
+  /* ==========================================================
+     30. START
+  ========================================================== */
 
+  function init() {
+    initSupabase();
 
-/* ============================================================
-   29. INITIALIZATION
-============================================================ */
+    initNavigation();
+    initSmoothScroll();
+    initExternalLinks();
+    initTools();
 
-async function initApp() {
+    initEvaluation();
+    initReviewModal();
+    initReset();
+    initKeyboard();
 
-  initSupabase();
+    initDefaultTool();
 
-  initNavigation();
+    updateDashboard();
+    loadReviews();
 
-  initSmoothLinks();
+    recordActivity();
 
-  initTools();
+    console.log(
+      "Tantsaha Matihanina • Vente Lab chargé."
+    );
+  }
 
-  initEvaluationForm();
+  /* ==========================================================
+     31. DOM READY
+  ========================================================== */
 
-  initReviewForm();
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      init
+    );
+  } else {
+    init();
+  }
 
-  initModals();
-
-  initExternalLinks();
-
-  initKeyboardShortcuts();
-
-  updateDashboard();
-
-  await loadReviews();
-
-}
-
-
-/* ============================================================
-   30. START
-============================================================ */
-
-if (
-  document.readyState === "loading"
-) {
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    initApp
-  );
-
-} else {
-
-  initApp();
-
-}
+})();
