@@ -8,39 +8,46 @@
 
   <meta
     name="description"
-    content="Tantsaha Matihanina Vente Lab — Mianatra, mampihatra ary manatsara ny varotra amin'ny fomba pratique."
+    content="Tantsaha Matihanina Vente Lab — Mianatra, Mampihatra, Mahomby."
   >
 
   <meta name="theme-color" content="#14532d">
 
   <link rel="stylesheet" href="style.css">
+
+  <!-- Supabase -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    defer
+  ></script>
 </head>
 
 <body>
 
-  <!-- =========================================================
+  <!-- =====================================================
        HEADER
-  ========================================================== -->
+  ====================================================== -->
+
   <header class="site-header">
+
     <div class="container header-inner">
 
-      <button
-        class="brand"
-        type="button"
-        onclick="showHome()"
-        aria-label="Hiverina amin'ny accueil"
-      >
-        <span class="brand-mark">M</span>
+      <a href="#home" class="brand">
 
-        <span class="brand-text">
+        <span class="brand-mark">
+          M
+        </span>
+
+        <span>
           <strong>TANTSAHA MATIHANINA</strong>
           <small>VENTE LAB</small>
         </span>
-      </button>
+
+      </a>
+
 
       <button
-        class="menu-toggle"
-        id="menuToggle"
+        class="nav-toggle"
         type="button"
         aria-label="Hanokatra menu"
         aria-expanded="false"
@@ -48,344 +55,385 @@
         ☰
       </button>
 
-      <nav class="main-nav" id="mainNav">
 
-        <button type="button" onclick="showHome()">
+      <nav class="main-nav">
+
+        <a href="#home">
           Accueil
-        </button>
+        </a>
 
-        <button type="button" onclick="openTool('guide')">
+        <a href="#formation">
           Formation
-        </button>
+        </a>
 
-        <button type="button" onclick="openTool('calendar')">
+        <a href="#lab">
+          Vente Lab
+        </a>
+
+        <a href="#calendar">
           Calendrier
-        </button>
+        </a>
 
-        <button type="button" onclick="openDashboard()">
+        <a href="#dashboard">
           Dashboard
-        </button>
+        </a>
 
-        <button type="button" onclick="openEvaluation()">
+        <a href="#evaluation">
           Retour
-        </button>
+        </a>
 
       </nav>
 
     </div>
+
   </header>
 
 
-  <!-- =========================================================
+  <!-- =====================================================
        APP
-  ========================================================== -->
-  <main id="app">
+  ====================================================== -->
 
-    <!-- =======================================================
-         ACCUEIL
-    ======================================================== -->
-    <section id="homeScreen" class="screen active">
+  <main>
 
-      <!-- HERO MINIMAL -->
-      <section class="hero">
-        <div class="container hero-content">
 
-          <div class="hero-badge">
-            TANTSAHA MATIHANINA • VENTE LAB
-          </div>
+    <!-- ===================================================
+         HOME
+    ==================================================== -->
 
-          <h1>
-            Mianara.<br>
-            Mampihatra.<br>
-            Mahomby.
-          </h1>
+    <section
+      id="home"
+      class="app-view is-active"
+    >
 
-          <p class="hero-lead">
-            Laboratoire pratique hanampy anao
-            hahatakatra ny vidiny, hamorona offre,
-            hitady client ary hanatsara ny vente-nao.
-          </p>
+      <div class="hero">
 
-          <div class="hero-actions">
+        <div class="container">
 
-            <button
-              class="btn btn-primary"
-              type="button"
-              onclick="openTool('price')"
-            >
-              🧮 Hanomboka amin'ny Kajy
-            </button>
+          <div class="hero-grid">
 
-            <button
-              class="btn btn-secondary"
-              type="button"
-              onclick="openTool('guide')"
-            >
-              📚 Formation 7 Jours
-            </button>
+            <div>
+
+              <span class="eyebrow">
+                TANTSAHA MATIHANINA • VENTE LAB
+              </span>
+
+
+              <h1>
+                Mianatra.
+                Mampihatra.
+                Mahomby.
+              </h1>
+
+
+              <p>
+                Laboratoire pratique hanampy anao
+                hamorona offre, hitady client,
+                hivarotra ary handrefy ny tombony.
+              </p>
+
+
+              <div class="hero-actions">
+
+                <a
+                  href="#lab"
+                  class="btn btn-primary"
+                >
+                  Hanomboka Pratique →
+                </a>
+
+                <a
+                  href="#formation"
+                  class="btn btn-secondary"
+                >
+                  Formation 7 Jours
+                </a>
+
+              </div>
+
+            </div>
+
+
+            <div class="hero-card">
+
+              <span class="eyebrow">
+                SYSTÈME
+              </span>
+
+              <h2>
+                Avy amin'ny fiompiana
+                ka hatramin'ny vente
+              </h2>
+
+              <div class="mini-flow">
+
+                <span>🐔 Fiompiana</span>
+                <b>→</b>
+
+                <span>🧮 Kajy</span>
+                <b>→</b>
+
+                <span>🎁 Offre</span>
+                <b>→</b>
+
+                <span>📢 Publication</span>
+                <b>→</b>
+
+                <span>💬 Client</span>
+                <b>→</b>
+
+                <span>🛒 Vente</span>
+
+              </div>
+
+            </div>
 
           </div>
 
         </div>
-      </section>
+
+      </div>
 
 
-      <!-- =====================================================
-           LABORATOIRE
-      ====================================================== -->
+      <!-- QUICK TOOLS -->
+
       <section class="section">
+
         <div class="container">
 
           <div class="section-heading">
-            <span class="eyebrow">VENTE LAB</span>
+
+            <span class="eyebrow">
+              VENTE LAB
+            </span>
 
             <h2>
-              Fitaovana pratique
+              Inona no tianao hatao?
             </h2>
 
             <p>
-              Safidio izay tianao hatao.
-              Tsy mila mijery ny modules rehetra indray mandeha ianao.
+              Safidio mivantana ilay fitaovana.
             </p>
+
           </div>
 
 
-          <div class="tool-grid">
+          <div class="tools-grid">
 
-            <!-- PRICE -->
+
             <button
               class="tool-card tool-card-featured"
               type="button"
-              onclick="openTool('price')"
+              data-tool="price"
             >
 
-              <span class="tool-icon">🧮</span>
-
-              <span class="tool-card-content">
-                <strong>Kajy Prix &amp; Tombony</strong>
-
-                <small>
-                  Fantaro ny CA, coût, tombony ary marge.
-                </small>
+              <span class="tool-icon">
+                🧮
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Kajy Prix &amp; Tombony
+                </strong>
+
+                <small>
+                  Coût → Prix → CA → Tombony → Marge
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- LIVESTOCK -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('livestock')"
+              data-tool="livestock"
             >
 
-              <span class="tool-icon">🐔</span>
-
-              <span class="tool-card-content">
-                <strong>Kajy Fiompiana</strong>
-
-                <small>
-                  Kajio ny coût, vidiny ary tombony amin'ny fiompiana.
-                </small>
+              <span class="tool-icon">
+                🐔
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Kajy Fiompiana
+                </strong>
+
+                <small>
+                  Biby → Coût → Prix → Tombony
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- CALENDAR -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('calendar')"
+              data-tool="calendar"
             >
 
-              <span class="tool-icon">📅</span>
-
-              <span class="tool-card-content">
-                <strong>Calendrier</strong>
-
-                <small>
-                  Alamino ny fotoana hivarotana sy hifandraisana amin'ny client.
-                </small>
+              <span class="tool-icon">
+                📅
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Calendrier
+                </strong>
+
+                <small>
+                  Fiompiana → Préparation → Vente
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- OFFER -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('offer')"
+              data-tool="offer"
             >
 
-              <span class="tool-icon">🎁</span>
-
-              <span class="tool-card-content">
-                <strong>Créer une Offre</strong>
-
-                <small>
-                  Avadiho ho offre mazava sy mahasarika ny produit.
-                </small>
+              <span class="tool-icon">
+                🎁
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Créer une Offre
+                </strong>
+
+                <small>
+                  Client → Problème → Solution → CTA
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- PUBLICATION -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('publication')"
+              data-tool="publication"
             >
 
-              <span class="tool-icon">📢</span>
-
-              <span class="tool-card-content">
-                <strong>Publication</strong>
-
-                <small>
-                  Mamorona publication afaka ampiasaina amin'ny Facebook na WhatsApp.
-                </small>
+              <span class="tool-icon">
+                📢
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Publication
+                </strong>
+
+                <small>
+                  Hook → Offre → CTA
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- SIMULATION -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('simulation')"
+              data-tool="simulation"
             >
 
-              <span class="tool-icon">💬</span>
-
-              <span class="tool-card-content">
-                <strong>Simulation Client</strong>
-
-                <small>
-                  Mianara mamaly client sy mitantana objection.
-                </small>
+              <span class="tool-icon">
+                💬
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Simulation Client
+                </strong>
+
+                <small>
+                  Objection → Valiny → Closing
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- ORDER -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('order')"
+              data-tool="order"
             >
 
-              <span class="tool-icon">🛒</span>
-
-              <span class="tool-card-content">
-                <strong>Commande</strong>
-
-                <small>
-                  Araho tsikelikely ny commande sy ny client.
-                </small>
+              <span class="tool-icon">
+                🛒
               </span>
 
-              <span class="tool-arrow">→</span>
+              <span>
+
+                <strong>
+                  Commande
+                </strong>
+
+                <small>
+                  Client → Produit → Total → Statut
+                </small>
+
+              </span>
+
+              <b>→</b>
 
             </button>
 
 
-            <!-- RECEIPT -->
             <button
               class="tool-card"
               type="button"
-              onclick="openTool('receipt')"
+              data-tool="receipt"
             >
 
-              <span class="tool-icon">🧾</span>
+              <span class="tool-icon">
+                🧾
+              </span>
 
-              <span class="tool-card-content">
-                <strong>Reçu de Vente</strong>
+              <span>
+
+                <strong>
+                  Reçu de Vente
+                </strong>
 
                 <small>
-                  Mamorona reçu tsotra ho an'ny vente.
+                  Vente → Paiement → Reçu
                 </small>
+
               </span>
 
-              <span class="tool-arrow">→</span>
+              <b>→</b>
 
             </button>
-
-          </div>
-
-        </div>
-      </section>
-
-
-      <!-- =====================================================
-           FORMATION
-      ====================================================== -->
-      <section class="section section-soft">
-
-        <div class="container">
-
-          <div class="section-heading">
-
-            <span class="eyebrow">
-              FORMATION
-            </span>
-
-            <h2>
-              Formation 7 Jours
-            </h2>
-
-            <p>
-              Mianara → Mampihatra → Mandrefy → Manatsara.
-            </p>
-
-          </div>
-
-
-          <div class="feature-card">
-
-            <div>
-              <span class="feature-number">
-                7
-              </span>
-            </div>
-
-            <div class="feature-content">
-
-              <h3>
-                Fiofanana mifandray amin'ny pratique
-              </h3>
-
-              <p>
-                Tsy teoria fotsiny. Isan'andro dia misy
-                lesona sy fampiharana mifandray amin'ny
-                Vente Lab.
-              </p>
-
-              <button
-                class="btn btn-primary"
-                type="button"
-                onclick="openTool('guide')"
-              >
-                Hijery Formation →
-              </button>
-
-            </div>
 
           </div>
 
@@ -394,118 +442,38 @@
       </section>
 
 
-      <!-- =====================================================
-           SYSTEM FLOW
-      ====================================================== -->
-      <section class="section">
+      <!-- SHORT FORMATION CTA -->
 
-        <div class="container">
-
-          <div class="section-heading">
-
-            <span class="eyebrow">
-              SYSTÈME
-            </span>
-
-            <h2>
-              Avy amin'ny kajy ka hatramin'ny vente
-            </h2>
-
-            <p>
-              Miasa tsikelikely ny Vente Lab.
-            </p>
-
-          </div>
-
-
-          <div class="process-flow">
-
-            <div class="process-step">
-              <span>01</span>
-              <strong>Kajy</strong>
-              <small>Prix &amp; Tombony</small>
-            </div>
-
-            <div class="process-line"></div>
-
-            <div class="process-step">
-              <span>02</span>
-              <strong>Offre</strong>
-              <small>Vokatra + valeur</small>
-            </div>
-
-            <div class="process-line"></div>
-
-            <div class="process-step">
-              <span>03</span>
-              <strong>Publication</strong>
-              <small>Mitady client</small>
-            </div>
-
-            <div class="process-line"></div>
-
-            <div class="process-step">
-              <span>04</span>
-              <strong>Discussion</strong>
-              <small>Prospect → Client</small>
-            </div>
-
-            <div class="process-line"></div>
-
-            <div class="process-step">
-              <span>05</span>
-              <strong>Commande</strong>
-              <small>Vente</small>
-            </div>
-
-            <div class="process-line"></div>
-
-            <div class="process-step">
-              <span>06</span>
-              <strong>Reçu</strong>
-              <small>Suivi</small>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- =====================================================
-           DASHBOARD CTA
-      ====================================================== -->
       <section class="section section-soft">
 
         <div class="container">
 
           <div class="cta-card">
 
-            <div>
+            <span class="eyebrow">
+              FORMATION
+            </span>
 
-              <span class="eyebrow">
-                SUIVI
-              </span>
+            <h2>
+              7 jours hianarana sy hampiharana
+            </h2>
 
-              <h2>
-                Jereo ny fivoaran'ny Vente-nao
-              </h2>
+            <p>
+              Tsy teoria fotsiny.
+              Isan'andro dia misy zavatra hianarana
+              sy zavatra tena hampiharina ao amin'ny Lab.
+            </p>
 
-              <p>
-                Araho ny dingana nataonao,
-                ny pratique ary ny valiny.
-              </p>
+            <div class="cta-actions">
+
+              <a
+                href="#formation"
+                class="btn btn-primary"
+              >
+                Hijery Formation →
+              </a>
 
             </div>
-
-            <button
-              class="btn btn-primary"
-              type="button"
-              onclick="openDashboard()"
-            >
-              📊 Hanokatra Dashboard
-            </button>
 
           </div>
 
@@ -513,127 +481,792 @@
 
       </section>
 
+    </section>
 
-      <!-- =====================================================
-           EVALUATION CTA
-      ====================================================== -->
-      <section class="section">
+
+    <!-- ===================================================
+         LAB SCREEN
+    ==================================================== -->
+
+    <section
+      id="lab"
+      class="app-view"
+    >
+
+      <div class="section">
 
         <div class="container">
 
-          <div class="cta-card cta-card-light">
+          <div class="workspace-header">
 
-            <div>
+            <span class="eyebrow">
+              VENTE LAB
+            </span>
 
-              <span class="eyebrow">
-                RETOUR
-              </span>
+            <h2>
+              Laboratoire Pratique
+            </h2>
 
-              <h2>
-                Inona no vokatra azonao?
-              </h2>
+            <p>
+              Safidio ny outil tianao hampiasaina.
+            </p>
 
-              <p>
-                Rehefa avy nampihatra ianao,
-                omeo retour ny zavatra nianaranao sy nampiharinao.
-              </p>
+          </div>
 
-            </div>
+
+          <div class="tools-grid">
+
 
             <button
-              class="btn btn-secondary"
+              class="tool-card tool-card-featured"
               type="button"
-              onclick="openEvaluation()"
+              data-tool="price"
             >
-              ⭐ Hanome Retour
+
+              <span class="tool-icon">🧮</span>
+
+              <span>
+                <strong>Kajy Prix &amp; Tombony</strong>
+                <small>Coût, prix, CA, bénéfice, marge.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="livestock"
+            >
+
+              <span class="tool-icon">🐔</span>
+
+              <span>
+                <strong>Kajy Fiompiana</strong>
+                <small>Kajy mifandray amin'ny biby.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="calendar"
+            >
+
+              <span class="tool-icon">📅</span>
+
+              <span>
+                <strong>Calendrier Mpiompy &amp; Vente</strong>
+                <small>Fandaminana ny fotoana hivarotana.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="offer"
+            >
+
+              <span class="tool-icon">🎁</span>
+
+              <span>
+                <strong>Créer une Offre</strong>
+                <small>Mamorona offre mazava.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="publication"
+            >
+
+              <span class="tool-icon">📢</span>
+
+              <span>
+                <strong>Publication</strong>
+                <small>Mamorona texte de vente.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="simulation"
+            >
+
+              <span class="tool-icon">💬</span>
+
+              <span>
+                <strong>Simulation Client</strong>
+                <small>Manao pratique amin'ny objection.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="order"
+            >
+
+              <span class="tool-icon">🛒</span>
+
+              <span>
+                <strong>Commande</strong>
+                <small>Mitantana commande.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="receipt"
+            >
+
+              <span class="tool-icon">🧾</span>
+
+              <span>
+                <strong>Reçu</strong>
+                <small>Mamorona reçu de vente.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="challenge"
+            >
+
+              <span class="tool-icon">🏆</span>
+
+              <span>
+                <strong>Challenge 7 Jours</strong>
+                <small>Action → Résultat → Retour.</small>
+              </span>
+
+              <b>→</b>
+
+            </button>
+
+
+            <button
+              class="tool-card"
+              type="button"
+              data-tool="guide"
+            >
+
+              <span class="tool-icon">📘</span>
+
+              <span>
+                <strong>Guide Formation</strong>
+                <small>Lesona sy pratique.</small>
+              </span>
+
+              <b>→</b>
+
             </button>
 
           </div>
 
+
+          <!-- APP.JS WILL RENDER THE SELECTED TOOL HERE -->
+
+          <div
+            id="toolWorkspace"
+            class="tool-workspace"
+          ></div>
+
         </div>
 
-      </section>
+      </div>
+
+    </section>
 
 
-      <!-- =====================================================
-           SUPPORT
-      ====================================================== -->
-      <section class="section">
+    <!-- ===================================================
+         FORMATION SCREEN
+    ==================================================== -->
+
+    <section
+      id="formation"
+      class="app-view"
+    >
+
+      <div class="section">
 
         <div class="container">
 
           <div class="section-heading">
 
             <span class="eyebrow">
-              TANTSAHA MATIHANINA
+              FORMATION 7 JOURS
             </span>
 
             <h2>
-              Mianatra • Mampihatra • Mahomby
+              Mianatra → Mampihatra → Mahomby
             </h2>
 
             <p>
-              Miara-miasa ho an'ny fampandrosoana
-              ny eny ambanivohitra isika.
+              Ny lesona tsirairay dia mifandray
+              amin'ny pratique ao amin'ny Vente Lab.
             </p>
+
+          </div>
+
+
+          <div class="formation-days">
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                01
+              </div>
+
+              <div>
+
+                <h3>
+                  Fototry ny Vente
+                </h3>
+
+                <p>
+                  Fantaro ny maha samy hafa ny produit
+                  sy ny valeur atolotra ny client.
+                </p>
+
+                <small>
+                  Pratique: Créer une Offre
+                </small>
+
+              </div>
+
+            </article>
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                02
+              </div>
+
+              <div>
+
+                <h3>
+                  Client Cible
+                </h3>
+
+                <p>
+                  Fantaro hoe iza no client mety hividy,
+                  inona ny olany ary inona no ilainy.
+                </p>
+
+                <small>
+                  Résultat: Persona + cible
+                </small>
+
+              </div>
+
+            </article>
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                03
+              </div>
+
+              <div>
+
+                <h3>
+                  Offre &amp; Prix
+                </h3>
+
+                <p>
+                  Kajio ny coût, prix de vente,
+                  chiffre d'affaires ary tombony.
+                </p>
+
+                <small>
+                  Pratique: Kajy Prix &amp; Tombony
+                </small>
+
+              </div>
+
+            </article>
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                04
+              </div>
+
+              <div>
+
+                <h3>
+                  Publication &amp; Copywriting
+                </h3>
+
+                <p>
+                  Hook → Problème → Solution →
+                  Offre → Preuve → Prix → CTA.
+                </p>
+
+                <small>
+                  Pratique: Publication
+                </small>
+
+              </div>
+
+            </article>
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                05
+              </div>
+
+              <div>
+
+                <h3>
+                  Prospection &amp; Discussion
+                </h3>
+
+                <p>
+                  Comment → MP → Qualification →
+                  Discussion → Proposition.
+                </p>
+
+                <small>
+                  Pratique: Simulation Client
+                </small>
+
+              </div>
+
+            </article>
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                06
+              </div>
+
+              <div>
+
+                <h3>
+                  Objection &amp; Closing
+                </h3>
+
+                <p>
+                  Mianara mamaly hoe:
+                  “Lafo loatra”, “Mbola hieritreritra aho”,
+                  “Misy remise ve?”
+                </p>
+
+                <small>
+                  Pratique: Simulation Client
+                </small>
+
+              </div>
+
+            </article>
+
+
+            <article class="formation-day">
+
+              <div class="formation-day-number">
+                07
+              </div>
+
+              <div>
+
+                <h3>
+                  Suivi &amp; Fidélisation
+                </h3>
+
+                <p>
+                  Araho ny client, angataho ny retour
+                  ary amboary ny stratégie.
+                </p>
+
+                <small>
+                  Pratique: Dashboard + Evaluation
+                </small>
+
+              </div>
+
+            </article>
+
+          </div>
+
+
+          <div class="cta-actions">
+
+            <button
+              class="btn btn-primary"
+              type="button"
+              data-tool="challenge"
+            >
+              🏆 Hanomboka Challenge
+            </button>
+
+            <a
+              href="#lab"
+              class="btn btn-secondary"
+            >
+              Hiditra amin'ny Lab →
+            </a>
 
           </div>
 
         </div>
 
-      </section>
+      </div>
 
     </section>
 
 
-    <!-- =======================================================
-         MODULE WORKSPACE
-    ======================================================== -->
+    <!-- ===================================================
+         CALENDAR SHORTCUT SCREEN
+    ==================================================== -->
+
     <section
-      id="toolScreen"
-      class="screen tool-screen"
-      aria-hidden="true"
+      id="calendar"
+      class="app-view"
     >
 
-      <div class="container">
+      <div class="section">
 
-        <!-- BACK -->
-        <div class="screen-topbar">
+        <div class="container">
 
-          <button
-            class="back-button"
-            type="button"
-            onclick="showHome()"
-          >
-            ← Miverina
-          </button>
+          <div class="workspace-header">
 
-        </div>
-
-
-        <!-- DYNAMIC CONTENT -->
-        <div id="toolWorkspace">
-
-          <div class="empty-state">
-
-            <div class="empty-state-icon">
-              🛠️
-            </div>
+            <span class="eyebrow">
+              MPIOMPY &amp; VENTE
+            </span>
 
             <h2>
-              Vente Lab
+              Calendrier
             </h2>
 
             <p>
-              Safidio ny fitaovana tianao hampiasaina.
+              Tsy miandry ny andro hivarotana vao mitady client.
+              Omano mialoha ny vente.
             </p>
 
+          </div>
+
+
+          <button
+            class="btn btn-primary"
+            type="button"
+            data-tool="calendar"
+          >
+            📅 Hanokatra Calendrier
+          </button>
+
+
+          <div
+            id="calendarWorkspace"
+            class="tool-workspace"
+          ></div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         DASHBOARD
+    ==================================================== -->
+
+    <section
+      id="dashboard"
+      class="app-view"
+    >
+
+      <div class="section">
+
+        <div class="container">
+
+          <div class="section-heading">
+
+            <span class="eyebrow">
+              DASHBOARD
+            </span>
+
+            <h2>
+              Aza miantehitra amin'ny fahatsiarovana.
+              Refeso ny vente-nao.
+            </h2>
+
+            <p>
+              Ireo isa eto dia avy amin'ny pratique
+              nataonao tao amin'ny Vente Lab.
+            </p>
+
+          </div>
+
+
+          <div class="dashboard-grid">
+
+
+            <div class="stat-card">
+
+              <span class="stat-card-label">
+                CALCULS
+              </span>
+
+              <strong
+                id="statCalculations"
+                class="stat-card-value"
+              >
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+              <span class="stat-card-label">
+                COMMANDES
+              </span>
+
+              <strong
+                id="statOrders"
+                class="stat-card-value"
+              >
+                0
+              </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+              <span class="stat-card-label">
+                CA ENREGISTRÉ
+              </span>
+
+              <strong
+                id="statRevenue"
+                class="stat-card-value"
+              >
+                0 Ar
+              </strong>
+
+            </div>
+
+
+            <div class="stat-card">
+
+              <span class="stat-card-label">
+                TOMBONY
+              </span>
+
+              <strong
+                id="statProfit"
+                class="stat-card-value"
+              >
+                0 Ar
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="dashboard-panels">
+
+
+            <div class="dashboard-panel">
+
+              <h3>
+                Funnel Vente
+              </h3>
+
+              <div class="funnel">
+
+                <div class="funnel-row">
+
+                  <span>Prospects</span>
+
+                  <div class="funnel-track">
+                    <i
+                      id="funnelProspects"
+                      class="funnel-bar"
+                      style="width:0%"
+                    ></i>
+                  </div>
+
+                  <strong id="funnelProspectsCount">
+                    0
+                  </strong>
+
+                </div>
+
+
+                <div class="funnel-row">
+
+                  <span>Responses</span>
+
+                  <div class="funnel-track">
+                    <i
+                      id="funnelResponses"
+                      class="funnel-bar"
+                      style="width:0%"
+                    ></i>
+                  </div>
+
+                  <strong id="funnelResponsesCount">
+                    0
+                  </strong>
+
+                </div>
+
+
+                <div class="funnel-row">
+
+                  <span>Discussions</span>
+
+                  <div class="funnel-track">
+                    <i
+                      id="funnelDiscussions"
+                      class="funnel-bar"
+                      style="width:0%"
+                    ></i>
+                  </div>
+
+                  <strong id="funnelDiscussionsCount">
+                    0
+                  </strong>
+
+                </div>
+
+
+                <div class="funnel-row">
+
+                  <span>Commandes</span>
+
+                  <div class="funnel-track">
+                    <i
+                      id="funnelOrders"
+                      class="funnel-bar"
+                      style="width:0%"
+                    ></i>
+                  </div>
+
+                  <strong id="funnelOrdersCount">
+                    0
+                  </strong>
+
+                </div>
+
+
+                <div class="funnel-row">
+
+                  <span>Clients</span>
+
+                  <div class="funnel-track">
+                    <i
+                      id="funnelClients"
+                      class="funnel-bar"
+                      style="width:0%"
+                    ></i>
+                  </div>
+
+                  <strong id="funnelClientsCount">
+                    0
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="dashboard-panel">
+
+              <h3>
+                Calculs récents
+              </h3>
+
+              <div
+                id="recentCalculations"
+                class="dashboard-list"
+              >
+                <p>
+                  Aucun calcul mbola vita.
+                </p>
+              </div>
+
+            </div>
+
+
+            <div class="dashboard-panel">
+
+              <h3>
+                Commandes récentes
+              </h3>
+
+              <div
+                id="recentOrders"
+                class="dashboard-list"
+              >
+                <p>
+                  Aucune commande mbola voatahiry.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="cta-actions">
+
             <button
-              class="btn btn-primary"
               type="button"
-              onclick="showHome()"
+              class="btn btn-secondary"
+              data-reset-data
             >
-              ← Hiverina amin'ny Accueil
+              🗑️ Reset données
             </button>
 
           </div>
@@ -645,32 +1278,228 @@
     </section>
 
 
-    <!-- =======================================================
-         DASHBOARD SCREEN
-    ======================================================== -->
+    <!-- ===================================================
+         EVALUATION
+    ==================================================== -->
+
     <section
-      id="dashboardScreen"
-      class="screen"
-      aria-hidden="true"
+      id="evaluation"
+      class="app-view"
     >
 
-      <div class="container">
+      <div class="section">
 
-        <div class="screen-topbar">
+        <div class="container">
 
-          <button
-            class="back-button"
-            type="button"
-            onclick="showHome()"
+          <div class="section-heading">
+
+            <span class="eyebrow">
+              RETOUR &amp; ÉVALUATION
+            </span>
+
+            <h2>
+              Inona no vokatra azonao?
+            </h2>
+
+            <p>
+              Fenoy rehefa avy nampihatra.
+              Izany no hanampy anao hahita izay tokony hatsaraina.
+            </p>
+
+          </div>
+
+
+          <form
+            id="evaluationForm"
+            class="lab-form"
           >
-            ← Miverina
-          </button>
 
-        </div>
+            <div class="form-grid">
 
-        <div id="dashboardWorkspace">
 
-          <!-- app.js afaka mameno eto -->
+              <label>
+                Canal
+
+                <select name="channel">
+
+                  <option value="">
+                    Safidio
+                  </option>
+
+                  <option value="Facebook">
+                    Facebook
+                  </option>
+
+                  <option value="WhatsApp">
+                    WhatsApp
+                  </option>
+
+                  <option value="Marketplace">
+                    Marketplace
+                  </option>
+
+                  <option value="Local">
+                    Vente locale
+                  </option>
+
+                  <option value="Other">
+                    Hafa
+                  </option>
+
+                </select>
+
+              </label>
+
+
+              <label>
+                Publication
+
+                <input
+                  type="text"
+                  name="publication"
+                  placeholder="Inona no publication nataonao?"
+                >
+
+              </label>
+
+
+              <label>
+                Views
+
+                <input
+                  type="number"
+                  name="views"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Messages
+
+                <input
+                  type="number"
+                  name="messages"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Prospects
+
+                <input
+                  type="number"
+                  name="prospects"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Responses
+
+                <input
+                  type="number"
+                  name="responses"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Discussions
+
+                <input
+                  type="number"
+                  name="discussions"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Orders
+
+                <input
+                  type="number"
+                  name="orders"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                CA
+
+                <input
+                  type="number"
+                  name="revenue"
+                  min="0"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Tombony
+
+                <input
+                  type="number"
+                  name="profit"
+                  value="0"
+                >
+
+              </label>
+
+
+              <label>
+                Objection lehibe indrindra
+
+                <input
+                  type="text"
+                  name="objection"
+                  placeholder="Ohatra: Lafo loatra"
+                >
+
+              </label>
+
+
+              <label>
+                Lesona noraisina
+
+                <textarea
+                  name="lesson"
+                  rows="4"
+                  placeholder="Inona no zavatra nianaranao?"
+                ></textarea>
+
+              </label>
+
+            </div>
+
+
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
+              Alefa ny Retour →
+            </button>
+
+          </form>
 
         </div>
 
@@ -679,32 +1508,120 @@
     </section>
 
 
-    <!-- =======================================================
-         EVALUATION SCREEN
-    ======================================================== -->
+    <!-- ===================================================
+         REVIEWS
+    ==================================================== -->
+
     <section
-      id="evaluationScreen"
-      class="screen"
-      aria-hidden="true"
+      id="reviews"
+      class="app-view"
     >
 
-      <div class="container">
+      <div class="section">
 
-        <div class="screen-topbar">
+        <div class="container">
 
-          <button
-            class="back-button"
-            type="button"
-            onclick="showHome()"
+          <div class="section-heading">
+
+            <span class="eyebrow">
+              EXPÉRIENCE
+            </span>
+
+            <h2>
+              Avis des utilisateurs
+            </h2>
+
+            <p>
+              Zarao ny zavatra nianaranao sy nampiharinao.
+            </p>
+
+          </div>
+
+
+          <div
+            id="reviewsList"
+            class="reviews-grid"
           >
-            ← Miverina
-          </button>
+
+            <div class="empty-state">
+
+              <p>
+                Tsy mbola misy avis eto.
+                Aoka ianao ho voalohany hizara expérience.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="cta-actions">
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-modal-open="reviewModal"
+            >
+              ⭐ Hizara ny expérience-ko
+            </button>
+
+          </div>
 
         </div>
 
-        <div id="evaluationWorkspace">
+      </div>
 
-          <!-- app.js afaka mameno eto -->
+    </section>
+
+
+    <!-- ===================================================
+         SUPPORT
+    ==================================================== -->
+
+    <section
+      id="support"
+      class="app-view"
+    >
+
+      <div class="section">
+
+        <div class="container">
+
+          <div class="cta-card">
+
+            <span class="eyebrow">
+              SUPPORT AVANCÉ
+            </span>
+
+            <h2>
+              Guide Pratique Vente en Ligne
+              &amp; Vente Locale
+            </h2>
+
+            <p>
+              Guide 52 pages hanampy anao handalina
+              bebe kokoa ny Vente sy ny pratique.
+            </p>
+
+            <p>
+              <strong>
+                5 000 Ar
+              </strong>
+            </p>
+
+            <div class="cta-actions">
+
+              <button
+                class="btn btn-primary"
+                type="button"
+                data-whatsapp-purchase
+              >
+                Haka ny Guide →
+              </button>
+
+            </div>
+
+          </div>
 
         </div>
 
@@ -715,38 +1632,189 @@
   </main>
 
 
-  <!-- =========================================================
-       MODAL
-  ========================================================== -->
+  <!-- =====================================================
+       REVIEW MODAL
+  ====================================================== -->
+
   <div
+    id="reviewModal"
     class="modal"
-    id="modal"
     aria-hidden="true"
   >
 
-    <div class="modal-backdrop"></div>
-
     <div class="modal-dialog">
 
-      <button
-        class="modal-close"
-        type="button"
-        onclick="closeModal()"
-        aria-label="Hanakatona"
-      >
-        ×
-      </button>
+      <div class="modal-header">
 
-      <div id="modalContent"></div>
+        <div>
+
+          <span class="eyebrow">
+            AVIS
+          </span>
+
+          <h2>
+            Hizara expérience
+          </h2>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="modal-close"
+          data-modal-close
+          aria-label="Hanakatona"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <form
+        id="reviewForm"
+        class="lab-form"
+      >
+
+        <div class="form-grid">
+
+
+          <label>
+            Anarana
+
+            <input
+              type="text"
+              name="name"
+              maxlength="80"
+              required
+              placeholder="Anaranao"
+            >
+
+          </label>
+
+
+          <label>
+            Note
+
+            <select
+              name="rating"
+              required
+            >
+
+              <option value="">
+                Safidio
+              </option>
+
+              <option value="5">
+                5 — Tena tsara
+              </option>
+
+              <option value="4">
+                4 — Tsara
+              </option>
+
+              <option value="3">
+                3 — Antonony
+              </option>
+
+              <option value="2">
+                2 — Mila hatsaraina
+              </option>
+
+              <option value="1">
+                1 — Tsy nahafa-po
+              </option>
+
+            </select>
+
+          </label>
+
+
+          <label>
+            Inona no nianaranao?
+
+            <textarea
+              name="learning"
+              rows="3"
+              maxlength="2000"
+            ></textarea>
+
+          </label>
+
+
+          <label>
+            Inona no nampiharinao?
+
+            <textarea
+              name="applied"
+              rows="3"
+              maxlength="2000"
+            ></textarea>
+
+          </label>
+
+
+          <label>
+            Inona ny résultat?
+
+            <textarea
+              name="result"
+              rows="3"
+              maxlength="2000"
+            ></textarea>
+
+          </label>
+
+
+          <label>
+            Hafatra
+
+            <textarea
+              name="message"
+              rows="4"
+              maxlength="2000"
+              placeholder="Teny fohy momba ny expérience-nao"
+            ></textarea>
+
+          </label>
+
+
+          <label class="checkbox-label">
+
+            <input
+              type="checkbox"
+              name="consent"
+              required
+            >
+
+            <span>
+              Manaiky aho fa azo ampiasaina
+              amin'ny publication ny avis-ko.
+            </span>
+
+          </label>
+
+        </div>
+
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Alefa ny Avis →
+        </button>
+
+      </form>
 
     </div>
 
   </div>
 
 
-  <!-- =========================================================
+  <!-- =====================================================
        TOAST
-  ========================================================== -->
+  ====================================================== -->
+
   <div
     id="toast"
     class="toast"
@@ -755,42 +1823,315 @@
   ></div>
 
 
-  <!-- =========================================================
+  <!-- =====================================================
        FOOTER
-  ========================================================== -->
+  ====================================================== -->
+
   <footer class="site-footer">
 
-    <div class="container footer-inner">
+    <div class="container">
 
-      <div class="footer-brand">
+      <div class="footer-grid">
 
-        <strong>
-          TANTSAHA MATIHANINA
-        </strong>
+        <div>
 
-        <span>
-          VENTE LAB
-        </span>
+          <h3>
+            TANTSAHA MATIHANINA
+          </h3>
+
+          <p>
+            Mianatra • Mampihatra • Mahomby
+          </p>
+
+          <p>
+            Miara-miasa ho an'ny fampandrosoana
+            ny eny ambanivohitra isika.
+          </p>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Vente Lab
+          </h4>
+
+          <div class="footer-links">
+
+            <a href="#lab">
+              Fitaovana
+            </a>
+
+            <a href="#formation">
+              Formation
+            </a>
+
+            <a href="#calendar">
+              Calendrier
+            </a>
+
+            <a href="#dashboard">
+              Dashboard
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <div>
+
+          <h4>
+            Community
+          </h4>
+
+          <div class="footer-links">
+
+            <button
+              type="button"
+              data-whatsapp
+              class="footer-button"
+            >
+              WhatsApp
+            </button>
+
+            <button
+              type="button"
+              data-external="https://www.facebook.com/share/1Zfiu8oj3m/"
+              class="footer-button"
+            >
+              Facebook
+            </button>
+
+            <a href="#reviews">
+              Avis
+            </a>
+
+          </div>
+
+        </div>
 
       </div>
 
-      <p>
-        Mianatra • Mampihatra • Mahomby
-      </p>
 
-      <p class="footer-copy">
+      <div class="footer-bottom">
+
         © 2026 Tantsaha Matihanina / Auteur Freddy
-      </p>
+
+      </div>
 
     </div>
 
   </footer>
 
 
-  <!-- =========================================================
-       SCRIPT
-  ========================================================== -->
+  <!-- =====================================================
+       APP.JS
+  ====================================================== -->
+
   <script src="app.js"></script>
+
+
+  <!-- =====================================================
+       VIEW CONTROLLER
+       Tsy manova app.js.
+       Izy no mampiseho écran tsirairay.
+  ====================================================== -->
+
+  <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const views =
+        document.querySelectorAll(".app-view");
+
+      const navToggle =
+        document.querySelector(".nav-toggle");
+
+      const nav =
+        document.querySelector(".main-nav");
+
+
+      function showView(id) {
+
+        views.forEach(function (view) {
+
+          view.classList.remove("is-active");
+
+        });
+
+
+        const target =
+          document.getElementById(id);
+
+        if (target) {
+
+          target.classList.add("is-active");
+
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
+
+        }
+
+
+        if (nav) {
+
+          nav.classList.remove("open");
+
+        }
+
+
+        if (navToggle) {
+
+          navToggle.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+
+        }
+
+      }
+
+
+      window.addEventListener(
+        "hashchange",
+        function () {
+
+          const hash =
+            window.location.hash.replace("#", "");
+
+          if (
+            hash &&
+            document.getElementById(hash)
+          ) {
+
+            showView(hash);
+
+          }
+
+        }
+      );
+
+
+      document.addEventListener(
+        "click",
+        function (event) {
+
+          const tool =
+            event.target.closest("[data-tool]");
+
+          if (!tool) return;
+
+
+          const lab =
+            document.getElementById("lab");
+
+          if (!lab) return;
+
+
+          showView("lab");
+
+
+          setTimeout(function () {
+
+            const workspace =
+              document.getElementById(
+                "toolWorkspace"
+              );
+
+            if (workspace) {
+
+              workspace.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+
+            }
+
+          }, 80);
+
+        }
+      );
+
+
+      document.addEventListener(
+        "click",
+        function (event) {
+
+          const link =
+            event.target.closest(
+              'a[href^="#"]'
+            );
+
+          if (!link) return;
+
+
+          const id =
+            link.getAttribute("href")
+              .replace("#", "");
+
+          const target =
+            document.getElementById(id);
+
+          if (!target) return;
+
+
+          event.preventDefault();
+
+          showView(id);
+
+          history.replaceState(
+            null,
+            "",
+            "#" + id
+          );
+
+        }
+      );
+
+
+      if (navToggle && nav) {
+
+        navToggle.addEventListener(
+          "click",
+          function () {
+
+            nav.classList.toggle("open");
+
+            navToggle.setAttribute(
+              "aria-expanded",
+              nav.classList.contains("open")
+            );
+
+          }
+        );
+
+      }
+
+
+      const initialHash =
+        window.location.hash.replace("#", "");
+
+
+      if (
+        initialHash &&
+        document.getElementById(initialHash)
+      ) {
+
+        showView(initialHash);
+
+      } else {
+
+        showView("home");
+
+      }
+
+    });
+
+  </script>
 
 </body>
 </html>
