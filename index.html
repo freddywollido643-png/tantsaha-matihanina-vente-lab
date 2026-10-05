@@ -3,239 +3,3896 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Tantsaha Matihanina Vente Lab V8 — Outils, formation, fiompiana, fambolena ary boky pratique.">
-<title>Tantsaha Matihanina • Vente Lab V8</title>
+<meta name="theme-color" content="#123c2a">
+<meta name="description" content="Tantsaha Matihanina Vente Lab — Mianatra • Mampihatra • Mahomby">
+<title>Tantsaha Matihanina — Vente Lab V9</title>
+
 <style>
 :root{
-  --green:#123b2a;--green2:#1d5a40;--gold:#d6a52c;--cream:#f7f5ed;
-  --white:#fff;--ink:#17231d;--muted:#66736c;--line:#e4e8e3;
-  --shadow:0 14px 40px rgba(18,59,42,.10);--radius:20px;
+  --green:#123c2a;
+  --green2:#1c5b3e;
+  --gold:#d9a441;
+  --gold2:#f0c766;
+  --white:#ffffff;
+  --bg:#f4f7f3;
+  --card:#ffffff;
+  --text:#17221c;
+  --muted:#68756d;
+  --border:#dfe7e1;
+  --danger:#b42318;
+  --success:#16794c;
+  --shadow:0 8px 28px rgba(18,60,42,.08);
+  --radius:18px;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--cream);color:var(--ink);line-height:1.55}
-button,a{font:inherit}a{text-decoration:none;color:inherit}
-.container{width:min(1120px,92%);margin:auto}
-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:var(--green)}
-.brand small{display:block;color:var(--muted);font-weight:600;font-size:11px}
-nav{display:flex;gap:18px;align-items:center}
-nav a{font-size:14px;font-weight:700;color:#405047}
-nav a:hover{color:var(--green)}
-.menu{display:none;border:0;background:transparent;font-size:25px}
-.hero{padding:78px 0 55px;background:radial-gradient(circle at 85% 15%,#e6d28b 0,transparent 26%),linear-gradient(135deg,#f8f7f0,#edf3ee)}
-.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:42px;align-items:center}
-.kicker{color:var(--green2);font-size:13px;font-weight:900;letter-spacing:.08em}
-h1{font-size:clamp(42px,7vw,76px);line-height:.98;color:var(--green);margin:14px 0 20px}
-.hero p{max-width:680px;color:#506057;font-size:18px}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;padding:13px 18px;font-weight:800;cursor:pointer;transition:.2s}
-.btn:hover{transform:translateY(-2px)}
-.primary{background:var(--green);color:#fff}.gold{background:var(--gold);color:#17231d}.light{background:#fff;color:var(--green);border:1px solid var(--line)}
-.hero-card{background:var(--green);color:#fff;border-radius:28px;padding:28px;box-shadow:var(--shadow)}
-.hero-card h3{font-size:24px;margin-bottom:18px}.mini-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.mini{background:rgba(255,255,255,.09);padding:14px;border-radius:14px;font-weight:750}
-section{padding:68px 0}.section-head{text-align:center;max-width:760px;margin:0 auto 32px}
-.section-head .eyebrow{color:var(--green2);font-weight:900;font-size:13px}.section-head h2{font-size:36px;color:var(--green);margin:7px 0}.section-head p{color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 5px 20px rgba(0,0,0,.035)}
-.card .icon{font-size:30px}.card h3{margin:9px 0 6px;color:var(--green)}.card p{color:var(--muted);font-size:14px}.card .btn{margin-top:17px;width:100%}
-.tool-area{background:#fff}
-.farm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.farm{background:linear-gradient(145deg,#fff,#f3f7f3)}
-.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#edf5ef;color:var(--green2);font-size:11px;font-weight:900;margin-top:10px}
-.pro{background:#fff8df;color:#785b00}
-.formation{background:var(--green);color:#fff}.formation .section-head h2,.formation .section-head p,.formation .section-head .eyebrow{color:#fff}
-.days{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}.day{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:15px}.day b{color:#f0cf62;display:block;margin-bottom:6px}.day span{font-size:13px;color:#e4eee8}
-.books-preview{display:flex;align-items:center;justify-content:space-between;gap:25px;background:#fff;border:1px solid var(--line);border-radius:26px;padding:30px;box-shadow:var(--shadow)}
-.book-visual{width:230px;height:285px;border-radius:13px;background:linear-gradient(145deg,#173e2d,#d6a52c);display:flex;align-items:flex-end;padding:22px;color:#fff;font-weight:900;font-size:25px;box-shadow:10px 12px 0 rgba(18,59,42,.08)}
-.book-visual span{display:block}
-.process{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.step{position:relative}.num{width:38px;height:38px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-weight:900;color:var(--green);margin-bottom:12px}
-.project{background:#f0f4ef}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.stat{background:#fff;border-radius:15px;padding:18px}.stat small{color:var(--muted)}.stat b{display:block;font-size:22px;color:var(--green)}
-.pricing{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:850px;margin:auto}.price-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:28px}.price-card.premium{border:2px solid var(--gold)}.price-card ul{list-style:none;margin:18px 0}.price-card li{margin:9px 0}.price-card li:before{content:"✓";color:var(--green2);font-weight:900;margin-right:8px}
-footer{background:#0d2b1f;color:#dce8e0;padding:45px 0}.footer-grid{display:flex;justify-content:space-between;gap:30px}.footer-grid p{color:#9fb3a8;font-size:14px}
-.modal{display:none;position:fixed;inset:0;background:rgba(7,20,14,.7);z-index:50;padding:20px;overflow:auto}.modal.open{display:flex;align-items:center;justify-content:center}.modal-box{background:var(--cream);width:min(980px,100%);max-height:92vh;overflow:auto;border-radius:25px;padding:25px;position:relative}.close{position:absolute;right:16px;top:12px;border:0;background:#fff;border-radius:50%;width:40px;height:40px;font-size:22px;cursor:pointer}.modal-head{padding-right:45px;margin-bottom:22px}.modal-head h2{color:var(--green);font-size:32px}.modal-body{display:grid;grid-template-columns:230px 1fr;gap:25px}.book-cover{height:300px;border-radius:14px;background:linear-gradient(145deg,#173e2d,#d6a52c);color:#fff;padding:24px;display:flex;align-items:flex-end;font-size:27px;font-weight:900}.feature-list{list-style:none;margin:16px 0}.feature-list li{padding:7px 0;border-bottom:1px solid var(--line)}.feature-list li:before{content:"✓";font-weight:900;color:var(--green2);margin-right:8px}
-.form{display:grid;gap:12px;margin-top:15px}.form input,.form select{padding:12px;border:1px solid var(--line);border-radius:10px;width:100%;background:#fff}.result{background:#eef5ef;border-radius:13px;padding:15px;margin-top:14px}
-.note{font-size:12px;color:var(--muted);margin-top:10px}
-@media(max-width:900px){nav{display:none}.menu{display:block}.grid,.farm-grid{grid-template-columns:repeat(2,1fr)}.hero-grid{grid-template-columns:1fr}.days{grid-template-columns:repeat(2,1fr)}.process{grid-template-columns:repeat(2,1fr)}.books-preview{flex-direction:column;text-align:center}.pricing{grid-template-columns:1fr}}
-@media(max-width:560px){section{padding:50px 0}.grid,.farm-grid,.process,.stats{grid-template-columns:1fr}.hero{padding-top:50px}.hero-card{padding:20px}.book-visual{width:190px;height:235px}.modal-body{grid-template-columns:1fr}.book-cover{height:250px}}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(18,60,42,.97);
+  color:white;
+  box-shadow:0 3px 18px rgba(0,0,0,.12);
+}
+
+.header-inner{
+  max-width:1180px;
+  margin:auto;
+  padding:12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.logo-icon{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  flex-shrink:0;
+}
+
+.logo-text{
+  min-width:0;
+}
+
+.logo-title{
+  font-weight:800;
+  font-size:16px;
+}
+
+.logo-sub{
+  font-size:11px;
+  opacity:.78;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+
+nav a{
+  padding:8px 10px;
+  border-radius:9px;
+  font-size:13px;
+  transition:.2s;
+}
+
+nav a:hover{
+  background:rgba(255,255,255,.12);
+}
+
+.menu-btn{
+  display:none;
+  border:1px solid rgba(255,255,255,.25);
+  background:transparent;
+  color:white;
+  border-radius:10px;
+  padding:8px 11px;
+  font-size:20px;
+}
+
+.mobile-menu{
+  display:none;
+  max-width:1180px;
+  margin:auto;
+  padding:8px 18px 15px;
+}
+
+.mobile-menu.open{
+  display:block;
+}
+
+.mobile-menu a{
+  display:block;
+  padding:11px 13px;
+  border-radius:9px;
+  font-size:14px;
+}
+
+.mobile-menu a:hover{
+  background:rgba(255,255,255,.1);
+}
+
+/* =========================
+   GENERAL
+========================= */
+
+.container{
+  max-width:1180px;
+  margin:auto;
+  padding:0 18px;
+}
+
+section{
+  padding:72px 0;
+  scroll-margin-top:70px;
+}
+
+.section-head{
+  text-align:center;
+  max-width:760px;
+  margin:0 auto 35px;
+}
+
+.section-head h2{
+  color:var(--green);
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.section-head p{
+  color:var(--muted);
+}
+
+.grid{
+  display:grid;
+  gap:20px;
+}
+
+.grid-2{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+
+.grid-3{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+
+.grid-4{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+
+.card h3{
+  color:var(--green);
+  margin-bottom:8px;
+}
+
+.card p{
+  color:var(--muted);
+}
+
+.badge{
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:30px;
+  font-size:11px;
+  font-weight:700;
+  background:#edf5ef;
+  color:var(--green);
+}
+
+.badge.gold{
+  background:#fff5d9;
+  color:#805b00;
+}
+
+.badge.gray{
+  background:#edf0ee;
+  color:#5c665f;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  border:0;
+  border-radius:11px;
+  padding:11px 15px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn-primary{
+  background:var(--green);
+  color:white;
+}
+
+.btn-gold{
+  background:var(--gold);
+  color:#1d241e;
+}
+
+.btn-light{
+  background:#edf3ef;
+  color:var(--green);
+}
+
+.btn-danger{
+  background:#fff0ee;
+  color:var(--danger);
+}
+
+.btn-small{
+  padding:7px 10px;
+  font-size:12px;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:18px;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  background:
+    radial-gradient(circle at 85% 20%,rgba(217,164,65,.18),transparent 25%),
+    linear-gradient(135deg,#0f3424,#1b5a3d);
+  color:white;
+  padding:82px 0;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:35px;
+  align-items:center;
+}
+
+.hero-label{
+  color:var(--gold2);
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.8px;
+  margin-bottom:12px;
+}
+
+.hero h1{
+  font-size:44px;
+  line-height:1.15;
+  margin-bottom:14px;
+}
+
+.hero h1 span{
+  color:var(--gold2);
+}
+
+.hero p{
+  max-width:680px;
+  color:rgba(255,255,255,.82);
+  font-size:17px;
+}
+
+.hero-buttons{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:24px;
+}
+
+.hero-card{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:24px;
+  padding:25px;
+  backdrop-filter:blur(8px);
+}
+
+.hero-card h3{
+  color:white;
+  margin-bottom:15px;
+}
+
+.tool-mini{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 0;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.tool-mini:last-child{
+  border-bottom:0;
+}
+
+.tool-mini-icon{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  background:rgba(255,255,255,.1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================
+   TOOLS
+========================= */
+
+.tool-card{
+  position:relative;
+  overflow:hidden;
+}
+
+.tool-icon{
+  font-size:30px;
+  margin-bottom:8px;
+}
+
+.tool-card .tool-action{
+  margin-top:16px;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+.form-group{
+  margin-bottom:14px;
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  color:var(--green);
+  margin-bottom:5px;
+}
+
+input,
+select,
+textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:11px 12px;
+  background:white;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  border-color:var(--green2);
+  box-shadow:0 0 0 3px rgba(28,91,62,.08);
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+
+.result{
+  margin-top:16px;
+  padding:15px;
+  border-radius:12px;
+  background:#f0f7f2;
+  border:1px solid #d5e7da;
+}
+
+.result strong{
+  color:var(--green);
+}
+
+.result.profit{
+  background:#edf9f1;
+}
+
+.result.loss{
+  background:#fff1ef;
+  border-color:#f1cfca;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:22px;
+}
+
+.stat{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:18px;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.stat-value{
+  color:var(--green);
+  font-size:24px;
+  font-weight:800;
+  margin-top:4px;
+}
+
+/* =========================
+   SAVED LIST
+========================= */
+
+.saved-list{
+  margin-top:18px;
+}
+
+.saved-item{
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid var(--border);
+}
+
+.saved-item:last-child{
+  border-bottom:0;
+}
+
+.saved-main strong{
+  display:block;
+  color:var(--green);
+}
+
+.saved-main small{
+  color:var(--muted);
+}
+
+.empty{
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+  background:#f7f9f7;
+  border-radius:12px;
+}
+
+/* =========================
+   FORMATION
+========================= */
+
+.day-card{
+  border-left:4px solid var(--gold);
+}
+
+.day-number{
+  font-size:12px;
+  font-weight:800;
+  color:#866000;
+}
+
+/* =========================
+   BOOK PREVIEW
+========================= */
+
+.book-preview{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:25px;
+  align-items:center;
+}
+
+.book-cover{
+  min-height:270px;
+  border-radius:17px;
+  background:
+    linear-gradient(145deg,#123c2a,#2c6b4d);
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+
+.book-cover .emoji{
+  font-size:55px;
+  margin-bottom:12px;
+}
+
+.book-cover h3{
+  color:white;
+}
+
+.book-cover small{
+  opacity:.8;
+}
+
+.book-points{
+  display:grid;
+  gap:9px;
+  margin-top:15px;
+}
+
+.book-point{
+  padding:9px 11px;
+  background:#f5f8f5;
+  border-radius:9px;
+  font-size:13px;
+}
+
+/* =========================
+   PREMIUM
+========================= */
+
+.premium{
+  background:#102f22;
+  color:white;
+}
+
+.premium .section-head h2{
+  color:white;
+}
+
+.premium .section-head p{
+  color:rgba(255,255,255,.72);
+}
+
+.premium-card{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:17px;
+  padding:20px;
+}
+
+.premium-card h3{
+  color:var(--gold2);
+}
+
+.premium-card p{
+  color:rgba(255,255,255,.72);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  background:#0b2419;
+  color:white;
+  padding:35px 0;
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+footer p{
+  color:rgba(255,255,255,.68);
+  font-size:13px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.58);
+  z-index:2000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.modal{
+  width:min(900px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:white;
+  border-radius:20px;
+  box-shadow:0 20px 70px rgba(0,0,0,.25);
+}
+
+.modal-header{
+  position:sticky;
+  top:0;
+  z-index:2;
+  background:white;
+  border-bottom:1px solid var(--border);
+  padding:17px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.modal-header h3{
+  color:var(--green);
+}
+
+.close-btn{
+  border:0;
+  background:#edf1ee;
+  width:35px;
+  height:35px;
+  border-radius:9px;
+  font-size:20px;
+}
+
+.modal-body{
+  padding:20px;
+}
+
+/* =========================
+   BOOK CATALOGUE
+========================= */
+
+.catalog-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:15px;
+}
+
+.catalog-card{
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:18px;
+  background:#fff;
+}
+
+.catalog-card h4{
+  color:var(--green);
+  margin:7px 0;
+}
+
+.price{
+  font-weight:800;
+  color:#805b00;
+}
+
+/* =========================
+   NOTICE
+========================= */
+
+.notice{
+  padding:13px 15px;
+  border-radius:12px;
+  background:#fff8df;
+  border:1px solid #f1dfa0;
+  color:#6e5300;
+  font-size:13px;
+  margin-bottom:18px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+  nav{
+    display:none;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+
+  .hero-grid{
+    grid-template-columns:1fr;
+  }
+
+  .grid-4{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .dashboard{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .book-preview{
+    grid-template-columns:1fr;
+  }
+
+  .book-cover{
+    min-height:220px;
+  }
+}
+
+@media(max-width:650px){
+
+  section{
+    padding:55px 0;
+  }
+
+  .hero{
+    padding:60px 0;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+
+  .hero p{
+    font-size:15px;
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4,
+  .catalog-grid{
+    grid-template-columns:1fr;
+  }
+
+  .dashboard{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .stat-value{
+    font-size:20px;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr;
+  }
+
+  .header-inner{
+    padding:10px 13px;
+  }
+
+  .logo-title{
+    font-size:14px;
+  }
+
+  .logo-sub{
+    display:none;
+  }
+
+  .container{
+    padding:0 13px;
+  }
+
+  .card{
+    padding:17px;
+  }
+
+  .saved-item{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+}
 </style>
 </head>
+
 <body>
 
+<!-- =========================
+     HEADER
+========================= -->
+
 <header>
-  <div class="container nav">
-    <a class="brand" href="#accueil">🌱 <span>Tantsaha Matihanina<small>Vente Lab • V8</small></span></a>
+
+  <div class="header-inner">
+
+    <a href="#accueil" class="logo">
+      <div class="logo-icon">🌱</div>
+
+      <div class="logo-text">
+        <div class="logo-title">Tantsaha Matihanina</div>
+        <div class="logo-sub">Vente Lab • V9</div>
+      </div>
+    </a>
+
     <nav>
-      <a href="#accueil">Accueil</a><a href="#outils">Outils</a><a href="#formation">Formation</a>
-      <a href="#process">Process</a><a href="#projet">Projet</a><a href="#abonnement">Abonnement</a>
+      <a href="#accueil">Accueil</a>
+      <a href="#outils">Outils</a>
+      <a href="#vente-ko">Ny Vente-ko</a>
+      <a href="#formation">Formation</a>
+      <a href="#fiompiana">Fiompiana</a>
+      <a href="#books">Boky</a>
+      <a href="#premium">Premium</a>
     </nav>
-    <button class="menu" onclick="alert('Ampiasao ny menu ambony amin’ny écran lehibe.')">☰</button>
+
+    <button
+      class="menu-btn"
+      onclick="toggleMenu()"
+      aria-label="Menu">
+      ☰
+    </button>
+
   </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+
+    <a href="#accueil" onclick="closeMenu()">🏠 Accueil</a>
+    <a href="#outils" onclick="closeMenu()">🛠️ Outils</a>
+    <a href="#vente-ko" onclick="closeMenu()">💾 Ny Vente-ko</a>
+    <a href="#formation" onclick="closeMenu()">🎓 Formation</a>
+    <a href="#fiompiana" onclick="closeMenu()">🐄 Fiompiana</a>
+    <a href="#process" onclick="closeMenu()">🔄 Process</a>
+    <a href="#projet" onclick="closeMenu()">📊 Projet</a>
+    <a href="#books" onclick="closeMenu()">📚 Boky</a>
+    <a href="#premium" onclick="closeMenu()">💎 Premium</a>
+
+  </div>
+
 </header>
 
-<main id="accueil">
-<section class="hero">
-<div class="container hero-grid">
-<div>
-<div class="kicker">TANTSAHA MATIHANINA • VENTE LAB V8</div>
-<h1>Mianatra.<br>Mampihatra.<br>Mahomby.</h1>
-<p>Laboratoire pratique ho an'ny olona te hahay hivarotra, hitantana prospect, hanao kajy ary hampiasa fitaovana manampy amin'ny fiompiana sy fambolena.</p>
-<div class="actions">
-<a class="btn primary" href="#outils">🧮 Hanomboka amin'ny Kajy</a>
-<a class="btn gold" href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B" target="_blank">💬 Formation gratuite 7 jours</a>
-<a class="btn light" href="https://www.facebook.com/Fiompianasyambolena" target="_blank">📘 Facebook Page</a>
-</div>
-</div>
-<div class="hero-card">
-<h3>🎯 Vente Lab</h3>
-<div class="mini-tools"><div class="mini">🧮 Kajy</div><div class="mini">🛍️ Offre</div><div class="mini">📱 Publication</div><div class="mini">🤖 Tantsaha AI</div><div class="mini">🐔 Fiompiana</div><div class="mini">🌱 Fambolena</div></div>
-</div>
-</div>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero" id="accueil">
+
+  <div class="container">
+
+    <div class="hero-grid">
+
+      <div>
+
+        <div class="hero-label">
+          TANTSAHA MATIHANINA • VENTE LAB V9
+        </div>
+
+        <h1>
+          Mianatra.
+          <span>Mampihatra.</span>
+          Mahomby.
+        </h1>
+
+        <p>
+          Laboratoire pratique ho an'ny olona te hahay hivarotra
+          vokatra, hamorona offre, hitantana prospect ary
+          hanatsara tsikelikely ny système de vente.
+        </p>
+
+        <div class="hero-buttons">
+
+          <a href="#outils" class="btn btn-gold">
+            🧮 Hanomboka amin'ny Kajy
+          </a>
+
+          <a href="#formation" class="btn btn-light">
+            🎓 Formation gratuite 7 jours
+          </a>
+
+          <a
+            href="https://www.facebook.com/Fiompianasyambolena"
+            target="_blank"
+            class="btn btn-light">
+            📘 Facebook Page
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <div class="hero-card">
+
+        <h3>🛠️ Outils azo ampiasaina</h3>
+
+        <div class="tool-mini">
+          <div class="tool-mini-icon">🧮</div>
+          <div>Kajy Prix & Tombony</div>
+        </div>
+
+        <div class="tool-mini">
+          <div class="tool-mini-icon">🐔</div>
+          <div>Kajy Fiompiana</div>
+        </div>
+
+        <div class="tool-mini">
+          <div class="tool-mini-icon">🛍️</div>
+          <div>Créer une Offre</div>
+        </div>
+
+        <div class="tool-mini">
+          <div class="tool-mini-icon">📱</div>
+          <div>Publication</div>
+        </div>
+
+        <div class="tool-mini">
+          <div class="tool-mini-icon">📝</div>
+          <div>Commande</div>
+        </div>
+
+        <div class="tool-mini">
+          <div class="tool-mini-icon">🧾</div>
+          <div>Reçu de Vente</div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section id="outils" class="tool-area">
-<div class="container">
-<div class="section-head"><div class="eyebrow">🛠️ OUTILS VENTE & KAJY</div><h2>Manomboka amin'ny zavatra tena ilaina</h2><p>Ny Free dia natao hampiasaina. Ny Premium kosa manitatra ny capacité, automatisation, historique, AI ary ny isan'ny kajy.</p></div>
-<div class="grid">
-<div class="card"><div class="icon">🧮</div><h3>Kajy Prix & Tombony</h3><p>Kajio avy hatrany ny coût, CA, bénéfice ary marge.</p><button class="btn primary" onclick="openTool('profit')">Hanokatra</button></div>
-<div class="card"><div class="icon">🛍️</div><h3>Créer une Offre</h3><p>Mamorona offre tsotra sy mazava ho an'ny client.</p><button class="btn primary" onclick="openTool('offer')">Hanokatra</button></div>
-<div class="card"><div class="icon">📱</div><h3>Publication</h3><p>Manangana texte publication Facebook/WhatsApp.</p><button class="btn primary" onclick="openTool('post')">Hanokatra</button></div>
-<div class="card"><div class="icon">💬</div><h3>Simulation Client</h3><p>Fanazarana fototra amin'ny resaka prospect sy client.</p><button class="btn primary" onclick="openTool('client')">Hanokatra</button></div>
-<div class="card"><div class="icon">📝</div><h3>Commande</h3><p>Fandaminana fototra ny commande sy informations client.</p><button class="btn primary" onclick="openTool('order')">Hanokatra</button></div>
-<div class="card"><div class="icon">🧾</div><h3>Reçu de Vente</h3><p>Famoronana reçu tsotra azo adika na alaina screenshot.</p><button class="btn primary" onclick="openTool('receipt')">Hanokatra</button></div>
-<div class="card"><div class="icon">🎯</div><h3>Challenge 7 Jours</h3><p>Fampiharana isan'andro manomboka amin'ny produit ka hatramin'ny closing.</p><button class="btn primary" onclick="openTool('challenge')">Hanokatra</button></div>
-<div class="card"><div class="icon">🤖</div><h3>Tantsaha AI</h3><p>Basic maimaim-poana; AI Advanced sy automatique ao amin'ny Premium.</p><button class="btn gold" onclick="openTool('ai')">Hanandrana Basic</button></div>
-</div>
-</div>
+
+<!-- =========================
+     OUTILS
+========================= -->
+
+<section id="outils">
+
+  <div class="container">
+
+    <div class="section-head">
+      <h2>🛠️ Outils pratiques</h2>
+
+      <p>
+        Tsy mila Excel. Ampiasao mivantana ireo fitaovana
+        hanampy anao handray fanapahan-kevitra.
+      </p>
+    </div>
+
+
+    <div class="grid grid-3">
+
+      <!-- PRICE -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">🧮</div>
+
+        <h3>Kajy Prix & Tombony</h3>
+
+        <p>
+          Kajio ny coût, prix de vente, bénéfice ary marge.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-primary"
+            onclick="openModal('profitModal')">
+            Hanomboka
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- OFFER -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">🛍️</div>
+
+        <h3>Créer une Offre</h3>
+
+        <p>
+          Mamoròna offre tsotra sy mazava ho an'ny client.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-primary"
+            onclick="openModal('offerModal')">
+            Hamorona Offre
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- PUBLICATION -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">📱</div>
+
+        <h3>Publication</h3>
+
+        <p>
+          Mamoròna texte publication azo ampiasaina amin'ny Facebook.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-primary"
+            onclick="openModal('publicationModal')">
+            Hamorona
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- SIMULATION -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">💬</div>
+
+        <h3>Simulation Client</h3>
+
+        <p>
+          Mianara mamaly client sy objection amin'ny fomba matihanina.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-primary"
+            onclick="openModal('simulationModal')">
+            Hanandrana
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- ORDER -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">📝</div>
+
+        <h3>Commande</h3>
+
+        <p>
+          Tehirizo ny commande fototra ao amin'ny navigateur.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-primary"
+            onclick="openModal('orderModal')">
+            Nouvelle commande
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- RECEIPT -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">🧾</div>
+
+        <h3>Reçu de Vente</h3>
+
+        <p>
+          Mamoròna reçu tsotra ary tehirizo ao amin'ny appareil.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-primary"
+            onclick="openModal('receiptModal')">
+            Mamorona reçu
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- CHALLENGE -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">🎯</div>
+
+        <h3>Challenge 7 Jours</h3>
+
+        <p>
+          Dingana kely isan'andro mba hananganana fahazarana amin'ny vente.
+        </p>
+
+        <div class="tool-action">
+          <a href="#formation" class="btn btn-primary">
+            Hanomboka
+          </a>
+        </div>
+
+      </div>
+
+
+      <!-- GUIDE -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">📖</div>
+
+        <h3>Tantsaha Guide</h3>
+
+        <p>
+          Torolàlana fototra. Tsy AI tena izy ity version ity;
+          tsy hampanantena intelligence tsy mbola connecté isika.
+        </p>
+
+        <div class="tool-action">
+          <button
+            class="btn btn-light"
+            onclick="openModal('guideModal')">
+            Hijery Guide
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- SAVED -->
+      <div class="card tool-card">
+
+        <div class="tool-icon">💾</div>
+
+        <h3>Ny Vente-ko</h3>
+
+        <p>
+          Jereo ny kajy, commande, reçu ary résultats voatahiry.
+        </p>
+
+        <div class="tool-action">
+          <a href="#vente-ko" class="btn btn-primary">
+            Hijery
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section>
-<div class="container">
-<div class="section-head"><div class="eyebrow">🌱🐄 KAJY MAHOMBY</div><h2>Fiompiana & Fambolena</h2><p>Ny site dia manomboka manampy amin'ny kajy fototra; Premium no manokatra kajy lalina, karazana maro, historique ary alertes.</p></div>
-<div class="farm-grid">
-<div class="card farm"><div class="icon">🐔</div><h3>Akoho</h3><p>Kajy achat, coût, vente ary tombony.</p><span class="badge">FREE BASIC</span><button class="btn light" onclick="openTool('chicken')">Kajy</button></div>
-<div class="card farm"><div class="icon">🐷</div><h3>Kisoa</h3><p>Kajy fototra amin'ny coût sy vente.</p><span class="badge">FREE BASIC</span><button class="btn light" onclick="openTool('pig')">Kajy</button></div>
-<div class="card farm"><div class="icon">🐄</div><h3>Omby</h3><p>Fitaovana fototra; modules avancés Premium.</p><span class="badge pro">PREMIUM+</span><button class="btn light" onclick="openTool('premium')">Hijery</button></div>
-<div class="card farm"><div class="icon">🐐</div><h3>Osy & Ondry</h3><p>Kajy sy suivi lalina rehefa Premium.</p><span class="badge pro">PREMIUM+</span><button class="btn light" onclick="openTool('premium')">Hijery</button></div>
-<div class="card farm"><div class="icon">🐇</div><h3>Bitro</h3><p>Basic kajy + modules avancés.</p><span class="badge pro">PREMIUM+</span><button class="btn light" onclick="openTool('premium')">Hijery</button></div>
-<div class="card farm"><div class="icon">🐟</div><h3>Trondro</h3><p>Coût, rendement ary suivi amin'ny version avancée.</p><span class="badge pro">PREMIUM+</span><button class="btn light" onclick="openTool('premium')">Hijery</button></div>
-<div class="card farm"><div class="icon">🍯</div><h3>Tantely</h3><p>Production, coût ary marge amin'ny modules avo kokoa.</p><span class="badge pro">PREMIUM+</span><button class="btn light" onclick="openTool('premium')">Hijery</button></div>
-<div class="card farm"><div class="icon">🌾</div><h3>Fambolena</h3><p>Kajy rendement, coût ary bénéfice amin'ny modules mitombo.</p><span class="badge pro">PREMIUM+</span><button class="btn light" onclick="openTool('premium')">Hijery</button></div>
-</div>
-</div>
+
+<!-- =========================
+     FIOMPIANA
+========================= -->
+
+<section id="fiompiana">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>🐄 Kajy Fiompiana</h2>
+
+      <p>
+        Kajy fototra ho an'ny biby iray na andiany iray:
+        achat + sakafo + fikarakarana + transport + vente.
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-2">
+
+      <div class="card">
+
+        <h3>🐔 Kajy Fiompiana</h3>
+
+        <div class="notice">
+          Ny coût total dia tsy achat fotsiny.
+          Ampidiro koa ny sakafo, fikarakarana ary transport.
+        </div>
+
+        <div class="form-group">
+          <label>Karazana biby</label>
+
+          <select id="animalType">
+            <option>Akoho Gasy</option>
+            <option>Pondeuse</option>
+            <option>Poulet de chair</option>
+            <option>Kisoa</option>
+            <option>Osy</option>
+            <option>Ondry</option>
+            <option>Bitro</option>
+            <option>Gana</option>
+            <option>Gisa</option>
+            <option>Vorontsiloza</option>
+            <option>Omby</option>
+            <option>Trondro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Isan'ny biby</label>
+          <input
+            type="number"
+            id="animalQty"
+            min="1"
+            value="1">
+        </div>
+
+        <div class="form-group">
+          <label>Vidin'achat / biby (Ar)</label>
+          <input
+            type="number"
+            id="animalPurchase"
+            min="0"
+            value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Sakafo total (Ar)</label>
+          <input
+            type="number"
+            id="animalFeed"
+            min="0"
+            value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Fikarakarana / vaksiny (Ar)</label>
+          <input
+            type="number"
+            id="animalCare"
+            min="0"
+            value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Transport (Ar)</label>
+          <input
+            type="number"
+            id="animalTransport"
+            min="0"
+            value="0">
+        </div>
+
+        <div class="form-group">
+          <label>Vola azo amin'ny vente total (Ar)</label>
+          <input
+            type="number"
+            id="animalRevenue"
+            min="0"
+            value="0">
+        </div>
+
+        <button
+          class="btn btn-primary"
+          onclick="calculateAnimal()">
+          🧮 Kajio
+        </button>
+
+        <div id="animalResult"></div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>📌 Ohatra</h3>
+
+        <p>
+          Ohatra hoe manana <strong>50 Akoho Gasy</strong> ianao:
+        </p>
+
+        <div class="book-points">
+
+          <div class="book-point">
+            🐔 Achat : 750 000 Ar
+          </div>
+
+          <div class="book-point">
+            🌽 Sakafo : 150 000 Ar
+          </div>
+
+          <div class="book-point">
+            💉 Fikarakarana : 30 000 Ar
+          </div>
+
+          <div class="book-point">
+            🚚 Transport : 20 000 Ar
+          </div>
+
+          <div class="book-point">
+            💰 Coût total : 950 000 Ar
+          </div>
+
+          <div class="book-point">
+            💵 Vente : 1 250 000 Ar
+          </div>
+
+          <div class="book-point">
+            📈 Tombony : 300 000 Ar
+          </div>
+
+          <div class="book-point">
+            🎯 Marge : 24%
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section class="formation" id="formation">
-<div class="container">
-<div class="section-head"><div class="eyebrow">🎓 FORMATION GRATUITE 7 JOURS</div><h2>Mianara amin'ny pratique</h2><p>Produit → Offre → Prospection → Objection → Closing. Miditra amin'ny Groupe LESONA ianao; ny exercice pratique dia zaraina ao anatiny.</p></div>
-<div class="actions" style="justify-content:center;margin-bottom:28px"><a class="btn gold" href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B" target="_blank">💬 Hanomboka amin'ny WhatsApp</a></div>
-<div class="days">
-<div class="day"><b>J1</b><span>Produit + Client</span></div><div class="day"><b>J2</b><span>Prix + Tombony</span></div><div class="day"><b>J3</b><span>Offre + Publication</span></div><div class="day"><b>J4</b><span>Prospection</span></div><div class="day"><b>J5</b><span>Objection + Négociation</span></div><div class="day"><b>J6</b><span>Closing + Commande</span></div><div class="day"><b>J7</b><span>Challenge Final</span></div>
-</div>
-</div>
+
+<!-- =========================
+     NY VENTE-KO
+========================= -->
+
+<section id="vente-ko">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>💾 Ny Vente-ko</h2>
+
+      <p>
+        Toerana iray hijerena ireo zavatra nataonao sy voatahiry
+        ao amin'ny navigateur.
+      </p>
+
+    </div>
+
+
+    <div class="dashboard">
+
+      <div class="stat">
+        <div class="stat-label">Commandes</div>
+        <div class="stat-value" id="statOrders">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Reçus</div>
+        <div class="stat-value" id="statReceipts">0</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">CA enregistré</div>
+        <div class="stat-value" id="statRevenue">0 Ar</div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Tombony calculé</div>
+        <div class="stat-value" id="statProfit">0 Ar</div>
+      </div>
+
+    </div>
+
+
+    <div class="grid grid-2">
+
+      <div class="card">
+
+        <h3>📊 Résultats récents</h3>
+
+        <div id="savedCalculations" class="saved-list">
+          <div class="empty">
+            Tsy mbola misy kajy voatahiry.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>📝 Commandes</h3>
+
+        <div id="savedOrders" class="saved-list">
+          <div class="empty">
+            Tsy mbola misy commande.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>🧾 Reçus</h3>
+
+        <div id="savedReceipts" class="saved-list">
+          <div class="empty">
+            Tsy mbola misy reçu.
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>⚙️ Gestion</h3>
+
+        <p>
+          Ny données eto dia voatahiry ao amin'ny navigateur.
+          Raha mamafa navigateur data ianao dia mety ho very.
+        </p>
+
+        <div class="actions">
+
+          <button
+            class="btn btn-light"
+            onclick="refreshDashboard()">
+            🔄 Actualiser
+          </button>
+
+          <button
+            class="btn btn-danger"
+            onclick="clearSavedData()">
+            🗑️ Hamafa données
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
+
+
+<!-- =========================
+     PROCESS
+========================= -->
 
 <section id="process">
-<div class="container">
-<div class="section-head"><div class="eyebrow">🔄 PROCESS VENTE</div><h2>Ny vente dia système</h2><p>Ny publication dia fiandohana ihany. Mila produit, offre, prospect ary closing.</p></div>
-<div class="process">
-<div class="card step"><div class="num">1</div><h3>Produit</h3><p>Fantaro tsara ny vokatra, quantité, qualité ary prix.</p></div>
-<div class="card step"><div class="num">2</div><h3>Offre</h3><p>Amboary ny proposition de valeur sy avantage.</p></div>
-<div class="card step"><div class="num">3</div><h3>Prospect</h3><p>Mitadiava olona tena mety ho client.</p></div>
-<div class="card step"><div class="num">4</div><h3>Closing</h3><p>Ento mankany amin'ny commande ny prospect.</p></div>
-</div>
-</div>
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>🔄 Process Vente</h2>
+
+      <p>
+        Ny vente tsara dia processus fa tsy publication fotsiny.
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-4">
+
+      <div class="card">
+        <span class="badge">01</span>
+        <h3>Produit</h3>
+        <p>
+          Fantaro tsara izay amidinao sy ny tena valeur-ny.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="badge">02</span>
+        <h3>Offre</h3>
+        <p>
+          Ataovy mazava ny prix, avantage ary conditions.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="badge">03</span>
+        <h3>Prospect</h3>
+        <p>
+          Mihainoa ny client ary fantaro izay tena ilainy.
+        </p>
+      </div>
+
+      <div class="card">
+        <span class="badge">04</span>
+        <h3>Closing</h3>
+        <p>
+          Ampidiro amin'ny commande mazava ny fifampiraharahana.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section id="projet" class="project">
-<div class="container">
-<div class="section-head"><div class="eyebrow">📊 PROJET VENTE</div><h2>50 Akoho Gasy — exemple fictif</h2><p>Tsy tena transaction. Fampiharana sy test fotsiny.</p></div>
-<div class="stats">
-<div class="stat"><small>Vola fividianana</small><b>750 000 Ar</b></div><div class="stat"><small>Sakafo</small><b>150 000 Ar</b></div><div class="stat"><small>Fikarakarana</small><b>30 000 Ar</b></div><div class="stat"><small>Transport</small><b>20 000 Ar</b></div>
-<div class="stat"><small>Coût total</small><b>950 000 Ar</b></div><div class="stat"><small>Vente</small><b>1 250 000 Ar</b></div><div class="stat"><small>Bénéfice</small><b>300 000 Ar</b></div><div class="stat"><small>Marge</small><b>24%</b></div>
-</div>
-</div>
+
+<!-- =========================
+     FORMATION
+========================= -->
+
+<section id="formation">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>🎓 Formation Gratuite 7 Jours</h2>
+
+      <p>
+        Mianara tsikelikely, ary ampiasao avy hatrany ireo outils.
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-3">
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 1</div>
+        <h3>Produit + Client</h3>
+        <p>
+          Fantaro ny produit sy ny client cible.
+        </p>
+      </div>
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 2</div>
+        <h3>Prix + Tombony</h3>
+        <p>
+          Ampiasao ny Kajy Prix & Tombony.
+        </p>
+        <a href="#outils" class="btn btn-light btn-small">
+          🧮 Mankanesa amin'ny Kajy
+        </a>
+      </div>
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 3</div>
+        <h3>Offre + Publication</h3>
+        <p>
+          Mamorona offre sy publication mazava.
+        </p>
+      </div>
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 4</div>
+        <h3>Prospection</h3>
+        <p>
+          Fantaro ny fomba fitadiavana prospect.
+        </p>
+      </div>
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 5</div>
+        <h3>Objection + Négociation</h3>
+        <p>
+          Mianara mamaly objection tsy miady amin'ny client.
+        </p>
+      </div>
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 6</div>
+        <h3>Closing + Commande</h3>
+        <p>
+          Avadiho ho commande ny resaka.
+        </p>
+      </div>
+
+      <div class="card day-card">
+        <div class="day-number">JOUR 7</div>
+        <h3>Challenge Final</h3>
+        <p>
+          Ataovy pratique ny zavatra nianarana rehetra.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="actions" style="justify-content:center;margin-top:25px">
+
+      <a
+        href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
+        target="_blank"
+        class="btn btn-primary">
+        💬 Hiditra amin'ny Formation
+      </a>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section>
-<div class="container">
-<div class="section-head"><div class="eyebrow">📚 BOKY & FORMATION</div><h2>Boky matihanina, ao amin'ny pejy manokana</h2><p>Tsy feno boky ny Home. Tsindrio fotsiny raha hijery ny catalogue sy ny antsipirian'ny boky.</p></div>
-<div class="books-preview">
-<div class="book-visual"><span>📚<br>TANTSAHA<br>MATIHANINA</span></div>
-<div style="max-width:600px"><h2 style="color:var(--green);margin-bottom:10px">Boky & Formation pratique</h2><p style="color:var(--muted)">Formation Vente en Ligne, Fiompiana Tantely ary boky hafa afaka ampiana rehefa mitombo ny catalogue.</p><button class="btn primary" style="margin-top:18px" onclick="openBooks()">📚 Hijery ny Boky</button></div>
-</div>
-</div>
+
+<!-- =========================
+     PROJECT
+========================= -->
+
+<section id="projet">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>📊 Projet Vente Tantsaha</h2>
+
+      <p>
+        Ohatra pratique iray hampifandray ny kajy sy ny vente.
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="grid grid-3">
+
+        <div>
+          <span class="badge">PRODUIT</span>
+          <h3>🐔 50 Akoho Gasy</h3>
+          <p>Projet fictif</p>
+        </div>
+
+        <div>
+          <span class="badge">COÛT</span>
+          <h3>950 000 Ar</h3>
+          <p>Achat + sakafo + care + transport</p>
+        </div>
+
+        <div>
+          <span class="badge gold">VENTE</span>
+          <h3>1 250 000 Ar</h3>
+          <p>Vola azo amin'ny vente</p>
+        </div>
+
+      </div>
+
+
+      <div class="result profit">
+
+        <strong>
+          Tombony: 300 000 Ar
+        </strong>
+
+        <br>
+
+        Marge:
+        <strong>24%</strong>
+
+        <br>
+
+        Prix moyen / akoho:
+        <strong>25 000 Ar</strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
-<section id="abonnement">
-<div class="container">
-<div class="section-head"><div class="eyebrow">💎 FREE → NEED → PREMIUM</div><h2>Rehefa mitombo ny filànao</h2><p>Tsy voasakana amin'ny Free ianao. Ny Premium dia natao rehefa mila capacité, automatisation, AI ary outils bebe kokoa.</p></div>
-<div class="pricing">
-<div class="price-card"><h3>🟢 Free</h3><p>Hanombohana sy hampiasana ilay système.</p><ul><li>Kajy Prix & Tombony basic</li><li>Offre basic</li><li>Publication basic</li><li>Simulation sy reçu basic</li><li>Kajy fiompiana fototra</li><li>Tantsaha AI Basic</li><li>Formation gratuite 7 jours</li></ul><button class="btn light" onclick="alert('Afaka manomboka mampiasa ny Free tools ianao izao.')">Hanomboka Free</button></div>
-<div class="price-card premium"><h3>💎 Premium</h3><p>Ho an'izay mila vahaolana lalina sy automatisation.</p><ul><li>Kajy biby sy voly maro kokoa</li><li>Historique & suivi</li><li>Prévision & alertes</li><li>Tantsaha AI Advanced</li><li>Automatisation Facebook</li><li>Automatisation WhatsApp</li><li>Prospect, relance & dashboard</li><li>Capacité sy volume ambony kokoa</li></ul><a class="btn gold" href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%20Liana%20amin%27ny%20Abonnement%20Premium%20aho." target="_blank">💬 Hiresaka momba ny Premium</a></div>
-</div>
-</div>
+
+<!-- =========================
+     BOOK PREVIEW
+========================= -->
+
+<section id="books">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>📚 Boky & Formation</h2>
+
+      <p>
+        Catalogue misaraka mba tsy hahatonga ny Home ho feno be
+        rehefa mitombo ny isan'ny boky.
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <div class="book-preview">
+
+        <div class="book-cover">
+
+          <div class="emoji">📘</div>
+
+          <h3>
+            Manuel pratique
+            de Vente en Ligne
+          </h3>
+
+          <small>
+            Débutant + Professionnel
+          </small>
+
+        </div>
+
+
+        <div>
+
+          <span class="badge gold">
+            BOKY MISY
+          </span>
+
+          <h3 style="margin-top:10px">
+            📚 BOKY & FORMATION
+          </h3>
+
+          <p>
+            Boky sy formation pratique momba ny vente,
+            offre, prospection, objection, closing,
+            commande ary suivi.
+          </p>
+
+          <div class="book-points">
+
+            <div class="book-point">
+              🧮 Kajy coût, prix, bénéfice & marge
+            </div>
+
+            <div class="book-point">
+              🛍️ Offre sy publication
+            </div>
+
+            <div class="book-point">
+              💬 Prospection sy objection
+            </div>
+
+            <div class="book-point">
+              📝 Commande, paiement & livraison
+            </div>
+
+          </div>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-primary"
+              onclick="openBookCatalog()">
+              📚 Hijery ny Boky
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
-</main>
+
+
+<!-- =========================
+     PREMIUM
+========================= -->
+
+<section class="premium" id="premium">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <h2>💎 Premium & Automatisation</h2>
+
+      <p>
+        Tsy “blocage” no tanjon'ny Premium.
+        Ny Free dia tokony hahasoa; ny Premium kosa manampy
+        capacité, historique ary fonctionnalités avancées.
+      </p>
+
+    </div>
+
+
+    <div class="grid grid-3">
+
+      <div class="premium-card">
+
+        <span class="badge gold">PREMIUM</span>
+
+        <h3>🧮 Kajy avancé</h3>
+
+        <p>
+          Kajy lalindalina kokoa: coût, croissance,
+          forecast, marge ary historique.
+        </p>
+
+      </div>
+
+
+      <div class="premium-card">
+
+        <span class="badge gray">HO AVY</span>
+
+        <h3>🤖 Tantsaha AI</h3>
+
+        <p>
+          AI tena izy rehefa ampifandraisina amin'ny
+          backend/modely. Tsy mbola lazaina ho actif amin'ity V9 ity.
+        </p>
+
+      </div>
+
+
+      <div class="premium-card">
+
+        <span class="badge gray">HO AVY</span>
+
+        <h3>📱 Facebook Automation</h3>
+
+        <p>
+          Automation rehefa tena tafapetraka sy testé:
+          réponses, leads ary suivi.
+        </p>
+
+      </div>
+
+
+      <div class="premium-card">
+
+        <span class="badge gray">HO AVY</span>
+
+        <h3>💬 WhatsApp Automation</h3>
+
+        <p>
+          Follow-up sy workflows WhatsApp rehefa
+          tafiditra amin'ny provider/API.
+        </p>
+
+      </div>
+
+
+      <div class="premium-card">
+
+        <span class="badge gold">PREMIUM</span>
+
+        <h3>📊 Dashboard avancé</h3>
+
+        <p>
+          Historique, statistiques ary suivi
+          amin'ny fomba voalamina kokoa.
+        </p>
+
+      </div>
+
+
+      <div class="premium-card">
+
+        <span class="badge gray">HO AVY</span>
+
+        <h3>🔔 Alertes & Relance</h3>
+
+        <p>
+          Alertes sy relance automatique rehefa
+          tena ampiharina amin'ny système.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
-<div class="container footer-grid">
-<div><strong>🌱 Tantsaha Matihanina</strong><p>Vente Lab • V8<br>Mianatra • Mampihatra • Mahomby</p></div>
-<div><p>📘 Facebook Page<br>🎓 Groupe LESONA<br>📚 Boky & Formation</p></div>
-</div>
-<div class="container" style="margin-top:25px;color:#789488;font-size:12px">©2026 Tantsaha Matihanina / Auteur Freddy</div>
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div>
+
+        <h3>🌱 Tantsaha Matihanina</h3>
+
+        <p>
+          Mianatra • Mampihatra • Mahomby
+        </p>
+
+        <p style="margin-top:8px">
+          Miara-miasa ho an'ny fampandrosoana
+          ny eny ambanivohitra isika.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <p>
+          ©2026 Tantsaha Matihanina / Auteur Freddy
+        </p>
+
+        <p style="margin-top:8px">
+          Vente Lab V9
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </footer>
 
-<div class="modal" id="modal">
-<div class="modal-box">
-<button class="close" onclick="closeModal()">×</button>
-<div id="modalContent"></div>
+
+<!-- =========================================================
+     MODAL : PROFIT
+========================================================= -->
+
+<div class="modal-overlay" id="profitModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>🧮 Kajy Prix & Tombony</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('profitModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>Produit</label>
+
+          <input
+            id="profitProduct"
+            placeholder="Ohatra: Akoho Gasy">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Coût total (Ar)</label>
+
+          <input
+            type="number"
+            id="profitCost"
+            min="0"
+            value="0">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Vola azo amin'ny vente (Ar)</label>
+
+          <input
+            type="number"
+            id="profitRevenue"
+            min="0"
+            value="0">
+
+        </div>
+
+      </div>
+
+      <button
+        class="btn btn-primary"
+        onclick="calculateProfit()">
+        🧮 Kajio
+      </button>
+
+      <div id="profitResult"></div>
+
+    </div>
+
+  </div>
+
 </div>
+
+
+<!-- =========================================================
+     MODAL : OFFER
+========================================================= -->
+
+<div class="modal-overlay" id="offerModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>🛍️ Créer une Offre</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('offerModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>Produit / Service</label>
+
+        <input
+          id="offerProduct"
+          placeholder="Ohatra: Akoho Gasy">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Avantage lehibe</label>
+
+        <input
+          id="offerBenefit"
+          placeholder="Ohatra: Akoho salama sy lehibe">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Prix</label>
+
+        <input
+          id="offerPrice"
+          placeholder="Ohatra: 25 000 Ar">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>CTA</label>
+
+        <input
+          id="offerCTA"
+          value="Alefaso MP raha liana">
+
+      </div>
+
+      <button
+        class="btn btn-primary"
+        onclick="createOffer()">
+        ✨ Hamorona Offre
+      </button>
+
+      <div id="offerResult"></div>
+
+    </div>
+
+  </div>
+
 </div>
+
+
+<!-- =========================================================
+     MODAL : PUBLICATION
+========================================================= -->
+
+<div class="modal-overlay" id="publicationModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>📱 Publication</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('publicationModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>Produit</label>
+
+        <input
+          id="pubProduct"
+          placeholder="Ohatra: Akoho Gasy">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Prix</label>
+
+        <input
+          id="pubPrice"
+          placeholder="25 000 Ar">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Lieu</label>
+
+        <input
+          id="pubLocation"
+          placeholder="Ohatra: Mahanoro">
+
+      </div>
+
+      <button
+        class="btn btn-primary"
+        onclick="createPublication()">
+        📱 Hamorona Publication
+      </button>
+
+      <div id="publicationResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL : SIMULATION
+========================================================= -->
+
+<div class="modal-overlay" id="simulationModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>💬 Simulation Client</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('simulationModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="card" style="box-shadow:none">
+
+        <span class="badge gold">
+          CLIENT
+        </span>
+
+        <h3 style="margin-top:8px">
+          “Lafo loatra izany. Misy mora kokoa ve?”
+        </h3>
+
+        <p>
+          Aza miady amin'ny client. Fantaro aloha
+          izay tena anton'ny objection.
+        </p>
+
+        <div class="result">
+
+          <strong>Valiny azo ampiharina:</strong>
+
+          <br><br>
+
+          “Azoko tsara tompoko. Mba hahafahako manoro
+          izay tena mety aminao, inona no tena zava-dehibe
+          aminao: ny prix, ny qualité sa ny quantité?”
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL : ORDER
+========================================================= -->
+
+<div class="modal-overlay" id="orderModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>📝 Nouvelle Commande</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('orderModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>Nom client</label>
+
+        <input
+          id="orderClient"
+          placeholder="Anaran'ny client">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Produit</label>
+
+        <input
+          id="orderProduct"
+          placeholder="Produit">
+
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="form-group">
+
+          <label>Quantité</label>
+
+          <input
+            type="number"
+            id="orderQty"
+            value="1"
+            min="1">
+
+        </div>
+
+        <div class="form-group">
+
+          <label>Total (Ar)</label>
+
+          <input
+            type="number"
+            id="orderTotal"
+            value="0"
+            min="0">
+
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Statut</label>
+
+        <select id="orderStatus">
+
+          <option>En attente</option>
+          <option>Confirmée</option>
+          <option>Payée</option>
+          <option>Livrée</option>
+
+        </select>
+
+      </div>
+
+      <button
+        class="btn btn-primary"
+        onclick="makeOrder()">
+        💾 Tehirizo Commande
+      </button>
+
+      <div id="orderResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL : RECEIPT
+========================================================= -->
+
+<div class="modal-overlay" id="receiptModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>🧾 Reçu de Vente</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('receiptModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>Nom client</label>
+
+        <input
+          id="receiptClient"
+          placeholder="Client">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Produit</label>
+
+        <input
+          id="receiptProduct"
+          placeholder="Produit">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Montant (Ar)</label>
+
+        <input
+          type="number"
+          id="receiptAmount"
+          value="0">
+
+      </div>
+
+      <button
+        class="btn btn-primary"
+        onclick="makeReceipt()">
+        🧾 Mamorona & Tehirizo
+      </button>
+
+      <div id="receiptResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     MODAL : GUIDE
+========================================================= -->
+
+<div class="modal-overlay" id="guideModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>📖 Tantsaha Guide</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('guideModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="notice">
+        Guide pratique fototra izy ity.
+        Tsy mbola AI connecté amin'ny V9.
+      </div>
+
+      <div class="grid grid-2">
+
+        <div class="card">
+
+          <h3>🧮 Prix</h3>
+
+          <p>
+            Tsy ny vidin'achat ihany no jerena.
+            Ampidiro ny coût rehetra vao mametraka prix.
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h3>💰 Tombony</h3>
+
+          <p>
+            Tombony = vola azo amin'ny vente − coût total.
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h3>💬 Client</h3>
+
+          <p>
+            Anontanio aloha ny besoin vao manolotra solution.
+          </p>
+
+        </div>
+
+        <div class="card">
+
+          <h3>📝 Closing</h3>
+
+          <p>
+            Rehefa mazava ny fifanarahana dia ataovy
+            commande mazava.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     BOOK CATALOG MODAL
+========================================================= -->
+
+<div class="modal-overlay" id="bookCatalogModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>📚 Catalogue Boky</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('bookCatalogModal')">
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="catalog-grid">
+
+
+        <!-- BOOK 1 -->
+
+        <div class="catalog-card">
+
+          <span class="badge gold">
+            DISPONIBLE
+          </span>
+
+          <h4>
+            📘 Formation Vente en Ligne
+          </h4>
+
+          <p>
+            Débutant + Professionnel.
+            Manuel pratique momba ny vente en ligne.
+          </p>
+
+          <p class="price">
+            10 000 Ar
+          </p>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-light btn-small"
+              onclick="showBook('vente')">
+              Hijery antsipiriany
+            </button>
+
+            <a
+              class="btn btn-primary btn-small"
+              target="_blank"
+              href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20hividy%20ny%20Boky%20Formation%20Vente%20en%20Ligne%20%E2%80%94%20D%C3%A9butant%20%2B%20Professionnel%20aho.%20%F0%9F%93%98%0A%F0%9F%92%B0%20Vidiny%3A%2010%20000%20Ar%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20fomba%20fandoavana%20sy%20ny%20fomba%20hahazoako%20ilay%20PDF.%0AMisaotra%20%F0%9F%99%8F">
+              💬 Hividy
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- BOOK 2 -->
+
+        <div class="catalog-card">
+
+          <span class="badge gold">
+            DISPONIBLE
+          </span>
+
+          <h4>
+            🍯 Pack Fiompiana Tantely Matihanina
+          </h4>
+
+          <p>
+            Formation pratique momba ny fiompiana tantely,
+            miaraka amin'ny supports sy ressources.
+          </p>
+
+          <p class="price">
+            Promo: 5 000 Ar
+          </p>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-light btn-small"
+              onclick="showBook('honey')">
+              Hijery antsipiriany
+            </button>
+
+            <a
+              class="btn btn-primary btn-small"
+              target="_blank"
+              href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20amin%27ny%20Pack%20Fiompiana%20Tantely%20Matihanina%20aho.%20%F0%9F%8D%AF%F0%9F%93%98%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20vidiny%20sy%20ny%20fomba%20hahazoako%20ilay%20pack.%0AMisaotra%20%F0%9F%99%8F">
+              💬 Hividy
+            </a>
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <div id="bookDetails" style="margin-top:20px"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
 <script>
-const modal=document.getElementById('modal'), content=document.getElementById('modalContent');
-function show(title,body){content.innerHTML='<div class="modal-head"><h2>'+title+'</h2></div>'+body;modal.classList.add('open')}
-function closeModal(){modal.classList.remove('open')}
-modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
 
-function openBooks(){
-show('📚 Boky & Formation',`
-<div class="grid" style="grid-template-columns:repeat(2,1fr)">
-<div class="card"><div class="book-cover">📘<br>FORMATION<br>VENTE EN LIGNE</div><h3>Formation Vente en Ligne</h3><p>Débutant + Professionnel</p><span class="badge">10 000 Ar</span><button class="btn primary" onclick="bookDetail('vente')">Hijery ny antsipiriany</button></div>
-<div class="card"><div class="book-cover">🍯<br>PACK<br>FIOMPIANA TANTELY</div><h3>Pack Fiompiana Tantely Matihanina</h3><p>Théorie + pratique + ressources</p><span class="badge">Promo 5 000 Ar</span><button class="btn primary" onclick="bookDetail('tantely')">Hijery ny antsipiriany</button></div>
-</div>
-<p class="note">Afaka ampiana boky vaovao eto rehefa mitombo ny catalogue, nefa tsy manavesatra ny Home page.</p>`);
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const STORAGE_KEY = "tm_vente_lab_v9";
+
+function defaultData(){
+
+  return {
+    calculations: [],
+    orders: [],
+    receipts: [],
+    prospects: [],
+    products: []
+  };
+
 }
-function bookDetail(type){
-if(type==='vente'){
-show('📘 Formation Vente en Ligne',`<div class="modal-body"><div class="book-cover">📘<br>VENTE<br>EN LIGNE</div><div><h3>Débutant + Professionnel</h3><p>Manuel pratique hanampy anao amin'ny produit, offre, prospection, objection, négociation, closing, commande ary suivi.</p><ul class="feature-list"><li>Fototry ny vente</li><li>Prix, coût, bénéfice & marge</li><li>Créer une offre</li><li>Publication Facebook/WhatsApp</li><li>Prospection & communication</li><li>Objection & négociation</li><li>Closing, commande & reçu</li><li>Modèles sy scripts pratiques</li></ul><h3>10 000 Ar</h3><a class="btn gold" href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20hividy%20ny%20Boky%20Formation%20Vente%20en%20Ligne%20%E2%80%94%20D%C3%A9butant%20%2B%20Professionnel%20aho.%0A%0AVidiny%3A%2010%20000%20Ar" target="_blank">💬 Hividy amin'ny WhatsApp</a></div></div>`);
-}else{
-show('🍯 Pack Fiompiana Tantely Matihanina',`<div class="modal-body"><div class="book-cover">🍯<br>PACK<br>TANTELY</div><div><h3>Pack Fiompiana Tantely Matihanina</h3><p>Pack misy théorie, pratique, vidéos ary ressources ho an'izay te hianatra ny fiompiana tantely.</p><ul class="feature-list"><li>Tome théorie</li><li>Tome pratique</li><li>Vidéos pédagogiques</li><li>Formulaires sy ressources</li><li>Fampiharana amin'ny terrain</li></ul><h3>Promo: 5 000 Ar</h3><a class="btn gold" href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20amin%27ny%20Pack%20Fiompiana%20Tantely%20Matihanina%20aho.%0A%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20vidiny%20sy%20ny%20fomba%20hahazoako%20ilay%20pack." target="_blank">💬 Hividy amin'ny WhatsApp</a></div></div>`);
-}}
-function openTool(type){
-if(type==='profit') show('🧮 Kajy Prix & Tombony',`
-<div class="form"><input id="cost" type="number" placeholder="Coût total (Ar)"><input id="sale" type="number" placeholder="Vola amidy / CA (Ar)"><button class="btn primary" onclick="calcProfit()">Kajio</button></div><div id="profitResult"></div><p class="note">Free basic. Premium: historique, prévision, volume ary kajy avancés.</p>`);
-else if(type==='offer') show('🛍️ Créer une Offre',`<div class="form"><input id="prod" placeholder="Anaran'ny produit"><input id="price" placeholder="Prix"><input id="benefit" placeholder="Tombony lehibe ho an'ny client"><button class="btn primary" onclick="makeOffer()">Mamorona Offre</button></div><div id="offerResult"></div>`);
-else if(type==='post') show('📱 Publication',`<div class="form"><input id="pprod" placeholder="Produit"><input id="pprice" placeholder="Prix"><input id="pcta" placeholder="Contact / WhatsApp"><button class="btn primary" onclick="makePost()">Mamorona Publication</button></div><div id="postResult"></div>`);
-else if(type==='client') show('💬 Simulation Client',`<p><b>Client:</b> “Lafo loatra ilay prix.”</p><div class="form"><input id="reply" placeholder="Soraty ny valinteninao"><button class="btn primary" onclick="clientReply()">Hizaha</button></div><div id="clientResult"></div>`);
-else if(type==='order') show('📝 Commande Basic',`<div class="form"><input id="cname" placeholder="Anaran'ny client"><input id="cproduct" placeholder="Produit"><input id="cqty" type="number" placeholder="Quantité"><input id="cphone" placeholder="Téléphone"><button class="btn primary" onclick="makeOrder()">Hamorona fiche</button></div><div id="orderResult"></div>`);
-else if(type==='receipt') show('🧾 Reçu de Vente',`<div class="form"><input id="rname" placeholder="Client"><input id="rprod" placeholder="Produit"><input id="ramt" type="number" placeholder="Montant (Ar)"><button class="btn primary" onclick="makeReceipt()">Hamorona reçu</button></div><div id="receiptResult"></div>`);
-else if(type==='challenge') show('🎯 Challenge 7 Jours',`<div class="card"><b>J1</b> Produit + Client</div><div class="card"><b>J2</b> Prix + Tombony</div><div class="card"><b>J3</b> Offre + Publication</div><div class="card"><b>J4</b> Prospection</div><div class="card"><b>J5</b> Objection + Négociation</div><div class="card"><b>J6</b> Closing + Commande</div><div class="card"><b>J7</b> Challenge Final</div><p class="note">Ny exercice pratique feno dia zaraina ao amin'ny Groupe LESONA, fa tsy aseho public eto.</p>`);
-else if(type==='ai') show('🤖 Tantsaha AI — Basic',`<p><b>Fanontaniana voalohany:</b> Inona ny biby na voly tianao horesahina?</p><div class="form"><input id="aitopic" placeholder="Ohatra: Akoho Gasy"><input id="aigoal" placeholder="Inona no olana?"><button class="btn primary" onclick="aiBasic()">Hahazo valiny Basic</button></div><div id="aiResult"></div><p class="note">Premium: AI Advanced, contexte lalina, historique, recommandations avancées ary automatisation.</p>`);
-else if(type==='chicken'||type==='pig') show(type==='chicken'?'🐔 Kajy Akoho Basic':'🐷 Kajy Kisoa Basic',`<div class="form"><input id="aq" type="number" placeholder="Isan'ny biby"><input id="ap" type="number" placeholder="Prix achat / biby (Ar)"><input id="as" type="number" placeholder="Prix vente / biby (Ar)"><button class="btn primary" onclick="animalCalc()">Kajio</button></div><div id="animalResult"></div><p class="note">Premium: sakafo, fitomboana, poids, marge, prévision, historique, alertes ary karazana maro.</p>`);
-else show('💎 Fonctionnalité Premium',`<h3>Rehefa mitombo ny filànao</h3><p>Ny Premium dia manokatra kajy lalina kokoa, karazana biby sy voly maro, historique, alertes, Tantsaha AI Advanced, automatisation Facebook/WhatsApp ary suivi prospects.</p><a class="btn gold" href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%20Te%20hahafantatra%20momba%20ny%20Premium%20aho." target="_blank">💬 Hiresaka Premium</a>`);
+
+function loadData(){
+
+  try{
+
+    const raw = localStorage.getItem(STORAGE_KEY);
+
+    if(!raw){
+      return defaultData();
+    }
+
+    const data = JSON.parse(raw);
+
+    return {
+      ...defaultData(),
+      ...data
+    };
+
+  }catch(error){
+
+    console.error(error);
+
+    return defaultData();
+
+  }
+
 }
-function calcProfit(){let c=+document.getElementById('cost').value||0,s=+document.getElementById('sale').value||0,p=s-c,m=s?Math.round(p/s*10000)/100:0;document.getElementById('profitResult').innerHTML='<div class="result"><b>Coût:</b> '+c.toLocaleString()+' Ar<br><b>CA:</b> '+s.toLocaleString()+' Ar<br><b>Bénéfice:</b> '+p.toLocaleString()+' Ar<br><b>Marge:</b> '+m+'%</div>'}
-function makeOffer(){let p=document.getElementById('prod').value||'Produit',pr=document.getElementById('price').value||'—',b=document.getElementById('benefit').value||'vahaolana mahasoa';document.getElementById('offerResult').innerHTML='<div class="result"><b>OFFRE:</b><br>'+p+' — '+pr+' Ar<br>✓ '+b+'<br>📩 Contactez-nous raha liana.</div>'}
-function makePost(){let p=document.getElementById('pprod').value||'Produit',pr=document.getElementById('pprice').value||'—',c=document.getElementById('pcta').value||'MP';document.getElementById('postResult').innerHTML='<div class="result">🔥 <b>'+p+'</b><br>💰 Prix: '+pr+'<br>📩 '+c+'<br><br>Liana? Alefaso MP izao.</div>'}
-function clientReply(){let r=document.getElementById('reply').value||'';document.getElementById('clientResult').innerHTML='<div class="result"><b>Fanamarihana:</b> Aza mamaly amin’ny fihenam-bidy avy hatrany. Hazavao aloha ny valeur, qualité ary tombony ho an’ny client.<br><br>Valinteninao: '+r+'</div>'}
-function makeOrder(){let n=document.getElementById('cname').value||'—',p=document.getElementById('cproduct').value||'—',q=document.getElementById('cqty').value||'—',ph=document.getElementById('cphone').value||'—';document.getElementById('orderResult').innerHTML='<div class="result"><b>COMMANDE</b><br>Client: '+n+'<br>Produit: '+p+'<br>Quantité: '+q+'<br>Contact: '+ph+'</div>'}
-function makeReceipt(){let n=document.getElementById('rname').value||'—',p=document.getElementById('rprod').value||'—',a=document.getElementById('ramt').value||0;document.getElementById('receiptResult').innerHTML='<div class="result"><b>REÇU DE VENTE</b><br>Client: '+n+'<br>Produit: '+p+'<br>Montant: '+Number(a).toLocaleString()+' Ar<br><br>©2026 Tantsaha Matihanina</div>'}
-function aiBasic(){let t=document.getElementById('aitopic').value||'biby/voly',g=document.getElementById('aigoal').value||'olana';document.getElementById('aiResult').innerHTML='<div class="result">🤖 <b>Basic:</b> '+t+' — '+g+'<br><br>Hanombohana dia mila fantatra: karazana, isan’ny biby/velaran-tany, taona na stade, sakafo/vola ampiasaina ary tanjona. Izany no fototra alohan’ny torohevitra.</div>'}
-function animalCalc(){let q=+document.getElementById('aq').value||0,p=+document.getElementById('ap').value||0,s=+document.getElementById('as').value||0,c=q*p,v=q*s;document.getElementById('animalResult').innerHTML='<div class="result">Achat: '+c.toLocaleString()+' Ar<br>Vente: '+v.toLocaleString()+' Ar<br><b>Tombony basic: '+(v-c).toLocaleString()+' Ar</b></div>'}
+
+function saveData(data){
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(data)
+  );
+
+}
+
+let appData = loadData();
+
+
+/* =========================================================
+   MENU MOBILE
+========================================================= */
+
+function toggleMenu(){
+
+  const menu =
+    document.getElementById("mobileMenu");
+
+  menu.classList.toggle("open");
+
+}
+
+function closeMenu(){
+
+  const menu =
+    document.getElementById("mobileMenu");
+
+  menu.classList.remove("open");
+
+}
+
+
+/* =========================================================
+   MODALS
+========================================================= */
+
+function openModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(modal){
+    modal.classList.add("show");
+  }
+
+}
+
+function closeModal(id){
+
+  const modal =
+    document.getElementById(id);
+
+  if(modal){
+    modal.classList.remove("show");
+  }
+
+}
+
+
+/* Close modal by clicking outside */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      event.target.classList.contains(
+        "modal-overlay"
+      )
+    ){
+
+      event.target.classList.remove("show");
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   FORMAT MONEY
+========================================================= */
+
+function money(value){
+
+  return Number(value || 0)
+    .toLocaleString("fr-FR") + " Ar";
+
+}
+
+
+/* =========================================================
+   PROFIT CALCULATOR
+========================================================= */
+
+function calculateProfit(){
+
+  const product =
+    document.getElementById("profitProduct")
+      .value.trim() || "Produit sans nom";
+
+  const cost =
+    Number(
+      document.getElementById("profitCost").value
+    ) || 0;
+
+  const revenue =
+    Number(
+      document.getElementById("profitRevenue").value
+    ) || 0;
+
+  const profit =
+    revenue - cost;
+
+  let margin = 0;
+
+  if(revenue > 0){
+    margin =
+      (profit / revenue) * 100;
+  }
+
+  const result =
+    document.getElementById("profitResult");
+
+  result.className =
+    "result " +
+    (profit >= 0 ? "profit" : "loss");
+
+  result.innerHTML = `
+
+    <strong>${product}</strong><br><br>
+
+    Coût total:
+    <strong>${money(cost)}</strong>
+    <br>
+
+    Vente:
+    <strong>${money(revenue)}</strong>
+    <br>
+
+    ${
+      profit >= 0
+      ? "Tombony"
+      : "Fatiantoka"
+    }:
+
+    <strong>${money(Math.abs(profit))}</strong>
+
+    <br>
+
+    Marge:
+    <strong>${margin.toFixed(2)}%</strong>
+
+  `;
+
+
+  /* SAVE */
+
+  appData.calculations.unshift({
+
+    id: Date.now(),
+
+    type: "profit",
+
+    product,
+
+    cost,
+
+    revenue,
+
+    profit,
+
+    margin,
+
+    date: new Date().toISOString()
+
+  });
+
+
+  /* Limit */
+
+  appData.calculations =
+    appData.calculations.slice(0,100);
+
+  saveData(appData);
+
+  refreshDashboard();
+
+}
+
+
+/* =========================================================
+   ANIMAL CALCULATOR
+========================================================= */
+
+function calculateAnimal(){
+
+  const animal =
+    document.getElementById("animalType")
+      .value;
+
+  const qty =
+    Number(
+      document.getElementById("animalQty").value
+    ) || 0;
+
+  const purchase =
+    Number(
+      document.getElementById("animalPurchase").value
+    ) || 0;
+
+  const feed =
+    Number(
+      document.getElementById("animalFeed").value
+    ) || 0;
+
+  const care =
+    Number(
+      document.getElementById("animalCare").value
+    ) || 0;
+
+  const transport =
+    Number(
+      document.getElementById("animalTransport").value
+    ) || 0;
+
+  const revenue =
+    Number(
+      document.getElementById("animalRevenue").value
+    ) || 0;
+
+
+  const purchaseTotal =
+    qty * purchase;
+
+  const totalCost =
+    purchaseTotal +
+    feed +
+    care +
+    transport;
+
+  const profit =
+    revenue - totalCost;
+
+  let margin = 0;
+
+  if(revenue > 0){
+
+    margin =
+      (profit / revenue) * 100;
+
+  }
+
+
+  const result =
+    document.getElementById("animalResult");
+
+  result.className =
+    "result " +
+    (profit >= 0 ? "profit" : "loss");
+
+  result.innerHTML = `
+
+    <strong>${animal}</strong>
+    — ${qty} biby
+
+    <br><br>
+
+    Achat:
+    <strong>${money(purchaseTotal)}</strong>
+    <br>
+
+    Sakafo:
+    <strong>${money(feed)}</strong>
+    <br>
+
+    Fikarakarana:
+    <strong>${money(care)}</strong>
+    <br>
+
+    Transport:
+    <strong>${money(transport)}</strong>
+    <br>
+
+    Coût total:
+    <strong>${money(totalCost)}</strong>
+    <br>
+
+    Vente:
+    <strong>${money(revenue)}</strong>
+    <br><br>
+
+    ${
+      profit >= 0
+      ? "Tombony"
+      : "Fatiantoka"
+    }:
+
+    <strong>${money(Math.abs(profit))}</strong>
+
+    <br>
+
+    Marge:
+    <strong>${margin.toFixed(2)}%</strong>
+
+  `;
+
+
+  appData.calculations.unshift({
+
+    id: Date.now(),
+
+    type: "animal",
+
+    animal,
+
+    qty,
+
+    purchaseTotal,
+
+    feed,
+
+    care,
+
+    transport,
+
+    cost: totalCost,
+
+    revenue,
+
+    profit,
+
+    margin,
+
+    date: new Date().toISOString()
+
+  });
+
+
+  appData.calculations =
+    appData.calculations.slice(0,100);
+
+  saveData(appData);
+
+  refreshDashboard();
+
+}
+
+
+/* =========================================================
+   OFFER CREATOR
+========================================================= */
+
+function createOffer(){
+
+  const product =
+    document.getElementById("offerProduct")
+      .value.trim();
+
+  const benefit =
+    document.getElementById("offerBenefit")
+      .value.trim();
+
+  const price =
+    document.getElementById("offerPrice")
+      .value.trim();
+
+  const cta =
+    document.getElementById("offerCTA")
+      .value.trim();
+
+
+  if(!product){
+
+    alert("Ampidiro aloha ny produit.");
+
+    return;
+
+  }
+
+
+  const text = `
+
+🛍️ ${product}
+
+✨ ${benefit}
+
+💰 Prix: ${price}
+
+📩 ${cta}
+
+🌱 Tantsaha Matihanina
+Mianatra • Mampihatra • Mahomby
+
+  `.trim();
+
+
+  document.getElementById(
+    "offerResult"
+  ).innerHTML = `
+
+    <div class="result">
+
+      <strong>Offre:</strong>
+
+      <br><br>
+
+      <textarea readonly>${text}</textarea>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-light"
+          onclick="copyText(this)">
+          📋 Copier
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PUBLICATION
+========================================================= */
+
+function createPublication(){
+
+  const product =
+    document.getElementById("pubProduct")
+      .value.trim();
+
+  const price =
+    document.getElementById("pubPrice")
+      .value.trim();
+
+  const location =
+    document.getElementById("pubLocation")
+      .value.trim();
+
+
+  if(!product){
+
+    alert("Ampidiro ny produit.");
+
+    return;
+
+  }
+
+
+  const text = `
+
+🌱 ${product}
+
+Misy ${product} amidy.
+
+💰 Vidiny: ${price}
+
+📍 Toerana: ${location}
+
+📩 Raha liana ianao dia afaka mandefa MP.
+
+Tantsaha Matihanina
+Mianatra • Mampihatra • Mahomby
+
+  `.trim();
+
+
+  document.getElementById(
+    "publicationResult"
+  ).innerHTML = `
+
+    <div class="result">
+
+      <textarea readonly>${text}</textarea>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-light"
+          onclick="copyText(this)">
+          📋 Copier
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+function copyText(button){
+
+  const textarea =
+    button.parentElement
+      .previousElementSibling;
+
+  if(!textarea){
+
+    return;
+
+  }
+
+
+  navigator.clipboard
+    .writeText(textarea.value)
+    .then(function(){
+
+      button.textContent =
+        "✅ Voacopy";
+
+      setTimeout(
+        function(){
+
+          button.textContent =
+            "📋 Copier";
+
+        },
+        1500
+      );
+
+    })
+    .catch(function(){
+
+      textarea.select();
+
+      document.execCommand("copy");
+
+      button.textContent =
+        "✅ Voacopy";
+
+    });
+
+}
+
+
+/* =========================================================
+   ORDER
+========================================================= */
+
+function makeOrder(){
+
+  const client =
+    document.getElementById("orderClient")
+      .value.trim();
+
+  const product =
+    document.getElementById("orderProduct")
+      .value.trim();
+
+  const qty =
+    Number(
+      document.getElementById("orderQty").value
+    ) || 0;
+
+  const total =
+    Number(
+      document.getElementById("orderTotal").value
+    ) || 0;
+
+  const status =
+    document.getElementById("orderStatus")
+      .value;
+
+
+  if(!client || !product){
+
+    alert(
+      "Ampidiro ny client sy ny produit."
+    );
+
+    return;
+
+  }
+
+
+  appData.orders.unshift({
+
+    id: Date.now(),
+
+    client,
+
+    product,
+
+    qty,
+
+    total,
+
+    status,
+
+    date: new Date().toISOString()
+
+  });
+
+
+  appData.orders =
+    appData.orders.slice(0,100);
+
+  saveData(appData);
+
+  refreshDashboard();
+
+
+  document.getElementById(
+    "orderResult"
+  ).innerHTML = `
+
+    <div class="result profit">
+
+      ✅ Commande voatahiry.
+
+      <br><br>
+
+      <strong>${client}</strong>
+      —
+      ${product}
+
+      <br>
+
+      Total:
+      <strong>${money(total)}</strong>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   RECEIPT
+========================================================= */
+
+function makeReceipt(){
+
+  const client =
+    document.getElementById("receiptClient")
+      .value.trim();
+
+  const product =
+    document.getElementById("receiptProduct")
+      .value.trim();
+
+  const amount =
+    Number(
+      document.getElementById("receiptAmount").value
+    ) || 0;
+
+
+  if(!client || !product){
+
+    alert(
+      "Ampidiro ny client sy ny produit."
+    );
+
+    return;
+
+  }
+
+
+  const receipt = {
+
+    id: Date.now(),
+
+    client,
+
+    product,
+
+    amount,
+
+    date: new Date().toISOString()
+
+  };
+
+
+  appData.receipts.unshift(receipt);
+
+  appData.receipts =
+    appData.receipts.slice(0,100);
+
+  saveData(appData);
+
+  refreshDashboard();
+
+
+  document.getElementById(
+    "receiptResult"
+  ).innerHTML = `
+
+    <div class="result profit">
+
+      <strong>🧾 REÇU DE VENTE</strong>
+
+      <br><br>
+
+      Client:
+      ${client}
+
+      <br>
+
+      Produit:
+      ${product}
+
+      <br>
+
+      Montant:
+      <strong>${money(amount)}</strong>
+
+      <br>
+
+      Date:
+      ${formatDate(receipt.date)}
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+function refreshDashboard(){
+
+  appData = loadData();
+
+
+  document.getElementById(
+    "statOrders"
+  ).textContent =
+    appData.orders.length;
+
+
+  document.getElementById(
+    "statReceipts"
+  ).textContent =
+    appData.receipts.length;
+
+
+  const revenue =
+    appData.orders.reduce(
+      (sum,item) =>
+        sum + Number(item.total || 0),
+      0
+    );
+
+
+  const profit =
+    appData.calculations.reduce(
+      (sum,item) =>
+        sum + Number(item.profit || 0),
+      0
+    );
+
+
+  document.getElementById(
+    "statRevenue"
+  ).textContent =
+    money(revenue);
+
+
+  document.getElementById(
+    "statProfit"
+  ).textContent =
+    money(profit);
+
+
+  renderCalculations();
+
+  renderOrders();
+
+  renderReceipts();
+
+}
+
+
+/* =========================================================
+   RENDER CALCULATIONS
+========================================================= */
+
+function renderCalculations(){
+
+  const box =
+    document.getElementById(
+      "savedCalculations"
+    );
+
+
+  if(
+    !appData.calculations.length
+  ){
+
+    box.innerHTML = `
+      <div class="empty">
+        Tsy mbola misy kajy voatahiry.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    appData.calculations
+      .slice(0,8)
+      .map(function(item){
+
+        const name =
+          item.product ||
+          item.animal ||
+          "Calcul";
+
+        return `
+
+          <div class="saved-item">
+
+            <div class="saved-main">
+
+              <strong>
+                ${escapeHtml(name)}
+              </strong>
+
+              <small>
+                ${
+                  item.type === "animal"
+                  ? "Fiompiana"
+                  : "Prix & Tombony"
+                }
+                ·
+                ${formatDate(item.date)}
+              </small>
+
+            </div>
+
+            <div>
+
+              <strong>
+                ${
+                  item.profit >= 0
+                  ? "+"
+                  : "-"
+                }
+                ${money(Math.abs(item.profit))}
+              </strong>
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   RENDER ORDERS
+========================================================= */
+
+function renderOrders(){
+
+  const box =
+    document.getElementById(
+      "savedOrders"
+    );
+
+
+  if(!appData.orders.length){
+
+    box.innerHTML = `
+      <div class="empty">
+        Tsy mbola misy commande.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    appData.orders
+      .slice(0,8)
+      .map(function(item){
+
+        return `
+
+          <div class="saved-item">
+
+            <div class="saved-main">
+
+              <strong>
+                ${escapeHtml(item.client)}
+              </strong>
+
+              <small>
+                ${escapeHtml(item.product)}
+                · Qty ${item.qty}
+                · ${item.status}
+              </small>
+
+            </div>
+
+            <strong>
+              ${money(item.total)}
+            </strong>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   RENDER RECEIPTS
+========================================================= */
+
+function renderReceipts(){
+
+  const box =
+    document.getElementById(
+      "savedReceipts"
+    );
+
+
+  if(!appData.receipts.length){
+
+    box.innerHTML = `
+      <div class="empty">
+        Tsy mbola misy reçu.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    appData.receipts
+      .slice(0,8)
+      .map(function(item){
+
+        return `
+
+          <div class="saved-item">
+
+            <div class="saved-main">
+
+              <strong>
+                ${escapeHtml(item.client)}
+              </strong>
+
+              <small>
+                ${escapeHtml(item.product)}
+                · ${formatDate(item.date)}
+              </small>
+
+            </div>
+
+            <strong>
+              ${money(item.amount)}
+            </strong>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function formatDate(date){
+
+  try{
+
+    return new Date(date)
+      .toLocaleDateString("fr-FR");
+
+  }catch(e){
+
+    return "";
+
+  }
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHtml(value){
+
+  return String(value || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   CLEAR DATA
+========================================================= */
+
+function clearSavedData(){
+
+  const ok =
+    confirm(
+      "Tena hamafa ny données rehetra ao amin'ny Vente Lab V9 ve ianao?"
+    );
+
+
+  if(!ok){
+
+    return;
+
+  }
+
+
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
+
+  appData =
+    defaultData();
+
+  refreshDashboard();
+
+  alert(
+    "Voafafa ny données V9."
+  );
+
+}
+
+
+/* =========================================================
+   BOOK CATALOG
+========================================================= */
+
+function openBookCatalog(){
+
+  openModal(
+    "bookCatalogModal"
+  );
+
+}
+
+
+/* =========================================================
+   BOOK DETAILS
+========================================================= */
+
+function showBook(type){
+
+  const box =
+    document.getElementById(
+      "bookDetails"
+    );
+
+
+  if(type === "vente"){
+
+    box.innerHTML = `
+
+      <div class="result">
+
+        <h3>
+          📘 Manuel pratique de Vente en Ligne
+        </h3>
+
+        <p>
+          Débutant + Professionnel
+        </p>
+
+        <br>
+
+        <strong>
+          Ao anatin'ny boky:
+        </strong>
+
+        <ul style="padding-left:20px;margin-top:10px">
+
+          <li>Fototry ny vente professionnelle</li>
+          <li>Produit sy client cible</li>
+          <li>Coût, prix, bénéfice & marge</li>
+          <li>Créer une offre</li>
+          <li>Publication</li>
+          <li>Prospection</li>
+          <li>Objection & négociation</li>
+          <li>Closing</li>
+          <li>Commande, paiement & livraison</li>
+          <li>Reçu de vente</li>
+          <li>Follow-up</li>
+          <li>Challenge 7 jours</li>
+
+        </ul>
+
+        <div class="actions">
+
+          <a
+            target="_blank"
+            class="btn btn-primary"
+            href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20hividy%20ny%20Boky%20Formation%20Vente%20en%20Ligne%20%E2%80%94%20D%C3%A9butant%20%2B%20Professionnel%20aho.%20%F0%9F%93%98%0A%F0%9F%92%B0%20Vidiny%3A%2010%20000%20Ar%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20fomba%20fandoavana%20sy%20ny%20fomba%20hahazoako%20ilay%20PDF.%0AMisaotra%20%F0%9F%99%8F">
+            💬 Hividy — 10 000 Ar
+          </a>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+
+  if(type === "honey"){
+
+    box.innerHTML = `
+
+      <div class="result">
+
+        <h3>
+          🍯 Pack Fiompiana Tantely Matihanina
+        </h3>
+
+        <p>
+          Formation pratique ho an'izay te hianatra
+          fiompiana tantely amin'ny fomba voalamina.
+        </p>
+
+        <br>
+
+        <strong>
+          Ao anatin'ny pack:
+        </strong>
+
+        <ul style="padding-left:20px;margin-top:10px">
+
+          <li>Tome 1 — Théorie</li>
+          <li>Tome 2 — Pratique</li>
+          <li>Supports pédagogiques</li>
+          <li>Vidéos de formation</li>
+          <li>Fiches pratiques</li>
+          <li>Ressources complémentaires</li>
+
+        </ul>
+
+        <div class="actions">
+
+          <a
+            target="_blank"
+            class="btn btn-primary"
+            href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20amin%27ny%20Pack%20Fiompiana%20Tantely%20Matihanina%20aho.%20%F0%9F%8D%AF%F0%9F%93%98%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20vidiny%20sy%20ny%20fomba%20hahazoako%20ilay%20pack.%0AMisaotra%20%F0%9F%99%8F">
+            💬 Hividy — Promo 5 000 Ar
+          </a>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    refreshDashboard();
+
+  }
+);
+
 </script>
+
 </body>
 </html>
