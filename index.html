@@ -4,24 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#123c2a">
-<meta name="description" content="Tantsaha Matihanina Vente Lab — Mianatra • Mampihatra • Mahomby">
-<title>Tantsaha Matihanina — Vente Lab V9</title>
+<meta name="description" content="Tantsaha Matihanina — Vente Lab | Mianatra • Mampihatra • Mahomby">
+<title>Tantsaha Matihanina — Vente Lab</title>
 
 <style>
 :root{
   --green:#123c2a;
-  --green2:#1c5b3e;
-  --gold:#d9a441;
-  --gold2:#f0c766;
-  --white:#ffffff;
-  --bg:#f4f7f3;
-  --card:#ffffff;
-  --text:#17221c;
-  --muted:#68756d;
+  --green2:#1d6044;
+  --green3:#eaf5ef;
+  --gold:#d7a62a;
+  --gold2:#f3c84b;
+  --cream:#fffaf0;
+  --white:#fff;
+  --text:#18231d;
+  --muted:#66736b;
   --border:#dfe7e1;
   --danger:#b42318;
-  --success:#16794c;
-  --shadow:0 8px 28px rgba(18,60,42,.08);
+  --success:#147a43;
+  --shadow:0 10px 30px rgba(18,60,42,.09);
   --radius:18px;
 }
 
@@ -37,20 +37,9 @@ html{
 
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
+  background:#f7faf8;
   color:var(--text);
   line-height:1.6;
-}
-
-button,
-input,
-select,
-textarea{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
 }
 
 a{
@@ -58,136 +47,40 @@ a{
   text-decoration:none;
 }
 
-/* =========================
-   HEADER
-========================= */
-
-header{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:rgba(18,60,42,.97);
-  color:white;
-  box-shadow:0 3px 18px rgba(0,0,0,.12);
+button,
+input,
+textarea,
+select{
+  font:inherit;
 }
 
-.header-inner{
-  max-width:1180px;
-  margin:auto;
-  padding:12px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
+button{
+  cursor:pointer;
 }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  min-width:0;
+img{
+  max-width:100%;
 }
-
-.logo-icon{
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  background:var(--gold);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:23px;
-  flex-shrink:0;
-}
-
-.logo-text{
-  min-width:0;
-}
-
-.logo-title{
-  font-weight:800;
-  font-size:16px;
-}
-
-.logo-sub{
-  font-size:11px;
-  opacity:.78;
-}
-
-nav{
-  display:flex;
-  align-items:center;
-  gap:4px;
-}
-
-nav a{
-  padding:8px 10px;
-  border-radius:9px;
-  font-size:13px;
-  transition:.2s;
-}
-
-nav a:hover{
-  background:rgba(255,255,255,.12);
-}
-
-.menu-btn{
-  display:none;
-  border:1px solid rgba(255,255,255,.25);
-  background:transparent;
-  color:white;
-  border-radius:10px;
-  padding:8px 11px;
-  font-size:20px;
-}
-
-.mobile-menu{
-  display:none;
-  max-width:1180px;
-  margin:auto;
-  padding:8px 18px 15px;
-}
-
-.mobile-menu.open{
-  display:block;
-}
-
-.mobile-menu a{
-  display:block;
-  padding:11px 13px;
-  border-radius:9px;
-  font-size:14px;
-}
-
-.mobile-menu a:hover{
-  background:rgba(255,255,255,.1);
-}
-
-/* =========================
-   GENERAL
-========================= */
 
 .container{
-  max-width:1180px;
+  width:min(1120px,92%);
   margin:auto;
-  padding:0 18px;
 }
 
-section{
-  padding:72px 0;
-  scroll-margin-top:70px;
+.section{
+  padding:70px 0;
 }
 
 .section-head{
-  text-align:center;
   max-width:760px;
   margin:0 auto 35px;
+  text-align:center;
 }
 
 .section-head h2{
-  color:var(--green);
-  font-size:30px;
-  margin-bottom:8px;
+  font-size:clamp(26px,5vw,38px);
+  line-height:1.2;
+  margin-bottom:10px;
 }
 
 .section-head p{
@@ -212,7 +105,7 @@ section{
 }
 
 .card{
-  background:var(--card);
+  background:var(--white);
   border:1px solid var(--border);
   border-radius:var(--radius);
   padding:22px;
@@ -220,7 +113,7 @@ section{
 }
 
 .card h3{
-  color:var(--green);
+  line-height:1.3;
   margin-bottom:8px;
 }
 
@@ -229,23 +122,20 @@ section{
 }
 
 .badge{
-  display:inline-block;
-  padding:4px 9px;
-  border-radius:30px;
-  font-size:11px;
-  font-weight:700;
-  background:#edf5ef;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 10px;
+  border-radius:999px;
+  background:var(--green3);
   color:var(--green);
+  font-size:12px;
+  font-weight:700;
 }
 
 .badge.gold{
-  background:#fff5d9;
-  color:#805b00;
-}
-
-.badge.gray{
-  background:#edf0ee;
-  color:#5c665f;
+  background:#fff4d5;
+  color:#795900;
 }
 
 .btn{
@@ -253,11 +143,12 @@ section{
   align-items:center;
   justify-content:center;
   gap:7px;
-  border:0;
-  border-radius:11px;
-  padding:11px 15px;
+  min-height:44px;
+  padding:10px 16px;
+  border-radius:12px;
+  border:1px solid transparent;
   font-weight:700;
-  transition:.2s;
+  transition:.2s ease;
 }
 
 .btn:hover{
@@ -266,27 +157,28 @@ section{
 
 .btn-primary{
   background:var(--green);
-  color:white;
+  color:#fff;
+}
+
+.btn-primary:hover{
+  background:var(--green2);
 }
 
 .btn-gold{
   background:var(--gold);
-  color:#1d241e;
+  color:#172018;
 }
 
 .btn-light{
-  background:#edf3ef;
+  background:#fff;
+  border-color:var(--border);
   color:var(--green);
 }
 
 .btn-danger{
-  background:#fff0ee;
+  background:#fff0ef;
   color:var(--danger);
-}
-
-.btn-small{
-  padding:7px 10px;
-  font-size:12px;
+  border-color:#ffd2cf;
 }
 
 .actions{
@@ -296,94 +188,210 @@ section{
   margin-top:18px;
 }
 
-/* =========================
-   HERO
-========================= */
+.notice{
+  background:#fff8df;
+  border:1px solid #f0d98c;
+  color:#624c08;
+  border-radius:14px;
+  padding:14px;
+  margin:15px 0;
+}
+
+.result{
+  margin-top:15px;
+  padding:15px;
+  border-radius:14px;
+  background:#f4f8f5;
+  border:1px solid var(--border);
+}
+
+.result.profit{
+  background:#edf9f1;
+  border-color:#bfe4cc;
+  color:#14552f;
+}
+
+.empty{
+  padding:30px;
+  text-align:center;
+  border:1px dashed var(--border);
+  border-radius:16px;
+  color:var(--muted);
+  background:#fff;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-group label{
+  display:block;
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid #ccd8d0;
+  border-radius:11px;
+  padding:12px 13px;
+  background:#fff;
+  color:var(--text);
+  outline:none;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--green2);
+  box-shadow:0 0 0 3px rgba(29,96,68,.08);
+}
+
+textarea{
+  min-height:110px;
+  resize:vertical;
+}
+
+/* HEADER */
+
+header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(255,255,255,.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+
+.navbar{
+  min-height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  color:var(--green);
+}
+
+.logo-mark{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--green);
+  color:var(--gold2);
+  font-size:20px;
+}
+
+.logo small{
+  display:block;
+  font-size:10px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+
+.nav-links a{
+  padding:9px 10px;
+  border-radius:9px;
+  font-size:13px;
+  font-weight:700;
+}
+
+.nav-links a:hover{
+  background:var(--green3);
+  color:var(--green);
+}
+
+.menu-btn{
+  display:none;
+  border:0;
+  background:transparent;
+  font-size:25px;
+}
+
+/* HERO */
 
 .hero{
+  padding:70px 0 55px;
   background:
-    radial-gradient(circle at 85% 20%,rgba(217,164,65,.18),transparent 25%),
-    linear-gradient(135deg,#0f3424,#1b5a3d);
-  color:white;
-  padding:82px 0;
+    radial-gradient(circle at top right,rgba(215,166,42,.16),transparent 35%),
+    linear-gradient(180deg,#fff 0%,#f5faf7 100%);
 }
 
 .hero-grid{
   display:grid;
   grid-template-columns:1.25fr .75fr;
-  gap:35px;
+  gap:40px;
   align-items:center;
 }
 
 .hero-label{
-  color:var(--gold2);
+  color:var(--green);
   font-size:13px;
-  font-weight:800;
-  letter-spacing:.8px;
+  font-weight:900;
+  letter-spacing:.7px;
   margin-bottom:12px;
 }
 
 .hero h1{
-  font-size:44px;
-  line-height:1.15;
-  margin-bottom:14px;
+  font-size:clamp(38px,7vw,64px);
+  line-height:1.03;
+  margin-bottom:18px;
 }
 
 .hero h1 span{
-  color:var(--gold2);
+  color:var(--gold);
 }
 
-.hero p{
-  max-width:680px;
-  color:rgba(255,255,255,.82);
-  font-size:17px;
-}
-
-.hero-buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:24px;
+.hero-copy{
+  max-width:700px;
+  color:var(--muted);
+  font-size:18px;
 }
 
 .hero-card{
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.16);
-  border-radius:24px;
+  background:var(--green);
+  color:#fff;
+  border-radius:25px;
   padding:25px;
-  backdrop-filter:blur(8px);
+  box-shadow:0 20px 45px rgba(18,60,42,.22);
 }
 
-.hero-card h3{
-  color:white;
-  margin-bottom:15px;
+.hero-card p{
+  color:#dbe9e1;
 }
 
-.tool-mini{
-  display:flex;
-  align-items:center;
+.mini-tools{
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:10px;
-  padding:11px 0;
-  border-bottom:1px solid rgba(255,255,255,.1);
+  margin-top:18px;
 }
 
-.tool-mini:last-child{
-  border-bottom:0;
+.mini-tool{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  padding:11px;
+  border-radius:11px;
+  font-size:13px;
 }
 
-.tool-mini-icon{
-  width:38px;
-  height:38px;
-  border-radius:10px;
-  background:rgba(255,255,255,.1);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-/* =========================
-   TOOLS
-========================= */
+/* PRACTICE */
 
 .tool-card{
   position:relative;
@@ -391,456 +399,257 @@ section{
 }
 
 .tool-icon{
-  font-size:30px;
-  margin-bottom:8px;
+  font-size:28px;
+  margin-bottom:10px;
 }
 
-.tool-card .tool-action{
-  margin-top:16px;
-}
-
-/* =========================
-   FORMS
-========================= */
-
-.form-group{
-  margin-bottom:14px;
-}
-
-label{
-  display:block;
-  font-size:13px;
-  font-weight:700;
+.tool-card .tool-link{
+  margin-top:15px;
+  display:inline-flex;
   color:var(--green);
-  margin-bottom:5px;
-}
-
-input,
-select,
-textarea{
-  width:100%;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:11px 12px;
-  background:white;
-  color:var(--text);
-  outline:none;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-  border-color:var(--green2);
-  box-shadow:0 0 0 3px rgba(28,91,62,.08);
-}
-
-textarea{
-  min-height:100px;
-  resize:vertical;
-}
-
-.result{
-  margin-top:16px;
-  padding:15px;
-  border-radius:12px;
-  background:#f0f7f2;
-  border:1px solid #d5e7da;
-}
-
-.result strong{
-  color:var(--green);
-}
-
-.result.profit{
-  background:#edf9f1;
-}
-
-.result.loss{
-  background:#fff1ef;
-  border-color:#f1cfca;
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:22px;
-}
-
-.stat{
-  background:white;
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:18px;
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:12px;
-}
-
-.stat-value{
-  color:var(--green);
-  font-size:24px;
   font-weight:800;
-  margin-top:4px;
 }
 
-/* =========================
-   SAVED LIST
-========================= */
+/* PROGRESS */
 
-.saved-list{
-  margin-top:18px;
+.progress-wrap{
+  margin-top:20px;
 }
 
-.saved-item{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  align-items:center;
-  padding:13px 0;
-  border-bottom:1px solid var(--border);
+.progress-bar{
+  height:12px;
+  background:#e4ebe7;
+  border-radius:999px;
+  overflow:hidden;
 }
 
-.saved-item:last-child{
-  border-bottom:0;
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--green),var(--gold));
+  transition:.3s;
 }
 
-.saved-main strong{
-  display:block;
-  color:var(--green);
+.day{
+  border-left:4px solid var(--border);
 }
 
-.saved-main small{
-  color:var(--muted);
-}
-
-.empty{
-  text-align:center;
-  padding:25px;
-  color:var(--muted);
-  background:#f7f9f7;
-  border-radius:12px;
-}
-
-/* =========================
-   FORMATION
-========================= */
-
-.day-card{
-  border-left:4px solid var(--gold);
+.day.done{
+  border-left-color:var(--success);
+  background:#f3faf5;
 }
 
 .day-number{
-  font-size:12px;
-  font-weight:800;
-  color:#866000;
-}
-
-/* =========================
-   BOOK PREVIEW
-========================= */
-
-.book-preview{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  background:var(--green3);
+  color:var(--green);
   display:grid;
-  grid-template-columns:220px 1fr;
-  gap:25px;
-  align-items:center;
+  place-items:center;
+  font-weight:900;
+  flex:none;
 }
 
-.book-cover{
-  min-height:270px;
-  border-radius:17px;
-  background:
-    linear-gradient(145deg,#123c2a,#2c6b4d);
-  color:white;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
+/* STATS */
+
+.stat{
   text-align:center;
-  box-shadow:var(--shadow);
 }
 
-.book-cover .emoji{
-  font-size:55px;
-  margin-bottom:12px;
+.stat strong{
+  display:block;
+  font-size:30px;
+  color:var(--green);
 }
 
-.book-cover h3{
-  color:white;
-}
-
-.book-cover small{
-  opacity:.8;
-}
-
-.book-points{
-  display:grid;
-  gap:9px;
-  margin-top:15px;
-}
-
-.book-point{
-  padding:9px 11px;
-  background:#f5f8f5;
-  border-radius:9px;
+.stat span{
+  color:var(--muted);
   font-size:13px;
 }
 
-/* =========================
-   PREMIUM
-========================= */
+/* REVIEW */
 
-.premium{
-  background:#102f22;
-  color:white;
+.review-stars{
+  letter-spacing:2px;
 }
 
-.premium .section-head h2{
-  color:white;
+.review-status{
+  color:var(--muted);
+  font-size:12px;
 }
 
-.premium .section-head p{
-  color:rgba(255,255,255,.72);
+/* BOOK */
+
+.book-card{
+  border:2px solid #ecd27b;
+  background:linear-gradient(145deg,#fffdf6,#fff);
 }
 
-.premium-card{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:17px;
-  padding:20px;
+.price{
+  font-size:34px;
+  font-weight:900;
+  color:var(--green);
 }
 
-.premium-card h3{
-  color:var(--gold2);
+.old-price{
+  color:#999;
+  text-decoration:line-through;
+  font-size:14px;
 }
 
-.premium-card p{
-  color:rgba(255,255,255,.72);
-}
-
-/* =========================
-   FOOTER
-========================= */
+/* FOOTER */
 
 footer{
-  background:#0b2419;
-  color:white;
-  padding:35px 0;
+  background:var(--green);
+  color:#fff;
+  padding:45px 0 25px;
+}
+
+footer p{
+  color:#c9d9d0;
 }
 
 .footer-grid{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
+  grid-template-columns:1.2fr .8fr .8fr;
+  gap:30px;
 }
 
-footer p{
-  color:rgba(255,255,255,.68);
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.13);
+  margin-top:30px;
+  padding-top:20px;
   font-size:13px;
+  color:#b9ccc1;
 }
 
-/* =========================
-   MODAL
-========================= */
+/* MODAL */
 
 .modal-overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.58);
-  z-index:2000;
+  z-index:1000;
+  background:rgba(8,20,14,.62);
   display:none;
   align-items:center;
   justify-content:center;
-  padding:18px;
+  padding:15px;
 }
 
-.modal-overlay.show{
+.modal-overlay.active{
   display:flex;
 }
 
 .modal{
-  width:min(900px,100%);
-  max-height:90vh;
+  width:min(650px,100%);
+  max-height:92vh;
   overflow:auto;
-  background:white;
+  background:#fff;
   border-radius:20px;
-  box-shadow:0 20px 70px rgba(0,0,0,.25);
+  box-shadow:0 25px 70px rgba(0,0,0,.25);
 }
 
 .modal-header{
   position:sticky;
   top:0;
   z-index:2;
-  background:white;
+  background:#fff;
   border-bottom:1px solid var(--border);
   padding:17px 20px;
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  gap:15px;
-}
-
-.modal-header h3{
-  color:var(--green);
+  justify-content:space-between;
 }
 
 .close-btn{
-  border:0;
-  background:#edf1ee;
-  width:35px;
-  height:35px;
-  border-radius:9px;
-  font-size:20px;
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  font-size:24px;
 }
 
 .modal-body{
   padding:20px;
 }
 
-/* =========================
-   BOOK CATALOGUE
-========================= */
+/* MOBILE */
 
-.catalog-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:15px;
-}
-
-.catalog-card{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:18px;
-  background:#fff;
-}
-
-.catalog-card h4{
-  color:var(--green);
-  margin:7px 0;
-}
-
-.price{
-  font-weight:800;
-  color:#805b00;
-}
-
-/* =========================
-   NOTICE
-========================= */
-
-.notice{
-  padding:13px 15px;
-  border-radius:12px;
-  background:#fff8df;
-  border:1px solid #f1dfa0;
-  color:#6e5300;
-  font-size:13px;
-  margin-bottom:18px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:900px){
-
-  nav{
+@media(max-width:850px){
+  .nav-links{
+    position:absolute;
+    top:70px;
+    left:0;
+    right:0;
     display:none;
+    padding:12px;
+    background:#fff;
+    border-bottom:1px solid var(--border);
+    box-shadow:var(--shadow);
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .nav-links.open{
+    display:flex;
+  }
+
+  .nav-links a{
+    padding:13px;
   }
 
   .menu-btn{
     display:block;
   }
 
-  .hero-grid{
+  .hero-grid,
+  .grid-2{
     grid-template-columns:1fr;
   }
 
-  .grid-4{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .dashboard{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .book-preview{
-    grid-template-columns:1fr;
-  }
-
-  .book-cover{
-    min-height:220px;
-  }
-}
-
-@media(max-width:650px){
-
-  section{
-    padding:55px 0;
-  }
-
-  .hero{
-    padding:60px 0;
-  }
-
-  .hero h1{
-    font-size:32px;
-  }
-
-  .hero p{
-    font-size:15px;
-  }
-
-  .grid-2,
-  .grid-3,
-  .grid-4,
-  .catalog-grid{
-    grid-template-columns:1fr;
-  }
-
-  .dashboard{
+  .grid-3{
     grid-template-columns:1fr 1fr;
   }
 
-  .stat-value{
-    font-size:20px;
+  .grid-4{
+    grid-template-columns:1fr 1fr;
   }
 
   .footer-grid{
     grid-template-columns:1fr;
   }
+}
 
-  .header-inner{
-    padding:10px 13px;
+@media(max-width:560px){
+  .section{
+    padding:52px 0;
   }
 
-  .logo-title{
-    font-size:14px;
+  .grid-3,
+  .grid-4{
+    grid-template-columns:1fr;
   }
 
-  .logo-sub{
-    display:none;
+  .hero{
+    padding-top:45px;
   }
 
-  .container{
-    padding:0 13px;
+  .hero h1{
+    font-size:42px;
   }
 
-  .card{
-    padding:17px;
+  .hero-copy{
+    font-size:16px;
   }
 
-  .saved-item{
-    align-items:flex-start;
-    flex-direction:column;
+  .actions .btn{
+    width:100%;
+  }
+
+  .mini-tools{
+    grid-template-columns:1fr;
   }
 }
 </style>
@@ -848,1166 +657,570 @@ footer p{
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- ================= HEADER ================= -->
 
 <header>
-
-  <div class="header-inner">
+  <div class="container navbar">
 
     <a href="#accueil" class="logo">
-
-      <div class="logo-icon">🌱</div>
-
-      <div class="logo-text">
-
-        <div class="logo-title">
-          Tantsaha Matihanina
-        </div>
-
-        <div class="logo-sub">
-          Vente Lab • V9
-        </div>
-
+      <div class="logo-mark">🌱</div>
+      <div>
+        Tantsaha Matihanina
+        <small>Vente Lab</small>
       </div>
-
     </a>
 
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">☰</button>
 
-    <nav>
-
-      <a href="#accueil">Accueil</a>
-      <a href="#outils">Pratique</a>
-      <a href="#vente-ko">Ny Vente-ko</a>
-      <a href="#formation">Formation</a>
-      <a href="#fiompiana">Fiompiana</a>
-      <a href="#avis">Avis</a>
-      <a href="#books">Boky</a>
-      <a href="#premium">Premium</a>
-
+    <nav class="nav-links" id="navLinks">
+      <a href="#accueil" onclick="closeMenu()">Accueil</a>
+      <a href="#outils" onclick="closeMenu()">🧪 Pratique</a>
+      <a href="#vente" onclick="closeMenu()">📊 Ny Vente-ko</a>
+      <a href="#formation" onclick="closeMenu()">🎓 Formation</a>
+      <a href="#retour" onclick="closeMenu()">📊 Retour</a>
+      <a href="#avis" onclick="closeMenu()">⭐ Avis</a>
+      <a href="#fiompiana" onclick="closeMenu()">🐔 Fiompiana</a>
+      <a href="#boky" onclick="closeMenu()">📘 Boky</a>
     </nav>
 
-
-    <button
-      class="menu-btn"
-      onclick="toggleMenu()"
-      aria-label="Menu">
-      ☰
-    </button>
-
   </div>
-
-
-  <div class="mobile-menu" id="mobileMenu">
-
-    <a href="#accueil" onclick="closeMenu()">
-      🏠 Accueil
-    </a>
-
-    <a href="#outils" onclick="closeMenu()">
-      🧪 Pratique
-    </a>
-
-    <a href="#vente-ko" onclick="closeMenu()">
-      💾 Ny Vente-ko
-    </a>
-
-    <a href="#formation" onclick="closeMenu()">
-      🎓 Formation
-    </a>
-
-    <a href="#fiompiana" onclick="closeMenu()">
-      🐄 Fiompiana
-    </a>
-
-    <a href="#process" onclick="closeMenu()">
-      🔄 Process
-    </a>
-
-    <a href="#projet" onclick="closeMenu()">
-      📊 Projet
-    </a>
-
-    <a href="#avis" onclick="closeMenu()">
-      ⭐ Avis
-    </a>
-
-    <a href="#books" onclick="closeMenu()">
-      📚 Boky
-    </a>
-
-    <a href="#premium" onclick="closeMenu()">
-      💎 Premium
-    </a>
-
-  </div>
-
 </header>
 
 
-<!-- =========================
-     HERO
-========================= -->
+<!-- ================= HERO ================= -->
 
 <section class="hero" id="accueil">
+  <div class="container hero-grid">
 
-  <div class="container">
-
-    <div class="hero-grid">
-
-      <div>
-
-        <div class="hero-label">
-          TANTSAHA MATIHANINA • VENTE LAB V9
-        </div>
-
-        <h1>
-          Mianatra.
-          <span>Mampihatra.</span>
-          Mahomby.
-        </h1>
-
-        <p>
-          Laboratoire pratique ho an'ny olona te hahay hivarotra
-          vokatra, hamorona offre, hitantana prospect ary
-          hanatsara tsikelikely ny système de vente.
-        </p>
-
-
-        <div class="hero-buttons">
-
-          <a href="#outils" class="btn btn-gold">
-            🧪 Hanomboka ny Pratique
-          </a>
-
-          <a href="#formation" class="btn btn-light">
-            🎓 Formation gratuite 7 jours
-          </a>
-
-          <a
-            href="https://www.facebook.com/share/1Zfiu8oj3m/"
-            target="_blank"
-            rel="noopener"
-            class="btn btn-light">
-            📘 Facebook Page
-          </a>
-
-        </div>
-
+    <div>
+      <div class="hero-label">
+        TANTSAHA MATIHANINA • VENTE LAB
       </div>
 
+      <h1>
+        Mianatra.
+        <span>Mampihatra.</span>
+        Mahomby.
+      </h1>
 
-      <div class="hero-card">
+      <p class="hero-copy">
+        Laboratoire pratique ho an'ny olona te hahay hivarotra vokatra,
+        hamorona offre, hitantana prospect ary hanatsara tsikelikely
+        ny système de vente.
+      </p>
 
-        <h3>🧪 Pratique azo ampiharina</h3>
+      <div class="actions">
+        <a class="btn btn-primary" href="#outils">
+          🧪 Hanomboka Pratique
+        </a>
 
-        <div class="tool-mini">
-          <div class="tool-mini-icon">🧮</div>
-          <div>Kajy Prix & Tombony</div>
-        </div>
+        <a class="btn btn-gold" href="#formation">
+          🎓 Formation 7 Jours
+        </a>
 
-        <div class="tool-mini">
-          <div class="tool-mini-icon">🐔</div>
-          <div>Kajy Fiompiana</div>
-        </div>
-
-        <div class="tool-mini">
-          <div class="tool-mini-icon">🛍️</div>
-          <div>Créer une Offre</div>
-        </div>
-
-        <div class="tool-mini">
-          <div class="tool-mini-icon">📱</div>
-          <div>Publication</div>
-        </div>
-
-        <div class="tool-mini">
-          <div class="tool-mini-icon">📝</div>
-          <div>Commande</div>
-        </div>
-
-        <div class="tool-mini">
-          <div class="tool-mini-icon">🧾</div>
-          <div>Reçu de Vente</div>
-        </div>
-
+        <a
+          class="btn btn-light"
+          href="https://www.facebook.com/share/1Zfiu8oj3m/"
+          target="_blank"
+          rel="noopener"
+        >
+          👍 Facebook
+        </a>
       </div>
+    </div>
 
+    <div class="hero-card">
+      <span class="badge gold">LABORATOIRE</span>
+
+      <h2 style="margin-top:12px;">
+        🛠️ Outils azo ampiasaina
+      </h2>
+
+      <p style="margin-top:8px;">
+        Ampiasao mivantana ireo outils rehefa avy mianatra
+        ny lesona mifandraika aminy.
+      </p>
+
+      <div class="mini-tools">
+        <div class="mini-tool">🧮 Kajy Prix & Tombony</div>
+        <div class="mini-tool">💡 Créer une Offre</div>
+        <div class="mini-tool">📢 Publication</div>
+        <div class="mini-tool">💬 Simulation Client</div>
+        <div class="mini-tool">🛒 Commande</div>
+        <div class="mini-tool">🧾 Reçu de Vente</div>
+      </div>
     </div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     OUTILS / PRATIQUE
-========================= -->
+<!-- ================= PRACTICE ================= -->
 
-<section id="outils">
-
+<section class="section" id="outils">
   <div class="container">
 
     <div class="section-head">
+      <span class="badge gold">🧪 LABORATOIRE</span>
 
-      <h2>🧪 Pratique — Laboratoire de Vente</h2>
+      <h2 style="margin-top:10px;">
+        Pratique — Laboratoire de Vente
+      </h2>
 
       <p>
-        Tsy Excel no tanjona. Ireo fitaovana eto dia
-        exercice pratique mifandray amin'ny formation.
-        Mianara → Mampihatra → Miverena mizara ny vokatra.
+        Tsy Excel no tanjona. Ireo fitaovana eto dia exercice
+        pratique mifandray amin'ny formation.
       </p>
-
     </div>
-
 
     <div class="grid grid-3">
 
-      <!-- PRICE -->
-
       <div class="card tool-card">
-
         <div class="tool-icon">🧮</div>
-
         <h3>Kajy Prix & Tombony</h3>
-
         <p>
           Kajio ny coût, prix de vente, bénéfice ary marge.
         </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('profitModal')">
-            Hanomboka
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- OFFER -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">🛍️</div>
-
-        <h3>Créer une Offre</h3>
-
-        <p>
-          Mamoròna offre tsotra sy mazava ho an'ny client.
-        </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('offerModal')">
-            Hamorona Offre
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- PUBLICATION -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">📱</div>
-
-        <h3>Publication</h3>
-
-        <p>
-          Mamoròna texte publication ary ampiharo
-          amin'ny tena canal-nao.
-        </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('publicationModal')">
-            Hamorona
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- SIMULATION -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">💬</div>
-
-        <h3>Simulation Client</h3>
-
-        <p>
-          Mianara mamaly client sy objection
-          amin'ny fomba matihanina.
-        </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('simulationModal')">
-            Hanandrana
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- ORDER -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">📝</div>
-
-        <h3>Commande</h3>
-
-        <p>
-          Tehirizo ny commande fototra ao amin'ny navigateur.
-        </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('orderModal')">
-            Nouvelle commande
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- RECEIPT -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">🧾</div>
-
-        <h3>Reçu de Vente</h3>
-
-        <p>
-          Mamoròna reçu tsotra ary tehirizo
-          ao amin'ny appareil.
-        </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-primary"
-            onclick="openModal('receiptModal')">
-            Mamorona reçu
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- CHALLENGE -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">🎯</div>
-
-        <h3>Challenge 7 Jours</h3>
-
-        <p>
-          Dingana kely isan'andro mba hananganana
-          fahazarana amin'ny vente.
-        </p>
-
-        <div class="tool-action">
-
-          <a href="#formation" class="btn btn-primary">
-            Hanomboka
-          </a>
-
-        </div>
-
-      </div>
-
-
-      <!-- GUIDE -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">📖</div>
-
-        <h3>Tantsaha Guide</h3>
-
-        <p>
-          Torolàlana fototra. Tsy AI tena izy ity version ity;
-          tsy hampanantena intelligence tsy mbola connecté isika.
-        </p>
-
-        <div class="tool-action">
-
-          <button
-            class="btn btn-light"
-            onclick="openModal('guideModal')">
-            Hijery Guide
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- SAVED -->
-
-      <div class="card tool-card">
-
-        <div class="tool-icon">💾</div>
-
-        <h3>Ny Vente-ko</h3>
-
-        <p>
-          Jereo ny kajy, commande, reçu ary résultats voatahiry.
-        </p>
-
-        <div class="tool-action">
-
-          <a href="#vente-ko" class="btn btn-primary">
-            Hijery
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     FIOMPIANA
-========================= -->
-
-<section id="fiompiana">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <h2>🐄 Kajy Fiompiana</h2>
-
-      <p>
-        Kajy fototra ho an'ny biby iray na andiany iray:
-        achat + sakafo + fikarakarana + transport + vente.
-      </p>
-
-    </div>
-
-
-    <div class="grid grid-2">
-
-      <div class="card">
-
-        <h3>🐔 Kajy Fiompiana</h3>
-
-        <div class="notice">
-
-          Ny coût total dia tsy achat fotsiny.
-          Ampidiro koa ny sakafo, fikarakarana ary transport.
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Karazana biby</label>
-
-          <select id="animalType">
-
-            <option>Akoho Gasy</option>
-            <option>Pondeuse</option>
-            <option>Poulet de chair</option>
-            <option>Kisoa</option>
-            <option>Osy</option>
-            <option>Ondry</option>
-            <option>Bitro</option>
-            <option>Gana</option>
-            <option>Gisa</option>
-            <option>Vorontsiloza</option>
-            <option>Omby</option>
-            <option>Trondro</option>
-
-          </select>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Isan'ny biby</label>
-
-          <input
-            type="number"
-            id="animalQty"
-            min="1"
-            value="1">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Vidin'achat / biby (Ar)</label>
-
-          <input
-            type="number"
-            id="animalPurchase"
-            min="0"
-            value="0">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Sakafo total (Ar)</label>
-
-          <input
-            type="number"
-            id="animalFeed"
-            min="0"
-            value="0">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Fikarakarana / vaksiny (Ar)</label>
-
-          <input
-            type="number"
-            id="animalCare"
-            min="0"
-            value="0">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Transport (Ar)</label>
-
-          <input
-            type="number"
-            id="animalTransport"
-            min="0"
-            value="0">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>Vola azo amin'ny vente total (Ar)</label>
-
-          <input
-            type="number"
-            id="animalRevenue"
-            min="0"
-            value="0">
-
-        </div>
-
-
-        <button
-          class="btn btn-primary"
-          onclick="calculateAnimal()">
-          🧮 Kajio
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('profitModal')">
+          Hanomboka
         </button>
-
-
-        <div id="animalResult"></div>
-
       </div>
 
-
-      <div class="card">
-
-        <h3>📌 Ohatra</h3>
-
+      <div class="card tool-card">
+        <div class="tool-icon">🐔</div>
+        <h3>Kajy Fiompiana</h3>
         <p>
-          Ohatra hoe manana <strong>50 Akoho Gasy</strong> ianao:
+          Tombano ny coût sy ny vokatra amin'ny fiompiana.
         </p>
-
-
-        <div class="book-points">
-
-          <div class="book-point">
-            🐔 Achat : 750 000 Ar
-          </div>
-
-          <div class="book-point">
-            🌽 Sakafo : 150 000 Ar
-          </div>
-
-          <div class="book-point">
-            💉 Fikarakarana : 30 000 Ar
-          </div>
-
-          <div class="book-point">
-            🚚 Transport : 20 000 Ar
-          </div>
-
-          <div class="book-point">
-            💰 Coût total : 950 000 Ar
-          </div>
-
-          <div class="book-point">
-            💵 Vente : 1 250 000 Ar
-          </div>
-
-          <div class="book-point">
-            📈 Tombony : 300 000 Ar
-          </div>
-
-          <div class="book-point">
-            🎯 Marge : 24%
-          </div>
-
-        </div>
-
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('animalModal')">
+          Hanomboka
+        </button>
       </div>
 
+      <div class="card tool-card">
+        <div class="tool-icon">💡</div>
+        <h3>Créer une Offre</h3>
+        <p>
+          Mamorona offre mazava sy mora takatry ny client.
+        </p>
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('offerModal')">
+          Hanomboka
+        </button>
+      </div>
+
+      <div class="card tool-card">
+        <div class="tool-icon">📢</div>
+        <h3>Publication</h3>
+        <p>
+          Manomàna publication ho an'ny Facebook, WhatsApp na Marketplace.
+        </p>
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('publicationModal')">
+          Hanomboka
+        </button>
+      </div>
+
+      <div class="card tool-card">
+        <div class="tool-icon">💬</div>
+        <h3>Simulation Client</h3>
+        <p>
+          Manaova entraînement amin'ny fifandraisana amin'ny prospect.
+        </p>
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('simulationModal')">
+          Hanomboka
+        </button>
+      </div>
+
+      <div class="card tool-card">
+        <div class="tool-icon">🛒</div>
+        <h3>Commande</h3>
+        <p>
+          Tehirizo ny commande sy ny état-n'ny vente.
+        </p>
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('orderModal')">
+          Hanomboka
+        </button>
+      </div>
+
+      <div class="card tool-card">
+        <div class="tool-icon">🧾</div>
+        <h3>Reçu de Vente</h3>
+        <p>
+          Mamorona reçu tsotra misy référence sy paiement.
+        </p>
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('receiptModal')">
+          Hanomboka
+        </button>
+      </div>
+
+      <div class="card tool-card">
+        <div class="tool-icon">📚</div>
+        <h3>Guide</h3>
+        <p>
+          Torolalana fohy momba ny dingana amin'ny vente.
+        </p>
+        <button class="btn btn-primary" style="margin-top:15px"
+                onclick="openModal('guideModal')">
+          Hijery
+        </button>
+      </div>
+
+      <div class="card tool-card">
+        <div class="tool-icon">🎯</div>
+        <h3>Challenge 7 Jours</h3>
+        <p>
+          Ataovy tsikelikely ny pratique ary araho ny progression.
+        </p>
+        <a href="#formation" class="btn btn-primary" style="margin-top:15px">
+          Hanomboka
+        </a>
+      </div>
+
+    </div>
+
+    <div class="notice" style="margin-top:25px;">
+      <strong>⚠️ Fitsipika:</strong>
+      Vakio aloha ny lesona ao amin'ny WhatsApp Formation,
+      avy eo ampiharo eto, ary farany alefaso ao amin'ny
+      <strong>Retour & Évaluation</strong> ny tena vokatra azonao.
     </div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     NY VENTE-KO
-========================= -->
+<!-- ================= DASHBOARD ================= -->
 
-<section id="vente-ko">
-
+<section class="section" id="vente">
   <div class="container">
 
     <div class="section-head">
-
-      <h2>💾 Ny Vente-ko</h2>
-
+      <span class="badge">📊 SUIVI</span>
+      <h2 style="margin-top:10px;">Ny Vente-ko</h2>
       <p>
-        Toerana iray hijerena ireo zavatra nataonao sy voatahiry
-        ao amin'ny navigateur.
+        Ity dashboard ity dia mitahiry locally ao amin'ny téléphone-nao
+        ireo calculs sy commandes nataonao.
       </p>
-
     </div>
-
-
-    <div class="dashboard">
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Commandes
-        </div>
-
-        <div class="stat-value" id="statOrders">
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Reçus
-        </div>
-
-        <div class="stat-value" id="statReceipts">
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-label">
-          CA enregistré
-        </div>
-
-        <div class="stat-value" id="statRevenue">
-          0 Ar
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Tombony calculé
-        </div>
-
-        <div class="stat-value" id="statProfit">
-          0 Ar
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="grid grid-2">
-
-      <div class="card">
-
-        <h3>📊 Résultats récents</h3>
-
-        <div id="savedCalculations" class="saved-list">
-
-          <div class="empty">
-            Tsy mbola misy kajy voatahiry.
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>📝 Commandes</h3>
-
-        <div id="savedOrders" class="saved-list">
-
-          <div class="empty">
-            Tsy mbola misy commande.
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>🧾 Reçus</h3>
-
-        <div id="savedReceipts" class="saved-list">
-
-          <div class="empty">
-            Tsy mbola misy reçu.
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div class="card">
-
-        <h3>⚙️ Gestion</h3>
-
-        <p>
-          Ny données eto dia voatahiry ao amin'ny navigateur.
-          Raha mamafa navigateur data ianao dia mety ho very.
-        </p>
-
-        <div class="actions">
-
-          <button
-            class="btn btn-light"
-            onclick="refreshDashboard()">
-            🔄 Actualiser
-          </button>
-
-          <button
-            class="btn btn-danger"
-            onclick="clearSavedData()">
-            🗑️ Hamafa données
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     PROCESS
-========================= -->
-
-<section id="process">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <h2>🔄 Process Vente</h2>
-
-      <p>
-        Ny vente tsara dia processus fa tsy publication fotsiny.
-      </p>
-
-    </div>
-
 
     <div class="grid grid-4">
 
-      <div class="card">
-
-        <span class="badge">
-          01
-        </span>
-
-        <h3>Produit</h3>
-
-        <p>
-          Fantaro tsara izay amidinao sy ny tena valeur-ny.
-        </p>
-
+      <div class="card stat">
+        <strong id="statCalculations">0</strong>
+        <span>Calculs</span>
       </div>
 
-
-      <div class="card">
-
-        <span class="badge">
-          02
-        </span>
-
-        <h3>Offre</h3>
-
-        <p>
-          Ataovy mazava ny prix, avantage ary conditions.
-        </p>
-
+      <div class="card stat">
+        <strong id="statOrders">0</strong>
+        <span>Commandes</span>
       </div>
 
-
-      <div class="card">
-
-        <span class="badge">
-          03
-        </span>
-
-        <h3>Prospect</h3>
-
-        <p>
-          Mihainoa ny client ary fantaro izay tena ilainy.
-        </p>
-
+      <div class="card stat">
+        <strong id="statRevenue">0 Ar</strong>
+        <span>CA payé</span>
       </div>
 
+      <div class="card stat">
+        <strong id="statProfit">0 Ar</strong>
+        <span>Tombony calculé</span>
+      </div>
+
+    </div>
+
+    <div class="grid grid-2" style="margin-top:20px;">
 
       <div class="card">
+        <h3>🧮 Calculs farany</h3>
+        <div id="calculationsList" style="margin-top:15px;"></div>
+      </div>
 
-        <span class="badge">
-          04
-        </span>
-
-        <h3>Closing</h3>
-
-        <p>
-          Ampidiro amin'ny commande mazava ny fifampiraharahana.
-        </p>
-
+      <div class="card">
+        <h3>🛒 Commandes farany</h3>
+        <div id="ordersList" style="margin-top:15px;"></div>
       </div>
 
     </div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     FORMATION
-========================= -->
+<!-- ================= FORMATION ================= -->
 
-<section id="formation">
-
+<section class="section" id="formation">
   <div class="container">
 
     <div class="section-head">
+      <span class="badge gold">🎓 FORMATION</span>
 
-      <h2>🎓 Formation Gratuite 7 Jours</h2>
+      <h2 style="margin-top:10px;">
+        Formation Technique de Vente — 7 Jours
+      </h2>
 
       <p>
-        Mianara tsikelikely, ary ampiasao avy hatrany
-        ireo outils ao amin'ny Laboratoire.
+        Ny WhatsApp no toerana hianarana sy hahazoana accompagnement.
+        Ny site kosa no laboratoire hanaovana pratique.
       </p>
 
-    </div>
-
-
-    <div class="grid grid-3">
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 1
-        </div>
-
-        <h3>Produit + Client</h3>
-
-        <p>
-          Fantaro ny produit sy ny client cible.
-        </p>
-
-      </div>
-
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 2
-        </div>
-
-        <h3>Prix + Tombony</h3>
-
-        <p>
-          Ampiasao ny Kajy Prix & Tombony.
-        </p>
-
-        <a href="#outils" class="btn btn-light btn-small">
-          🧮 Mankanesa amin'ny Pratique
+      <div class="actions" style="justify-content:center;">
+        <a
+          class="btn btn-primary"
+          href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
+          target="_blank"
+          rel="noopener"
+        >
+          🎓 Miditra amin'ny Formation WhatsApp
         </a>
-
       </div>
-
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 3
-        </div>
-
-        <h3>Offre + Publication</h3>
-
-        <p>
-          Mamorona offre sy publication mazava.
-        </p>
-
-      </div>
-
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 4
-        </div>
-
-        <h3>Prospection</h3>
-
-        <p>
-          Fantaro ny fomba fitadiavana prospect.
-        </p>
-
-      </div>
-
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 5
-        </div>
-
-        <h3>Objection + Négociation</h3>
-
-        <p>
-          Mianara mamaly objection tsy miady amin'ny client.
-        </p>
-
-      </div>
-
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 6
-        </div>
-
-        <h3>Closing + Commande</h3>
-
-        <p>
-          Avadiho ho commande ny resaka.
-        </p>
-
-      </div>
-
-
-      <div class="card day-card">
-
-        <div class="day-number">
-          JOUR 7
-        </div>
-
-        <h3>Challenge Final</h3>
-
-        <p>
-          Ataovy pratique ny zavatra nianarana rehetra.
-        </p>
-
-      </div>
-
     </div>
-
-
-    <div
-      class="actions"
-      style="justify-content:center;margin-top:25px">
-
-      <a
-        href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
-        target="_blank"
-        rel="noopener"
-        class="btn btn-primary">
-        💬 Hiditra amin'ny Formation
-      </a>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =========================
-     PROJECT
-========================= -->
-
-<section id="projet">
-
-  <div class="container">
-
-    <div class="section-head">
-
-      <h2>📊 Projet Vente Tantsaha</h2>
-
-      <p>
-        Ohatra pratique iray hampifandray ny kajy sy ny vente.
-      </p>
-
-    </div>
-
 
     <div class="card">
 
-      <div class="grid grid-3">
-
+      <div style="display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;">
         <div>
-
-          <span class="badge">
-            PRODUIT
-          </span>
-
-          <h3>🐔 50 Akoho Gasy</h3>
-
-          <p>
-            Projet fictif
-          </p>
-
+          <strong>Progression</strong>
+          <div id="progressText" style="color:var(--muted);font-size:13px;">
+            0 / 7 jours
+          </div>
         </div>
 
-
-        <div>
-
-          <span class="badge">
-            COÛT
-          </span>
-
-          <h3>
-            950 000 Ar
-          </h3>
-
-          <p>
-            Achat + sakafo + care + transport
-          </p>
-
-        </div>
-
-
-        <div>
-
-          <span class="badge gold">
-            VENTE
-          </span>
-
-          <h3>
-            1 250 000 Ar
-          </h3>
-
-          <p>
-            Vola azo amin'ny vente
-          </p>
-
-        </div>
-
+        <button class="btn btn-light" onclick="resetProgress()">
+          Réinitialiser
+        </button>
       </div>
 
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
 
-      <div class="result profit">
+    </div>
 
-        <strong>
-          Tombony: 300 000 Ar
-        </strong>
+    <div class="grid grid-2" style="margin-top:20px;">
 
-        <br>
+      <div class="card day" id="day1">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">1</div>
+          <div>
+            <h3>Fototry ny Vente</h3>
+            <p>Fantaro ny maha samy hafa ny produit sy ny valeur.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(1)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
 
-        Marge:
-        <strong>
-          24%
-        </strong>
+      <div class="card day" id="day2">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">2</div>
+          <div>
+            <h3>Client Cible</h3>
+            <p>Fantaro hoe iza marina no olona mety hividy.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(2)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
 
-        <br>
+      <div class="card day" id="day3">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">3</div>
+          <div>
+            <h3>Offre & Prix</h3>
+            <p>Amboary ny offre, prix ary bénéfice.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(3)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
 
-        Prix moyen / akoho:
-        <strong>
-          25 000 Ar
-        </strong>
+      <div class="card day" id="day4">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">4</div>
+          <div>
+            <h3>Publication</h3>
+            <p>Mamorona publication mifanaraka amin'ny client cible.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(4)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card day" id="day5">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">5</div>
+          <div>
+            <h3>Prospection & Discussion</h3>
+            <p>Ianaro ny fomba firesaka sy fanontaniana amin'ny client.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(5)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card day" id="day6">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">6</div>
+          <div>
+            <h3>Objection & Closing</h3>
+            <p>Valio ny objection ary tariho amin'ny commande ny client.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(6)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card day" id="day7">
+        <div style="display:flex;gap:12px;">
+          <div class="day-number">7</div>
+          <div>
+            <h3>Suivi & Fidélisation</h3>
+            <p>Araho ny client ary amboary ny relation maharitra.</p>
+            <button class="btn btn-light" style="margin-top:12px"
+                    onclick="completeDay(7)">
+              ✓ Vita
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--green);color:#fff;">
+        <span class="badge gold">ACTION</span>
+        <h3 style="margin-top:12px;">🧪 Vita ny lesona?</h3>
+        <p style="color:#dbe9e1;">
+          Mankanesa any amin'ny Pratique, ampiharo amin'ny tena
+          produit-nao, ary avereno eto ny tena vokatra.
+        </p>
+
+        <a href="#outils"
+           class="btn btn-gold"
+           style="margin-top:15px;">
+          🧪 Hanao Pratique
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= RETOUR ================= -->
+
+<section class="section" id="retour">
+  <div class="container">
+
+    <div class="section-head">
+      <span class="badge">📊 RETOUR & ÉVALUATION</span>
+
+      <h2 style="margin-top:10px;">
+        Inona no tena vokatra azonao?
+      </h2>
+
+      <p>
+        Aorian'ny pratique dia zarao ny expérience réelle:
+        izay nampiharinao, ny valiny ary ny olana mbola misy.
+      </p>
+    </div>
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <div class="tool-icon">🎯</div>
+        <h3>1. Technique nampiharina</h3>
+        <p>
+          Lazao hoe inona amin'ireo technique no tena nampiasainao.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="tool-icon">📈</div>
+        <h3>2. Vokatra</h3>
+        <p>
+          Ohatra: prospects 10, réponses 4, commandes 1.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="tool-icon">⚠️</div>
+        <h3>3. Olana</h3>
+        <p>
+          Lazao izay mbola sarotra aminao mba hahafahana manatsara azy.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="card" style="margin-top:20px;">
+
+      <h3>📋 Fomba fanaovana Retour</h3>
+
+      <div class="notice">
+        <strong>Ohatra:</strong><br>
+        Technique nampiharina: présentation de l'offre.<br>
+        Prospects: 10.<br>
+        Réponses: 4.<br>
+        Commandes: 1.<br>
+        Olana: Mbola sahirana aho rehefa miteny hoe "lafo loatra".
+      </div>
+
+      <div class="actions">
+
+        <a
+          class="btn btn-primary"
+          href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
+          target="_blank"
+          rel="noopener"
+        >
+          💬 Hiverina any WhatsApp
+        </a>
+
+        <button
+          class="btn btn-gold"
+          onclick="openModal('reviewModal')"
+        >
+          ⭐ Hametraka Avis
+        </button>
 
       </div>
 
     </div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     AVIS & TEMOIGNAGES
-========================= -->
+<!-- ================= AVIS ================= -->
 
-<section id="avis">
-
+<section class="section" id="avis">
   <div class="container">
 
     <div class="section-head">
 
-      <h2>⭐ Ny Hevitry ny Mpianatra</h2>
+      <span class="badge gold">⭐ AVIS & TÉMOIGNAGE</span>
+
+      <h2 style="margin-top:10px;">
+        Ny Hevitry ny Mpianatra
+      </h2>
 
       <p>
         Vitao ny formation, ampiharo izay nianaranao,
@@ -2015,7 +1228,6 @@ footer p{
       </p>
 
     </div>
-
 
     <div class="grid grid-2">
 
@@ -2034,28 +1246,27 @@ footer p{
           izay nampiharinao ary, raha misy, ny vokatra azonao.
         </p>
 
-
         <div class="actions">
 
           <button
             class="btn btn-primary"
-            onclick="openModal('reviewModal')">
+            onclick="openModal('reviewModal')"
+          >
             ✍️ Hametraka Avis
           </button>
-
 
           <a
             target="_blank"
             rel="noopener"
             class="btn btn-light"
-            href="https://www.facebook.com/share/1Zfiu8oj3m/">
+            href="https://www.facebook.com/share/1Zfiu8oj3m/"
+          >
             👍 Hitsidika ny Page Facebook
           </a>
 
         </div>
 
       </div>
-
 
       <div class="card">
 
@@ -2072,119 +1283,284 @@ footer p{
           misalasala hahafantatra ny expérience réelle amin'ny formation.
         </p>
 
-
         <div class="result">
-
           ⭐ Tsy mangataka avis 5 étoiles an-tery izahay.
           Ny zava-dehibe dia ny fahitsiana sy ny expérience réelle.
-
         </div>
 
       </div>
 
     </div>
 
+    <div
+      id="reviewConnectionStatus"
+      class="notice"
+      style="margin-top:20px;"
+    >
+      ⏳ Mampifandray amin'ny Supabase...
+    </div>
 
     <div
       id="reviewList"
       class="grid grid-3"
-      style="margin-top:20px;">
-    </div>
+      style="margin-top:20px;"
+    ></div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     BOOK PREVIEW
-========================= -->
+<!-- ================= FIOMPIANA ================= -->
 
-<section id="books">
-
+<section class="section" id="fiompiana">
   <div class="container">
 
     <div class="section-head">
 
-      <h2>📚 Boky & Formation</h2>
+      <span class="badge">
+        🐔 TANTSAHA
+      </span>
+
+      <h2 style="margin-top:10px;">
+        Vente mifandray amin'ny Fiompiana
+      </h2>
 
       <p>
-        Catalogue misaraka mba tsy hahatonga ny Home ho feno be
-        rehefa mitombo ny isan'ny boky.
+        Azo ampiharina amin'ny akoho, kisoa, osy, ondry,
+        tantely, trondro, legioma ary vokatra hafa ny technique.
       </p>
 
     </div>
 
+    <div class="grid grid-3">
 
-    <div class="card">
+      <div class="card">
+        <h3>🐔 Akoho</h3>
+        <p>
+          Ohatra: Akoho Gasy, pondeuse, poulet de chair.
+        </p>
+      </div>
 
-      <div class="book-preview">
+      <div class="card">
+        <h3>🐖 Kisoa</h3>
+        <p>
+          Vente par pièce, poids, commande na réservation.
+        </p>
+      </div>
 
-        <div class="book-cover">
+      <div class="card">
+        <h3>🍯 Tantely</h3>
+        <p>
+          Azo ampiasaina amin'ny vente locale sy vente en ligne.
+        </p>
+      </div>
 
-          <div class="emoji">
-            📘
-          </div>
+      <div class="card">
+        <h3>🐐 Osy & Ondry</h3>
+        <p>
+          Offre, prix, négociation ary livraison.
+        </p>
+      </div>
 
-          <h3>
-            Manuel pratique
-            de Vente en Ligne
-          </h3>
+      <div class="card">
+        <h3>🐟 Trondro</h3>
+        <p>
+          Publication mifototra amin'ny quantité sy disponibilité.
+        </p>
+      </div>
 
-          <small>
-            Débutant + Professionnel
-          </small>
+      <div class="card">
+        <h3>🌽 Vokatra fambolena</h3>
+        <p>
+          Vary, katsaka, legioma sy vokatra hafa.
+        </p>
+      </div>
 
-        </div>
+    </div>
 
+  </div>
+</section>
+
+
+<!-- ================= PROCESS ================= -->
+
+<section class="section" id="process">
+  <div class="container">
+
+    <div class="section-head">
+      <span class="badge gold">🔄 MÉTHODE</span>
+      <h2 style="margin-top:10px;">
+        Mianatra → Mampihatra → Mahomby
+      </h2>
+    </div>
+
+    <div class="grid grid-3">
+
+      <div class="card">
+        <div class="tool-icon">🎓</div>
+        <h3>Mianatra</h3>
+        <p>
+          Lesona sy accompagnement ao amin'ny WhatsApp.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="tool-icon">🧪</div>
+        <h3>Mampihatra</h3>
+        <p>
+          Exercice sy simulation ao amin'ny Vente Lab.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="tool-icon">📈</div>
+        <h3>Mahomby</h3>
+        <p>
+          Refeso ny vokatra ary amboary izay mbola tsy mandeha.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= PROJET ================= -->
+
+<section class="section" id="projet">
+  <div class="container">
+
+    <div class="card" style="background:var(--green);color:#fff;">
+
+      <span class="badge gold">
+        🌱 TANTSAHA MATIHANINA
+      </span>
+
+      <h2 style="margin-top:15px;">
+        Tsy mianatra fotsiny.
+        Mampihatra.
+      </h2>
+
+      <p style="color:#dbe9e1;margin-top:10px;">
+        Ny tanjona dia tsy hoe mahavita mamaky lesona fotsiny,
+        fa mahavita mampiasa azy amin'ny activité réelle.
+      </p>
+
+      <div class="actions">
+
+        <a
+          class="btn btn-gold"
+          href="#formation"
+        >
+          🎓 Hanomboka Formation
+        </a>
+
+        <a
+          class="btn btn-light"
+          href="#outils"
+        >
+          🧪 Hanao Pratique
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================= BOOK ================= -->
+
+<section class="section" id="boky">
+  <div class="container">
+
+    <div class="section-head">
+
+      <span class="badge gold">
+        📘 SUPPORT AVANCÉ
+      </span>
+
+      <h2 style="margin-top:10px;">
+        Te handalina lalindalina kokoa?
+      </h2>
+
+      <p>
+        Ny PDF dia support complémentaire ho an'izay te hanohy
+        sy handalina kokoa rehefa vita ny formation.
+      </p>
+
+    </div>
+
+    <div class="card book-card">
+
+      <div class="grid grid-2" style="align-items:center;">
 
         <div>
 
           <span class="badge gold">
-            BOKY MISY
+            GUIDE PRATIQUE
           </span>
 
-          <h3 style="margin-top:10px">
-            📚 BOKY & FORMATION
-          </h3>
+          <h2 style="margin-top:12px;">
+            Vente en Ligne & Vente Locale
+          </h2>
 
-          <p>
-            Boky sy formation pratique momba ny vente,
-            offre, prospection, objection, closing,
-            commande ary suivi.
+          <p style="margin-top:10px;">
+            Débutant → Professionnel
           </p>
 
+          <p style="margin-top:10px;">
+            52 pages • modèles • scripts • fiches • challenges
+            • quiz • cas pratiques
+          </p>
 
-          <div class="book-points">
-
-            <div class="book-point">
-              🧮 Kajy coût, prix, bénéfice & marge
+          <div style="margin-top:18px;">
+            <div class="old-price">
+              Support complémentaire
             </div>
 
-            <div class="book-point">
-              🛍️ Offre sy publication
+            <div class="price">
+              5 000 Ar
             </div>
-
-            <div class="book-point">
-              💬 Prospection sy objection
-            </div>
-
-            <div class="book-point">
-              📝 Commande, paiement & livraison
-            </div>
-
           </div>
-
 
           <div class="actions">
 
-            <button
+            <a
               class="btn btn-primary"
-              onclick="openBookCatalog()">
-              📚 Hijery ny Boky
-            </button>
+              href="https://wa.me/261385651378?text=Liana%20hividy%20ny%20PDF%20Formation%20Vente%20en%20Ligne%20-%205%20000%20Ar"
+              target="_blank"
+              rel="noopener"
+            >
+              📘 Hividy — 5 000 Ar
+            </a>
 
           </div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>📚 Ao anatiny</h3>
+
+          <ul style="margin:15px 0 0 20px;color:var(--muted);">
+
+            <li>Fototry ny vente professionnelle</li>
+            <li>Client cible</li>
+            <li>Offre & présentation</li>
+            <li>Publication</li>
+            <li>Prospection</li>
+            <li>Objections</li>
+            <li>Négociation</li>
+            <li>Closing</li>
+            <li>Commande & paiement</li>
+            <li>Suivi & fidélisation</li>
+            <li>Scripts de conversation</li>
+            <li>Challenge 7 jours</li>
+
+          </ul>
 
         </div>
 
@@ -2193,150 +1569,61 @@ footer p{
     </div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     PREMIUM
-========================= -->
+<!-- ================= PREMIUM ================= -->
 
-<section class="premium" id="premium">
-
+<section class="section" id="premium">
   <div class="container">
 
     <div class="section-head">
 
-      <h2>💎 Premium & Automatisation</h2>
+      <span class="badge">
+        🚀 PROGRESSION
+      </span>
+
+      <h2 style="margin-top:10px;">
+        Dingana manaraka
+      </h2>
 
       <p>
-        Tsy “blocage” no tanjon'ny Premium.
-        Ny Free dia tokony hahasoa; ny Premium kosa manampy
-        capacité, historique ary fonctionnalités avancées.
+        Rehefa mahafehy ny fototra ianao dia afaka mandroso
+        amin'ny vente plus professionnelle sy système plus complet.
       </p>
 
     </div>
 
-
     <div class="grid grid-3">
 
-      <div class="premium-card">
-
-        <span class="badge gold">
-          PREMIUM
-        </span>
-
-        <h3>
-          🧮 Kajy avancé
-        </h3>
-
+      <div class="card">
+        <h3>📊 Suivi</h3>
         <p>
-          Kajy lalindalina kokoa: coût, croissance,
-          forecast, marge ary historique.
+          Araho ny prospects, commandes ary vokatra.
         </p>
-
       </div>
 
-
-      <div class="premium-card">
-
-        <span class="badge gray">
-          HO AVY
-        </span>
-
-        <h3>
-          🤖 Tantsaha AI
-        </h3>
-
+      <div class="card">
+        <h3>🤝 Accompagnement</h3>
         <p>
-          AI tena izy rehefa ampifandraisina amin'ny
-          backend/modely. Tsy mbola lazaina ho actif amin'ity V9 ity.
+          Zarao ny olana ary mahazoa feedback.
         </p>
-
       </div>
 
-
-      <div class="premium-card">
-
-        <span class="badge gray">
-          HO AVY
-        </span>
-
-        <h3>
-          📱 Facebook Automation
-        </h3>
-
+      <div class="card">
+        <h3>📘 Support avancé</h3>
         <p>
-          Automation rehefa tena tafapetraka sy testé:
-          réponses, leads ary suivi.
+          Ampiasao ny PDF sy ireo modèles rehefa mila approfondissement.
         </p>
-
-      </div>
-
-
-      <div class="premium-card">
-
-        <span class="badge gray">
-          HO AVY
-        </span>
-
-        <h3>
-          💬 WhatsApp Automation
-        </h3>
-
-        <p>
-          Follow-up sy workflows WhatsApp rehefa
-          tafiditra amin'ny provider/API.
-        </p>
-
-      </div>
-
-
-      <div class="premium-card">
-
-        <span class="badge gold">
-          PREMIUM
-        </span>
-
-        <h3>
-          📊 Dashboard avancé
-        </h3>
-
-        <p>
-          Historique, statistiques ary suivi
-          amin'ny fomba voalamina kokoa.
-        </p>
-
-      </div>
-
-
-      <div class="premium-card">
-
-        <span class="badge gray">
-          HO AVY
-        </span>
-
-        <h3>
-          🔔 Alertes & Relance
-        </h3>
-
-        <p>
-          Alertes sy relance automatique rehefa
-          tena ampiharina amin'ny système.
-        </p>
-
       </div>
 
     </div>
 
   </div>
-
 </section>
 
 
-<!-- =========================
-     FOOTER
-========================= -->
+<!-- ================= FOOTER ================= -->
 
 <footer>
 
@@ -2345,35 +1632,74 @@ footer p{
     <div class="footer-grid">
 
       <div>
+        <div class="logo" style="color:#fff;">
+          <div class="logo-mark">🌱</div>
+          <div>
+            Tantsaha Matihanina
+            <small style="color:#c9d9d0;">
+              Mianatra • Mampihatra • Mahomby
+            </small>
+          </div>
+        </div>
 
-        <h3>
-          🌱 Tantsaha Matihanina
-        </h3>
-
-        <p>
-          Mianatra • Mampihatra • Mahomby
-        </p>
-
-        <p style="margin-top:8px">
+        <p style="margin-top:15px;">
           Miara-miasa ho an'ny fampandrosoana
           ny eny ambanivohitra isika.
         </p>
-
       </div>
-
 
       <div>
+        <h3>Formation</h3>
+
+        <p style="margin-top:10px;">
+          🎓 Formation 7 Jours
+        </p>
 
         <p>
-          ©2026 Tantsaha Matihanina / Auteur Freddy
+          🧪 Pratique
         </p>
 
-        <p style="margin-top:8px">
-          Vente Lab V9
+        <p>
+          📊 Retour & Évaluation
         </p>
+      </div>
+
+      <div>
+        <h3>Contact</h3>
+
+        <p style="margin-top:10px;">
+          WhatsApp:
+          +261 38 56 513 78
+        </p>
+
+        <div class="actions">
+
+          <a
+            class="btn btn-gold"
+            href="https://wa.me/261385651378"
+            target="_blank"
+            rel="noopener"
+          >
+            💬 WhatsApp
+          </a>
+
+          <a
+            class="btn btn-light"
+            href="https://www.facebook.com/share/1Zfiu8oj3m/"
+            target="_blank"
+            rel="noopener"
+          >
+            👍 Facebook
+          </a>
+
+        </div>
 
       </div>
 
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 Tantsaha Matihanina / Auteur Freddy
     </div>
 
   </div>
@@ -2381,84 +1707,44 @@ footer p{
 </footer>
 
 
-<!-- =========================================================
-     MODAL : PROFIT
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: PROFIT -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="profitModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        🧮 Kajy Prix & Tombony
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('profitModal')">
-        ×
-      </button>
-
+      <h3>🧮 Kajy Prix & Tombony</h3>
+      <button class="close-btn" onclick="closeModal('profitModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
-      <div class="grid grid-2">
-
-        <div class="form-group">
-
-          <label>
-            Produit
-          </label>
-
-          <input
-            id="profitProduct"
-            placeholder="Ohatra: Akoho Gasy">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Coût total (Ar)
-          </label>
-
-          <input
-            type="number"
-            id="profitCost"
-            min="0"
-            value="0">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Vola azo amin'ny vente (Ar)
-          </label>
-
-          <input
-            type="number"
-            id="profitRevenue"
-            min="0"
-            value="0">
-
-        </div>
-
+      <div class="form-group">
+        <label>Produit</label>
+        <input id="profitProduct" placeholder="Ohatra: Tantely">
       </div>
 
+      <div class="form-group">
+        <label>Coût total (Ar)</label>
+        <input id="profitCost" type="number" min="0" placeholder="50000">
+      </div>
 
-      <button
-        class="btn btn-primary"
-        onclick="calculateProfit()">
+      <div class="form-group">
+        <label>Prix de vente (Ar)</label>
+        <input id="profitPrice" type="number" min="0" placeholder="80000">
+      </div>
+
+      <div class="form-group">
+        <label>Quantité</label>
+        <input id="profitQty" type="number" min="1" value="1">
+      </div>
+
+      <button class="btn btn-primary" onclick="calculateProfit()">
         🧮 Kajio
       </button>
-
 
       <div id="profitResult"></div>
 
@@ -2469,89 +1755,110 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : OFFER
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: ANIMAL -->
+<!-- ========================================================= -->
+
+<div class="modal-overlay" id="animalModal">
+
+  <div class="modal">
+
+    <div class="modal-header">
+      <h3>🐔 Kajy Fiompiana</h3>
+      <button class="close-btn" onclick="closeModal('animalModal')">×</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="form-group">
+        <label>Karazana</label>
+        <select id="animalType">
+          <option>Akoho Gasy</option>
+          <option>Pondeuse</option>
+          <option>Poulet de chair</option>
+          <option>Kisoa</option>
+          <option>Osy</option>
+          <option>Ondry</option>
+          <option>Bitro</option>
+          <option>Vorontsiloza</option>
+          <option>Gana</option>
+          <option>Gisa</option>
+          <option>Trondro</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Isan'ny biby</label>
+        <input id="animalQty" type="number" min="1" value="1">
+      </div>
+
+      <div class="form-group">
+        <label>Coût total (Ar)</label>
+        <input id="animalCost" type="number" min="0" placeholder="100000">
+      </div>
+
+      <div class="form-group">
+        <label>Vente totale vinavinaina (Ar)</label>
+        <input id="animalRevenue" type="number" min="0" placeholder="180000">
+      </div>
+
+      <button class="btn btn-primary" onclick="calculateAnimal()">
+        🧮 Kajio
+      </button>
+
+      <div id="animalResult"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MODAL: OFFER -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="offerModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        🛍️ Créer une Offre
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('offerModal')">
-        ×
-      </button>
-
+      <h3>💡 Créer une Offre</h3>
+      <button class="close-btn" onclick="closeModal('offerModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
       <div class="form-group">
-
-        <label>
-          Produit / Service
-        </label>
-
-        <input
-          id="offerProduct"
-          placeholder="Ohatra: Akoho Gasy">
-
+        <label>Produit / Service</label>
+        <input id="offerProduct" placeholder="Ohatra: Tantely naturel">
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Avantage lehibe
-        </label>
-
-        <input
-          id="offerBenefit"
-          placeholder="Ohatra: Akoho salama sy lehibe">
-
+        <label>Client cible</label>
+        <input id="offerTarget" placeholder="Ohatra: Mpanjifa tia vokatra naturel">
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Prix
-        </label>
-
-        <input
-          id="offerPrice"
-          placeholder="Ohatra: 25 000 Ar">
-
+        <label>Valeur / avantage</label>
+        <textarea id="offerValue"
+          placeholder="Inona no tombony azon'ny client?"></textarea>
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          CTA
-        </label>
-
-        <input
-          id="offerCTA"
-          value="Alefaso MP raha liana">
-
+        <label>Prix</label>
+        <input id="offerPrice" type="number" min="0" placeholder="15000">
       </div>
 
+      <div class="form-group">
+        <label>Bonus / condition</label>
+        <input id="offerBonus" placeholder="Ohatra: Livraison selon zone">
+      </div>
 
-      <button
-        class="btn btn-primary"
-        onclick="createOffer()">
-        ✨ Hamorona Offre
+      <button class="btn btn-primary" onclick="createOffer()">
+        ✨ Créer l'offre
       </button>
-
 
       <div id="offerResult"></div>
 
@@ -2562,76 +1869,65 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : PUBLICATION
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: PUBLICATION -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="publicationModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        📱 Publication
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('publicationModal')">
-        ×
-      </button>
-
+      <h3>📢 Préparer une Publication</h3>
+      <button class="close-btn" onclick="closeModal('publicationModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
       <div class="form-group">
+        <label>Canal</label>
 
-        <label>
-          Produit
-        </label>
+        <select id="publicationChannel">
 
-        <input
-          id="pubProduct"
-          placeholder="Ohatra: Akoho Gasy">
+          <option>Facebook / Page</option>
+          <option>Groupe Facebook</option>
+          <option>WhatsApp Status</option>
+          <option>WhatsApp Groupe</option>
+          <option>Marketplace</option>
+
+        </select>
 
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Prix
-        </label>
-
-        <input
-          id="pubPrice"
-          placeholder="25 000 Ar">
-
+        <label>Produit</label>
+        <input id="publicationProduct" placeholder="Ohatra: Atody akoho">
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Lieu
-        </label>
-
-        <input
-          id="pubLocation"
-          placeholder="Ohatra: Mahanoro">
-
+        <label>Client cible</label>
+        <input id="publicationTarget" placeholder="Ohatra: Mpanjifa ao an-tanàna">
       </div>
 
+      <div class="form-group">
+        <label>Offre</label>
+        <input id="publicationOffer" placeholder="Ohatra: Atody vaovao">
+      </div>
 
-      <button
-        class="btn btn-primary"
-        onclick="createPublication()">
-        📱 Hamorona Publication
+      <div class="form-group">
+        <label>Prix</label>
+        <input id="publicationPrice" type="number" min="0" placeholder="5000">
+      </div>
+
+      <div class="form-group">
+        <label>Message / détail</label>
+        <textarea id="publicationMessage"
+          placeholder="Lazao ny détail ilain'ny client..."></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="createPublication()">
+        📢 Préparer
       </button>
-
 
       <div id="publicationResult"></div>
 
@@ -2642,65 +1938,45 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : SIMULATION
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: SIMULATION -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="simulationModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        💬 Simulation Client
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('simulationModal')">
-        ×
-      </button>
-
+      <h3>💬 Simulation Client</h3>
+      <button class="close-btn" onclick="closeModal('simulationModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
-      <div
-        class="card"
-        style="box-shadow:none">
-
-        <span class="badge gold">
-          CLIENT
-        </span>
-
-        <h3 style="margin-top:8px">
-          “Lafo loatra izany. Misy mora kokoa ve?”
-        </h3>
-
-        <p>
-          Aza miady amin'ny client.
-          Fantaro aloha izay tena anton'ny objection.
-        </p>
-
-
-        <div class="result">
-
-          <strong>
-            Valiny azo ampiharina:
-          </strong>
-
-          <br><br>
-
-          “Azoko tsara tompoko.
-          Mba hahafahako manoro izay tena mety aminao,
-          inona no tena zava-dehibe aminao:
-          ny prix, ny qualité sa ny quantité?”
-
-        </div>
-
+      <div class="notice">
+        Miezaha hamaly toy ny hoe client tena izy no miresaka aminao.
       </div>
+
+      <div class="card" style="box-shadow:none;background:#f7faf8;">
+        <strong>Client:</strong>
+
+        <p style="margin-top:8px;">
+          “Mahaliana ahy ilay produit fa toa lafo ihany.”
+        </p>
+      </div>
+
+      <div class="form-group" style="margin-top:15px;">
+        <label>Valinteninao</label>
+        <textarea
+          id="simulationAnswer"
+          placeholder="Soraty eto ny valinteninao..."></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="evaluateSimulation()">
+        🎯 Hamarino
+      </button>
+
+      <div id="simulationResult"></div>
 
     </div>
 
@@ -2709,126 +1985,54 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : ORDER
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: ORDER -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="orderModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        📝 Nouvelle Commande
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('orderModal')">
-        ×
-      </button>
-
+      <h3>🛒 Nouvelle Commande</h3>
+      <button class="close-btn" onclick="closeModal('orderModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
       <div class="form-group">
-
-        <label>
-          Nom client
-        </label>
-
-        <input
-          id="orderClient"
-          placeholder="Anaran'ny client">
-
+        <label>Client</label>
+        <input id="orderClient" placeholder="Anaran'ny client">
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Produit
-        </label>
-
-        <input
-          id="orderProduct"
-          placeholder="Produit">
-
+        <label>Produit</label>
+        <input id="orderProduct" placeholder="Produit">
       </div>
-
-
-      <div class="grid grid-2">
-
-        <div class="form-group">
-
-          <label>
-            Quantité
-          </label>
-
-          <input
-            type="number"
-            id="orderQty"
-            value="1"
-            min="1">
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label>
-            Total (Ar)
-          </label>
-
-          <input
-            type="number"
-            id="orderTotal"
-            value="0"
-            min="0">
-
-        </div>
-
-      </div>
-
 
       <div class="form-group">
+        <label>Quantité</label>
+        <input id="orderQty" type="number" min="1" value="1">
+      </div>
 
-        <label>
-          Statut
-        </label>
+      <div class="form-group">
+        <label>Prix unitaire (Ar)</label>
+        <input id="orderUnitPrice" type="number" min="0" placeholder="10000">
+      </div>
 
+      <div class="form-group">
+        <label>Statut</label>
         <select id="orderStatus">
-
-          <option>
-            En attente
-          </option>
-
-          <option>
-            Confirmée
-          </option>
-
-          <option>
-            Payée
-          </option>
-
-          <option>
-            Livrée
-          </option>
-
+          <option value="pending">En attente</option>
+          <option value="paid">Payé</option>
+          <option value="completed">Terminé</option>
+          <option value="cancelled">Annulé</option>
         </select>
-
       </div>
 
-
-      <button
-        class="btn btn-primary"
-        onclick="makeOrder()">
-        💾 Tehirizo Commande
+      <button class="btn btn-primary" onclick="makeOrder()">
+        🛒 Enregistrer
       </button>
-
 
       <div id="orderResult"></div>
 
@@ -2839,77 +2043,56 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : RECEIPT
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: RECEIPT -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="receiptModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        🧾 Reçu de Vente
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('receiptModal')">
-        ×
-      </button>
-
+      <h3>🧾 Reçu de Vente</h3>
+      <button class="close-btn" onclick="closeModal('receiptModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
       <div class="form-group">
-
-        <label>
-          Nom client
-        </label>
-
-        <input
-          id="receiptClient"
-          placeholder="Client">
-
+        <label>Client</label>
+        <input id="receiptClient" placeholder="Nom du client">
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Produit
-        </label>
-
-        <input
-          id="receiptProduct"
-          placeholder="Produit">
-
+        <label>Produit</label>
+        <input id="receiptProduct" placeholder="Produit">
       </div>
-
 
       <div class="form-group">
-
-        <label>
-          Montant (Ar)
-        </label>
-
-        <input
-          type="number"
-          id="receiptAmount"
-          value="0">
-
+        <label>Quantité</label>
+        <input id="receiptQty" type="number" min="1" value="1">
       </div>
 
+      <div class="form-group">
+        <label>Prix unitaire (Ar)</label>
+        <input id="receiptUnitPrice" type="number" min="0" placeholder="10000">
+      </div>
 
-      <button
-        class="btn btn-primary"
-        onclick="makeReceipt()">
-        🧾 Mamorona & Tehirizo
+      <div class="form-group">
+        <label>Moyen de paiement</label>
+        <select id="receiptPayment">
+          <option>Espèces</option>
+          <option>MVola</option>
+          <option>Orange Money</option>
+          <option>Airtel Money</option>
+          <option>Virement</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" onclick="makeReceipt()">
+        🧾 Créer Reçu
       </button>
-
 
       <div id="receiptResult"></div>
 
@@ -2920,94 +2103,49 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : GUIDE
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: GUIDE -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="guideModal">
 
   <div class="modal">
 
     <div class="modal-header">
-
-      <h3>
-        📖 Tantsaha Guide
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('guideModal')">
-        ×
-      </button>
-
+      <h3>📚 Guide Vente</h3>
+      <button class="close-btn" onclick="closeModal('guideModal')">×</button>
     </div>
-
 
     <div class="modal-body">
 
-      <div class="notice">
-
-        Guide pratique fototra izy ity.
-        Tsy mbola AI connecté amin'ny V9.
-
+      <div class="card" style="box-shadow:none;">
+        <h3>1️⃣ Fantaro ny client</h3>
+        <p>
+          Aza manomboka amin'ny produit fotsiny.
+          Fantaro aloha izay ilain'ny client.
+        </p>
       </div>
 
+      <div class="card" style="box-shadow:none;margin-top:10px;">
+        <h3>2️⃣ Asehoy ny valeur</h3>
+        <p>
+          Lazao izay tombony azony fa tsy prix fotsiny.
+        </p>
+      </div>
 
-      <div class="grid grid-2">
+      <div class="card" style="box-shadow:none;margin-top:10px;">
+        <h3>3️⃣ Valio ny objection</h3>
+        <p>
+          Aza miady amin'ny client. Henoy aloha ny antony.
+        </p>
+      </div>
 
-        <div class="card">
-
-          <h3>
-            🧮 Prix
-          </h3>
-
-          <p>
-            Tsy ny vidin'achat ihany no jerena.
-            Ampidiro ny coût rehetra vao mametraka prix.
-          </p>
-
-        </div>
-
-
-        <div class="card">
-
-          <h3>
-            💰 Tombony
-          </h3>
-
-          <p>
-            Tombony = vola azo amin'ny vente − coût total.
-          </p>
-
-        </div>
-
-
-        <div class="card">
-
-          <h3>
-            💬 Client
-          </h3>
-
-          <p>
-            Anontanio aloha ny besoin vao manolotra solution.
-          </p>
-
-        </div>
-
-
-        <div class="card">
-
-          <h3>
-            📝 Closing
-          </h3>
-
-          <p>
-            Rehefa mazava ny fifanarahana dia ataovy
-            commande mazava.
-          </p>
-
-        </div>
-
+      <div class="card" style="box-shadow:none;margin-top:10px;">
+        <h3>4️⃣ Closing</h3>
+        <p>
+          Rehefa vonona ny client dia ataovy mazava ny commande,
+          paiement ary livraison.
+        </p>
       </div>
 
     </div>
@@ -3017,9 +2155,9 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     MODAL : AVIS
-========================================================= -->
+<!-- ========================================================= -->
+<!-- MODAL: REVIEW -->
+<!-- ========================================================= -->
 
 <div class="modal-overlay" id="reviewModal">
 
@@ -3027,29 +2165,29 @@ footer p{
 
     <div class="modal-header">
 
-      <h3>
-        ⭐ Hametraka Avis
-      </h3>
+      <h3>⭐ Hametraka Avis</h3>
 
       <button
         class="close-btn"
         onclick="closeModal('reviewModal')"
-        aria-label="Fermer">
+      >
         ×
       </button>
 
     </div>
-
 
     <div class="modal-body">
 
       <div class="notice">
 
         🙏 Zarao amin'ny fahitsiana ny expérience-nao.
-        Hojerena aloha ny avis vao hiseho ampahibemaso ao amin'ny site.
+
+        <br><br>
+
+        Hojerena aloha ny avis vao hiseho ampahibemaso
+        ao amin'ny site.
 
       </div>
-
 
       <div class="form-group">
 
@@ -3083,7 +2221,6 @@ footer p{
 
       </div>
 
-
       <div class="form-group">
 
         <label for="reviewName">
@@ -3092,10 +2229,11 @@ footer p{
 
         <input
           id="reviewName"
-          placeholder="Ohatra: Jean">
+          maxlength="80"
+          placeholder="Ohatra: Jean"
+        >
 
       </div>
-
 
       <div class="form-group">
 
@@ -3105,10 +2243,10 @@ footer p{
 
         <input
           id="reviewLearning"
-          placeholder="Ohatra: Technique de vente">
+          placeholder="Ohatra: Technique de vente"
+        >
 
       </div>
-
 
       <div class="form-group">
 
@@ -3118,10 +2256,10 @@ footer p{
 
         <textarea
           id="reviewApplied"
-          placeholder="Ohatra: Nampiasa ilay méthode rehefa niresaka tamin'ny client aho."></textarea>
+          placeholder="Ohatra: Nampiasa ilay méthode rehefa niresaka tamin'ny client aho."
+        ></textarea>
 
       </div>
-
 
       <div class="form-group">
 
@@ -3131,10 +2269,10 @@ footer p{
 
         <textarea
           id="reviewResult"
-          placeholder="Ohatra: Nahazo réponses bebe kokoa avy amin'ny prospects aho."></textarea>
+          placeholder="Ohatra: Nahazo réponses bebe kokoa avy amin'ny prospects aho."
+        ></textarea>
 
       </div>
-
 
       <div class="form-group">
 
@@ -3144,20 +2282,21 @@ footer p{
 
         <textarea
           id="reviewMessage"
-          placeholder="Lazao amin'ny teny tsotra ny expérience-nao..."></textarea>
+          maxlength="2000"
+          placeholder="Lazao amin'ny teny tsotra ny expérience-nao..."
+        ></textarea>
 
       </div>
 
-
       <div class="form-group">
 
-        <label
-          style="display:flex;gap:8px;align-items:flex-start;font-weight:500;">
+        <label style="display:flex;gap:8px;align-items:flex-start;font-weight:500;">
 
           <input
             type="checkbox"
             id="reviewConsent"
-            style="width:auto;margin-top:4px;">
+            style="width:auto;margin-top:4px;"
+          >
 
           <span>
             Manaiky hampiseho ity avis ity ao amin'ny site aho.
@@ -3167,21 +2306,21 @@ footer p{
 
       </div>
 
-
       <div id="reviewSubmitResult"></div>
-
 
       <div class="actions">
 
         <button
           class="btn btn-primary"
-          onclick="submitReview()">
+          onclick="submitReview()"
+        >
           ⭐ Alefa ny Avis
         </button>
 
         <button
           class="btn btn-light"
-          onclick="closeModal('reviewModal')">
+          onclick="closeModal('reviewModal')"
+        >
           Hanafoana
         </button>
 
@@ -3194,160 +2333,49 @@ footer p{
 </div>
 
 
-<!-- =========================================================
-     BOOK CATALOG MODAL
-========================================================= -->
+<!-- ========================================================= -->
+<!-- SUPABASE -->
+<!-- ========================================================= -->
 
-<div class="modal-overlay" id="bookCatalogModal">
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <h3>
-        📚 Catalogue Boky
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('bookCatalogModal')">
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="modal-body">
-
-      <div class="catalog-grid">
-
-
-        <!-- BOOK 1 -->
-
-        <div class="catalog-card">
-
-          <span class="badge gold">
-            DISPONIBLE
-          </span>
-
-          <h4>
-            📘 Formation Vente en Ligne
-          </h4>
-
-          <p>
-            Débutant + Professionnel.
-            Manuel pratique momba ny vente en ligne.
-          </p>
-
-          <p class="price">
-            5 000 Ar
-          </p>
-
-
-          <div class="actions">
-
-            <button
-              class="btn btn-light btn-small"
-              onclick="showBook('vente')">
-              Hijery antsipiriany
-            </button>
-
-
-            <a
-              class="btn btn-primary btn-small"
-              target="_blank"
-              rel="noopener"
-              href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20hividy%20ny%20PDF%20Formation%20Vente%20en%20Ligne%20aho.%20%F0%9F%93%98%0A%F0%9F%92%B0%20Vidiny%3A%205%20000%20Ar%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20fomba%20fandoavana%20sy%20ny%20fomba%20hahazoako%20ilay%20PDF.%0AMisaotra%20%F0%9F%99%8F">
-              💬 Hividy — 5 000 Ar
-            </a>
-
-          </div>
-
-        </div>
-
-
-        <!-- BOOK 2 -->
-
-        <div class="catalog-card">
-
-          <span class="badge gold">
-            DISPONIBLE
-          </span>
-
-          <h4>
-            🍯 Pack Fiompiana Tantely Matihanina
-          </h4>
-
-          <p>
-            Formation pratique momba ny fiompiana tantely,
-            miaraka amin'ny supports sy ressources.
-          </p>
-
-          <p class="price">
-            Promo: 5 000 Ar
-          </p>
-
-
-          <div class="actions">
-
-            <button
-              class="btn btn-light btn-small"
-              onclick="showBook('honey')">
-              Hijery antsipiriany
-            </button>
-
-
-            <a
-              class="btn btn-primary btn-small"
-              target="_blank"
-              rel="noopener"
-              href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20amin%27ny%20Pack%20Fiompiana%20Tantely%20Matihanina%20aho.%20%F0%9F%8D%AF%F0%9F%93%98%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20vidiny%20sy%20ny%20fomba%20hahazoako%20ilay%20pack.%0AMisaotra%20%F0%9F%99%8F">
-              💬 Hividy
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="bookDetails"
-        style="margin-top:20px">
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-/* =========================================================
-   STORAGE
-========================================================= */
+/* ============================================================
+   SUPABASE CONFIG
+   Tantsaha Matihanina
+============================================================ */
 
-const STORAGE_KEY = "tm_vente_lab_v9";
-const REVIEW_STORAGE_KEY = "tm_vente_lab_reviews_v1";
+const SUPABASE_URL =
+  "https://sdzybetralbaincrxddf.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+/* ============================================================
+   LOCAL APP DATA
+============================================================ */
+
+const STORAGE_KEY =
+  "tm_vente_lab_v10";
+
+const PROGRESS_KEY =
+  "tm_vente_lab_progress_v1";
 
 
 function defaultData(){
 
   return {
-
-    calculations: [],
-    orders: [],
-    receipts: [],
-    prospects: [],
-    products: []
-
+    calculations:[],
+    orders:[],
+    receipts:[]
   };
 
 }
@@ -3357,28 +2385,12 @@ function loadData(){
 
   try{
 
-    const raw =
-      localStorage.getItem(STORAGE_KEY);
-
-    if(!raw){
-
-      return defaultData();
-
-    }
-
-    const data =
-      JSON.parse(raw);
-
-    return {
-
-      ...defaultData(),
-      ...data
-
-    };
+    return JSON.parse(
+      localStorage.getItem(STORAGE_KEY)
+      || JSON.stringify(defaultData())
+    );
 
   }catch(error){
-
-    console.error(error);
 
     return defaultData();
 
@@ -3397,37 +2409,81 @@ function saveData(data){
 }
 
 
-let appData =
-  loadData();
+/* ============================================================
+   UTILITIES
+============================================================ */
+
+function money(value){
+
+  const number =
+    Number(value) || 0;
+
+  return number.toLocaleString(
+    "fr-FR"
+  ) + " Ar";
+
+}
 
 
-/* =========================================================
-   MENU MOBILE
-========================================================= */
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(date){
+
+  try{
+
+    return new Date(date).toLocaleDateString(
+      "fr-FR",
+      {
+        day:"2-digit",
+        month:"2-digit",
+        year:"numeric"
+      }
+    );
+
+  }catch(error){
+
+    return "";
+
+  }
+
+}
+
+
+/* ============================================================
+   MOBILE MENU
+============================================================ */
 
 function toggleMenu(){
 
-  const menu =
-    document.getElementById("mobileMenu");
-
-  menu.classList.toggle("open");
+  document
+    .getElementById("navLinks")
+    .classList.toggle("open");
 
 }
 
 
 function closeMenu(){
 
-  const menu =
-    document.getElementById("mobileMenu");
-
-  menu.classList.remove("open");
+  document
+    .getElementById("navLinks")
+    .classList.remove("open");
 
 }
 
 
-/* =========================================================
+/* ============================================================
    MODALS
-========================================================= */
+============================================================ */
 
 function openModal(id){
 
@@ -3436,7 +2492,7 @@ function openModal(id){
 
   if(modal){
 
-    modal.classList.add("show");
+    modal.classList.add("active");
 
   }
 
@@ -3450,14 +2506,12 @@ function closeModal(id){
 
   if(modal){
 
-    modal.classList.remove("show");
+    modal.classList.remove("active");
 
   }
 
 }
 
-
-/* Close modal by clicking outside */
 
 document.addEventListener(
   "click",
@@ -3469,7 +2523,9 @@ document.addEventListener(
       )
     ){
 
-      event.target.classList.remove("show");
+      event.target.classList.remove(
+        "active"
+      );
 
     }
 
@@ -3477,313 +2533,116 @@ document.addEventListener(
 );
 
 
-/* =========================================================
-   FORMAT MONEY
-========================================================= */
+/* ============================================================
+   COPY
+============================================================ */
 
-function money(value){
+async function copyText(text){
 
-  return Number(value || 0)
-    .toLocaleString("fr-FR") + " Ar";
+  try{
+
+    await navigator.clipboard.writeText(text);
+
+    alert("✅ Voacopyé.");
+
+  }catch(error){
+
+    const textarea =
+      document.createElement("textarea");
+
+    textarea.value = text;
+
+    document.body.appendChild(
+      textarea
+    );
+
+    textarea.select();
+
+    document.execCommand("copy");
+
+    textarea.remove();
+
+    alert("✅ Voacopyé.");
+
+  }
 
 }
 
 
-/* =========================================================
-   PROFIT CALCULATOR
-========================================================= */
+/* ============================================================
+   PROFIT
+============================================================ */
 
 function calculateProfit(){
 
   const product =
     document.getElementById("profitProduct")
-      .value.trim() ||
-    "Produit sans nom";
-
+      .value.trim();
 
   const cost =
     Number(
-      document.getElementById("profitCost").value
+      document.getElementById("profitCost")
+        .value
     ) || 0;
 
-
-  const revenue =
+  const price =
     Number(
-      document.getElementById("profitRevenue").value
+      document.getElementById("profitPrice")
+        .value
     ) || 0;
 
+  const qty =
+    Number(
+      document.getElementById("profitQty")
+        .value
+    ) || 1;
 
-  const profit =
-    revenue - cost;
+  if(!product){
 
+    alert("Ampidiro ny produit.");
 
-  let margin = 0;
-
-
-  if(revenue > 0){
-
-    margin =
-      (profit / revenue) * 100;
+    return;
 
   }
 
+  if(cost < 0 || price < 0 || qty <= 0){
 
-  const result =
-    document.getElementById("profitResult");
+    alert("Hamarino ny isa.");
 
+    return;
 
-  result.className =
-    "result " +
-    (
-      profit >= 0
-      ? "profit"
-      : "loss"
-    );
+  }
 
+  const totalCost =
+    cost * qty;
 
-  result.innerHTML = `
+  const revenue =
+    price * qty;
 
-    <strong>${escapeHtml(product)}</strong>
-    <br><br>
+  const profit =
+    revenue - totalCost;
 
-    Coût total:
-    <strong>${money(cost)}</strong>
+  const margin =
+    revenue > 0
+      ? (profit / revenue) * 100
+      : 0;
 
-    <br>
+  const data =
+    loadData();
 
-    Vente:
-    <strong>${money(revenue)}</strong>
+  data.calculations.unshift({
 
-    <br>
-
-    ${
-      profit >= 0
-      ? "Tombony"
-      : "Fatiantoka"
-    }:
-
-    <strong>
-      ${money(Math.abs(profit))}
-    </strong>
-
-    <br>
-
-    Marge:
-    <strong>
-      ${margin.toFixed(2)}%
-    </strong>
-
-  `;
-
-
-  appData.calculations.unshift({
-
-    id: Date.now(),
-
-    type: "profit",
+    id:Date.now(),
 
     product,
 
     cost,
 
-    revenue,
-
-    profit,
-
-    margin,
-
-    date: new Date().toISOString()
-
-  });
-
-
-  appData.calculations =
-    appData.calculations.slice(0,100);
-
-
-  saveData(appData);
-
-  refreshDashboard();
-
-}
-
-
-/* =========================================================
-   ANIMAL CALCULATOR
-========================================================= */
-
-function calculateAnimal(){
-
-  const animal =
-    document.getElementById("animalType")
-      .value;
-
-
-  const qty =
-    Number(
-      document.getElementById("animalQty").value
-    ) || 0;
-
-
-  const purchase =
-    Number(
-      document.getElementById("animalPurchase").value
-    ) || 0;
-
-
-  const feed =
-    Number(
-      document.getElementById("animalFeed").value
-    ) || 0;
-
-
-  const care =
-    Number(
-      document.getElementById("animalCare").value
-    ) || 0;
-
-
-  const transport =
-    Number(
-      document.getElementById("animalTransport").value
-    ) || 0;
-
-
-  const revenue =
-    Number(
-      document.getElementById("animalRevenue").value
-    ) || 0;
-
-
-  const purchaseTotal =
-    qty * purchase;
-
-
-  const totalCost =
-    purchaseTotal +
-    feed +
-    care +
-    transport;
-
-
-  const profit =
-    revenue - totalCost;
-
-
-  let margin = 0;
-
-
-  if(revenue > 0){
-
-    margin =
-      (profit / revenue) * 100;
-
-  }
-
-
-  const result =
-    document.getElementById("animalResult");
-
-
-  result.className =
-    "result " +
-    (
-      profit >= 0
-      ? "profit"
-      : "loss"
-    );
-
-
-  result.innerHTML = `
-
-    <strong>
-      ${escapeHtml(animal)}
-    </strong>
-    — ${qty} biby
-
-    <br><br>
-
-    Achat:
-    <strong>
-      ${money(purchaseTotal)}
-    </strong>
-
-    <br>
-
-    Sakafo:
-    <strong>
-      ${money(feed)}
-    </strong>
-
-    <br>
-
-    Fikarakarana:
-    <strong>
-      ${money(care)}
-    </strong>
-
-    <br>
-
-    Transport:
-    <strong>
-      ${money(transport)}
-    </strong>
-
-    <br>
-
-    Coût total:
-    <strong>
-      ${money(totalCost)}
-    </strong>
-
-    <br>
-
-    Vente:
-    <strong>
-      ${money(revenue)}
-    </strong>
-
-    <br><br>
-
-    ${
-      profit >= 0
-      ? "Tombony"
-      : "Fatiantoka"
-    }:
-
-    <strong>
-      ${money(Math.abs(profit))}
-    </strong>
-
-    <br>
-
-    Marge:
-    <strong>
-      ${margin.toFixed(2)}%
-    </strong>
-
-  `;
-
-
-  appData.calculations.unshift({
-
-    id: Date.now(),
-
-    type: "animal",
-
-    animal,
+    price,
 
     qty,
 
-    purchaseTotal,
-
-    feed,
-
-    care,
-
-    transport,
-
-    cost: totalCost,
+    totalCost,
 
     revenue,
 
@@ -3791,25 +2650,182 @@ function calculateAnimal(){
 
     margin,
 
-    date: new Date().toISOString()
+    date:new Date().toISOString()
 
   });
 
+  data.calculations =
+    data.calculations.slice(0,50);
 
-  appData.calculations =
-    appData.calculations.slice(0,100);
+  saveData(data);
 
+  document.getElementById(
+    "profitResult"
+  ).innerHTML = `
 
-  saveData(appData);
+    <div class="result ${profit >= 0 ? "profit" : ""}">
+
+      <strong>
+        ${escapeHtml(product)}
+      </strong>
+
+      <br><br>
+
+      Coût total:
+      <strong>${money(totalCost)}</strong>
+
+      <br>
+
+      CA:
+      <strong>${money(revenue)}</strong>
+
+      <br>
+
+      Tombony:
+      <strong>${money(profit)}</strong>
+
+      <br>
+
+      Marge:
+      <strong>${margin.toFixed(2)}%</strong>
+
+    </div>
+
+  `;
 
   refreshDashboard();
 
 }
 
 
-/* =========================================================
-   OFFER CREATOR
-========================================================= */
+/* ============================================================
+   ANIMAL
+============================================================ */
+
+function calculateAnimal(){
+
+  const type =
+    document.getElementById("animalType")
+      .value;
+
+  const qty =
+    Number(
+      document.getElementById("animalQty")
+        .value
+    ) || 1;
+
+  const cost =
+    Number(
+      document.getElementById("animalCost")
+        .value
+    ) || 0;
+
+  const revenue =
+    Number(
+      document.getElementById("animalRevenue")
+        .value
+    ) || 0;
+
+  const profit =
+    revenue - cost;
+
+  const unitCost =
+    qty > 0
+      ? cost / qty
+      : 0;
+
+  const unitRevenue =
+    qty > 0
+      ? revenue / qty
+      : 0;
+
+  const unitProfit =
+    qty > 0
+      ? profit / qty
+      : 0;
+
+  const data =
+    loadData();
+
+  data.calculations.unshift({
+
+    id:Date.now(),
+
+    product:"Fiompiana - " + type,
+
+    cost,
+
+    price:unitRevenue,
+
+    qty,
+
+    totalCost:cost,
+
+    revenue,
+
+    profit,
+
+    margin:
+      revenue > 0
+        ? (profit / revenue) * 100
+        : 0,
+
+    date:new Date().toISOString()
+
+  });
+
+  data.calculations =
+    data.calculations.slice(0,50);
+
+  saveData(data);
+
+  document.getElementById(
+    "animalResult"
+  ).innerHTML = `
+
+    <div class="result ${profit >= 0 ? "profit" : ""}">
+
+      <strong>
+        ${escapeHtml(type)}
+      </strong>
+
+      <br><br>
+
+      Isan'ny biby:
+      <strong>${qty}</strong>
+
+      <br>
+
+      Coût / biby:
+      <strong>${money(unitCost)}</strong>
+
+      <br>
+
+      Vente / biby:
+      <strong>${money(unitRevenue)}</strong>
+
+      <br>
+
+      Tombony / biby:
+      <strong>${money(unitProfit)}</strong>
+
+      <br><br>
+
+      Tombony total:
+      <strong>${money(profit)}</strong>
+
+    </div>
+
+  `;
+
+  refreshDashboard();
+
+}
+
+
+/* ============================================================
+   OFFER
+============================================================ */
 
 function createOffer(){
 
@@ -3817,47 +2833,51 @@ function createOffer(){
     document.getElementById("offerProduct")
       .value.trim();
 
-
-  const benefit =
-    document.getElementById("offerBenefit")
+  const target =
+    document.getElementById("offerTarget")
       .value.trim();
 
+  const value =
+    document.getElementById("offerValue")
+      .value.trim();
 
   const price =
-    document.getElementById("offerPrice")
+    Number(
+      document.getElementById("offerPrice")
+        .value
+    ) || 0;
+
+  const bonus =
+    document.getElementById("offerBonus")
       .value.trim();
 
-
-  const cta =
-    document.getElementById("offerCTA")
-      .value.trim();
-
-
-  if(!product){
+  if(!product || !target || !value){
 
     alert(
-      "Ampidiro aloha ny produit."
+      "Fenoy aloha ny produit, client cible ary valeur."
     );
 
     return;
 
   }
 
+  const text =
 
-  const text = `
+`🌱 ${product}
 
-🛍️ ${product}
+🎯 Ho an'ny:
+${target}
 
-✨ ${benefit}
+✨ Tombony:
+${value}
 
-💰 Prix: ${price}
+💰 Prix:
+${money(price)}
 
-📩 ${cta}
+🎁 Condition:
+${bonus || "Araka ny fifanarahana"}
 
-🌱 Tantsaha Matihanina
-Mianatra • Mampihatra • Mahomby
-
-  `.trim();
+📩 Raha liana ianao dia manorata aminay.`;
 
 
   document.getElementById(
@@ -3866,23 +2886,22 @@ Mianatra • Mampihatra • Mahomby
 
     <div class="result">
 
-      <strong>
-        Offre:
-      </strong>
+      <strong>Offre vonona:</strong>
 
-      <br><br>
-
-      <textarea readonly>${escapeHtml(text)}</textarea>
-
-      <div class="actions">
-
-        <button
-          class="btn btn-light"
-          onclick="copyText(this)">
-          📋 Copier
-        </button>
-
+      <div
+        id="offerCopyTarget"
+        style="white-space:pre-line;margin-top:10px;"
+      >
+        ${escapeHtml(text)}
       </div>
+
+      <button
+        class="btn btn-light"
+        style="margin-top:12px"
+        onclick='copyText(${JSON.stringify(text)})'
+      >
+        📋 Copier
+      </button>
 
     </div>
 
@@ -3891,31 +2910,49 @@ Mianatra • Mampihatra • Mahomby
 }
 
 
-/* =========================================================
+/* ============================================================
    PUBLICATION
-========================================================= */
+============================================================ */
 
 function createPublication(){
 
-  const product =
-    document.getElementById("pubProduct")
-      .value.trim();
+  const channel =
+    document.getElementById(
+      "publicationChannel"
+    ).value;
 
+  const product =
+    document.getElementById(
+      "publicationProduct"
+    ).value.trim();
+
+  const target =
+    document.getElementById(
+      "publicationTarget"
+    ).value.trim();
+
+  const offer =
+    document.getElementById(
+      "publicationOffer"
+    ).value.trim();
 
   const price =
-    document.getElementById("pubPrice")
-      .value.trim();
+    Number(
+      document.getElementById(
+        "publicationPrice"
+      ).value
+    ) || 0;
+
+  const message =
+    document.getElementById(
+      "publicationMessage"
+    ).value.trim();
 
 
-  const location =
-    document.getElementById("pubLocation")
-      .value.trim();
-
-
-  if(!product){
+  if(!product || !offer){
 
     alert(
-      "Ampidiro ny produit."
+      "Fenoy aloha ny produit sy ny offre."
     );
 
     return;
@@ -3923,22 +2960,24 @@ function createPublication(){
   }
 
 
-  const text = `
+  const text =
 
-🌱 ${product}
+`📢 ${offer}
 
-Misy ${product} amidy.
+🌱 Produit:
+${product}
 
-💰 Vidiny: ${price}
+🎯 Ho an'ny:
+${target || "Mpanjifa liana"}
 
-📍 Toerana: ${location}
+💰 Vidiny:
+${money(price)}
 
-📩 Raha liana ianao dia afaka mandefa MP.
+${message}
 
-Tantsaha Matihanina
-Mianatra • Mampihatra • Mahomby
+📩 Raha liana ianao dia mandefasa message.
 
-  `.trim();
+#TantsahaMatihanina`;
 
 
   document.getElementById(
@@ -3947,15 +2986,32 @@ Mianatra • Mampihatra • Mahomby
 
     <div class="result">
 
-      <textarea readonly>${escapeHtml(text)}</textarea>
+      <span class="badge">
+        ${escapeHtml(channel)}
+      </span>
+
+      <div
+        style="white-space:pre-line;margin-top:12px;"
+      >
+        ${escapeHtml(text)}
+      </div>
 
       <div class="actions">
 
         <button
-          class="btn btn-light"
-          onclick="copyText(this)">
+          class="btn btn-primary"
+          onclick='copyText(${JSON.stringify(text)})'
+        >
           📋 Copier
         </button>
+
+        <a
+          class="btn btn-light"
+          href="#retour"
+          onclick="closeModal('publicationModal')"
+        >
+          📊 Hanao Retour
+        </a>
 
       </div>
 
@@ -3966,121 +3022,21 @@ Mianatra • Mampihatra • Mahomby
 }
 
 
-/* =========================================================
-   COPY
-========================================================= */
+/* ============================================================
+   SIMULATION
+============================================================ */
 
-function copyText(button){
+function evaluateSimulation(){
 
-  const textarea =
-    button.parentElement
-      .previousElementSibling;
+  const answer =
+    document.getElementById(
+      "simulationAnswer"
+    ).value.trim();
 
-
-  if(!textarea){
-
-    return;
-
-  }
-
-
-  if(
-    navigator.clipboard &&
-    window.isSecureContext
-  ){
-
-    navigator.clipboard
-      .writeText(textarea.value)
-      .then(function(){
-
-        button.textContent =
-          "✅ Voacopy";
-
-        setTimeout(
-          function(){
-
-            button.textContent =
-              "📋 Copier";
-
-          },
-          1500
-        );
-
-      })
-      .catch(function(){
-
-        fallbackCopy(textarea,button);
-
-      });
-
-  }else{
-
-    fallbackCopy(textarea,button);
-
-  }
-
-}
-
-
-function fallbackCopy(textarea,button){
-
-  textarea.select();
-
-  document.execCommand("copy");
-
-  button.textContent =
-    "✅ Voacopy";
-
-  setTimeout(
-    function(){
-
-      button.textContent =
-        "📋 Copier";
-
-    },
-    1500
-  );
-
-}
-
-
-/* =========================================================
-   ORDER
-========================================================= */
-
-function makeOrder(){
-
-  const client =
-    document.getElementById("orderClient")
-      .value.trim();
-
-
-  const product =
-    document.getElementById("orderProduct")
-      .value.trim();
-
-
-  const qty =
-    Number(
-      document.getElementById("orderQty").value
-    ) || 0;
-
-
-  const total =
-    Number(
-      document.getElementById("orderTotal").value
-    ) || 0;
-
-
-  const status =
-    document.getElementById("orderStatus")
-      .value;
-
-
-  if(!client || !product){
+  if(!answer){
 
     alert(
-      "Ampidiro ny client sy ny produit."
+      "Soraty aloha ny valinteninao."
     );
 
     return;
@@ -4088,9 +3044,135 @@ function makeOrder(){
   }
 
 
-  appData.orders.unshift({
+  const lower =
+    answer.toLowerCase();
 
-    id: Date.now(),
+  let score = 0;
+
+  if(
+    lower.includes("lafo") ||
+    lower.includes("prix")
+  ){
+
+    score++;
+
+  }
+
+  if(
+    lower.includes("tombony") ||
+    lower.includes("valeur") ||
+    lower.includes("qualité")
+  ){
+
+    score++;
+
+  }
+
+  if(
+    lower.includes("inona") ||
+    lower.includes("izay")
+  ){
+
+    score++;
+
+  }
+
+
+  let message = "";
+
+  if(score >= 2){
+
+    message =
+      "🟢 Tsara. Miezaka mamaly ny objection ianao ary mampiditra valeur.";
+
+  }else{
+
+    message =
+      "🟡 Mbola mila fanazaran-tena. Aza miady amin'ny prix fotsiny; fantaro aloha ny antony mahatonga azy hilaza hoe lafo.";
+
+  }
+
+
+  document.getElementById(
+    "simulationResult"
+  ).innerHTML = `
+
+    <div class="result">
+
+      <strong>
+        ${message}
+      </strong>
+
+      <p style="margin-top:10px;">
+        Fitsipika:
+        Henoy → Fantaro → Valio → Tariho amin'ny solution.
+      </p>
+
+    </div>
+
+  `;
+
+}
+
+
+/* ============================================================
+   ORDER
+============================================================ */
+
+function makeOrder(){
+
+  const client =
+    document.getElementById(
+      "orderClient"
+    ).value.trim();
+
+  const product =
+    document.getElementById(
+      "orderProduct"
+    ).value.trim();
+
+  const qty =
+    Number(
+      document.getElementById(
+        "orderQty"
+      ).value
+    ) || 1;
+
+  const unitPrice =
+    Number(
+      document.getElementById(
+        "orderUnitPrice"
+      ).value
+    ) || 0;
+
+  const status =
+    document.getElementById(
+      "orderStatus"
+    ).value;
+
+
+  if(!client || !product){
+
+    alert(
+      "Fenoy ny client sy produit."
+    );
+
+    return;
+
+  }
+
+
+  const total =
+    qty * unitPrice;
+
+
+  const data =
+    loadData();
+
+
+  data.orders.unshift({
+
+    id:Date.now(),
 
     client,
 
@@ -4098,22 +3180,22 @@ function makeOrder(){
 
     qty,
 
+    unitPrice,
+
     total,
 
     status,
 
-    date: new Date().toISOString()
+    date:new Date().toISOString()
 
   });
 
 
-  appData.orders =
-    appData.orders.slice(0,100);
+  data.orders =
+    data.orders.slice(0,100);
 
 
-  saveData(appData);
-
-  refreshDashboard();
+  saveData(data);
 
 
   document.getElementById(
@@ -4126,53 +3208,69 @@ function makeOrder(){
 
       <br><br>
 
-      <strong>
-        ${escapeHtml(client)}
-      </strong>
-
-      —
-      ${escapeHtml(product)}
+      Client:
+      <strong>${escapeHtml(client)}</strong>
 
       <br>
 
       Total:
-      <strong>
-        ${money(total)}
-      </strong>
+      <strong>${money(total)}</strong>
+
+      <br>
+
+      Statut:
+      <strong>${escapeHtml(status)}</strong>
 
     </div>
 
   `;
 
+
+  refreshDashboard();
+
 }
 
 
-/* =========================================================
+/* ============================================================
    RECEIPT
-========================================================= */
+============================================================ */
 
 function makeReceipt(){
 
   const client =
-    document.getElementById("receiptClient")
-      .value.trim();
-
+    document.getElementById(
+      "receiptClient"
+    ).value.trim();
 
   const product =
-    document.getElementById("receiptProduct")
-      .value.trim();
+    document.getElementById(
+      "receiptProduct"
+    ).value.trim();
 
-
-  const amount =
+  const qty =
     Number(
-      document.getElementById("receiptAmount").value
+      document.getElementById(
+        "receiptQty"
+      ).value
+    ) || 1;
+
+  const unitPrice =
+    Number(
+      document.getElementById(
+        "receiptUnitPrice"
+      ).value
     ) || 0;
+
+  const payment =
+    document.getElementById(
+      "receiptPayment"
+    ).value;
 
 
   if(!client || !product){
 
     alert(
-      "Ampidiro ny client sy ny produit."
+      "Fenoy ny client sy produit."
     );
 
     return;
@@ -4180,64 +3278,86 @@ function makeReceipt(){
   }
 
 
-  const receipt = {
+  const total =
+    qty * unitPrice;
 
-    id: Date.now(),
+  const number =
+    "TM-" +
+    Date.now()
+      .toString()
+      .slice(-8);
+
+
+  const data =
+    loadData();
+
+
+  data.receipts.unshift({
+
+    id:Date.now(),
+
+    number,
 
     client,
 
     product,
 
-    amount,
+    qty,
 
-    date: new Date().toISOString()
+    unitPrice,
 
-  };
+    total,
+
+    payment,
+
+    date:new Date().toISOString()
+
+  });
 
 
-  appData.receipts.unshift(receipt);
+  data.receipts =
+    data.receipts.slice(0,100);
 
 
-  appData.receipts =
-    appData.receipts.slice(0,100);
+  saveData(data);
 
 
-  saveData(appData);
+  const receiptText =
 
-  refreshDashboard();
+`TANTSAHA MATIHANINA
+REÇU DE VENTE
+
+N°: ${number}
+
+Client: ${client}
+Produit: ${product}
+Quantité: ${qty}
+Prix unitaire: ${money(unitPrice)}
+
+TOTAL: ${money(total)}
+
+Paiement: ${payment}
+
+Merci.`;
 
 
   document.getElementById(
     "receiptResult"
   ).innerHTML = `
 
-    <div class="result profit">
+    <div class="result">
 
-      <strong>
-        🧾 REÇU DE VENTE
-      </strong>
+      <pre
+        style="white-space:pre-wrap;font-family:inherit;"
+      >${escapeHtml(receiptText)}</pre>
 
-      <br><br>
-
-      Client:
-      ${escapeHtml(client)}
-
-      <br>
-
-      Produit:
-      ${escapeHtml(product)}
-
-      <br>
-
-      Montant:
-      <strong>
-        ${money(amount)}
-      </strong>
-
-      <br>
-
-      Date:
-      ${formatDate(receipt.date)}
+      <button
+        class="btn btn-primary"
+        style="margin-top:12px"
+        onclick='copyText(${JSON.stringify(receiptText)})'
+      >
+        📋 Copier le reçu
+      </button>
 
     </div>
 
@@ -4246,56 +3366,60 @@ function makeReceipt(){
 }
 
 
-/* =========================================================
+/* ============================================================
    DASHBOARD
-========================================================= */
+============================================================ */
 
 function refreshDashboard(){
 
-  appData =
+  const data =
     loadData();
+
+
+  document.getElementById(
+    "statCalculations"
+  ).textContent =
+    data.calculations.length;
 
 
   document.getElementById(
     "statOrders"
   ).textContent =
-    appData.orders.length;
-
-
-  document.getElementById(
-    "statReceipts"
-  ).textContent =
-    appData.receipts.length;
+    data.orders.length;
 
 
   const revenue =
-    appData.orders.reduce(
-      function(sum,item){
+    data.orders
+      .filter(function(order){
 
-        return sum +
-          Number(item.total || 0);
+        return (
+          order.status === "paid" ||
+          order.status === "completed"
+        );
 
-      },
-      0
-    );
+      })
+      .reduce(function(total,order){
 
+        return total +
+          (Number(order.total) || 0);
 
-  const profit =
-    appData.calculations.reduce(
-      function(sum,item){
-
-        return sum +
-          Number(item.profit || 0);
-
-      },
-      0
-    );
+      },0);
 
 
   document.getElementById(
     "statRevenue"
   ).textContent =
     money(revenue);
+
+
+  const profit =
+    data.calculations
+      .reduce(function(total,item){
+
+        return total +
+          (Number(item.profit) || 0);
+
+      },0);
 
 
   document.getElementById(
@@ -4305,37 +3429,28 @@ function refreshDashboard(){
 
 
   renderCalculations();
-
   renderOrders();
-
-  renderReceipts();
 
 }
 
-
-/* =========================================================
-   RENDER CALCULATIONS
-========================================================= */
 
 function renderCalculations(){
 
   const box =
     document.getElementById(
-      "savedCalculations"
+      "calculationsList"
     );
 
+  const data =
+    loadData();
 
-  if(
-    !appData.calculations.length
-  ){
 
-    box.innerHTML = `
+  if(!data.calculations.length){
 
-      <div class="empty">
-        Tsy mbola misy kajy voatahiry.
-      </div>
-
-    `;
+    box.innerHTML =
+      `<div class="empty">
+        Mbola tsy misy calcul.
+      </div>`;
 
     return;
 
@@ -4343,57 +3458,34 @@ function renderCalculations(){
 
 
   box.innerHTML =
-    appData.calculations
-      .slice(0,8)
+    data.calculations
+      .slice(0,5)
       .map(function(item){
-
-        const name =
-          item.product ||
-          item.animal ||
-          "Calcul";
-
 
         return `
 
-          <div class="saved-item">
+          <div
+            style="
+              padding:12px 0;
+              border-bottom:1px solid var(--border);
+            "
+          >
 
-            <div class="saved-main">
+            <strong>
+              ${escapeHtml(item.product)}
+            </strong>
 
+            <br>
+
+            <small style="color:var(--muted);">
+              ${formatDate(item.date)}
+            </small>
+
+            <div style="margin-top:5px;">
+              Tombony:
               <strong>
-                ${escapeHtml(name)}
+                ${money(item.profit)}
               </strong>
-
-              <small>
-
-                ${
-                  item.type === "animal"
-                  ? "Fiompiana"
-                  : "Prix & Tombony"
-                }
-
-                ·
-
-                ${formatDate(item.date)}
-
-              </small>
-
-            </div>
-
-
-            <div>
-
-              <strong>
-
-                ${
-                  item.profit >= 0
-                  ? "+"
-                  : "-"
-                }
-
-                ${money(Math.abs(item.profit))}
-
-              </strong>
-
             </div>
 
           </div>
@@ -4405,28 +3497,24 @@ function renderCalculations(){
 
 }
 
-
-/* =========================================================
-   RENDER ORDERS
-========================================================= */
 
 function renderOrders(){
 
   const box =
     document.getElementById(
-      "savedOrders"
+      "ordersList"
     );
 
+  const data =
+    loadData();
 
-  if(!appData.orders.length){
 
-    box.innerHTML = `
+  if(!data.orders.length){
 
-      <div class="empty">
-        Tsy mbola misy commande.
-      </div>
-
-    `;
+    box.innerHTML =
+      `<div class="empty">
+        Mbola tsy misy commande.
+      </div>`;
 
     return;
 
@@ -4434,34 +3522,36 @@ function renderOrders(){
 
 
   box.innerHTML =
-    appData.orders
-      .slice(0,8)
-      .map(function(item){
+    data.orders
+      .slice(0,5)
+      .map(function(order){
 
         return `
 
-          <div class="saved-item">
-
-            <div class="saved-main">
-
-              <strong>
-                ${escapeHtml(item.client)}
-              </strong>
-
-              <small>
-
-                ${escapeHtml(item.product)}
-                · Qty ${item.qty}
-                · ${escapeHtml(item.status)}
-
-              </small>
-
-            </div>
-
+          <div
+            style="
+              padding:12px 0;
+              border-bottom:1px solid var(--border);
+            "
+          >
 
             <strong>
-              ${money(item.total)}
+              ${escapeHtml(order.product)}
             </strong>
+
+            <br>
+
+            <small>
+              ${escapeHtml(order.client)}
+            </small>
+
+            <div style="margin-top:5px;">
+              ${money(order.total)}
+            </div>
+
+            <small style="color:var(--muted);">
+              ${escapeHtml(order.status)}
+            </small>
 
           </div>
 
@@ -4473,357 +3563,21 @@ function renderOrders(){
 }
 
 
-/* =========================================================
-   RENDER RECEIPTS
-========================================================= */
-
-function renderReceipts(){
-
-  const box =
-    document.getElementById(
-      "savedReceipts"
-    );
-
-
-  if(!appData.receipts.length){
-
-    box.innerHTML = `
-
-      <div class="empty">
-        Tsy mbola misy reçu.
-      </div>
-
-    `;
-
-    return;
-
-  }
-
-
-  box.innerHTML =
-    appData.receipts
-      .slice(0,8)
-      .map(function(item){
-
-        return `
-
-          <div class="saved-item">
-
-            <div class="saved-main">
-
-              <strong>
-                ${escapeHtml(item.client)}
-              </strong>
-
-              <small>
-
-                ${escapeHtml(item.product)}
-                · ${formatDate(item.date)}
-
-              </small>
-
-            </div>
-
-
-            <strong>
-              ${money(item.amount)}
-            </strong>
-
-          </div>
-
-        `;
-
-      })
-      .join("");
-
-}
-
-
-/* =========================================================
-   DATE
-========================================================= */
-
-function formatDate(date){
-
-  try{
-
-    return new Date(date)
-      .toLocaleDateString("fr-FR");
-
-  }catch(e){
-
-    return "";
-
-  }
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(value){
-
-  return String(value || "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-
-}
-
-
-/* =========================================================
-   CLEAR DATA
-========================================================= */
-
-function clearSavedData(){
-
-  const ok =
-    confirm(
-      "Tena hamafa ny données rehetra ao amin'ny Vente Lab V9 ve ianao?"
-    );
-
-
-  if(!ok){
-
-    return;
-
-  }
-
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-
-  appData =
-    defaultData();
-
-
-  refreshDashboard();
-
-
-  alert(
-    "Voafafa ny données V9."
-  );
-
-}
-
-
-/* =========================================================
-   BOOK CATALOG
-========================================================= */
-
-function openBookCatalog(){
-
-  openModal(
-    "bookCatalogModal"
-  );
-
-}
-
-
-/* =========================================================
-   BOOK DETAILS
-========================================================= */
-
-function showBook(type){
-
-  const box =
-    document.getElementById(
-      "bookDetails"
-    );
-
-
-  if(type === "vente"){
-
-    box.innerHTML = `
-
-      <div class="result">
-
-        <h3>
-          📘 Manuel pratique de Vente en Ligne
-        </h3>
-
-        <p>
-          Débutant + Professionnel
-        </p>
-
-        <br>
-
-        <strong>
-          Ao anatin'ny boky:
-        </strong>
-
-        <ul
-          style="padding-left:20px;margin-top:10px">
-
-          <li>
-            Fototry ny vente professionnelle
-          </li>
-
-          <li>
-            Produit sy client cible
-          </li>
-
-          <li>
-            Coût, prix, bénéfice & marge
-          </li>
-
-          <li>
-            Créer une offre
-          </li>
-
-          <li>
-            Publication
-          </li>
-
-          <li>
-            Prospection
-          </li>
-
-          <li>
-            Objection & négociation
-          </li>
-
-          <li>
-            Closing
-          </li>
-
-          <li>
-            Commande, paiement & livraison
-          </li>
-
-          <li>
-            Reçu de vente
-          </li>
-
-          <li>
-            Follow-up
-          </li>
-
-          <li>
-            Challenge 7 jours
-          </li>
-
-        </ul>
-
-
-        <div class="actions">
-
-          <a
-            target="_blank"
-            rel="noopener"
-            class="btn btn-primary"
-            href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20hividy%20ny%20PDF%20Formation%20Vente%20en%20Ligne%20aho.%20%F0%9F%93%98%0A%F0%9F%92%B0%20Vidiny%3A%205%20000%20Ar%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20fomba%20fandoavana%20sy%20ny%20fomba%20hahazoako%20ilay%20PDF.%0AMisaotra%20%F0%9F%99%8F">
-
-            💬 Hividy — 5 000 Ar
-
-          </a>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-
-  if(type === "honey"){
-
-    box.innerHTML = `
-
-      <div class="result">
-
-        <h3>
-          🍯 Pack Fiompiana Tantely Matihanina
-        </h3>
-
-        <p>
-          Formation pratique ho an'izay te hianatra
-          fiompiana tantely amin'ny fomba voalamina.
-        </p>
-
-        <br>
-
-        <strong>
-          Ao anatin'ny pack:
-        </strong>
-
-        <ul
-          style="padding-left:20px;margin-top:10px">
-
-          <li>
-            Tome 1 — Théorie
-          </li>
-
-          <li>
-            Tome 2 — Pratique
-          </li>
-
-          <li>
-            Supports pédagogiques
-          </li>
-
-          <li>
-            Vidéos de formation
-          </li>
-
-          <li>
-            Fiches pratiques
-          </li>
-
-          <li>
-            Ressources complémentaires
-          </li>
-
-        </ul>
-
-
-        <div class="actions">
-
-          <a
-            target="_blank"
-            rel="noopener"
-            class="btn btn-primary"
-            href="https://wa.me/261385651378?text=Salama%20Tantsaha%20Matihanina%20%F0%9F%91%8B%0ALiana%20amin%27ny%20Pack%20Fiompiana%20Tantely%20Matihanina%20aho.%20%F0%9F%8D%AF%F0%9F%93%98%0AAzafady%2C%20tiako%20ho%20fantatra%20ny%20vidiny%20sy%20ny%20fomba%20hahazoako%20ilay%20pack.%0AMisaotra%20%F0%9F%99%8F">
-
-            💬 Hividy — Promo 5 000 Ar
-
-          </a>
-
-        </div>
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* =========================================================
-   AVIS / REVIEWS
-========================================================= */
-
-function loadReviews(){
+/* ============================================================
+   PROGRESSION
+============================================================ */
+
+function loadProgress(){
 
   try{
 
     return JSON.parse(
       localStorage.getItem(
-        REVIEW_STORAGE_KEY
+        PROGRESS_KEY
       ) || "[]"
     );
 
   }catch(error){
-
-    console.error(error);
 
     return [];
 
@@ -4832,17 +3586,361 @@ function loadReviews(){
 }
 
 
-function saveReviews(reviews){
+function saveProgress(progress){
 
   localStorage.setItem(
-    REVIEW_STORAGE_KEY,
-    JSON.stringify(reviews)
+    PROGRESS_KEY,
+    JSON.stringify(progress)
   );
 
 }
 
 
-function submitReview(){
+function completeDay(day){
+
+  let progress =
+    loadProgress();
+
+
+  if(progress.includes(day)){
+
+    progress =
+      progress.filter(
+        item => item !== day
+      );
+
+  }else{
+
+    progress.push(day);
+
+  }
+
+
+  progress.sort(
+    (a,b) => a-b
+  );
+
+
+  saveProgress(progress);
+
+  renderProgress();
+
+}
+
+
+function renderProgress(){
+
+  const progress =
+    loadProgress();
+
+
+  for(let i=1;i<=7;i++){
+
+    const element =
+      document.getElementById(
+        "day" + i
+      );
+
+    if(!element) continue;
+
+    if(progress.includes(i)){
+
+      element.classList.add("done");
+
+    }else{
+
+      element.classList.remove("done");
+
+    }
+
+  }
+
+
+  const count =
+    progress.length;
+
+  const percent =
+    (count / 7) * 100;
+
+
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    percent + "%";
+
+
+  document.getElementById(
+    "progressText"
+  ).textContent =
+    count + " / 7 jours";
+
+}
+
+
+function resetProgress(){
+
+  if(
+    !confirm(
+      "Réinitialiser la progression ?"
+    )
+  ){
+
+    return;
+
+  }
+
+  localStorage.removeItem(
+    PROGRESS_KEY
+  );
+
+  renderProgress();
+
+}
+
+
+/* ============================================================
+   SUPABASE — REVIEWS
+============================================================ */
+
+async function loadApprovedReviews(){
+
+  const statusBox =
+    document.getElementById(
+      "reviewConnectionStatus"
+    );
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("vente_reviews")
+
+        .select(
+          "id,rating,name,learning,applied,result,message,created_at"
+        )
+
+        .eq(
+          "status",
+          "approved"
+        )
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+
+        .limit(20);
+
+
+    if(error){
+
+      console.error(
+        "Supabase reviews error:",
+        error
+      );
+
+      statusBox.innerHTML = `
+        ⚠️ Tsy afaka naka avis avy amin'ny
+        Supabase amin'izao fotoana izao.
+      `;
+
+      renderReviews([]);
+
+      return;
+
+    }
+
+
+    statusBox.innerHTML = `
+      🟢 <strong>Supabase connecté.</strong>
+      Ny avis voamarina dia alaina mivantana avy amin'ny database.
+    `;
+
+
+    renderReviews(
+      data || []
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    statusBox.innerHTML = `
+      ⚠️ Olana tamin'ny connexion Supabase.
+    `;
+
+    renderReviews([]);
+
+  }
+
+}
+
+
+/* ============================================================
+   RENDER REVIEWS
+============================================================ */
+
+function renderReviews(reviews){
+
+  const box =
+    document.getElementById(
+      "reviewList"
+    );
+
+
+  if(!box){
+
+    return;
+
+  }
+
+
+  if(!reviews.length){
+
+    box.innerHTML = `
+
+      <div
+        class="empty"
+        style="grid-column:1/-1;"
+      >
+
+        ⭐ Mbola tsy misy avis voamarina eto.
+
+        <br><br>
+
+        Rehefa misy mpianatra mizara
+        expérience réelle ary voamarina ilay avis,
+        dia hiseho eto.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    reviews
+      .slice(0,9)
+      .map(function(item){
+
+        const rating =
+          Math.max(
+            1,
+            Math.min(
+              5,
+              Number(item.rating) || 1
+            )
+          );
+
+
+        const stars =
+          "⭐".repeat(rating);
+
+
+        return `
+
+          <div class="card">
+
+            <div
+              class="review-stars"
+              style="margin-bottom:6px;"
+            >
+              ${stars}
+            </div>
+
+            <h3>
+              ${escapeHtml(item.name)}
+            </h3>
+
+            <div
+              class="review-status"
+            >
+              ${escapeHtml(
+                item.learning ||
+                "Formation Vente"
+              )}
+            </div>
+
+            <p style="margin-top:12px;">
+              “${escapeHtml(
+                item.message
+              )}”
+            </p>
+
+            ${
+              item.applied
+              ? `
+                <p
+                  style="
+                    margin-top:10px;
+                    font-size:13px;
+                  "
+                >
+                  <strong>Nampiharina:</strong>
+                  ${escapeHtml(item.applied)}
+                </p>
+              `
+              : ""
+            }
+
+            ${
+              item.result
+              ? `
+                <p
+                  style="
+                    margin-top:7px;
+                    font-size:13px;
+                  "
+                >
+                  <strong>Vokatra:</strong>
+                  ${escapeHtml(item.result)}
+                </p>
+              `
+              : ""
+            }
+
+            <small
+              style="
+                display:block;
+                margin-top:13px;
+                color:var(--muted);
+              "
+            >
+              ${formatDate(item.created_at)}
+            </small>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* ============================================================
+   SUBMIT REVIEW TO SUPABASE
+============================================================ */
+
+async function submitReview(){
+
+  const resultBox =
+    document.getElementById(
+      "reviewSubmitResult"
+    );
+
 
   const rating =
     Number(
@@ -4921,271 +4019,164 @@ function submitReview(){
   }
 
 
-  const reviews =
-    loadReviews();
+  resultBox.innerHTML = `
 
-
-  const review = {
-
-    id: Date.now(),
-
-    rating:
-      Math.max(
-        1,
-        Math.min(5,rating)
-      ),
-
-    name,
-
-    learning,
-
-    applied,
-
-    result: resultText,
-
-    message,
-
-    date:
-      new Date().toISOString(),
-
-    approved:false
-
-  };
-
-
-  reviews.unshift(review);
-
-
-  saveReviews(
-    reviews.slice(0,100)
-  );
-
-
-  document.getElementById(
-    "reviewSubmitResult"
-  ).innerHTML = `
-
-    <div class="result profit">
-
-      🙏 <strong>Misaotra anao!</strong>
-
-      <br><br>
-
-      Voaray ny avis-nao.
-
-      <br>
-
-      Hojerena aloha izy vao hiseho ao amin'ny site.
-
+    <div class="notice">
+      ⏳ Alefa any amin'ny Supabase...
     </div>
 
   `;
 
 
-  document.getElementById(
-    "reviewName"
-  ).value = "";
+  try{
+
+    const {
+      error
+    } =
+      await supabaseClient
+
+        .from("vente_reviews")
+
+        .insert({
+
+          rating:
+            Math.max(
+              1,
+              Math.min(
+                5,
+                rating
+              )
+            ),
+
+          name,
+
+          learning:
+            learning || null,
+
+          applied:
+            applied || null,
+
+          result:
+            resultText || null,
+
+          message,
+
+          consent:true,
+
+          status:"pending"
+
+        });
 
 
-  document.getElementById(
-    "reviewLearning"
-  ).value = "";
+    if(error){
+
+      console.error(
+        "Supabase insert error:",
+        error
+      );
+
+      resultBox.innerHTML = `
+
+        <div
+          class="result"
+          style="
+            color:var(--danger);
+            background:#fff3f2;
+          "
+        >
+
+          ❌ Tsy voaray ny avis.
+
+          <br><br>
+
+          Hamarino ny connexion Internet
+          ary andramo indray.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
 
 
-  document.getElementById(
-    "reviewApplied"
-  ).value = "";
+    resultBox.innerHTML = `
 
+      <div class="result profit">
 
-  document.getElementById(
-    "reviewResult"
-  ).value = "";
+        🙏 <strong>Misaotra anao!</strong>
 
+        <br><br>
 
-  document.getElementById(
-    "reviewMessage"
-  ).value = "";
+        Voaray tsara ao amin'ny Supabase
+        ny avis-nao.
 
+        <br><br>
 
-  document.getElementById(
-    "reviewConsent"
-  ).checked = false;
-
-}
-
-
-function renderReviews(){
-
-  const box =
-    document.getElementById(
-      "reviewList"
-    );
-
-
-  if(!box){
-
-    return;
-
-  }
-
-
-  const reviews =
-    loadReviews()
-      .filter(function(item){
-
-        return item.approved === true;
-
-      });
-
-
-  if(!reviews.length){
-
-    box.innerHTML = `
-
-      <div
-        class="empty"
-        style="grid-column:1/-1">
-
-        ⭐ Mbola tsy misy avis voamarina eto.
-
-        <br>
-
-        Rehefa misy mpianatra mizara
-        expérience réelle dia hiseho eto.
+        <strong>
+          ⏳ Hojerena aloha izy vao hiseho
+          ampahibemaso ao amin'ny site.
+        </strong>
 
       </div>
 
     `;
 
-    return;
+
+    document.getElementById(
+      "reviewName"
+    ).value = "";
+
+    document.getElementById(
+      "reviewLearning"
+    ).value = "";
+
+    document.getElementById(
+      "reviewApplied"
+    ).value = "";
+
+    document.getElementById(
+      "reviewResult"
+    ).value = "";
+
+    document.getElementById(
+      "reviewMessage"
+    ).value = "";
+
+    document.getElementById(
+      "reviewConsent"
+    ).checked = false;
+
+
+  }catch(error){
+
+    console.error(error);
+
+    resultBox.innerHTML = `
+
+      <div
+        class="result"
+        style="
+          color:var(--danger);
+          background:#fff3f2;
+        "
+      >
+
+        ❌ Nisy olana tamin'ny connexion.
+
+      </div>
+
+    `;
 
   }
-
-
-  box.innerHTML =
-    reviews
-      .slice(0,6)
-      .map(function(item){
-
-        const rating =
-          Math.max(
-            1,
-            Math.min(
-              5,
-              Number(item.rating) || 1
-            )
-          );
-
-
-        const stars =
-          "⭐".repeat(rating);
-
-
-        return `
-
-          <div class="card">
-
-            <div
-              style="font-size:18px;margin-bottom:5px;">
-
-              ${stars}
-
-            </div>
-
-
-            <h3>
-              ${escapeHtml(item.name)}
-            </h3>
-
-
-            <small
-              style="color:var(--muted)">
-
-              ${escapeHtml(
-                item.learning ||
-                "Formation"
-              )}
-
-            </small>
-
-
-            <p style="margin-top:12px;">
-
-              “${escapeHtml(
-                item.message
-              )}”
-
-            </p>
-
-
-            ${
-              item.applied
-              ? `
-
-                <p
-                  style="margin-top:9px;font-size:13px;">
-
-                  <strong>
-                    Nampiharina:
-                  </strong>
-
-                  ${escapeHtml(
-                    item.applied
-                  )}
-
-                </p>
-
-              `
-              : ""
-            }
-
-
-            ${
-              item.result
-              ? `
-
-                <p
-                  style="margin-top:7px;font-size:13px;">
-
-                  <strong>
-                    Vokatra:
-                  </strong>
-
-                  ${escapeHtml(
-                    item.result
-                  )}
-
-                </p>
-
-              `
-              : ""
-            }
-
-
-            <small
-              style="
-                display:block;
-                margin-top:12px;
-                color:var(--muted);
-              ">
-
-              ${formatDate(item.date)}
-
-            </small>
-
-          </div>
-
-        `;
-
-      })
-      .join("");
 
 }
 
 
-/* =========================================================
+/* ============================================================
    INITIALIZATION
-========================================================= */
+============================================================ */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -5193,7 +4184,9 @@ document.addEventListener(
 
     refreshDashboard();
 
-    renderReviews();
+    renderProgress();
+
+    loadApprovedReviews();
 
   }
 );
