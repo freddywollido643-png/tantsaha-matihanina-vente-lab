@@ -2,28 +2,21 @@
 <html lang="mg">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="theme-color"
-    content="#0b3d2e"
-  >
+  <title>Tantsaha Matihanina • Vente Lab</title>
 
   <meta
     name="description"
-    content="Tantsaha Matihanina Vente Lab — Formation pratique vente en ligne, Facebook, WhatsApp et Marketplace."
+    content="Tantsaha Matihanina Vente Lab — Formation Vente en Ligne + Laboratoire Pratique ho an'ny mpiompy sy mpandraharaha."
   >
 
-  <title>Tantsaha Matihanina — Vente Lab</title>
+  <meta name="theme-color" content="#123d2a">
 
-  <!-- CSS -->
+  <!-- ROOT FILES -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- Supabase -->
+  <!-- SUPABASE -->
   <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
     defer
@@ -32,61 +25,39 @@
 
 <body>
 
-  <!-- =====================================================
+  <!-- =========================================================
        HEADER
-       ===================================================== -->
+  ========================================================== -->
 
   <header class="site-header">
 
     <div class="container header-inner">
 
-      <a href="#accueil" class="brand">
-
-        <span class="brand-mark">
-          TM
-        </span>
+      <a href="#top" class="brand" aria-label="Tantsaha Matihanina Vente Lab">
+        <span class="brand-mark">M</span>
 
         <span class="brand-text">
           <strong>TANTSAHA MATIHANINA</strong>
           <small>VENTE LAB</small>
         </span>
-
       </a>
 
       <button
-        type="button"
         class="nav-toggle"
-        aria-label="Menu"
+        type="button"
+        aria-label="Hanokatra menu"
         aria-expanded="false"
       >
         ☰
       </button>
 
-      <nav class="main-nav">
+      <nav class="main-nav" aria-label="Navigation principale">
 
-        <a href="#accueil">
-          Accueil
-        </a>
-
-        <a href="#formation">
-          Formation
-        </a>
-
-        <a href="#lab">
-          Vente Lab
-        </a>
-
-        <a href="#dashboard">
-          Dashboard
-        </a>
-
-        <a href="#evaluation">
-          Évaluation
-        </a>
-
-        <a href="#avis">
-          Avis
-        </a>
+        <a href="#formation">Formation</a>
+        <a href="#lab">Vente Lab</a>
+        <a href="#calendrier">Calendrier</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#evaluation">Retour</a>
 
       </nav>
 
@@ -95,66 +66,58 @@
   </header>
 
 
-  <main>
+  <main id="top">
 
-    <!-- ===================================================
+    <!-- =======================================================
          HERO
-         =================================================== -->
+    ======================================================== -->
 
-    <section id="accueil" class="hero">
+    <section class="hero">
 
       <div class="container hero-grid">
 
         <div class="hero-content">
 
-          <div class="eyebrow">
+          <span class="eyebrow">
             TANTSAHA MATIHANINA • VENTE LAB
-          </div>
+          </span>
 
           <h1>
-            Mianara
-            <span>mivarotra</span>
-            amin'ny fomba pratique.
+            Mianara mivarotra
+            <span>amin'ny fomba pratique.</span>
           </h1>
 
           <p class="hero-lead">
             Formation Vente en Ligne + Laboratoire Pratique
-            ho an'ny olona te hahay hivarotra vokatra,
-            hamorona offre, hitantana prospect ary
-            hanatsara tsikelikely ny système de vente.
+            ho an'ny mpiompy, mpamboly ary mpivarotra te hahay
+            hamorona offre, hitady client, hifampiresaka amin'ny
+            prospect, hivarotra ary handrefy ny tombony.
           </p>
 
-          <div class="hero-slogan">
+          <p class="hero-slogan">
             Mianatra • Mampihatra • Mahomby
-          </div>
+          </p>
 
           <div class="hero-actions">
 
-            <a
-              href="#lab"
-              class="btn btn-primary"
-            >
+            <a href="#lab" class="btn btn-primary">
               Hanomboka Pratique
             </a>
 
-            <a
-              href="#formation"
-              class="btn btn-outline"
-            >
+            <a href="#formation" class="btn btn-secondary">
               Formation 7 Jours
             </a>
 
-            <a
-              data-link="facebook"
-              href="https://www.facebook.com/share/1Zfiu8oj3m/"
-              target="_blank"
-              rel="noopener"
-              class="btn btn-outline"
-            >
-              Facebook
-            </a>
-
           </div>
+
+          <a
+            class="text-link"
+            href="https://www.facebook.com/share/1Zfiu8oj3m/"
+            target="_blank"
+            rel="noopener"
+          >
+            Facebook →
+          </a>
 
         </div>
 
@@ -162,61 +125,34 @@
         <div class="hero-card">
 
           <div class="hero-card-label">
-            VENTE LAB
+            NY TANJONA
           </div>
 
-          <div class="hero-card-title">
-            Avy amin'ny lesona
-            mankany amin'ny vente réelle.
-          </div>
+          <h2>
+            Avy amin'ny fiompiana
+            ka hatramin'ny vente réelle.
+          </h2>
 
           <div class="hero-steps">
 
-            <div class="hero-step">
-
-              <span>01</span>
-
-              <div>
-                <strong>Mianatra</strong>
-                <small>Lesona ao WhatsApp</small>
-              </div>
-
+            <div>
+              <strong>01</strong>
+              <span>Mianatra</span>
             </div>
 
-
-            <div class="hero-step">
-
-              <span>02</span>
-
-              <div>
-                <strong>Mampihatra</strong>
-                <small>Outils ao amin'ny Lab</small>
-              </div>
-
+            <div>
+              <strong>02</strong>
+              <span>Mampihatra</span>
             </div>
 
-
-            <div class="hero-step">
-
-              <span>03</span>
-
-              <div>
-                <strong>Mandrefy</strong>
-                <small>Résultat & progression</small>
-              </div>
-
+            <div>
+              <strong>03</strong>
+              <span>Mivarotra</span>
             </div>
 
-
-            <div class="hero-step">
-
-              <span>04</span>
-
-              <div>
-                <strong>Manatsara</strong>
-                <small>Retour & évaluation</small>
-              </div>
-
+            <div>
+              <strong>04</strong>
+              <span>Mandrefy</span>
             </div>
 
           </div>
@@ -228,9 +164,9 @@
     </section>
 
 
-    <!-- ===================================================
-         POSITIONING
-         =================================================== -->
+    <!-- =======================================================
+         EXPLANATION
+    ======================================================== -->
 
     <section class="section">
 
@@ -238,97 +174,78 @@
 
         <div class="section-heading">
 
-          <div class="eyebrow">
-            NY RAFITRA
-          </div>
+          <span class="eyebrow">
+            AHOANA NO FIASANY?
+          </span>
 
           <h2>
-            Tsy fitaovana fotsiny.
-            Rafitra fianarana sy fampiharana.
+            Tsy calculateur fotsiny.
+            Rafitra fianarana sy fampiharana izy.
           </h2>
 
           <p>
-            Ny WhatsApp no toerana ianarana sy ahazoana
-            accompagnement. Ny Vente Lab kosa no toerana
-            anaovana pratique sy fandrefesana résultat.
+            Ny tanjon'ny Vente Lab dia ny hanampy anao tsy hijanona
+            amin'ny hoe “fantatro ny théorie”, fa hahafahanao
+            mampihatra izany amin'ny vokatra tena amidinao.
           </p>
 
         </div>
 
 
-        <div class="three-cards">
+        <div class="process-grid">
 
-          <article class="info-card">
+          <article class="process-card">
 
-            <div class="card-icon">
-              🎓
-            </div>
+            <span class="process-number">01</span>
 
-            <h3>
-              Formation
-            </h3>
+            <h3>🎓 Mianatra</h3>
 
             <p>
-              Lesona 7 jours manomboka amin'ny fototry
-              ny vente ka hatramin'ny suivi client.
+              Vakio ny lesona ao amin'ny Formation WhatsApp.
+              Ianaro aloha ny fototra sy ny fomba fisainana.
             </p>
-
-            <a
-              href="#formation"
-              class="text-link"
-            >
-              Jereo ny formation →
-            </a>
 
           </article>
 
 
-          <article class="info-card">
+          <article class="process-card">
 
-            <div class="card-icon">
-              🧪
-            </div>
+            <span class="process-number">02</span>
 
-            <h3>
-              Pratique
-            </h3>
+            <h3>🧪 Mampihatra</h3>
 
             <p>
-              Ampiasao ireo outils mba hamoronana offre,
-              publication, simulation ary commande.
+              Ampiasao eto amin'ny Vente Lab ny outils.
+              Tsy mijery théorie fotsiny fa manao exercice.
             </p>
-
-            <a
-              href="#lab"
-              class="text-link"
-            >
-              Midira amin'ny Lab →
-            </a>
 
           </article>
 
 
-          <article class="info-card">
+          <article class="process-card">
 
-            <div class="card-icon">
-              📊
-            </div>
+            <span class="process-number">03</span>
 
-            <h3>
-              Progression
-            </h3>
+            <h3>🛒 Mivarotra</h3>
 
             <p>
-              Araho ny prospects, réponses, discussions,
-              commandes ary clients.
+              Ampiasao amin'ny Facebook, WhatsApp, Marketplace
+              na amin'ny vente locale ny zavatra nianaranao.
             </p>
 
-            <a
-              href="#dashboard"
-              class="text-link"
-            >
-              Jereo Dashboard →
-            </a>
+          </article>
+
+
+          <article class="process-card">
+
+            <span class="process-number">04</span>
+
+            <h3>📊 Mandrefy</h3>
+
+            <p>
+              Araho ny prospects, réponses, commandes, CA,
+              coût ary tombony mba hahafantaranao izay tokony hatsaraina.
+            </p>
 
           </article>
 
@@ -339,464 +256,554 @@
     </section>
 
 
-    <!-- ===================================================
-         FORMATION 7 JOURS
-         =================================================== -->
+    <!-- =======================================================
+         FORMATION
+    ======================================================== -->
 
-    <section
-      id="formation"
-      class="section section-alt"
-    >
+    <section id="formation" class="section section-alt">
 
       <div class="container">
 
         <div class="section-heading">
 
-          <div class="eyebrow">
+          <span class="eyebrow">
             FORMATION 7 JOURS
-          </div>
+          </span>
 
           <h2>
             Mianatra → Mampihatra → Mandrefy
           </h2>
 
           <p>
-            Isan'andro dia misy objectif, lesona,
-            exercice, pratique ao amin'ny Lab ary
-            résultat tokony ho azo.
+            Isan'andro dia misy tanjona, lesona, ohatra,
+            exercice, pratique ao amin'ny Lab ary résultat
+            tokony ho azonao.
           </p>
 
         </div>
 
 
-        <div class="formation-list">
+        <!-- JOUR 1 -->
 
-          <!-- JOUR 1 -->
+        <article class="lesson-card">
 
-          <article class="formation-day">
+          <div class="lesson-number">1</div>
 
-            <div class="day-number">
-              1
-            </div>
+          <div class="lesson-content">
 
-            <div class="day-content">
+            <span class="lesson-day">
+              JOUR 1
+            </span>
 
-              <div class="day-label">
-                JOUR 1
-              </div>
+            <h3>
+              Fototry ny Vente
+            </h3>
 
-              <h3>
-                Fototry ny Vente
-              </h3>
+            <p class="lesson-intro">
+              Fantaro ny différence misy eo amin'ny produit
+              sy ny valeur amidinao.
+            </p>
 
-              <p>
-                Fantaro ny différence misy eo amin'ny
-                produit sy ny valeur amidinao.
-              </p>
+            <div class="lesson-block">
 
-              <div class="lesson-box">
-
-                <strong>
-                  Lesona
-                </strong>
-
-                <p>
-                  Tsy produit fotsiny no amidina.
-                  Vahaolana sy tombontsoa ho an'ny client
-                  no tokony haseho.
-                </p>
-
-              </div>
-
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
-
-                <p>
-                  Farito amin'ny teny tsotra ny valeur
-                  ananan'ny vokatrao.
-                </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Value Proposition 1
-                </span>
-
-              </div>
-
-            </div>
-
-          </article>
-
-
-          <!-- JOUR 2 -->
-
-          <article class="formation-day">
-
-            <div class="day-number">
-              2
-            </div>
-
-            <div class="day-content">
-
-              <div class="day-label">
-                JOUR 2
-              </div>
-
-              <h3>
-                Client Cible
-              </h3>
+              <h4>📚 Lesona</h4>
 
               <p>
-                Fantaro hoe iza no tena mila ny vokatrao.
+                Rehefa mivarotra ianao dia tsy tokony hijanona
+                amin'ny filazana hoe inona ilay produit.
+                Mila asehonao amin'ny client kosa ny tombontsoa
+                sy ny vahaolana azony.
               </p>
 
-              <div class="lesson-box">
+              <div class="example-box">
 
-                <strong>
-                  Lesona
-                </strong>
+                <strong>❌ Ohatra tsy dia mazava:</strong>
 
                 <p>
-                  Client cible = olona manana besoin,
-                  problème, budget ary antony hividianana.
+                  “Mivarotra akoho Gasy 15 000 Ar.”
                 </p>
 
-              </div>
-
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
+                <strong>✅ Ohatra tsara kokoa:</strong>
 
                 <p>
-                  Farito ny client cible:
-                  âge, activité, besoin, problème,
-                  budget ary canal.
+                  “Akoho Gasy salama sy tsara lanja,
+                  mety ho an'ny olona mitady akoho
+                  hovelomina na hampiasaina amin'ny fiompiana.”
                 </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Persona simple
-                </span>
 
               </div>
 
             </div>
 
-          </article>
 
+            <div class="lesson-block">
 
-          <!-- JOUR 3 -->
-
-          <article class="formation-day">
-
-            <div class="day-number">
-              3
-            </div>
-
-            <div class="day-content">
-
-              <div class="day-label">
-                JOUR 3
-              </div>
-
-              <h3>
-                Offre & Prix
-              </h3>
+              <h4>✍️ Exercice</h4>
 
               <p>
-                Amboary ny offre ary fantaro ny tombony
-                alohan'ny hamoahana azy.
+                Fenoy ireto:
               </p>
 
-              <div class="lesson-box">
-
-                <strong>
-                  Lesona
-                </strong>
-
-                <p>
-                  Ny prix dia tsy tokony ho tombantombana.
-                  Fantaro ny coût, prix de vente,
-                  CA ary marge.
-                </p>
-
-              </div>
-
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
-
-                <p>
-                  Ampiasao ny Kajy Prix & Tombony
-                  ary Créer une Offre.
-                </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Offre + Prix + Marge
-                </span>
-
-              </div>
+              <ul>
+                <li>Ny vokatro dia: ______</li>
+                <li>Ny client-ko dia: ______</li>
+                <li>Ny olana ananany dia: ______</li>
+                <li>Ny vokatro dia manampy azy amin'ny: ______</li>
+                <li>Ny tombontsoa lehibe azony dia: ______</li>
+              </ul>
 
             </div>
 
-          </article>
 
+            <div class="lesson-block">
 
-          <!-- JOUR 4 -->
-
-          <article class="formation-day">
-
-            <div class="day-number">
-              4
-            </div>
-
-            <div class="day-content">
-
-              <div class="day-label">
-                JOUR 4
-              </div>
-
-              <h3>
-                Publication & Copywriting
-              </h3>
+              <h4>🧪 Pratique ao amin'ny Lab</h4>
 
               <p>
-                Mianara manoratra publication izay
-                mitarika olona hanao action.
+                Sokafy <strong>Créer une Offre</strong> ary
+                amboary ny première offre-nao.
               </p>
 
-              <div class="lesson-box">
-
-                <strong>
-                  Structure
-                </strong>
-
-                <p>
-                  Hook → Problème → Solution →
-                  Offre → Preuve → Prix → CTA
-                </p>
-
-              </div>
-
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
-
-                <p>
-                  Mamoròna publication iray ho an'ny
-                  Facebook, WhatsApp na Marketplace.
-                </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Publication prête
-                </span>
-
-              </div>
-
             </div>
 
-          </article>
 
+            <div class="result-box">
 
-          <!-- JOUR 5 -->
-
-          <article class="formation-day">
-
-            <div class="day-number">
-              5
-            </div>
-
-            <div class="day-content">
-
-              <div class="day-label">
-                JOUR 5
-              </div>
-
-              <h3>
-                Prospection & Discussion
-              </h3>
+              <strong>🎯 Résultat attendu:</strong>
 
               <p>
-                Avadiho ho conversation ny intérêt
-                asehon'ny prospect.
+                Value Proposition 1 mazava sy mora azon'ny client.
               </p>
 
-              <div class="lesson-box">
-
-                <strong>
-                  Processus
-                </strong>
-
-                <p>
-                  Comment → MP → Qualification →
-                  Discussion → Proposition.
-                </p>
-
-              </div>
-
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
-
-                <p>
-                  Mitadiava prospects ary raketo ny
-                  réponses sy discussions.
-                </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Prospects qualifiés
-                </span>
-
-              </div>
-
             </div>
 
-          </article>
+          </div>
+
+        </article>
 
 
-          <!-- JOUR 6 -->
+        <!-- JOUR 2 -->
 
-          <article class="formation-day">
+        <article class="lesson-card">
 
-            <div class="day-number">
-              6
-            </div>
+          <div class="lesson-number">2</div>
 
-            <div class="day-content">
+          <div class="lesson-content">
 
-              <div class="day-label">
-                JOUR 6
-              </div>
+            <span class="lesson-day">
+              JOUR 2
+            </span>
 
-              <h3>
-                Objection & Closing
-              </h3>
+            <h3>
+              Client Cible
+            </h3>
+
+            <p class="lesson-intro">
+              Fantaro hoe iza no tena mila sy afaka mividy
+              ny vokatrao.
+            </p>
+
+            <div class="lesson-block">
+
+              <h4>📚 Lesona</h4>
 
               <p>
-                Mianara mamaly objection nefa tsy
-                manery ny client.
+                Tsy tokony hiteny amin'ny olona rehetra ianao.
+                Mila fantarina hoe iza no tena client mety:
+                ny activité-ny, ny olany, ny budget-ny ary
+                ny toerana ahitana azy.
               </p>
 
-              <div class="lesson-box">
+            </div>
 
-                <strong>
-                  Exemples
-                </strong>
 
-                <p>
-                  “Lafo loatra.”
-                  “Mbola hieritreritra aho.”
-                  “Misy remise ve?”
-                  “Aiza no misy anareo?”
-                </p>
+            <div class="lesson-block">
 
-              </div>
+              <h4>🧠 Client cible simple</h4>
 
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
-
-                <p>
-                  Ampiasao ny Simulation Client
-                  ary diniho ny valinteninao.
-                </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Valiny + score
-                </span>
-
-              </div>
+              <ul>
+                <li>Âge</li>
+                <li>Asa / activité</li>
+                <li>Olana</li>
+                <li>Need</li>
+                <li>Budget</li>
+                <li>Canal ampiasainy</li>
+                <li>Antony hividianany</li>
+              </ul>
 
             </div>
 
-          </article>
 
+            <div class="lesson-block">
 
-          <!-- JOUR 7 -->
-
-          <article class="formation-day">
-
-            <div class="day-number">
-              7
-            </div>
-
-            <div class="day-content">
-
-              <div class="day-label">
-                JOUR 7
-              </div>
-
-              <h3>
-                Suivi & Fidélisation
-              </h3>
+              <h4>✍️ Exercice</h4>
 
               <p>
-                Tsy mifarana amin'ny commande ny vente.
+                Manorata persona iray tena mety ho client-nao.
               </p>
-
-              <div class="lesson-box">
-
-                <strong>
-                  Lesona
-                </strong>
-
-                <p>
-                  Araho ny client, jereo ny satisfaction,
-                  ary tadiavo ny possibilité de repeat order.
-                </p>
-
-              </div>
-
-              <div class="practice-box">
-
-                <strong>
-                  Pratique
-                </strong>
-
-                <p>
-                  Fenoy ny Retour & Évaluation ary
-                  diniho ny conversion.
-                </p>
-
-                <span class="practice-result">
-                  Résultat attendu:
-                  Résultat + leçon apetraka
-                </span>
-
-              </div>
 
             </div>
 
-          </article>
 
-        </div>
+            <div class="result-box">
+
+              <strong>🎯 Résultat attendu:</strong>
+
+              <p>
+                Persona simple + client cible mazava.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
 
 
-        <div class="formation-cta">
+        <!-- JOUR 3 -->
+
+        <article class="lesson-card">
+
+          <div class="lesson-number">3</div>
+
+          <div class="lesson-content">
+
+            <span class="lesson-day">
+              JOUR 3
+            </span>
+
+            <h3>
+              Offre & Prix
+            </h3>
+
+            <p class="lesson-intro">
+              Aza mametraka prix amin'ny tombantombana fotsiny.
+            </p>
+
+            <div class="lesson-block">
+
+              <h4>📚 Lesona</h4>
+
+              <p>
+                Mila fantatrao aloha ny coût total, ny prix de vente,
+                ny CA, ny tombony ary ny marge.
+              </p>
+
+            </div>
+
+
+            <div class="example-box">
+
+              <strong>Ohatra:</strong>
+
+              <p>
+                Coût = 100 000 Ar
+              </p>
+
+              <p>
+                Vente = 150 000 Ar
+              </p>
+
+              <p>
+                Tombony = 50 000 Ar
+              </p>
+
+            </div>
+
+
+            <div class="lesson-block">
+
+              <h4>🧪 Pratique</h4>
+
+              <p>
+                Ampiasao ny:
+              </p>
+
+              <ul>
+                <li>Kajy Prix & Tombony</li>
+                <li>Kajy Fiompiana</li>
+                <li>Créer une Offre</li>
+              </ul>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <strong>🎯 Résultat attendu:</strong>
+
+              <p>
+                Offre + Prix + Marge.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- JOUR 4 -->
+
+        <article class="lesson-card">
+
+          <div class="lesson-number">4</div>
+
+          <div class="lesson-content">
+
+            <span class="lesson-day">
+              JOUR 4
+            </span>
+
+            <h3>
+              Publication & Copywriting
+            </h3>
+
+            <p class="lesson-intro">
+              Mianara manoratra publication izay mitarika
+              olona hanao action.
+            </p>
+
+            <div class="formula-box">
+
+              <strong>
+                Hook → Problème → Solution → Offre → Preuve → Prix → CTA
+              </strong>
+
+            </div>
+
+            <div class="lesson-block">
+
+              <h4>📢 Aiza no ampiharina?</h4>
+
+              <ul>
+                <li>Facebook</li>
+                <li>WhatsApp</li>
+                <li>Marketplace</li>
+              </ul>
+
+            </div>
+
+
+            <div class="lesson-block">
+
+              <h4>🧪 Pratique</h4>
+
+              <p>
+                Mamoròna publication iray tena hampiasainao.
+              </p>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <strong>🎯 Résultat attendu:</strong>
+
+              <p>
+                Publication prête à publier.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- JOUR 5 -->
+
+        <article class="lesson-card">
+
+          <div class="lesson-number">5</div>
+
+          <div class="lesson-content">
+
+            <span class="lesson-day">
+              JOUR 5
+            </span>
+
+            <h3>
+              Prospection & Discussion
+            </h3>
+
+            <p class="lesson-intro">
+              Avadiho ho conversation ny intérêt asehon'ny prospect.
+            </p>
+
+            <div class="formula-box">
+
+              <strong>
+                Comment → MP → Qualification → Discussion → Proposition
+              </strong>
+
+            </div>
+
+            <div class="lesson-block">
+
+              <h4>🧪 Pratique</h4>
+
+              <p>
+                Mitadiava prospects tena izy ary raketo:
+              </p>
+
+              <ul>
+                <li>Prospects</li>
+                <li>Réponses</li>
+                <li>Discussions</li>
+                <li>Commandes</li>
+              </ul>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <strong>🎯 Résultat attendu:</strong>
+
+              <p>
+                Prospects qualifiés sy conversations tena izy.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- JOUR 6 -->
+
+        <article class="lesson-card">
+
+          <div class="lesson-number">6</div>
+
+          <div class="lesson-content">
+
+            <span class="lesson-day">
+              JOUR 6
+            </span>
+
+            <h3>
+              Objection & Closing
+            </h3>
+
+            <p class="lesson-intro">
+              Mianara mamaly objection nefa tsy manery ny client.
+            </p>
+
+            <div class="objection-list">
+
+              <span>“Lafo loatra.”</span>
+              <span>“Mbola hieritreritra aho.”</span>
+              <span>“Misy remise ve?”</span>
+              <span>“Aiza no misy anareo?”</span>
+              <span>“Alefaso aloha dia mandoa aho.”</span>
+
+            </div>
+
+
+            <div class="lesson-block">
+
+              <h4>🧪 Pratique</h4>
+
+              <p>
+                Ampiasao ny <strong>Simulation Client</strong>.
+                Valio ny objection, jereo ny score ary fantaro
+                izay tokony hatsaraina.
+              </p>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <strong>🎯 Résultat attendu:</strong>
+
+              <p>
+                Valiny matotra + score + fanatsarana.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- JOUR 7 -->
+
+        <article class="lesson-card">
+
+          <div class="lesson-number">7</div>
+
+          <div class="lesson-content">
+
+            <span class="lesson-day">
+              JOUR 7
+            </span>
+
+            <h3>
+              Suivi & Fidélisation
+            </h3>
+
+            <p class="lesson-intro">
+              Tsy mifarana amin'ny commande ny vente.
+            </p>
+
+            <div class="lesson-block">
+
+              <h4>📚 Lesona</h4>
+
+              <p>
+                Araho ny client, fantaro raha afa-po izy,
+                ary jereo raha misy repeat order na recommandation.
+              </p>
+
+            </div>
+
+
+            <div class="lesson-block">
+
+              <h4>📊 Pratique</h4>
+
+              <p>
+                Fenoy ny Retour & Évaluation ary diniho:
+              </p>
+
+              <ul>
+                <li>Conversion</li>
+                <li>CA</li>
+                <li>Tombony</li>
+                <li>Objection</li>
+                <li>Lesona noraisina</li>
+              </ul>
+
+            </div>
+
+
+            <div class="result-box">
+
+              <strong>🎯 Résultat attendu:</strong>
+
+              <p>
+                Résultat mesurable + zavatra iray hatsaraina.
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <div class="center-action">
 
           <a
-            data-link="whatsapp-group"
+            class="btn btn-primary"
             href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
             target="_blank"
             rel="noopener"
-            class="btn btn-primary"
           >
             Miditra amin'ny Formation WhatsApp
           </a>
@@ -808,31 +815,42 @@
     </section>
 
 
-    <!-- ===================================================
-         VENTE LAB
-         =================================================== -->
+    <!-- =======================================================
+         LAB
+    ======================================================== -->
 
-    <section
-      id="lab"
-      class="section"
-    >
+    <section id="lab" class="section">
 
       <div class="container">
 
         <div class="section-heading">
 
-          <div class="eyebrow">
+          <span class="eyebrow">
             🧪 VENTE LAB
-          </div>
+          </span>
 
           <h2>
             Ampiharo eto ny lesona
           </h2>
 
           <p>
-            Vakio aloha ny lesona ao WhatsApp Formation,
-            avy eo ampiharo eto, ary farany alefaso ao
-            amin'ny Retour & Évaluation ny vokatra.
+            Vakio aloha ny lesona ao amin'ny WhatsApp Formation,
+            avy eo ampiharo eto, ary farany alefaso ao amin'ny
+            Retour & Évaluation ny vokatra.
+          </p>
+
+        </div>
+
+
+        <div class="important-note">
+
+          <strong>⚠️ Aza manomboka amin'ny outil fotsiny.</strong>
+
+          <p>
+            Raha mbola tsy fantatrao ny zavatra tadiavinao,
+            vakio aloha ny lesona mifanaraka amin'ilay outil.
+            Ny outil dia natao hanampy anao hampihatra,
+            fa tsy hisolo ny fianarana.
           </p>
 
         </div>
@@ -840,36 +858,40 @@
 
         <div class="tools-grid">
 
+          <!-- PRICE -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="price"
           >
 
-            <span class="tool-icon">
-              🧮
-            </span>
+            <span class="tool-icon">🧮</span>
 
             <span class="tool-title">
               Kajy Prix & Tombony
             </span>
 
             <span class="tool-description">
+              Fantaro ny coût, prix, CA, tombony ary marge.
+            </span>
+
+            <span class="tool-help">
               Coût → Prix → CA → Tombony → Marge
             </span>
 
           </button>
 
 
+          <!-- ELEVAGE -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="elevage"
           >
 
-            <span class="tool-icon">
-              🐔
-            </span>
+            <span class="tool-icon">🐔</span>
 
             <span class="tool-title">
               Kajy Fiompiana
@@ -879,39 +901,73 @@
               Kajio ny coût sy tombony amin'ny fiompiana.
             </span>
 
+            <span class="tool-help">
+              Biby → Coût → Prix → Tombony
+            </span>
+
           </button>
 
 
+          <!-- CALENDAR -->
+
           <button
+            class="tool-card tool-card-featured"
             type="button"
+            data-tool="calendar"
+          >
+
+            <span class="tool-icon">📅</span>
+
+            <span class="tool-title">
+              Calendrier Mpiompy & Vente
+            </span>
+
+            <span class="tool-description">
+              Fantaro ny fotoana hanomanana vente,
+              hitadiavana client ary hanaovana suivi.
+            </span>
+
+            <span class="tool-help">
+              Fiompiana → Préparation → Prospection → Vente
+            </span>
+
+          </button>
+
+
+          <!-- OFFER -->
+
+          <button
             class="tool-card"
+            type="button"
             data-tool="offer"
           >
 
-            <span class="tool-icon">
-              🎁
-            </span>
+            <span class="tool-icon">🎁</span>
 
             <span class="tool-title">
               Créer une Offre
             </span>
 
             <span class="tool-description">
+              Mamoròna offre mazava sy mora takatry ny client.
+            </span>
+
+            <span class="tool-help">
               Client → Problème → Solution → Prix → CTA
             </span>
 
           </button>
 
 
+          <!-- PUBLICATION -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="publication"
           >
 
-            <span class="tool-icon">
-              📢
-            </span>
+            <span class="tool-icon">📢</span>
 
             <span class="tool-title">
               Publication
@@ -922,39 +978,47 @@
               WhatsApp na Marketplace.
             </span>
 
+            <span class="tool-help">
+              Hook → Offre → CTA
+            </span>
+
           </button>
 
 
+          <!-- SIMULATION -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="simulation"
           >
 
-            <span class="tool-icon">
-              💬
-            </span>
+            <span class="tool-icon">💬</span>
 
             <span class="tool-title">
               Simulation Client
             </span>
 
             <span class="tool-description">
-              Manao pratique amin'ny objection sy closing.
+              Manaova pratique amin'ny objection sy closing.
+            </span>
+
+            <span class="tool-help">
+              Objection → Valiny → Score → Fanatsarana
             </span>
 
           </button>
 
 
+          <!-- ORDER -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="order"
           >
 
-            <span class="tool-icon">
-              🛒
-            </span>
+            <span class="tool-icon">🛒</span>
 
             <span class="tool-title">
               Commande
@@ -964,39 +1028,47 @@
               Raketo ny commande sy ny statut.
             </span>
 
+            <span class="tool-help">
+              Client → Produit → Total → Statut
+            </span>
+
           </button>
 
 
+          <!-- RECEIPT -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="receipt"
           >
 
-            <span class="tool-icon">
-              🧾
-            </span>
+            <span class="tool-icon">🧾</span>
 
             <span class="tool-title">
               Reçu de Vente
             </span>
 
             <span class="tool-description">
-              Mamoròna reçu tsotra ho an'ny client.
+              Mamoròna reçu tsotra sy mazava ho an'ny client.
+            </span>
+
+            <span class="tool-help">
+              Vente → Paiement → Reçu
             </span>
 
           </button>
 
 
+          <!-- GUIDE -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="guide"
           >
 
-            <span class="tool-icon">
-              📘
-            </span>
+            <span class="tool-icon">📘</span>
 
             <span class="tool-title">
               Guide
@@ -1006,18 +1078,22 @@
               Jereo indray ny fomba fiasan'ny Vente Lab.
             </span>
 
+            <span class="tool-help">
+              Torolalana → Ohatra → Pratique
+            </span>
+
           </button>
 
 
+          <!-- CHALLENGE -->
+
           <button
-            type="button"
             class="tool-card"
+            type="button"
             data-tool="challenge"
           >
 
-            <span class="tool-icon">
-              🏆
-            </span>
+            <span class="tool-icon">🏆</span>
 
             <span class="tool-title">
               Challenge 7 Jours
@@ -1027,46 +1103,421 @@
               Manaova action iray azo refesina isan'andro.
             </span>
 
+            <span class="tool-help">
+              Action → Résultat → Retour
+            </span>
+
           </button>
 
         </div>
 
 
+        <!-- TOOL WORKSPACE -->
+
         <div
           id="toolWorkspace"
           class="tool-workspace"
-        ></div>
+          aria-live="polite"
+        >
+
+          <div class="workspace-placeholder">
+
+            <div class="workspace-placeholder-icon">
+              🧪
+            </div>
+
+            <h3>
+              Safidio ny outil tianao hampiasaina
+            </h3>
+
+            <p>
+              Rehefa misafidy outil ianao dia hiseho eto
+              ny formulaire, ny fanazavana ary ny dingana arahina.
+            </p>
+
+          </div>
+
+        </div>
 
       </div>
 
     </section>
 
 
-    <!-- ===================================================
-         DASHBOARD
-         =================================================== -->
+    <!-- =======================================================
+         CALENDAR EXPLANATION
+    ======================================================== -->
 
-    <section
-      id="dashboard"
-      class="section section-alt"
-    >
+    <section id="calendrier" class="section section-alt">
 
       <div class="container">
 
         <div class="section-heading">
 
-          <div class="eyebrow">
-            📊 DASHBOARD
-          </div>
+          <span class="eyebrow">
+            📅 MPIOMPY & VENTE
+          </span>
 
           <h2>
-            Araho ny progression-nao
+            Aza miandry ny andro hivarotana vao mitady client.
           </h2>
 
           <p>
-            Ireo données eto amin'ny dashboard dia
-            voatahiry ao amin'ny navigateur amin'ity
-            appareil ity.
+            Ny vente tsara dia omanina mialoha.
+            Ny Calendrier Mpiompy & Vente dia mampifandray
+            ny fotoana fiompiana sy ny fotoana fanomanana vente.
+          </p>
+
+        </div>
+
+
+        <div class="calendar-explanation">
+
+          <div class="calendar-main-card">
+
+            <div class="calendar-title">
+              <span>🐔</span>
+
+              <div>
+                <strong>
+                  Ohatra: Poulet de chair
+                </strong>
+
+                <small>
+                  Exemple pédagogique
+                </small>
+              </div>
+            </div>
+
+
+            <div class="timeline">
+
+              <div class="timeline-item">
+
+                <span class="timeline-dot">1</span>
+
+                <div>
+                  <strong>
+                    Daty nanombohana
+                  </strong>
+
+                  <p>
+                    Raisina ny poussins ary manomboka ny suivi.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div class="timeline-item">
+
+                <span class="timeline-dot">2</span>
+
+                <div>
+                  <strong>
+                    Période de croissance
+                  </strong>
+
+                  <p>
+                    Araho ny sakafo, fahasalamana ary lanja.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div class="timeline-item">
+
+                <span class="timeline-dot">3</span>
+
+                <div>
+                  <strong>
+                    Préparation de vente
+                  </strong>
+
+                  <p>
+                    Jereo ny lanja, coût ary prix marché.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div class="timeline-item">
+
+                <span class="timeline-dot">4</span>
+
+                <div>
+                  <strong>
+                    Prospection
+                  </strong>
+
+                  <p>
+                    Mitadiava prospects sy précommandes
+                    alohan'ny stock disponible.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div class="timeline-item">
+
+                <span class="timeline-dot">5</span>
+
+                <div>
+                  <strong>
+                    Vente
+                  </strong>
+
+                  <p>
+                    Ataovy ny livraison/vente ary omeo reçu
+                    raha ilaina.
+                  </p>
+                </div>
+
+              </div>
+
+
+              <div class="timeline-item">
+
+                <span class="timeline-dot">6</span>
+
+                <div>
+                  <strong>
+                    Suivi
+                  </strong>
+
+                  <p>
+                    Araho ny satisfaction ary kajio ny tombony.
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="calendar-side">
+
+            <div class="info-card">
+
+              <h3>
+                🎯 Inona no tadiavina?
+              </h3>
+
+              <p>
+                Tsy hoe manome daty raikitra fotsiny ilay outil.
+                Mijery ny vaovao nampidirinao izy mba hamoronana
+                <strong>période de vente vinavinana</strong>.
+              </p>
+
+            </div>
+
+
+            <div class="info-card warning">
+
+              <h3>
+                ⚠️ Zava-dehibe
+              </h3>
+
+              <p>
+                Ny daty aseho dia <strong>vinavina</strong>.
+                Ny lanja tena izy, santé, alimentation,
+                coût ary prix marché no tokony hanampy anao
+                handray ny décision farany.
+              </p>
+
+            </div>
+
+
+            <div class="info-card">
+
+              <h3>
+                📢 Rahoviana no mitady client?
+              </h3>
+
+              <p>
+                Tsy ilaina ny miandry ny andro hivarotana.
+                Afaka manomboka manao prospection sy précommande
+                mialoha ianao rehefa manakaiky ny période de vente.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="sale-plan">
+
+          <h3>
+            🛒 Ohatra Plan Vente
+          </h3>
+
+          <div class="sale-plan-grid">
+
+            <div>
+              <strong>7 andro mialoha</strong>
+              <span>Mitady prospects</span>
+            </div>
+
+            <div>
+              <strong>5 andro mialoha</strong>
+              <span>Mamoaka publication</span>
+            </div>
+
+            <div>
+              <strong>3 andro mialoha</strong>
+              <span>Relance prospects</span>
+            </div>
+
+            <div>
+              <strong>1 andro mialoha</strong>
+              <span>Manamarina commandes</span>
+            </div>
+
+            <div>
+              <strong>Jour J</strong>
+              <span>Vente + reçu</span>
+            </div>
+
+            <div>
+              <strong>J + 1</strong>
+              <span>Suivi client</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         HOW THE TOOLS CONNECT
+    ======================================================== -->
+
+    <section class="section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span class="eyebrow">
+            🔗 RAFITRA IRAY
+          </span>
+
+          <h2>
+            Ireo outils ireo dia mifandray.
+          </h2>
+
+          <p>
+            Tsy tokony hampiasa outil iray ianao dia hijanona eo.
+            Ny iray dia manomana ny dingana manaraka.
+          </p>
+
+        </div>
+
+
+        <div class="flow-diagram">
+
+          <div class="flow-step">
+            <span>🐔</span>
+            <strong>Fiompiana</strong>
+            <small>Karazana + isan'ny biby</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>📅</span>
+            <strong>Calendrier</strong>
+            <small>Rahoviana no manomana vente?</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>🧮</span>
+            <strong>Kajy</strong>
+            <small>Coût + Prix + Tombony</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>🎁</span>
+            <strong>Offre</strong>
+            <small>Vahaolana ho an'ny client</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>📢</span>
+            <strong>Publication</strong>
+            <small>Mitady prospects</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>💬</span>
+            <strong>Discussion</strong>
+            <small>Qualification + closing</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>🛒</span>
+            <strong>Commande</strong>
+            <small>Vente réelle</small>
+          </div>
+
+          <span class="flow-arrow">→</span>
+
+          <div class="flow-step">
+            <span>📊</span>
+            <strong>Résultat</strong>
+            <small>CA + Tombony + Leçon</small>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =======================================================
+         DASHBOARD
+    ======================================================== -->
+
+    <section id="dashboard" class="section section-alt">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span class="eyebrow">
+            📊 DASHBOARD
+          </span>
+
+          <h2>
+            Aza miantehitra amin'ny fahatsiarovana.
+            Refeso ny vente-nao.
+          </h2>
+
+          <p>
+            Ny Dashboard dia manangona ny données avy amin'ny
+            pratique ataonao amin'ny Vente Lab.
           </p>
 
         </div>
@@ -1075,66 +1526,23 @@
         <div class="stats-grid">
 
           <div class="stat-card">
-
-            <div class="stat-label">
-              Calculs
-            </div>
-
-            <div
-              id="statCalculations"
-              class="stat-value"
-            >
-              0
-            </div>
-
+            <span>Calculs</span>
+            <strong id="statCalculations">0</strong>
           </div>
 
-
           <div class="stat-card">
-
-            <div class="stat-label">
-              Commandes
-            </div>
-
-            <div
-              id="statOrders"
-              class="stat-value"
-            >
-              0
-            </div>
-
+            <span>Commandes</span>
+            <strong id="statOrders">0</strong>
           </div>
 
-
           <div class="stat-card">
-
-            <div class="stat-label">
-              CA payé
-            </div>
-
-            <div
-              id="statRevenue"
-              class="stat-value"
-            >
-              0 Ar
-            </div>
-
+            <span>CA enregistré</span>
+            <strong id="statRevenue">0 Ar</strong>
           </div>
 
-
           <div class="stat-card">
-
-            <div class="stat-label">
-              Tombony calculé
-            </div>
-
-            <div
-              id="statProfit"
-              class="stat-value"
-            >
-              0 Ar
-            </div>
-
+            <span>Tombony calculé</span>
+            <strong id="statProfit">0 Ar</strong>
           </div>
 
         </div>
@@ -1144,38 +1552,74 @@
 
           <div class="dashboard-card">
 
-            <div class="dashboard-card-header">
+            <h3>
+              📈 Funnel Vente
+            </h3>
 
-              <div>
+            <p>
+              Jereo hoe aiza no very ny prospects.
+            </p>
 
-                <div class="eyebrow">
-                  CALCULS
-                </div>
+            <div class="funnel-row">
 
-                <h3>
-                  Calculs farany
-                </h3>
+              <span>Prospects</span>
 
+              <strong id="funnelProspects">0</strong>
+
+              <div class="funnel-bar">
+                <i id="funnelBarProspects"></i>
               </div>
 
             </div>
 
-            <div id="recentCalculations">
 
-              <div class="empty-state">
+            <div class="funnel-row">
 
-                <div class="empty-icon">
-                  🧮
-                </div>
+              <span>Réponses</span>
 
-                <div class="empty-title">
-                  Tsy mbola misy calcul
-                </div>
+              <strong id="funnelResponses">0</strong>
 
-                <div class="empty-description">
-                  Ampiasao aloha ny Kajy Prix & Tombony.
-                </div>
+              <div class="funnel-bar">
+                <i id="funnelBarResponses"></i>
+              </div>
 
+            </div>
+
+
+            <div class="funnel-row">
+
+              <span>Discussions</span>
+
+              <strong id="funnelDiscussions">0</strong>
+
+              <div class="funnel-bar">
+                <i id="funnelBarDiscussions"></i>
+              </div>
+
+            </div>
+
+
+            <div class="funnel-row">
+
+              <span>Commandes</span>
+
+              <strong id="funnelOrders">0</strong>
+
+              <div class="funnel-bar">
+                <i id="funnelBarOrders"></i>
+              </div>
+
+            </div>
+
+
+            <div class="funnel-row">
+
+              <span>Clients</span>
+
+              <strong id="funnelClients">0</strong>
+
+              <div class="funnel-bar">
+                <i id="funnelBarClients"></i>
               </div>
 
             </div>
@@ -1185,166 +1629,32 @@
 
           <div class="dashboard-card">
 
-            <div class="dashboard-card-header">
+            <h3>
+              🧮 Calculs farany
+            </h3>
 
-              <div>
+            <div id="recentCalculations">
 
-                <div class="eyebrow">
-                  COMMANDES
-                </div>
-
-                <h3>
-                  Commandes farany
-                </h3>
-
-              </div>
+              <p class="empty-state">
+                Tsy mbola misy calcul.
+              </p>
 
             </div>
+
+          </div>
+
+
+          <div class="dashboard-card">
+
+            <h3>
+              🛒 Commandes farany
+            </h3>
 
             <div id="recentOrders">
 
-              <div class="empty-state">
-
-                <div class="empty-icon">
-                  🛒
-                </div>
-
-                <div class="empty-title">
-                  Tsy mbola misy commande
-                </div>
-
-                <div class="empty-description">
-                  Hanomboka hiseho eto ny commande voatahiry.
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- FUNNEL -->
-
-        <div class="dashboard-card funnel-card">
-
-          <div class="dashboard-card-header">
-
-            <div>
-
-              <div class="eyebrow">
-                FUNNEL
-              </div>
-
-              <h3>
-                Prospects → Clients
-              </h3>
-
-            </div>
-
-          </div>
-
-
-          <div class="funnel-list">
-
-            <div class="funnel-item">
-
-              <div class="funnel-top">
-                <span>Prospects</span>
-                <strong id="funnelProspects">0</strong>
-              </div>
-
-              <div class="funnel-track">
-
-                <div
-                  id="funnelBarProspects"
-                  class="funnel-bar"
-                  style="width:0%"
-                ></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="funnel-item">
-
-              <div class="funnel-top">
-                <span>Réponses</span>
-                <strong id="funnelResponses">0</strong>
-              </div>
-
-              <div class="funnel-track">
-
-                <div
-                  id="funnelBarResponses"
-                  class="funnel-bar"
-                  style="width:0%"
-                ></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="funnel-item">
-
-              <div class="funnel-top">
-                <span>Discussions</span>
-                <strong id="funnelDiscussions">0</strong>
-              </div>
-
-              <div class="funnel-track">
-
-                <div
-                  id="funnelBarDiscussions"
-                  class="funnel-bar"
-                  style="width:0%"
-                ></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="funnel-item">
-
-              <div class="funnel-top">
-                <span>Commandes</span>
-                <strong id="funnelOrders">0</strong>
-              </div>
-
-              <div class="funnel-track">
-
-                <div
-                  id="funnelBarOrders"
-                  class="funnel-bar"
-                  style="width:0%"
-                ></div>
-
-              </div>
-
-            </div>
-
-
-            <div class="funnel-item">
-
-              <div class="funnel-top">
-                <span>Clients</span>
-                <strong id="funnelClients">0</strong>
-              </div>
-
-              <div class="funnel-track">
-
-                <div
-                  id="funnelBarClients"
-                  class="funnel-bar"
-                  style="width:0%"
-                ></div>
-
-              </div>
+              <p class="empty-state">
+                Tsy mbola misy commande.
+              </p>
 
             </div>
 
@@ -1357,31 +1667,27 @@
     </section>
 
 
-    <!-- ===================================================
-         RETOUR & EVALUATION
-         =================================================== -->
+    <!-- =======================================================
+         EVALUATION
+    ======================================================== -->
 
-    <section
-      id="evaluation"
-      class="section"
-    >
+    <section id="evaluation" class="section">
 
       <div class="container">
 
         <div class="section-heading">
 
-          <div class="eyebrow">
-            📊 RETOUR & ÉVALUATION
-          </div>
+          <span class="eyebrow">
+            📤 RETOUR & ÉVALUATION
+          </span>
 
           <h2>
-            Aza mijanona amin'ny hoe “efa nanao”
+            Ny résultat no ampianarina antsika izay tokony hatsaraina.
           </h2>
 
           <p>
-            Ny tanjona dia ny hahafantarana hoe inona
-            no natao, inona no valiny, ary inona no
-            tokony hatsaraina.
+            Rehefa avy manao pratique ianao dia aza mijanona
+            amin'ny hoe “vita”. Raketo izay nitranga.
           </p>
 
         </div>
@@ -1389,305 +1695,285 @@
 
         <div class="evaluation-layout">
 
-          <div class="evaluation-info">
+          <div class="evaluation-guide">
 
-            <div class="info-card">
+            <h3>
+              Inona no tokony haverina?
+            </h3>
 
-              <div class="card-icon">
-                🎯
-              </div>
+            <ol>
 
-              <h3>
-                Inona no alefa?
-              </h3>
+              <li>
+                Inona ny channel nampiasaina?
+              </li>
 
-              <ul class="check-list">
+              <li>
+                Inona ny publication natao?
+              </li>
 
-                <li>
-                  Canal nampiasaina
-                </li>
+              <li>
+                Firy ny olona nahita?
+              </li>
 
-                <li>
-                  Publication natao
-                </li>
+              <li>
+                Firy ny messages?
+              </li>
 
-                <li>
-                  Nombre de prospects
-                </li>
+              <li>
+                Firy ny prospects?
+              </li>
 
-                <li>
-                  Réponses
-                </li>
+              <li>
+                Firy ny discussions?
+              </li>
 
-                <li>
-                  Discussions
-                </li>
+              <li>
+                Firy ny commandes?
+              </li>
 
-                <li>
-                  Commandes
-                </li>
+              <li>
+                Ohatrinona ny CA?
+              </li>
 
-                <li>
-                  CA sy tombony
-                </li>
+              <li>
+                Ohatrinona ny tombony?
+              </li>
 
-                <li>
-                  Objection lehibe indrindra
-                </li>
+              <li>
+                Inona ny objection lehibe?
+              </li>
 
-                <li>
-                  Lesona nianarana
-                </li>
+              <li>
+                Inona no nianaranao?
+              </li>
 
-              </ul>
+            </ol>
+
+          </div>
+
+
+          <form id="evaluationForm" class="form-card">
+
+            <div class="form-group">
+
+              <label>
+                Channel
+              </label>
+
+              <select name="channel" required>
+
+                <option value="">
+                  Safidio
+                </option>
+
+                <option value="Facebook">
+                  Facebook
+                </option>
+
+                <option value="WhatsApp">
+                  WhatsApp
+                </option>
+
+                <option value="Marketplace">
+                  Marketplace
+                </option>
+
+                <option value="Local">
+                  Vente locale
+                </option>
+
+              </select>
 
             </div>
 
-          </div>
 
+            <div class="form-group">
 
-          <div class="evaluation-form-card">
+              <label>
+                Publication natao
+              </label>
 
-            <form id="evaluationForm">
+              <textarea
+                name="publication"
+                rows="3"
+                placeholder="Soraty fohy ilay publication..."
+                required
+              ></textarea>
 
-              <div class="form-grid">
+            </div>
 
-                <div class="form-group">
 
-                  <label class="form-label">
-                    Canal
-                  </label>
+            <div class="form-grid">
 
-                  <select
-                    name="channel"
-                    class="form-control"
-                    required
-                  >
+              <div class="form-group">
 
-                    <option value="">
-                      Safidio
-                    </option>
+                <label>
+                  Views
+                </label>
 
-                    <option value="Facebook">
-                      Facebook
-                    </option>
-
-                    <option value="WhatsApp">
-                      WhatsApp
-                    </option>
-
-                    <option value="Marketplace">
-                      Marketplace
-                    </option>
-
-                    <option value="Autre">
-                      Autre
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Publication
-                  </label>
-
-                  <input
-                    type="text"
-                    name="publication"
-                    class="form-control"
-                    placeholder="Anaran'ny publication"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Vues
-                  </label>
-
-                  <input
-                    type="number"
-                    name="views"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Messages
-                  </label>
-
-                  <input
-                    type="number"
-                    name="messages"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Prospects
-                  </label>
-
-                  <input
-                    type="number"
-                    name="prospects"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Réponses
-                  </label>
-
-                  <input
-                    type="number"
-                    name="responses"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Discussions
-                  </label>
-
-                  <input
-                    type="number"
-                    name="discussions"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Commandes
-                  </label>
-
-                  <input
-                    type="number"
-                    name="orders"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    CA
-                  </label>
-
-                  <input
-                    type="number"
-                    name="revenue"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group">
-
-                  <label class="form-label">
-                    Tombony
-                  </label>
-
-                  <input
-                    type="number"
-                    name="profit"
-                    class="form-control"
-                    min="0"
-                    value="0"
-                  >
-
-                </div>
-
-
-                <div class="form-group full">
-
-                  <label class="form-label">
-                    Objection lehibe
-                  </label>
-
-                  <textarea
-                    name="objection"
-                    class="form-control"
-                    placeholder="Ohatra: lafo loatra..."
-                  ></textarea>
-
-                </div>
-
-
-                <div class="form-group full">
-
-                  <label class="form-label">
-                    Inona no nianaranao?
-                  </label>
-
-                  <textarea
-                    name="lesson"
-                    class="form-control"
-                    placeholder="Inona no tokony hatsaraina amin'ny manaraka?"
-                  ></textarea>
-
-                </div>
-
-              </div>
-
-
-              <div class="form-actions">
-
-                <button
-                  type="submit"
-                  class="btn btn-primary"
+                <input
+                  type="number"
+                  name="views"
+                  min="0"
+                  value="0"
                 >
-                  Alefa ny Retour
-                </button>
 
               </div>
 
-            </form>
 
-          </div>
+              <div class="form-group">
+
+                <label>
+                  Messages
+                </label>
+
+                <input
+                  type="number"
+                  name="messages"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Prospects
+                </label>
+
+                <input
+                  type="number"
+                  name="prospects"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Réponses
+                </label>
+
+                <input
+                  type="number"
+                  name="responses"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Discussions
+                </label>
+
+                <input
+                  type="number"
+                  name="discussions"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Commandes
+                </label>
+
+                <input
+                  type="number"
+                  name="orders"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  CA
+                </label>
+
+                <input
+                  type="number"
+                  name="revenue"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label>
+                  Tombony
+                </label>
+
+                <input
+                  type="number"
+                  name="profit"
+                  min="0"
+                  value="0"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Objection lehibe
+              </label>
+
+              <input
+                type="text"
+                name="objection"
+                placeholder="Ohatra: Lafo loatra"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label>
+                Inona no nianaranao?
+              </label>
+
+              <textarea
+                name="lesson"
+                rows="4"
+                placeholder="Inona no nety? Inona no tsy nety? Inona no hatsarainao?"
+                required
+              ></textarea>
+
+            </div>
+
+
+            <button
+              class="btn btn-primary"
+              type="submit"
+            >
+              Alefa ny Retour
+            </button>
+
+          </form>
 
         </div>
 
@@ -1696,30 +1982,26 @@
     </section>
 
 
-    <!-- ===================================================
-         AVIS
-         =================================================== -->
+    <!-- =======================================================
+         REVIEWS
+    ======================================================== -->
 
-    <section
-      id="avis"
-      class="section section-alt"
-    >
+    <section class="section section-alt">
 
       <div class="container">
 
         <div class="section-heading">
 
-          <div class="eyebrow">
-            ⭐ AVIS DES APPRENANTS
-          </div>
+          <span class="eyebrow">
+            💬 AVIS & EXPÉRIENCES
+          </span>
 
           <h2>
-            Ny expérience an'ireo mpianatra
+            Inona no nianaran'ny mpampiasa?
           </h2>
 
           <p>
-            Ny avis dia miseho rehefa nohamarinin'ny
-            responsable.
+            Ny avis dia miseho rehefa avy nodinihina sy nekena.
           </p>
 
         </div>
@@ -1730,33 +2012,21 @@
           class="reviews-grid"
         >
 
-          <div class="empty-state">
-
-            <div class="empty-icon">
-              ⭐
-            </div>
-
-            <div class="empty-title">
-              Mbola tsy misy avis public
-            </div>
-
-            <div class="empty-description">
-              Ny avis vaovao dia miseho rehefa ankatoavina.
-            </div>
-
-          </div>
+          <p class="empty-state">
+            Mbola tsy misy avis approuvé.
+          </p>
 
         </div>
 
 
-        <div class="section-center">
+        <div class="center-action">
 
           <button
             type="button"
-            class="btn btn-primary"
+            class="btn btn-secondary"
             data-modal-open="reviewModal"
           >
-            Hamela Avis
+            Hizara ny expérience-ko
           </button>
 
         </div>
@@ -1766,107 +2036,47 @@
     </section>
 
 
-    <!-- ===================================================
-         SUPPORT AVANCE
-         =================================================== -->
+    <!-- =======================================================
+         SUPPORT
+    ======================================================== -->
 
-    <section
-      id="support"
-      class="section"
-    >
+    <section class="section support-section">
 
       <div class="container">
 
-        <div class="section-heading">
-
-          <div class="eyebrow">
-            📘 SUPPORT AVANCÉ
-          </div>
-
-          <h2>
-            Guide Pratique Vente en Ligne & Vente Locale
-          </h2>
-
-          <p>
-            Support complémentaire ho an'izay te handalina
-            bebe kokoa ny technique de vente.
-          </p>
-
-        </div>
-
-
         <div class="support-card">
 
-          <div class="support-content">
+          <div>
 
-            <div class="support-badge">
-              52 PAGES
-            </div>
-
-            <h3>
-              Guide Pratique Vente en Ligne
-              & Vente Locale
-            </h3>
-
-            <p>
-              Scripts, modèles, challenges, cas pratiques
-              ary techniques azo ampiharina amin'ny
-              Facebook, WhatsApp ary vente locale.
-            </p>
-
-
-            <ul class="check-list">
-
-              <li>
-                Scripts de conversation
-              </li>
-
-              <li>
-                Modèles de publication
-              </li>
-
-              <li>
-                Gestion des objections
-              </li>
-
-              <li>
-                Closing
-              </li>
-
-              <li>
-                Suivi client
-              </li>
-
-              <li>
-                Challenges pratiques
-              </li>
-
-            </ul>
-
-          </div>
-
-
-          <div class="support-price">
-
-            <span>
-              Support avancé
+            <span class="eyebrow">
+              📘 SUPPORT AVANCÉ
             </span>
 
-            <strong>
-              5 000 Ar
-            </strong>
+            <h2>
+              Guide Pratique Vente en Ligne & Vente Locale
+            </h2>
 
-            <a
-              data-link="whatsapp-purchase"
-              href="https://wa.me/261385651378"
-              target="_blank"
-              rel="noopener"
-              class="btn btn-primary"
-            >
-              Hakaiko amin'ny WhatsApp
-            </a>
+            <p>
+              Guide 52 pages misy scripts, modèles,
+              challenges ary cas pratiques hanohizana
+              ny fampiharana rehefa vita ny formation.
+            </p>
+
+            <div class="support-price">
+              5 000 Ar
+            </div>
 
           </div>
+
+
+          <a
+            href="https://wa.me/261385651378"
+            class="btn btn-primary"
+            target="_blank"
+            rel="noopener"
+          >
+            Haka ny Guide
+          </a>
 
         </div>
 
@@ -1875,27 +2085,27 @@
     </section>
 
 
-    <!-- ===================================================
-         SECTEURS
-         =================================================== -->
+    <!-- =======================================================
+         SECTORS
+    ======================================================== -->
 
-    <section class="section section-alt">
+    <section class="section">
 
       <div class="container">
 
         <div class="section-heading">
 
-          <div class="eyebrow">
-            TANTSAHA MATIHANINA
-          </div>
+          <span class="eyebrow">
+            🌱 HO AN'IZA?
+          </span>
 
           <h2>
-            Vente ho an'ny sehatra agricole
+            Azo ampiharina amin'ny activité maro.
           </h2>
 
           <p>
-            Ny méthode de vente dia azo ampiharina amin'ny
-            vokatra sy activité maro.
+            Ny méthode de vente no fototra. Ny produit kosa
+            azo ovaina arakaraka ny activité-nao.
           </p>
 
         </div>
@@ -1903,35 +2113,16 @@
 
         <div class="sector-grid">
 
-          <div class="sector-card">
-            <span>🐔</span>
-            Akoho
-          </div>
-
-          <div class="sector-card">
-            <span>🐖</span>
-            Kisoa
-          </div>
-
-          <div class="sector-card">
-            <span>🍯</span>
-            Tantely
-          </div>
-
-          <div class="sector-card">
-            <span>🐐</span>
-            Osy & Ondry
-          </div>
-
-          <div class="sector-card">
-            <span>🐟</span>
-            Trondro
-          </div>
-
-          <div class="sector-card">
-            <span>🌱</span>
-            Vokatra fambolena
-          </div>
+          <div class="sector-card">🐔 Akoho</div>
+          <div class="sector-card">🐖 Kisoa</div>
+          <div class="sector-card">🍯 Tantely</div>
+          <div class="sector-card">🐐 Osy & Ondry</div>
+          <div class="sector-card">🐟 Trondro</div>
+          <div class="sector-card">🌽 Vokatra fambolena</div>
+          <div class="sector-card">🐇 Bitro</div>
+          <div class="sector-card">🦃 Vorontsiloza</div>
+          <div class="sector-card">🦆 Gana & Gisa</div>
+          <div class="sector-card">🐄 Omby</div>
 
         </div>
 
@@ -1940,58 +2131,45 @@
     </section>
 
 
-    <!-- ===================================================
-         CTA
-         =================================================== -->
+    <!-- =======================================================
+         FINAL CTA
+    ======================================================== -->
 
-    <section class="cta-section">
+    <section class="final-cta">
 
       <div class="container">
 
-        <div class="cta-card">
+        <span class="eyebrow">
+          TANTSAHA MATIHANINA
+        </span>
 
-          <div>
+        <h2>
+          Aza mianatra fotsiny.
+          Mianara, mampihatra ary mandrefy.
+        </h2>
 
-            <div class="eyebrow">
-              MIANARA • MAMPIHATRA • MAHOMBY
-            </div>
+        <p>
+          Ny tanjona dia tsy hoe hanana connaissance fotsiny,
+          fa hahafahanao mampihatra izany amin'ny vente tena izy.
+        </p>
 
-            <h2>
-              Vonona hanomboka?
-            </h2>
+        <div class="hero-actions">
 
-            <p>
-              Midira ao amin'ny WhatsApp Formation,
-              vakio ny lesona ary ampiharo eto amin'ny
-              Vente Lab.
-            </p>
+          <a
+            href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
+            class="btn btn-primary"
+            target="_blank"
+            rel="noopener"
+          >
+            Hanomboka Formation
+          </a>
 
-          </div>
-
-
-          <div class="cta-actions">
-
-            <a
-              data-link="whatsapp-group"
-              href="https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B"
-              target="_blank"
-              rel="noopener"
-              class="btn btn-light"
-            >
-              Miditra Formation
-            </a>
-
-            <a
-              data-link="whatsapp-purchase"
-              href="https://wa.me/261385651378"
-              target="_blank"
-              rel="noopener"
-              class="btn btn-outline-light"
-            >
-              Hiresaka aminay
-            </a>
-
-          </div>
+          <a
+            href="#lab"
+            class="btn btn-secondary"
+          >
+            Hiditra amin'ny Lab
+          </a>
 
         </div>
 
@@ -2002,55 +2180,55 @@
   </main>
 
 
-  <!-- =====================================================
+  <!-- =========================================================
        REVIEW MODAL
-       ===================================================== -->
+  ========================================================== -->
 
   <div
     id="reviewModal"
-    class="modal-overlay"
+    class="modal"
+    aria-hidden="true"
   >
 
-    <div class="modal">
+    <div class="modal-overlay" data-modal-close></div>
 
-      <div class="modal-header">
+    <div
+      class="modal-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="reviewModalTitle"
+    >
 
-        <div>
+      <button
+        type="button"
+        class="modal-close"
+        data-modal-close
+        aria-label="Hanakatona"
+      >
+        ✕
+      </button>
 
-          <div class="eyebrow">
-            AVIS
-          </div>
+      <h2 id="reviewModalTitle">
+        Zarao ny expérience-nao
+      </h2>
 
-          <h2>
-            Zarao ny expérience-nao
-          </h2>
-
-        </div>
-
-        <button
-          type="button"
-          class="modal-close"
-          data-modal-close
-          aria-label="Fermer"
-        >
-          ✕
-        </button>
-
-      </div>
+      <p>
+        Ampidiro eto ny zavatra nianaranao sy ny vokatra
+        azonao taorian'ny pratique.
+      </p>
 
 
       <form id="reviewForm">
 
         <div class="form-group">
 
-          <label class="form-label">
+          <label>
             Anarana
           </label>
 
           <input
             type="text"
             name="name"
-            class="form-control"
             maxlength="80"
             required
           >
@@ -2060,38 +2238,34 @@
 
         <div class="form-group">
 
-          <label class="form-label">
+          <label>
             Note
           </label>
 
-          <select
-            name="rating"
-            class="form-control"
-            required
-          >
+          <select name="rating" required>
 
             <option value="">
               Safidio
             </option>
 
             <option value="5">
-              5 — Tena tsara
+              ⭐⭐⭐⭐⭐
             </option>
 
             <option value="4">
-              4 — Tsara
+              ⭐⭐⭐⭐
             </option>
 
             <option value="3">
-              3 — Antonony
+              ⭐⭐⭐
             </option>
 
             <option value="2">
-              2 — Mila fanatsarana
+              ⭐⭐
             </option>
 
             <option value="1">
-              1 — Tsy afa-po
+              ⭐
             </option>
 
           </select>
@@ -2101,14 +2275,13 @@
 
         <div class="form-group">
 
-          <label class="form-label">
+          <label>
             Inona no nianaranao?
           </label>
 
           <textarea
             name="learning"
-            class="form-control"
-            maxlength="2000"
+            rows="3"
           ></textarea>
 
         </div>
@@ -2116,14 +2289,13 @@
 
         <div class="form-group">
 
-          <label class="form-label">
+          <label>
             Inona no nampiharinao?
           </label>
 
           <textarea
             name="applied"
-            class="form-control"
-            maxlength="2000"
+            rows="3"
           ></textarea>
 
         </div>
@@ -2131,14 +2303,13 @@
 
         <div class="form-group">
 
-          <label class="form-label">
-            Résultat
+          <label>
+            Inona ny résultat azonao?
           </label>
 
           <textarea
             name="result"
-            class="form-control"
-            maxlength="2000"
+            rows="3"
           ></textarea>
 
         </div>
@@ -2146,13 +2317,13 @@
 
         <div class="form-group">
 
-          <label class="form-label">
-            Hafatrao
+          <label>
+            Hafatra / avis
           </label>
 
           <textarea
             name="message"
-            class="form-control"
+            rows="4"
             maxlength="2000"
             required
           ></textarea>
@@ -2160,7 +2331,7 @@
         </div>
 
 
-        <label class="check-item">
+        <label class="checkbox-row">
 
           <input
             type="checkbox"
@@ -2168,30 +2339,20 @@
             required
           >
 
-          Manaiky aho fa azo jerena sy avoaka
-          ampahibemaso rehefa ankatoavina ny avis-ko.
+          <span>
+            Manaiky aho fa azo aseho amin'ny site ny avis-ko
+            rehefa neken'ny Tantsaha Matihanina.
+          </span>
 
         </label>
 
 
-        <div class="form-actions">
-
-          <button
-            type="submit"
-            class="btn btn-primary"
-          >
-            Handefa Avis
-          </button>
-
-          <button
-            type="button"
-            class="btn btn-outline"
-            data-modal-close
-          >
-            Hiverina
-          </button>
-
-        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          Handefa Avis
+        </button>
 
       </form>
 
@@ -2200,118 +2361,21 @@
   </div>
 
 
-  <!-- =====================================================
+  <!-- =========================================================
        TOAST
-       ===================================================== -->
+  ========================================================== -->
 
   <div
     id="toastContainer"
     class="toast-container"
+    aria-live="polite"
+    aria-atomic="true"
   ></div>
 
 
-  <!-- =====================================================
-       FOOTER
-       ===================================================== -->
-
-  <footer class="site-footer">
-
-    <div class="container">
-
-      <div class="footer-grid">
-
-        <div>
-
-          <div class="footer-brand">
-            TANTSAHA MATIHANINA
-          </div>
-
-          <p>
-            Miara-miasa ho an'ny fampandrosoana
-            ny eny ambanivohitra isika.
-          </p>
-
-          <p class="footer-slogan">
-            Mianatra • Mampihatra • Mahomby
-          </p>
-
-        </div>
-
-
-        <div>
-
-          <h3>
-            Vente Lab
-          </h3>
-
-          <a href="#formation">
-            Formation 7 Jours
-          </a>
-
-          <a href="#lab">
-            Outils Pratiques
-          </a>
-
-          <a href="#dashboard">
-            Dashboard
-          </a>
-
-          <a href="#evaluation">
-            Évaluation
-          </a>
-
-        </div>
-
-
-        <div>
-
-          <h3>
-            Contact
-          </h3>
-
-          <a
-            data-link="whatsapp-purchase"
-            href="https://wa.me/261385651378"
-            target="_blank"
-            rel="noopener"
-          >
-            WhatsApp
-          </a>
-
-          <a
-            data-link="facebook"
-            href="https://www.facebook.com/share/1Zfiu8oj3m/"
-            target="_blank"
-            rel="noopener"
-          >
-            Facebook
-          </a>
-
-        </div>
-
-      </div>
-
-
-      <div class="footer-bottom">
-
-        <span>
-          © 2026 Tantsaha Matihanina
-        </span>
-
-        <span>
-          Vente Lab
-        </span>
-
-      </div>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =====================================================
+  <!-- =========================================================
        JAVASCRIPT
-       ===================================================== -->
+  ========================================================== -->
 
   <script src="app.js"></script>
 
