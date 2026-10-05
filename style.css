@@ -2782,5 +2782,137 @@ textarea:focus-visible {
     animation-iteration-count:
       1 !important;
   }
+/* ==========================================================
+   GEMINI SIMULATION
+========================================================== */
 
+.simulation-mode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.simulation-mode-card {
+  border: 1px solid var(--border-color, #d9e2dc);
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.simulation-mode-card:hover,
+.simulation-mode-card.active {
+  border-color: var(--primary, #14532d);
+  transform: translateY(-1px);
+}
+
+.simulation-mode-card strong,
+.simulation-mode-card small {
+  display: block;
+}
+
+.simulation-mode-icon {
+  display: block;
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.simulation-mode-card small {
+  margin-top: 5px;
+  opacity: .7;
+}
+
+.simulation-gemini {
+  margin-top: 16px;
+}
+
+.gemini-intro {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 18px;
+  border-radius: 16px;
+  background: #f4f8f5;
+  margin-bottom: 18px;
+}
+
+.gemini-icon {
+  font-size: 32px;
+}
+
+.gemini-intro h3 {
+  margin: 0 0 6px;
+}
+
+.gemini-intro p {
+  margin: 0;
+}
+
+.gemini-prompt-box {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 18px;
+  background: #f8faf9;
+  border: 1px solid #dfe8e2;
+}
+
+.prompt-header {
+  margin-bottom: 12px;
+}
+
+.gemini-prompt-box textarea {
+  width: 100%;
+  min-height: 300px;
+  resize: vertical;
+  font-family: monospace;
+  line-height: 1.5;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #ccd8d0;
+  box-sizing: border-box;
+}
+
+.gemini-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.full-field {
+  display: block;
+  margin-top: 15px;
+}
+
+.full-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 7px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccd8d0;
+}
+
+@media (max-width: 600px) {
+
+  .simulation-mode-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gemini-intro {
+    flex-direction: column;
+  }
+
+  .gemini-actions {
+    flex-direction: column;
+  }
+
+  .gemini-actions .btn {
+    width: 100%;
+  }
+
+}
 }
