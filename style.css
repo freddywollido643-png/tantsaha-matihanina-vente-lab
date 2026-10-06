@@ -2972,3 +2972,17 @@ textarea:focus-visible {
   }
 
 }
+/* SIMULATION — class vaovao ho an'ny version Gemini */
+.simulation-panel{margin-top:6px}
+.simulation-client-card{margin-bottom:16px;padding:18px;border-left:4px solid var(--gold-500);border-radius:0 12px 12px 0;background:var(--gold-100)}
+.simulation-client-card h3{margin:0;color:var(--green-950);font-size:1.05rem}
+.simulation-options{display:grid;gap:10px;margin-bottom:16px}
+.simulation-options .simulation-option{width:100%;min-height:58px;text-align:left;line-height:1.5}
+.simulation-option:disabled{opacity:.6;cursor:not-allowed}
+.simulation-feedback{margin-bottom:16px}
+.gemini-intro{margin-bottom:16px}
+.gemini-intro h3{margin-bottom:6px;color:var(--green-950)}
+.gemini-intro p{margin:0;color:var(--text-soft);font-size:.88rem}
+.gemini-instructions{margin-top:16px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface);font-size:.86rem;color:var(--text-soft)}
+.gemini-instructions ol{margin:8px 0 0;padding-left:20px}
+.simulation-mode-card span{display:block;margin-top:4px;color:var(--text-soft);font-size:.82rem}
