@@ -545,15 +545,14 @@
 
   }
 
+/* =========================================================
+   FARAN'NY PARTIE 1/3
+   ========================================================= */
 
-  /* =========================================================
-     FARAN'NY PARTIE 1/3
-     ========================================================= */
 
-});
-  /* =========================================================
-     1. KAJY PRIX & TOMBONY
-     ========================================================= */
+/* =========================================================
+   1. KAJY PRIX & TOMBONY
+   ========================================================= */ */
 
   const ANIMALS = [
     "Akoho Gasy",
@@ -4192,52 +4191,52 @@ Misaotra!`;
   }
 
 
-    /* =========================================================
-     INITIALISATION
-     ========================================================= */
+/* =========================================================
+   INITIALISATION
+   ========================================================= */
 
-  function init() {
+function init() {
 
-    initTools();
+  initTools();
 
-    initGlobalClicks();
+  initGlobalClicks();
 
-    initEvaluation();
+  initEvaluation();
 
-    initReviews();
+  initReviews();
 
-    renderReviews();
+  renderReviews();
 
-    updateDashboard();
+  updateDashboard();
 
-  }
-
-
-  if (
-    document.readyState ===
-    "loading"
-  ) {
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      init
-    );
-
-  } else {
-
-    init();
-
-  }
+}
 
 
-  window.addEventListener(
-    "load",
-    initSupabase
+if (
+  document.readyState ===
+  "loading"
+) {
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    init
   );
 
+} else {
 
-  /* =========================================================
-     FARAN'NY APP.JS
-     ========================================================= */
+  init();
 
-})();================ */
+}
+
+
+window.addEventListener(
+  "load",
+  initSupabase
+);
+
+
+/* =========================================================
+   FARAN'NY APP.JS
+   ========================================================= */
+
+})();
