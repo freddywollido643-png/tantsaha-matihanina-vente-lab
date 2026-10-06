@@ -1528,10 +1528,159 @@
           </div>
 
 
-          <div
-            id="evaluationWorkspace"
-            class="evaluation-workspace"
-          ></div>
+          <form id="evaluationForm" class="lab-form">
+
+  <div class="section-heading">
+    <span class="eyebrow">ÉVALUATION</span>
+    <h3>Inona ny vokatra azo tamin'ny varotra?</h3>
+    <p>
+      Fenoy ireo tarehimarika mba hahafahanao mandrefy
+      ny vokatra sy mahita izay tokony hatsaraina.
+    </p>
+  </div>
+
+  <div class="form-grid">
+
+    <label>
+      <span>Canal nampiasaina</span>
+      <select name="channel" required>
+        <option value="">-- Safidio --</option>
+        <option value="Facebook">Facebook</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="TikTok">TikTok</option>
+        <option value="Marketplace">Marketplace</option>
+        <option value="Vente directe">Vente directe</option>
+        <option value="Autre">Hafa</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Publication natao</span>
+      <input
+        type="number"
+        name="publication"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 5"
+      >
+    </label>
+
+    <label>
+      <span>Views / Vues</span>
+      <input
+        type="number"
+        name="views"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 1200"
+      >
+    </label>
+
+    <label>
+      <span>Messages</span>
+      <input
+        type="number"
+        name="messages"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 35"
+      >
+    </label>
+
+    <label>
+      <span>Prospects</span>
+      <input
+        type="number"
+        name="prospects"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 20"
+      >
+    </label>
+
+    <label>
+      <span>Réponses</span>
+      <input
+        type="number"
+        name="responses"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 15"
+      >
+    </label>
+
+    <label>
+      <span>Discussions</span>
+      <input
+        type="number"
+        name="discussions"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 10"
+      >
+    </label>
+
+    <label>
+      <span>Commandes</span>
+      <input
+        type="number"
+        name="orders"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 5"
+      >
+    </label>
+
+    <label>
+      <span>Chiffre d'affaires (Ar)</span>
+      <input
+        type="number"
+        name="revenue"
+        min="0"
+        value="0"
+        placeholder="Ohatra: 150000"
+      >
+    </label>
+
+    <label>
+      <span>Bénéfice (Ar)</span>
+      <input
+        type="number"
+        name="profit"
+        value="0"
+        placeholder="Ohatra: 50000"
+      >
+    </label>
+
+    <label class="form-full">
+      <span>Objection principale rencontrée</span>
+      <input
+        type="text"
+        name="objection"
+        placeholder="Ohatra: Lafo loatra"
+      >
+    </label>
+
+    <label class="form-full">
+      <span>Lesona noraisina</span>
+      <textarea
+        name="lesson"
+        rows="4"
+        placeholder="Inona no nianaranao tamin'ity expérience ity?"
+      ></textarea>
+    </label>
+
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">
+      📊 Tehirizo ny Évaluation
+    </button>
+  </div>
+
+</form>
+
+<div id="evaluationResult" class="lab-result"></div>
 
         </div>
 
