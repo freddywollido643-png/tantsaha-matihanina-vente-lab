@@ -2986,3 +2986,342 @@ textarea:focus-visible {
 .gemini-instructions{margin-top:16px;padding:16px;border:1px solid var(--border);border-radius:12px;background:var(--surface);font-size:.86rem;color:var(--text-soft)}
 .gemini-instructions ol{margin:8px 0 0;padding-left:20px}
 .simulation-mode-card span{display:block;margin-top:4px;color:var(--text-soft);font-size:.82rem}
+/* =========================================================
+   TANTSAHA MATIHANINA — COMPATIBILITY / UI FIXES
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   1. VIEW CONTROLLER
+   --------------------------------------------------------- */
+
+.app-view {
+  display: none;
+}
+
+.app-view.is-active {
+  display: block;
+}
+
+
+/* ---------------------------------------------------------
+   2. SECTION HEADINGS
+   --------------------------------------------------------- */
+
+.section-heading {
+  max-width: 760px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.section-heading h2 {
+  margin: 0 0 14px;
+  color: var(--green-950);
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.section-heading p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+
+/* ---------------------------------------------------------
+   3. LAB FORMS
+   --------------------------------------------------------- */
+
+.lab-form {
+  display: grid;
+  gap: 17px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.lab-form .btn {
+  width: fit-content;
+}
+
+.lab-form label {
+  display: grid;
+  gap: 7px;
+}
+
+.lab-form input,
+.lab-form select,
+.lab-form textarea {
+  width: 100%;
+}
+
+.lab-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+
+/* ---------------------------------------------------------
+   4. LAB RESULT
+   --------------------------------------------------------- */
+
+.lab-result {
+  margin-top: 22px;
+}
+
+.lab-result:empty {
+  display: none;
+}
+
+
+/* ---------------------------------------------------------
+   5. RESULT STATES
+   --------------------------------------------------------- */
+
+.result-positive {
+  border: 1px solid rgba(30, 120, 75, 0.22);
+  background: rgba(30, 120, 75, 0.07);
+  color: var(--green-950);
+}
+
+.result-negative {
+  border: 1px solid rgba(180, 70, 50, 0.22);
+  background: rgba(180, 70, 50, 0.07);
+  color: #7f2418;
+}
+
+.result-advice {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text-soft);
+  line-height: 1.65;
+}
+
+
+/* ---------------------------------------------------------
+   6. TOOL WORKSPACE
+   --------------------------------------------------------- */
+
+.tool-workspace {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.workspace-empty {
+  padding: 34px 24px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+  color: var(--text-soft);
+}
+
+
+/* ---------------------------------------------------------
+   7. INFO BOX
+   --------------------------------------------------------- */
+
+.info-box {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-left: 4px solid var(--gold);
+  border-radius: 10px;
+  background: rgba(217, 164, 65, 0.08);
+  color: var(--text);
+  line-height: 1.65;
+}
+
+
+/* ---------------------------------------------------------
+   8. MINI FLOW
+   --------------------------------------------------------- */
+
+.mini-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.mini-flow > * {
+  min-width: 0;
+}
+
+
+/* ---------------------------------------------------------
+   9. SOFT SECTION
+   --------------------------------------------------------- */
+
+.section-soft {
+  background: var(--surface);
+}
+
+
+/* ---------------------------------------------------------
+   10. FORMATION DAYS
+   --------------------------------------------------------- */
+
+.formation-days {
+  display: grid;
+  gap: 16px;
+}
+
+.formation-days > * {
+  min-width: 0;
+}
+
+
+/* ---------------------------------------------------------
+   11. CHECKBOX LABEL
+   --------------------------------------------------------- */
+
+.checkbox-label {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin-top: 4px;
+  flex: 0 0 auto;
+}
+
+
+/* ---------------------------------------------------------
+   12. FOOTER BUTTON
+   --------------------------------------------------------- */
+
+.footer-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* ---------------------------------------------------------
+   13. TOAST
+   --------------------------------------------------------- */
+
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 3000;
+
+  max-width: min(380px, calc(100vw - 36px));
+
+  padding: 14px 16px;
+
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  background: var(--white);
+  color: var(--text);
+
+  box-shadow: var(--shadow-lg);
+
+  opacity: 0;
+  transform: translateY(10px);
+
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+
+  font-size: 0.87rem;
+  font-weight: 700;
+
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ---------------------------------------------------------
+   14. BUTTON / LINK SAFETY
+   --------------------------------------------------------- */
+
+button,
+.btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(217, 164, 65, 0.35);
+  outline-offset: 2px;
+}
+
+
+/* ---------------------------------------------------------
+   15. RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+  .mini-flow {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 720px) {
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lab-form {
+    padding: 18px;
+  }
+
+  .section-heading {
+    margin-bottom: 30px;
+  }
+
+  .section-heading h2 {
+    font-size: 1.8rem;
+  }
+
+  .toast {
+    right: 12px;
+    bottom: 12px;
+    max-width: calc(100vw - 24px);
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .lab-form {
+    padding: 16px;
+  }
+
+  .mini-flow {
+    gap: 10px;
+  }
+
+}
