@@ -318,39 +318,314 @@
     });
   }
 
-  /* ---------- 6. Simulation client ---------- */
-  const objections = [
-    "Lafo loatra!", "Mbola hieritreritra aho.", "Misy remise ve?",
-    "Tsy matoky aho.", "Misy hafa mora kokoa."
+  /* ---------- 6. Simulation client (Rapide + Gemini) ---------- */
+  const showToast = toast;
+  const escapeHTML = esc;
+
+  const simulationScenarios = [
+    {
+      client: "Lafo loatra ilay izy.",
+      options: [
+        "Eny, lafo tokoa.",
+        "Azafady tompoko, inona no budget noeritreretinao? Afaka jerentsika izay quantité mifanaraka aminy.",
+        "Tsy afaka mampidina prix aho."
+      ],
+      correct: 1
+    },
+    {
+      client: "Mbola hieritreritra aho.",
+      options: [
+        "Eny ary.",
+        "Tsy maninona tompoko. Inona indrindra no mbola tianao hohamarinina alohan'ny hanapahanao hevitra?",
+        "Raha tsy mividy ianao dia tsy maninona."
+      ],
+      correct: 1
+    },
+    {
+      client: "Misy remise ve?",
+      options: [
+        "Eny, ahena fotsiny.",
+        "Miankina amin'ny quantité tompoko. Firy no ilainao dia kajiantsika izay offre mety?",
+        "Tsy misy remise mihitsy."
+      ],
+      correct: 1
+    },
+    {
+      client: "Aiza no misy anareo?",
+      options: [
+        "Eto Madagascar.",
+        "Aiza no misy anao tompoko? Dia hojereko ny toerana sy ny fomba hahazoanao azy.",
+        "Aza manahy fa halefanay."
+      ],
+      correct: 1
+    },
+    {
+      client: "Alefaso aloha dia mandoa aho.",
+      options: [
+        "Eny, halefako.",
+        "Andao aloha hamafisina ny commande sy ny fomba fandoavana ary ny fandefasana mba samy ho voaaro.",
+        "Tsy azo atao."
+      ],
+      correct: 1
+    }
   ];
-  function renderSimulationTool(c) {
-    c.innerHTML = head("LAB 06", "💬 Simulation Client", "Misafidiana objection, valio, dia jereo ny score.") + `
-      <div class="simulation-selector">${objections.map((o, i) =>
-        `<button type="button" class="simulation-option" data-obj="${i}">${esc(o)}</button>`).join("")}</div>
-      <div id="simBox"></div>`;
-    c.querySelectorAll("[data-obj]").forEach((b) => b.addEventListener("click", () => showSim(num(b.dataset.obj))));
+
+  const geminiProducts = [
+    "Akoho Gasy", "Pondeuse", "Poulet de chair", "Kisoa", "Bitro", "Osy",
+    "Ondry", "Gana", "Gisa", "Vorontsiloza", "Tantely", "Masomboly", "Vokatra hafa"
+  ];
+
+  const geminiDifficulties = [
+    { value: "facile", label: "Facile", description: "Client mbola mora resena lahatra ary tsy dia misy objection." },
+    { value: "intermediaire", label: "Intermédiaire", description: "Client manontany sy manao objection tsindraindray." },
+    { value: "difficile", label: "Difficile", description: "Client misalasala, mampitaha prix ary manery." },
+    { value: "exigeant", label: "Client exigeant", description: "Client tena mitaky preuve, prix, garantie ary assurance." }
+  ];
+
+  function generateGeminiPrompt() {
+    const product = $("geminiProduct")?.value || "vokatra iray";
+    const difficulty = $("geminiDifficulty")?.value || "intermediaire";
+    const scenario = $("geminiScenario")?.value || "Lafo loatra";
+    const context = $("geminiContext")?.value?.trim() || "";
+
+    return `
+TANTSAHA MATIHANINA — VENTE LAB
+SIMULATION CLIENT AVEC GEMINI
+
+ANJARANAO:
+Ianao no CLIENT.
+Ny utilisateur no VENDEUR.
+
+VOKATRA:
+${product}
+
+NIVEAU:
+${difficulty}
+
+OBJECTIF / OBJECTION:
+${scenario}
+
+CONTEXTE FANAMPINY:
+${context || "Tsy misy contexte fanampiny."}
+
+FITSIPIKA:
+
+1. Ataovy réaliste ilay client.
+2. Aza miteny hoe AI ianao.
+3. Aza manome score mandritra ny simulation.
+4. Aza manampy ny vendeur amin'ny valiny.
+5. Avelao izy hametraka fanontaniana sy hanao qualification.
+6. Manaova objection tsikelikely.
+7. Aza mamoaka objection rehetra indray mandeha.
+8. Miovaova arakaraka ny valintenin'ny vendeur ny fihetsiky ny client.
+9. Raha tsara ny réponse dia afaka mihalefy ny objection.
+10. Raha ratsy ny réponse dia afaka mitombo ny doute.
+11. Mitondrà tena toy ny client Malagasy tena izy.
+12. Afaka mampiasa fiteny Malagasy voajanahary ianao.
+13. Raha tsy ampy ny information dia anontanio.
+14. Aza manome information tsy mbola nangatahin'ny vendeur.
+15. Aza manakatona vente ho azy raha mbola tsy nanao closing ny vendeur.
+
+DÉROULEMENT:
+
+Atombohy amin'ny message client fohy sy naturel.
+
+Ohatra:
+"Salama tompoko, liana amin'ilay ${product} aho fa mbola te hahalala kely."
+
+Avy eo miandrasa ny vendeur.
+
+MANDRITRA NY SIMULATION:
+- Client ihany no ataonao.
+- Aza manao analyse.
+- Aza manao correction.
+- Aza manome score.
+- Aza miala amin'ny rôle.
+
+REHEFA MANORATRA:
+"FIN DE SIMULATION"
+
+dia ajanony ny rôle client ary ataovy evaluation professionnelle.
+
+EVALUATION:
+
+Omeo:
+
+1. QUALIFICATION CLIENT — /20
+2. ÉCOUTE — /20
+3. RÉPONSE AUX OBJECTIONS — /20
+4. VALEUR DE L'OFFRE — /20
+5. CLOSING — /20
+
+TOTAL — /100
+
+Avy eo omeo:
+
+✅ ZAVATRA 2 NAHAY TSARA
+
+1.
+2.
+
+⚠️ ZAVATRA 3 TOKONY HATSARAINA
+
+1.
+2.
+3.
+
+🎯 CONSEIL PRINCIPAL
+
+Omeo torohevitra iray tena azo ampiharina amin'ny prochaine simulation.
+
+Aza manao evaluation lava be.
+Ataovy mazava, professionnel ary pédagogique.
+
+Atombohy izao ny simulation.
+`.trim();
   }
-  function showSim(i) {
-    $("simBox").innerHTML = `<div class="simulation-card"><strong>Client:</strong>
-      <blockquote>“${esc(objections[i])}”</blockquote>
-      <label>Ny valinao<textarea id="simAnswer" rows="4" placeholder="Soraty eto ny valinao..."></textarea></label>
-      <div class="result-actions"><button class="btn btn-primary" type="button" id="simGo">Hizaha score</button></div>
-      <div id="simScore"></div></div>`;
-    $("simGo").addEventListener("click", () => {
-      const a = ($("simAnswer").value || "").toLowerCase();
-      const crit = [
-        [/azafady|misaotra|azoko|ekena|tiako/, "Fihaonana (empathie)"],
-        [/tombony|valeur|kalitao|tsara|vokatra|vahaolana|antoka/, "Valeur / tombony"],
-        [/\?/, "Fanontaniana hanazava"],
-        [/commande|alefaso|androany|hanomboka|raiso|mandefa/, "Closing / CTA"]
-      ];
-      const hit = crit.filter((x) => x[0].test(a));
-      const score = hit.length * 25;
-      $("simScore").innerHTML = `<div class="score-display"><span>Score</span><strong>${score}/100</strong></div>
-        <p>${hit.length === 4 ? "Tena tsara!" : "Mbola azo hatsaraina: " +
-        crit.filter((x) => !x[0].test(a)).map((x) => x[1]).join(", ")}</p>`;
-      touch();
+
+  async function copyGeminiPrompt() {
+    await copyText(generateGeminiPrompt());
+    showToast("Prompt Gemini voadika. Apetaho ao amin'i Gemini.");
+  }
+
+  function openGemini() {
+    copyText(generateGeminiPrompt());
+    window.open("https://gemini.google.com/app", "_blank", "noopener,noreferrer");
+    showToast("Gemini nosokafana. Apetaho ilay prompt voadika.");
+  }
+
+  function renderSimulationTool(container) {
+    const scenario = simulationScenarios[Math.floor(Math.random() * simulationScenarios.length)];
+
+    container.innerHTML = `
+      <div class="workspace-header">
+        <span class="eyebrow">LAB 05</span>
+        <h2>🎯 Simulation Client</h2>
+        <p>Manao pratique amin'ny objection ianao ary mianatra mamaly toy ny vendeur professionnel.</p>
+      </div>
+
+      <div class="simulation-mode-grid">
+        <button type="button" class="simulation-mode-card active" data-simulation-mode="quick">
+          <strong>🎯 Simulation Rapide</strong>
+          <span>Scenario fohy misy objection sy correction avy hatrany.</span>
+        </button>
+        <button type="button" class="simulation-mode-card" data-simulation-mode="gemini">
+          <strong>🤖 Simulation Libre avec Gemini</strong>
+          <span>Gemini no CLIENT, ianao no VENDEUR.</span>
+        </button>
+      </div>
+
+      <div id="quickSimulation" class="simulation-panel">
+        <div class="simulation-client-card">
+          <span class="eyebrow">CLIENT</span>
+          <h3>"${escapeHTML(scenario.client)}"</h3>
+        </div>
+        <div class="simulation-options">
+          ${scenario.options.map((option, index) => `
+            <button type="button" class="simulation-option" data-answer="${index}">${escapeHTML(option)}</button>
+          `).join("")}
+        </div>
+        <div id="simulationFeedback" class="simulation-feedback"></div>
+        <button type="button" class="btn btn-secondary" data-new-simulation>🔄 Scenario hafa</button>
+      </div>
+
+      <div id="geminiSimulation" class="simulation-panel" style="display:none;">
+        <div class="gemini-panel">
+          <div class="gemini-intro">
+            <span class="eyebrow">🤖 GEMINI CLIENT</span>
+            <h3>Simulation libre — Client réaliste</h3>
+            <p>Gemini joue le rôle du client. Ianao no vendeur. Tsy misy score mandritra ny simulation.</p>
+          </div>
+
+          <div class="form-grid">
+            <label>Vokatra
+              <select id="geminiProduct">
+                ${geminiProducts.map((p) => `<option value="${escapeHTML(p)}">${escapeHTML(p)}</option>`).join("")}
+              </select>
+            </label>
+            <label>Niveau
+              <select id="geminiDifficulty">
+                ${geminiDifficulties.map((i) => `<option value="${i.value}">${i.label}</option>`).join("")}
+              </select>
+            </label>
+            <label>Objection / scénario
+              <select id="geminiScenario">
+                <option>Lafo loatra</option>
+                <option>Mbola hieritreritra</option>
+                <option>Mitady remise</option>
+                <option>Aiza no misy anareo?</option>
+                <option>Alefaso aloha dia mandoa aho</option>
+              </select>
+            </label>
+          </div>
+
+          <label>Contexte fanampiny
+            <textarea id="geminiContext" rows="4"
+              placeholder="Ohatra: Client avy any Antananarivo, mitady akoho 20, mbola mampitaha prix..."></textarea>
+          </label>
+
+          <div class="gemini-actions">
+            <button type="button" class="btn btn-secondary" id="copyGeminiPrompt">📋 Copier le prompt</button>
+            <button type="button" class="btn btn-primary" id="openGemini">🤖 Ouvrir Gemini</button>
+          </div>
+
+          <div class="gemini-instructions">
+            <strong>Ahoana no fanaovana azy?</strong>
+            <ol>
+              <li>Safidio ny produit sy ny niveau.</li>
+              <li>Tsindrio <strong>Ouvrir Gemini</strong>.</li>
+              <li>Apetaho ilay prompt raha tsy efa voapaste.</li>
+              <li>Gemini no client.</li>
+              <li>Ianao mamaly amin'ny maha-vendeur anao.</li>
+              <li>Rehefa vita dia soraty: <strong>FIN DE SIMULATION</strong>.</li>
+              <li>Gemini no manao evaluation /100.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const modeButtons = container.querySelectorAll("[data-simulation-mode]");
+    const quickPanel = container.querySelector("#quickSimulation");
+    const geminiPanel = container.querySelector("#geminiSimulation");
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        modeButtons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        const gem = button.dataset.simulationMode === "gemini";
+        quickPanel.style.display = gem ? "none" : "block";
+        geminiPanel.style.display = gem ? "block" : "none";
+      });
     });
+
+    container.querySelectorAll(".simulation-option").forEach((button) => {
+      button.addEventListener("click", () => {
+        const answer = Number(button.dataset.answer);
+        const feedback = container.querySelector("#simulationFeedback");
+        container.querySelectorAll(".simulation-option").forEach((item) => (item.disabled = true));
+
+        if (answer === scenario.correct) {
+          feedback.innerHTML = `
+            <div class="result-card result-positive">
+              <strong>✅ Bonne réponse</strong>
+              <p>Tsara ny fomba namalianao. Niezaka namantatra ny besoin sy nitondra ny conversation nankany amin'ny solution ianao.</p>
+            </div>`;
+        } else {
+          feedback.innerHTML = `
+            <div class="result-card result-negative">
+              <strong>⚠️ Azo hatsaraina</strong>
+              <p>Aza mamaly objection fotsiny. Miezaha aloha hahatakatra ny antony mahatonga ilay client hisalasala.</p>
+              <p><strong>Réponse recommandée:</strong> ${escapeHTML(scenario.options[scenario.correct])}</p>
+            </div>`;
+        }
+        touch();
+      });
+    });
+
+    container.querySelector("[data-new-simulation]")?.addEventListener("click", () => renderSimulationTool(container));
+    container.querySelector("#copyGeminiPrompt")?.addEventListener("click", copyGeminiPrompt);
+    container.querySelector("#openGemini")?.addEventListener("click", openGemini);
   }
 
   /* ---------- 7. Commande ---------- */
