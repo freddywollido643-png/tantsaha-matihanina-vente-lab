@@ -1938,200 +1938,259 @@
        Tsy manova app.js.
        Izy no mampiseho écran tsirairay.
   ====================================================== -->
+<script>
 
-  <script>
+  document.addEventListener("DOMContentLoaded", function () {
 
-    document.addEventListener("DOMContentLoaded", function () {
+    const views =
+      document.querySelectorAll(".app-view");
 
-      const views =
-        document.querySelectorAll(".app-view");
+    const navToggle =
+      document.querySelector(".nav-toggle");
 
-      const navToggle =
-        document.querySelector(".nav-toggle");
-
-      const nav =
-        document.querySelector(".main-nav");
-
-
-      function showView(id) {
-
-        views.forEach(function (view) {
-
-          view.classList.remove("is-active");
-
-        });
+    const nav =
+      document.querySelector(".main-nav");
 
 
-        const target =
-          document.getElementById(id);
+    /* =========================
+       SHOW VIEW
+       ========================= */
 
-        if (target) {
+    function showView(id) {
 
-          target.classList.add("is-active");
+      views.forEach(function (view) {
 
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
+        view.classList.remove("is-active");
 
-        }
+      });
 
 
-        if (nav) {
+      const target =
+        document.getElementById(id);
 
-          nav.classList.remove("open");
-
-        }
+      if (!target) return;
 
 
-        if (navToggle) {
+      target.classList.add("is-active");
 
-          navToggle.setAttribute(
-            "aria-expanded",
-            "false"
-          );
 
-        }
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+
+      /* Akatona ny mobile navigation */
+      if (nav) {
+
+        nav.classList.remove("open");
 
       }
 
 
-      window.addEventListener(
-        "hashchange",
-        function () {
+      if (navToggle) {
 
-          const hash =
-            window.location.hash.replace("#", "");
+        navToggle.setAttribute(
+          "aria-expanded",
+          "false"
+        );
 
-          if (
-            hash &&
-            document.getElementById(hash)
-          ) {
+      }
 
-            showView(hash);
-
-          }
-
-        }
-      );
+    }
 
 
-      document.addEventListener(
-        "click",
-        function (event) {
+    /* =========================
+       NORMAL NAVIGATION
+       ========================= */
 
-          const tool =
-            event.target.closest("[data-tool]");
+    document
+      .querySelectorAll('a[href^="#"]')
+      .forEach(function (link) {
 
-          if (!tool) return;
-
-
-          const lab =
-            document.getElementById("lab");
-
-          if (!lab) return;
-
-
-          showView("lab");
-
-
-          setTimeout(function () {
-
-            const workspace =
-              document.getElementById(
-                "toolWorkspace"
-              );
-
-            if (workspace) {
-
-              workspace.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-
-            }
-
-          }, 80);
-
-        }
-      );
-
-
-      document.addEventListener(
-        "click",
-        function (event) {
-
-          const link =
-            event.target.closest(
-              'a[href^="#"]'
-            );
-
-          if (!link) return;
-
-
-          const id =
-            link.getAttribute("href")
-              .replace("#", "");
-
-          const target =
-            document.getElementById(id);
-
-          if (!target) return;
-
-
-          event.preventDefault();
-
-          showView(id);
-
-          history.replaceState(
-            null,
-            "",
-            "#" + id
-          );
-
-        }
-      );
-
-
-      if (navToggle && nav) {
-
-        navToggle.addEventListener(
+        link.addEventListener(
           "click",
-          function () {
+          function (event) {
 
-            nav.classList.toggle("open");
+            const id =
+              link
+                .getAttribute("href")
+                .replace("#", "");
 
-            navToggle.setAttribute(
-              "aria-expanded",
-              nav.classList.contains("open")
+
+            const target =
+              document.getElementById(id);
+
+
+            if (!target) return;
+
+
+            event.preventDefault();
+
+
+            showView(id);
+
+
+            history.replaceState(
+              null,
+              "",
+              "#" + id
             );
 
           }
         );
 
-      }
+      });
 
 
-      const initialHash =
-        window.location.hash.replace("#", "");
+    /* =========================
+       TOOLS
+       ========================= */
+
+    document
+      .querySelectorAll("[data-tool]")
+      .forEach(function (el) {
+
+        el.addEventListener(
+          "click",
+          function () {
+
+            const tool =
+              el.dataset.tool;
 
 
-      if (
-        initialHash &&
-        document.getElementById(initialHash)
-      ) {
+            /* -------------------------
+               CALENDAR
+               ------------------------- */
 
-        showView(initialHash);
+            if (tool === "calendar") {
 
-      } else {
+              showView("calendar");
 
-        showView("home");
 
-      }
+              history.replaceState(
+                null,
+                "",
+                "#calendar"
+              );
 
-    });
 
-  </script>
+              setTimeout(function () {
+
+                const workspace =
+                  document.getElementById(
+                    "calendarWorkspace"
+                  );
+
+
+                if (workspace) {
+
+                  workspace.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                  });
+
+                }
+
+              }, 50);
+
+
+              return;
+
+            }
+
+
+            /* -------------------------
+               AUTRES OUTILS
+               ------------------------- */
+
+            showView("lab");
+
+
+            history.replaceState(
+              null,
+              "",
+              "#lab"
+            );
+
+
+            setTimeout(function () {
+
+              const workspace =
+                document.getElementById(
+                  "toolWorkspace"
+                );
+
+
+              if (workspace) {
+
+                workspace.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start"
+                });
+
+              }
+
+            }, 50);
+
+          }
+        );
+
+      });
+
+
+    /* =========================
+       MOBILE NAVIGATION
+       ========================= */
+
+    if (navToggle && nav) {
+
+      navToggle.addEventListener(
+        "click",
+        function () {
+
+          nav.classList.toggle("open");
+
+
+          const isOpen =
+            nav.classList.contains("open");
+
+
+          navToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================
+       INITIAL VIEW
+       ========================= */
+
+    const initialHash =
+      window.location.hash.replace("#", "");
+
+
+    if (
+      initialHash &&
+      document.getElementById(initialHash)
+    ) {
+
+      showView(initialHash);
+
+    } else {
+
+      showView("home");
+
+    }
+
+  });
+
+</script>
 
 </body>
 </html>
