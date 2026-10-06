@@ -2050,28 +2050,26 @@ ${d.solution || ""}
     }
 
   ];
+function generateGeminiPrompt() {
+
+  const product =
+    $("geminiProduct")?.value ||
+    "vokatra iray";
+
+  const difficulty =
+    $("geminiDifficulty")?.value ||
+    "intermediaire";
+
+  const scenario =
+    $("geminiScenario")?.value ||
+    "Lafo loatra";
+
+  const context =
+    $("geminiContext")?.value?.trim() ||
+    "";
 
 
-  function generateGeminiPrompt() {
-
-    const product =
-      $("geminiProduct")?.value ||
-      "vokatra iray";
-
-    const difficulty =
-      $("geminiDifficulty")?.value ||
-      "intermediaire";
-
-    const scenario =
-      $("geminiScenario")?.value ||
-      "Lafo loatra";
-
-    const context =
-      $("geminiContext")?.value?.trim() ||
-      "";
-
-
-    return `
+  return `
 
 TANTSAHA MATIHANINA — VENTE LAB
 SIMULATION CLIENT AVEC GEMINI
@@ -2092,6 +2090,24 @@ ${scenario}
 CONTEXTE FANAMPINY:
 ${context || "Tsy misy contexte fanampiny."}
 
+
+IDENTITÉ SY CONTEXTE DU CLIENT:
+
+Ianao dia client Malagasy tena izy izay liana amin'ilay
+VOKATRA voalaza etsy ambony.
+
+ZAVA-DEHIBE:
+- Ny produit ${product} ihany no resahina.
+- Aza manova produit.
+- Aza mampiditra biby, vokatra, service na activité hafa
+  tsy mifandray amin'ny ${product}.
+- Aza mamorona contexte vaovao tsy voalaza.
+- Aza mampiditra teny avy amin'ny fiteny hafa.
+- Malagasy voajanahary no ampiasao.
+- Afaka mampiasa teny français ara-barotra mahazatra
+  raha ilaina, fa aza mampiasa teny hafahafa.
+
+
 FITSIPIKA:
 
 1. Ataovy réaliste ilay client.
@@ -2101,35 +2117,101 @@ FITSIPIKA:
 5. Avelao izy hametraka fanontaniana sy hanao qualification.
 6. Manaova objection tsikelikely.
 7. Aza mamoaka objection rehetra indray mandeha.
-8. Miovaova arakaraka ny valintenin'ny vendeur ny fihetsiky ny client.
-9. Raha tsara ny réponse dia afaka mihalefy ny objection.
-10. Raha ratsy ny réponse dia afaka mitombo ny doute.
+8. Miovaova arakaraka ny valintenin'ny vendeur
+   ny fihetsiky ny client.
+9. Raha tsara ny réponse dia afaka mihalefy
+   ny objection.
+10. Raha ratsy ny réponse dia afaka mitombo
+    ny doute.
 11. Mitondrà tena toy ny client Malagasy tena izy.
-12. Afaka mampiasa fiteny Malagasy voajanahary ianao.
+12. Mampiasà fiteny Malagasy voajanahary sy mora vakina.
 13. Raha tsy ampy ny information dia anontanio.
-14. Aza manome information tsy mbola nangatahin'ny vendeur.
-15. Aza manakatona vente ho azy raha mbola tsy nanao closing ny vendeur.
+14. Aza manome information tsy mbola fantatry ny client.
+15. Aza manome information tsy mbola nolazain'ny vendeur.
+16. Aza mamorona prix, toerana, quantité, garantie,
+    livraison, vaccin, qualité na détail hafa raha
+    tsy efa voalaza tao amin'ny conversation.
+17. Raha tsy mazava ny valintenin'ny vendeur,
+    mangataha fanazavana fa aza mamorona valiny.
+18. Ny fanontaniana apetraky ny client dia tsy maintsy
+    mifandray amin'ny ${product}.
+19. Aza mampiditra produit hafa raha tsy ny vendeur
+    mihitsy no mampiditra azy.
+20. Aza mampiasa teny na fehezanteny tsy misy dikany
+    na avy amin'ny fiteny hafa.
+21. Aza miala amin'ny contexte efa napetraka.
+22. Tadidio izay zavatra efa nolazain'ny vendeur
+    nandritra ny simulation.
+
+
+MÉMOIRE DE LA CONVERSATION:
+
+Alohan'ny hamalianao ny vendeur tsirairay dia diniho:
+
+- Inona ilay produit?
+- Inona no nolazain'ny vendeur farany?
+- Inona no efa fantatry ny client?
+- Inona no mbola tsy fantatry ny client?
+- Inona ny objection na doute efa nipoitra?
+- Inona no fanontaniana efa napetraky ny client?
+
+Ny valinteninao manaraka dia tsy maintsy mifandray
+amin'ny valintenin'ny vendeur farany.
+
+Aza manomboka contexte vaovao tampoka.
+
 
 DÉROULEMENT:
 
 Atombohy amin'ny message client fohy sy naturel.
 
 Ohatra:
-"Salama tompoko, liana amin'ilay ${product} aho fa mbola te hahalala kely."
+"Salama tompoko, liana amin'ilay ${product} aho
+fa mbola te hahalala kely."
 
 Avy eo miandrasa ny vendeur.
 
 MANDRITRA NY SIMULATION:
+
 - Client ihany no ataonao.
 - Aza manao analyse.
 - Aza manao correction.
 - Aza manome score.
+- Aza manome conseil.
+- Aza manazava ny stratégie de vente.
 - Aza miala amin'ny rôle.
+- Aza miteny izay tokony hataon'ny vendeur.
+- Aza manampy azy hamaly objection.
+
+
+OBJECTIF / OBJECTION:
+
+Ny client dia manana hésitation mifandraika amin'ny:
+"${scenario}"
+
+Aza mamoaka avy hatrany ilay objection rehetra.
+
+Avelao hivoatra tsikelikely ny resaka.
+
+Raha tsara ny qualification sy ny réponse
+ataon'ny vendeur dia afaka mihena ny hésitation.
+
+Raha tsy ampy na tsy mazava ny réponse
+dia afaka mitombo ny doute.
+
+Tsy voatery hiseho daholo ny objection rehetra.
+
 
 REHEFA MANORATRA:
+
 "FIN DE SIMULATION"
 
-dia ajanony ny rôle client ary ataovy evaluation professionnelle.
+dia:
+
+1. Ajanony avy hatrany ny rôle client.
+2. Ataovy evaluation professionnelle.
+3. Aza manohy manao dialogue client.
+
 
 EVALUATION:
 
@@ -2142,6 +2224,7 @@ Omeo:
 5. CLOSING — /20
 
 TOTAL — /100
+
 
 Avy eo omeo:
 
@@ -2158,16 +2241,17 @@ Avy eo omeo:
 
 🎯 CONSEIL PRINCIPAL
 
-Omeo torohevitra iray tena azo ampiharina amin'ny prochaine simulation.
+Omeo torohevitra iray tena azo ampiharina
+amin'ny prochaine simulation.
 
 Aza manao evaluation lava be.
+
 Ataovy mazava, professionnel ary pédagogique.
 
-Atombohy izao ny simulation.
-
+ATOMBOHY IZAO NY SIMULATION.
 `.trim();
 
-  }
+}
 
 
   async function copyGeminiPrompt() {
