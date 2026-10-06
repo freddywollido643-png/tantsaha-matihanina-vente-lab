@@ -155,26 +155,10 @@
 
 
   function addDays(date, days) {
-
-    const d =
-      new Date(date);
-
-    d.setDate(
-      d.getDate() + Number(days)
-    );
-
-    const p = (n) =>
-      String(n).padStart(2, "0");
-
-    return (
-      d.getFullYear() +
-      "-" +
-      p(d.getMonth() + 1) +
-      "-" +
-      p(d.getDate())
-    );
-
-  }
+  const d = new Date(date);
+  d.setDate(d.getDate() + Number(days));
+  return d;
+}
 
 
   /* =========================================================
