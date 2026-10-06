@@ -105,8 +105,11 @@
   }
 
   function openTool(tool) {
-    const ws = $("toolWorkspace");
-    if (!ws) return;
+  const ws = tool === "calendar"
+    ? $("calendarWorkspace")
+    : $("toolWorkspace");
+
+  if (!ws) return;
     const tools = {
       price: renderPriceTool, livestock: renderLivestockTool, offer: renderOfferTool,
       publication: renderPublicationTool, simulation: renderSimulationTool,
