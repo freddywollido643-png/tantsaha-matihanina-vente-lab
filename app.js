@@ -667,11 +667,79 @@
 
   function renderPriceTool(c) {
 
+    
+    "        <div class="result-card ${
+          ok
+            ? "result-positive"
+            : "result-negative"
+        }">
+
+          <div class="result-title">
+            ${
+              ok
+                ? "✅ Vokatra azo amidy"
+                : "⚠️ Misy fatiantoka"
+            }
+          </div>
+
+          <div class="result-grid">
+
+            <div>
+              <span>Vokatra</span>
+              <strong>${esc(product)}</strong>
+            </div>
+
+            <div>
+              <span>Quantité</span>
+              <strong>${q}</strong>
+            </div>
+
+            <div>
+              <span>Coût total</span>
+              <strong>${money(totalCost)}</strong>
+            </div>
+
+            <div>
+              <span>Coût / unité</span>
+              <strong>${money(costPerUnit)}</strong>
+            </div>
+
+            <div>
+              <span>Prix minimum rentable</span>
+              <strong>${money(minPrice)}</strong>
+            </div>
+
+            <div>
+              <span>Prix conseillé</span>
+              <strong>${money(recommendedPrice)}</strong>
+            </div>
+
+            <div>
+              <span>Prix de vente</span>
+              <strong>${money(salePrice)}</strong>
+            </div>
+
+            <div>
+              <span>Vola miditra / CA</span>
+              <strong>${money(revenue)}</strong>
+            </div>
+
+            <div>
+              <span>Tombony</span>
+              <strong>${money(profit)}</strong>
+            </div>
+
+            <div>
+              <span>Tombony kendrena</span>
+              <strong>${money(targetProfit)}</strong>
+     
+      function renderPriceTool(c) {
+
     c.innerHTML =
       head(
         "LAB 01",
         "💰 Kajy Prix & Tombony",
-        "Fantaro ny coût, prix de vente, tombony ary marge alohan'ny hivarotana."
+        "Kajio amin'ny antsipiriany ny coût, prix minimum, prix conseillé, tombony ary marge."
       ) +
 
       `
@@ -696,18 +764,74 @@
             'min="1" value="1" required'
           )}
 
+        </div>
+
+        <div class="section-title">
+          💸 Coûts
+        </div>
+
+        <div class="form-grid">
+
           ${field(
-            "Coût total (Ar)",
-            "cost",
+            "Achat / Matières (Ar)",
+            "purchaseCost",
             "number",
-            'min="0" value="0" required'
+            'min="0" value="0"'
           )}
+
+          ${field(
+            "Sakafo (Ar)",
+            "feedCost",
+            "number",
+            'min="0" value="0"'
+          )}
+
+          ${field(
+            "Fanafody / Vaksiny (Ar)",
+            "healthCost",
+            "number",
+            'min="0" value="0"'
+          )}
+
+          ${field(
+            "Transport (Ar)",
+            "transportCost",
+            "number",
+            'min="0" value="0"'
+          )}
+
+          ${field(
+            "Autres dépenses (Ar)",
+            "otherCost",
+            "number",
+            'min="0" value="0"'
+          )}
+
+        </div>
+
+        <div
+          id="priceCostPreview"
+          class="lab-result"
+        ></div>
+
+        <div class="section-title">
+          🎯 Vidy sy tanjona
+        </div>
+
+        <div class="form-grid">
 
           ${field(
             "Prix de vente / unité (Ar)",
             "salePrice",
             "number",
             'min="0" value="0" required'
+          )}
+
+          ${field(
+            "Tombony kendrena (Ar)",
+            "targetProfit",
+            "number",
+            'min="0" value="0"'
           )}
 
         </div>
@@ -728,880 +852,513 @@
       `;
 
 
+    function calculatePrice() {
+
+      const form =
+        $("priceForm");
+
+      if (!form) return;
+
+      const d =
+        getData(form);
+
+      const q =
+        Math.max(
+          1,
+          num(d.quantity)
+        );
+
+      const purchaseCost =
+        Math.max(
+          0,
+          num(d.purchaseCost)
+        );
+
+      const feedCost =
+        Math.max(
+          0,
+          num(d.feedCost)
+        );
+
+      const healthCost =
+        Math.max(
+          0,
+          num(d.healthCost)
+        );
+
+      const transportCost =
+        Math.max(
+          0,
+          num(d.transportCost)
+        );
+
+      const otherCost =
+        Math.max(
+          0,
+          num(d.otherCost)
+        );
+
+      const salePrice =
+        Math.max(
+          0,
+          num(d.salePrice)
+        );
+
+      const targetProfit =
+        Math.max(
+          0,
+          num(d.targetProfit)
+        );
+
+
+      const totalCost =
+        purchaseCost +
+        feedCost +
+        healthCost +
+        transportCost +
+        otherCost;
+
+
+      const costPerUnit =
+        totalCost / q;
+
+
+      const minPrice =
+        costPerUnit;
+
+
+      const recommendedPrice =
+        (totalCost + targetProfit) / q;
+
+
+      const revenue =
+        q * salePrice;
+
+
+      const profit =
+        revenue - totalCost;
+
+
+      const margin =
+        revenue > 0
+          ? (profit / revenue) * 100
+          : 0;
+
+
+      const targetReached =
+        profit >= targetProfit;
+
+
+      $("priceCostPreview").innerHTML = `
+
+        <div class="result-card">
+
+          <div class="result-title">
+            📊 Fijery mialoha ny kajy
+          </div>
+
+          <div class="result-grid">
+
+            <div>
+              <span>Coût total</span>
+              <strong>
+                ${money(totalCost)}
+              </strong>
+            </div>
+
+            <div>
+              <span>Coût / unité</span>
+              <strong>
+                ${money(costPerUnit)}
+              </strong>
+            </div>
+
+            <div>
+              <span>Prix minimum rentable</span>
+              <strong>
+                ${money(minPrice)}
+              </strong>
+            </div>
+
+            <div>
+              <span>Prix conseillé</span>
+              <strong>
+                ${money(recommendedPrice)}
+              </strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+    }
+
+
+    [
+      "quantity",
+      "purchaseCost",
+      "feedCost",
+      "healthCost",
+      "transportCost",
+      "otherCost",
+      "salePrice",
+      "targetProfit"
+    ].forEach(
+      (id) => {
+
+        const el =
+          $(id);
+
+        if (!el) return;
+
+        el.addEventListener(
+          "input",
+          calculatePrice
+        );
+
+      }
+    );
+
+
+    calculatePrice();
+
+
     $("priceForm").addEventListener(
       "submit",
       (e) => {
 
         e.preventDefault();
 
+
         const d =
-          getData(e.currentTarget);
+          getData(
+            e.currentTarget
+          );
+
+
+        const product =
+          String(
+            d.product || ""
+          ).trim();
+
+
+        if (!product) {
+
+          toast(
+            "Ampidiro aloha ny vokatra.",
+            "error"
+          );
+
+          return;
+
+        }
+
 
         const q =
-          num(d.quantity);
+          Math.max(
+            1,
+            num(d.quantity)
+          );
 
-        const cost =
-          num(d.cost);
+
+        const purchaseCost =
+          Math.max(
+            0,
+            num(d.purchaseCost)
+          );
+
+
+        const feedCost =
+          Math.max(
+            0,
+            num(d.feedCost)
+          );
+
+
+        const healthCost =
+          Math.max(
+            0,
+            num(d.healthCost)
+          );
+
+
+        const transportCost =
+          Math.max(
+            0,
+            num(d.transportCost)
+          );
+
+
+        const otherCost =
+          Math.max(
+            0,
+            num(d.otherCost)
+          );
+
 
         const salePrice =
-          num(d.salePrice);
+          Math.max(
+            0,
+            num(d.salePrice)
+          );
+
+
+        const targetProfit =
+          Math.max(
+            0,
+            num(d.targetProfit)
+          );
+
+
+        const totalCost =
+          purchaseCost +
+          feedCost +
+          healthCost +
+          transportCost +
+          otherCost;
+
+
+        const costPerUnit =
+          totalCost / q;
+
+
+        const minPrice =
+          costPerUnit;
+
+
+        const recommendedPrice =
+          (totalCost + targetProfit) / q;
+
 
         const revenue =
           q * salePrice;
 
+
         const profit =
-          revenue - cost;
+          revenue - totalCost;
+
 
         const margin =
           revenue > 0
             ? (profit / revenue) * 100
             : 0;
 
+
+        const targetReached =
+          profit >= targetProfit;
+
+
         const ok =
           profit > 0;
 
 
         state.calculations.push({
-function renderPriceTool(c) {
-  c.innerHTML =
-    head(
-      "LAB 01",
-      "💰 Kajy Prix & Tombony",
-      "Kajio amin'ny antsipiriany ny coût, prix minimum, prix conseillé, tombony ary marge."
-    ) +
-    `
-    <form id="priceForm" class="lab-form">
-
-      <div class="form-grid">
-
-        ${field(
-          "Vokatra",
-          "product",
-          "text",
-          'placeholder="Ohatra: Akoho Gasy" required'
-        )}
-
-        ${field(
-          "Isan'ny vokatra",
-          "quantity",
-          "number",
-          'min="1" value="1" required'
-        )}
-
-      </div>
-
-      <div class="section-title">
-        💸 Coûts
-      </div>
-
-      <div class="form-grid">
-
-        ${field(
-          "Achat / Matières (Ar)",
-          "purchaseCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Sakafo (Ar)",
-          "feedCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Fanafody / Vaksiny (Ar)",
-          "healthCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Transport (Ar)",
-          "transportCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Autres dépenses (Ar)",
-          "otherCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-      </div>
-
-      <div id="priceCostPreview" class="lab-result"></div>
-
-      <div class="section-title">
-        🎯 Vidy sy tanjona
-      </div>
-
-      <div class="form-grid">
-
-        ${field(
-          "Prix de vente / unité (Ar)",
-          "salePrice",
-          "number",
-          'min="0" value="0" required'
-        )}
-
-        ${field(
-          "Tombony kendrena (Ar)",
-          "targetProfit",
-          "number",
-          'min="0" value="0"'
-        )}
-
-      </div>
-
-      <button class="btn btn-primary" type="submit">
-        💰 Kajio ny Tombony
-      </button>
-
-    </form>
-
-    <div id="priceResult" class="lab-result"></div>
-    `;
-
-  function calculatePreview() {
-    const form = $("priceForm");
-
-    if (!form) return;
-
-    const d = getData(form);
-
-    const q = Math.max(1, num(d.quantity));
-
-    const purchaseCost = Math.max(
-      0,
-      num(d.purchaseCost)
-    );
-
-    const feedCost = Math.max(
-      0,
-      num(d.feedCost)
-    );
-
-    const healthCost = Math.max(
-      0,
-      num(d.healthCost)
-    );
-
-    const transportCost = Math.max(
-      0,
-      num(d.transportCost)
-    );
-
-    const otherCost = Math.max(
-      0,
-      num(d.otherCost)
-    );
-
-    const totalCost =
-      purchaseCost +
-      feedCost +
-      healthCost +
-      transportCost +
-      otherCost;
 
-    const costPerUnit =
-      totalCost / q;
+          date:
+            new Date().toISOString(),
 
-    const minPrice =
-      costPerUnit;
-
-    const targetProfit =
-      Math.max(0, num(d.targetProfit));
-
-    const recommendedPrice =
-      (totalCost + targetProfit) / q;
+          product:
+            product,
 
-    $("priceCostPreview").innerHTML = `
-      <div class="result-card">
-        <div class="result-title">
-          📊 Coût calculé
-        </div>
+          quantity:
+            q,
 
-        <div class="result-grid">
+          cost:
+            totalCost,
 
-          <div>
-            <span>Coût total</span>
-            <strong>${money(totalCost)}</strong>
-          </div>
+          purchaseCost:
+            purchaseCost,
 
-          <div>
-            <span>Coût / unité</span>
-            <strong>${money(costPerUnit)}</strong>
-          </div>
+          feedCost:
+            feedCost,
 
-          <div>
-            <span>Prix minimum rentable</span>
-            <strong>${money(minPrice)}</strong>
-          </div>
+          healthCost:
+            healthCost,
 
-          <div>
-            <span>Prix conseillé</span>
-            <strong>${money(recommendedPrice)}</strong>
-          </div>
+          transportCost:
+            transportCost,
 
-        </div>
-      </div>
-    `;
-  }
+          otherCost:
+            otherCost,
 
-  [
-    "quantity",
-    "purchaseCost",
-    "feedCost",
-    "healthCost",
-    "transportCost",
-    "otherCost",
-    "targetProfit"
-  ].forEach((id) => {
-    const el = $(id);
+          costPerUnit:
+            costPerUnit,
 
-    if (el) {
-      el.addEventListener(
-        "input",
-        calculatePreview
-      );
-    }
-  });
+          minPrice:
+            minPrice,
 
-  calculatePreview();
+          recommendedPrice:
+            recommendedPrice,
 
-  $("priceForm").addEventListener(
-    "submit",
-    (e) => {
-      e.preventDefault();
+          salePrice:
+            salePrice,
 
-      const d = getData(e.currentTarget);
+          targetProfit:
+            targetProfit,
 
-      const product =
-        String(d.product || "").trim();
+          revenue:
+            revenue,
 
-      const q =
-        Math.max(1, num(d.quantity));
+          profit:
+            profit,
 
-      const purchaseCost =
-        Math.max(0, num(d.purchaseCost));
+          margin:
+            margin
 
-      const feedCost =
-        Math.max(0, num(d.feedCost));
+        });
 
-      const healthCost =
-        Math.max(0, num(d.healthCost));
 
-      const transportCost =
-        Math.max(0, num(d.transportCost));
+        touch();
 
-      const otherCost =
-        Math.max(0, num(d.otherCost));
 
-      const salePrice =
-        Math.max(0, num(d.salePrice));
+        let advice;
 
-      const targetProfit =
-        Math.max(0, num(d.targetProfit));
 
-      const totalCost =
-        purchaseCost +
-        feedCost +
-        healthCost +
-        transportCost +
-        otherCost;
+        if (salePrice < minPrice) {
 
-      const costPerUnit =
-        totalCost / q;
+          advice =
+            "⚠️ Ambany noho ny coût de revient ny prix-nao. Mety hiteraka fatiantoka.";
 
-      const minPrice =
-        costPerUnit;
+        } else if (
+          targetProfit > 0 &&
+          !targetReached
+        ) {
 
-      const recommendedPrice =
-        (totalCost + targetProfit) / q;
+          advice =
+            "🟡 Mahazo tombony ianao, fa mbola tsy tratra ny tombony kendrena.";
 
-      const revenue =
-        q * salePrice;
+        } else {
 
-      const profit =
-        revenue - totalCost;
+          advice =
+            "✅ Tsara ny kajy. Tratra ny tombony kendrena.";
 
-      const margin =
-        revenue > 0
-          ? (profit / revenue) * 100
-          : 0;
+        }
 
-      const targetReached =
-        profit >= targetProfit;
 
-      const ok =
-        profit > 0;
+        $("priceResult").innerHTML = `
 
-      state.calculations.push({
-        date: new Date().toISOString(),
-
-        product: product,
-
-        quantity: q,
-
-        cost: totalCost,
-
-        purchaseCost: purchaseCost,
-
-        feedCost: feedCost,
-
-        healthCost: healthCost,
-
-        transportCost: transportCost,
-
-        otherCost: otherCost,
-
-        costPerUnit: costPerUnit,
-
-        minPrice: minPrice,
-
-        recommendedPrice: recommendedPrice,
-
-        salePrice: salePrice,
-
-        targetProfit: targetProfit,
-
-        revenue: revenue,
-
-        profit: profit,
-
-        margin: margin
-      });
-
-      touch();
-
-      let advice = "";
-
-      if (salePrice < minPrice) {
-        advice =
-          "⚠️ Ny prix de vente dia ambany noho ny coût de revient. Mety hiteraka fatiantoka izany.";
-      } else if (!targetReached) {
-        advice =
-          "🟡 Mahazo tombony ianao, saingy mbola tsy tratra ny tombony kendrena.";
-      } else {
-        advice =
-          "✅ Tratra ny tombony kendrena. Afaka mandroso amin'ny offre sy publication ianao.";
-      }
-
-      $("priceResult").innerHTML = `
-        <div class="result-card ${
-          ok
-            ? "result-positive"
-            : "result-negative"
-        }">
-
-          <div class="result-title">
-            ${
+          <div
+            class="result-card ${
               ok
-                ? "✅ Vokatra azo amidy"
-                : "⚠️ Misy fatiantoka"
-            }
+                ? "result-positive"
+                : "result-negative"
+            }"
+          >
+
+            <div class="result-title">
+
+              ${
+                ok
+                  ? "✅ Mahazo tombony"
+                  : "⚠️ Misy fatiantoka"
+              }
+
+            </div>
+
+
+            <div class="result-grid">
+
+              <div>
+                <span>Vokatra</span>
+                <strong>
+                  ${esc(product)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Quantité</span>
+                <strong>
+                  ${q}
+                </strong>
+              </div>
+
+              <div>
+                <span>Coût total</span>
+                <strong>
+                  ${money(totalCost)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Coût / unité</span>
+                <strong>
+                  ${money(costPerUnit)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Prix minimum rentable</span>
+                <strong>
+                  ${money(minPrice)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Prix conseillé</span>
+                <strong>
+                  ${money(recommendedPrice)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Prix de vente</span>
+                <strong>
+                  ${money(salePrice)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Vola miditra / CA</span>
+                <strong>
+                  ${money(revenue)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Tombony</span>
+                <strong>
+                  ${money(profit)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Tombony kendrena</span>
+                <strong>
+                  ${money(targetProfit)}
+                </strong>
+              </div>
+
+              <div>
+                <span>Marge</span>
+                <strong>
+                  ${margin.toFixed(2)}%
+                </strong>
+              </div>
+
+            </div>
+
+
+            <div class="result-advice">
+              ${advice}
+            </div>
+
           </div>
 
-          <div class="result-grid">
+        `;
 
-            <div>
-              <span>Vokatra</span>
-              <strong>${esc(product)}</strong>
-            </div>
 
-            <div>
-              <span>Quantité</span>
-              <strong>${q}</strong>
-            </div>
+        updateDashboard();
 
-            <div>
-              <span>Coût total</span>
-              <strong>${money(totalCost)}</strong>
-            </div>
 
-            <div>
-              <span>Coût / unité</span>
-              <strong>${money(costPerUnit)}</strong>
-            </div>
+        toast(
+          "Kajy vita ary voatahiry."
+        );
 
-            <div>
-              <span>Prix minimum rentable</span>
-              <strong>${money(minPrice)}</strong>
-            </div>
-
-            <div>
-              <span>Prix conseillé</span>
-              <strong>${money(recommendedPrice)}</strong>
-            </div>
-
-            <div>
-              <span>Prix de vente</span>
-              <strong>${money(salePrice)}</strong>
-            </div>
-
-            <div>
-              <span>Vola miditra / CA</span>
-              <strong>${money(revenue)}</strong>
-            </div>
-
-            <div>
-              <span>Tombony</span>
-              <strong>${money(profit)}</strong>
-            </div>
-
-            <div>
-              <span>Tombony kendrena</span>
-              <strong>${money(targetProfit)}</strong>
-function renderPriceTool(c) {
-  c.innerHTML =
-    head(
-      "LAB 01",
-      "💰 Kajy Prix & Tombony",
-      "Kajio amin'ny antsipiriany ny coût, prix minimum, prix conseillé, tombony ary marge."
-    ) +
-    `
-    <form id="priceForm" class="lab-form">
-
-      <div class="form-grid">
-
-        ${field(
-          "Vokatra",
-          "product",
-          "text",
-          'placeholder="Ohatra: Akoho Gasy" required'
-        )}
-
-        ${field(
-          "Isan'ny vokatra",
-          "quantity",
-          "number",
-          'min="1" value="1" required'
-        )}
-
-      </div>
-
-      <div class="section-title">
-        💸 Coûts
-      </div>
-
-      <div class="form-grid">
-
-        ${field(
-          "Achat / Matières (Ar)",
-          "purchaseCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Sakafo (Ar)",
-          "feedCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Fanafody / Vaksiny (Ar)",
-          "healthCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Transport (Ar)",
-          "transportCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-        ${field(
-          "Autres dépenses (Ar)",
-          "otherCost",
-          "number",
-          'min="0" value="0"'
-        )}
-
-      </div>
-
-      <div id="priceCostPreview" class="lab-result"></div>
-
-      <div class="section-title">
-        🎯 Vidy sy tanjona
-      </div>
-
-      <div class="form-grid">
-
-        ${field(
-          "Prix de vente / unité (Ar)",
-          "salePrice",
-          "number",
-          'min="0" value="0" required'
-        )}
-
-        ${field(
-          "Tombony kendrena (Ar)",
-          "targetProfit",
-          "number",
-          'min="0" value="0"'
-        )}
-
-      </div>
-
-      <button class="btn btn-primary" type="submit">
-        💰 Kajio ny Tombony
-      </button>
-
-    </form>
-
-    <div id="priceResult" class="lab-result"></div>
-    `;
-
-  function calculatePreview() {
-    const form = $("priceForm");
-
-    if (!form) return;
-
-    const d = getData(form);
-
-    const q = Math.max(1, num(d.quantity));
-
-    const purchaseCost = Math.max(
-      0,
-      num(d.purchaseCost)
-    );
-
-    const feedCost = Math.max(
-      0,
-      num(d.feedCost)
-    );
-
-    const healthCost = Math.max(
-      0,
-      num(d.healthCost)
-    );
-
-    const transportCost = Math.max(
-      0,
-      num(d.transportCost)
-    );
-
-    const otherCost = Math.max(
-      0,
-      num(d.otherCost)
-    );
-
-    const totalCost =
-      purchaseCost +
-      feedCost +
-      healthCost +
-      transportCost +
-      otherCost;
-
-    const costPerUnit =
-      totalCost / q;
-
-    const minPrice =
-      costPerUnit;
-
-    const targetProfit =
-      Math.max(0, num(d.targetProfit));
-
-    const recommendedPrice =
-      (totalCost + targetProfit) / q;
-
-    $("priceCostPreview").innerHTML = `
-      <div class="result-card">
-        <div class="result-title">
-          📊 Coût calculé
-        </div>
-
-        <div class="result-grid">
-
-          <div>
-            <span>Coût total</span>
-            <strong>${money(totalCost)}</strong>
-          </div>
-
-          <div>
-            <span>Coût / unité</span>
-            <strong>${money(costPerUnit)}</strong>
-          </div>
-
-          <div>
-            <span>Prix minimum rentable</span>
-            <strong>${money(minPrice)}</strong>
-          </div>
-
-          <div>
-            <span>Prix conseillé</span>
-            <strong>${money(recommendedPrice)}</strong>
-          </div>
-
-        </div>
-      </div>
-    `;
-  }
-
-  [
-    "quantity",
-    "purchaseCost",
-    "feedCost",
-    "healthCost",
-    "transportCost",
-    "otherCost",
-    "targetProfit"
-  ].forEach((id) => {
-    const el = $(id);
-
-    if (el) {
-      el.addEventListener(
-        "input",
-        calculatePreview
-      );
-    }
-  });
-
-  calculatePreview();
-
-  $("priceForm").addEventListener(
-    "submit",
-    (e) => {
-      e.preventDefault();
-
-      const d = getData(e.currentTarget);
-
-      const product =
-        String(d.product || "").trim();
-
-      const q =
-        Math.max(1, num(d.quantity));
-
-      const purchaseCost =
-        Math.max(0, num(d.purchaseCost));
-
-      const feedCost =
-        Math.max(0, num(d.feedCost));
-
-      const healthCost =
-        Math.max(0, num(d.healthCost));
-
-      const transportCost =
-        Math.max(0, num(d.transportCost));
-
-      const otherCost =
-        Math.max(0, num(d.otherCost));
-
-      const salePrice =
-        Math.max(0, num(d.salePrice));
-
-      const targetProfit =
-        Math.max(0, num(d.targetProfit));
-
-      const totalCost =
-        purchaseCost +
-        feedCost +
-        healthCost +
-        transportCost +
-        otherCost;
-
-      const costPerUnit =
-        totalCost / q;
-
-      const minPrice =
-        costPerUnit;
-
-      const recommendedPrice =
-        (totalCost + targetProfit) / q;
-
-      const revenue =
-        q * salePrice;
-
-      const profit =
-        revenue - totalCost;
-
-      const margin =
-        revenue > 0
-          ? (profit / revenue) * 100
-          : 0;
-
-      const targetReached =
-        profit >= targetProfit;
-
-      const ok =
-        profit > 0;
-
-      state.calculations.push({
-        date: new Date().toISOString(),
-
-        product: product,
-
-        quantity: q,
-
-        cost: totalCost,
-
-        purchaseCost: purchaseCost,
-
-        feedCost: feedCost,
-
-        healthCost: healthCost,
-
-        transportCost: transportCost,
-
-        otherCost: otherCost,
-
-        costPerUnit: costPerUnit,
-
-        minPrice: minPrice,
-
-        recommendedPrice: recommendedPrice,
-
-        salePrice: salePrice,
-
-        targetProfit: targetProfit,
-
-        revenue: revenue,
-
-        profit: profit,
-
-        margin: margin
-      });
-
-      touch();
-
-      let advice = "";
-
-      if (salePrice < minPrice) {
-        advice =
-          "⚠️ Ny prix de vente dia ambany noho ny coût de revient. Mety hiteraka fatiantoka izany.";
-      } else if (!targetReached) {
-        advice =
-          "🟡 Mahazo tombony ianao, saingy mbola tsy tratra ny tombony kendrena.";
-      } else {
-        advice =
-          "✅ Tratra ny tombony kendrena. Afaka mandroso amin'ny offre sy publication ianao.";
       }
+    );
 
-      $("priceResult").innerHTML = `
-        <div class="result-card ${
-          ok
-            ? "result-positive"
-            : "result-negative"
-        }">
-
-          <div class="result-title">
-            ${
-              ok
-                ? "✅ Vokatra azo amidy"
-                : "⚠️ Misy fatiantoka"
-            }
-          </div>
-
-          <div class="result-grid">
-
-            <div>
-              <span>Vokatra</span>
-              <strong>${esc(product)}</strong>
-            </div>
-
-            <div>
-              <span>Quantité</span>
-              <strong>${q}</strong>
-            </div>
-
-            <div>
-              <span>Coût total</span>
-              <strong>${money(totalCost)}</strong>
-            </div>
-
-            <div>
-              <span>Coût / unité</span>
-              <strong>${money(costPerUnit)}</strong>
-            </div>
-
-            <div>
-              <span>Prix minimum rentable</span>
-              <strong>${money(minPrice)}</strong>
-            </div>
-
-            <div>
-              <span>Prix conseillé</span>
-              <strong>${money(recommendedPrice)}</strong>
-            </div>
-
-            <div>
-              <span>Prix de vente</span>
-              <strong>${money(salePrice)}</strong>
-            </div>
-
-            <div>
-              <span>Vola miditra / CA</span>
-              <strong>${money(revenue)}</strong>
-            </div>
-
-            <div>
-              <span>Tombony</span>
-              <strong>${money(profit)}</strong>
-            </div>
-
-            <div>
-              <span>Tombony kendrena</span>
-              <strong>${money(targetProfit)}</strong>
-            </div>
-
-            <div>
-              <span>Marge</span>
-              <strong>${margin.toFixed(2)}%</strong>
-            </div>
-
-          </div>
-
-          <div class="result-advice">
-            ${advice}
-          </div>
-
-          <div class="tool-actions">
-
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="openTool('offer')"
-            >
-              🎁 Créer une Offre
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="openTool('publication')"
-            >
-              📢 Créer une Publication
-            </button>
-
-            <button
-              type="button"
-              class="btn btn-secondary"
-              onclick="openTool('order')"
-            >
-              🛒 Créer une Commande
-            </button>
-
-          </div>
-
-        </div>
-      `;
-
-      updateDashboard();
-
-      toast(
-        "Kajy vita ary voatahiry."
-      );
-    }
-  );
-}
+  }
 
   /* =========================================================
      2. FIOMPIANA
