@@ -2620,7 +2620,18 @@ Aza manome analyse.
 MIANDRY NY VENDEUR.
 
   `.trim();
-}
+
+  function renderSimulationTool(
+    container
+  ) {
+
+    const scenario =
+      simulationScenarios[
+        Math.floor(
+          Math.random() *
+          simulationScenarios.length
+        )
+      ];
 
 async function copyGeminiPrompt() {
   try {
@@ -2642,6 +2653,7 @@ async function copyGeminiPrompt() {
     toast(
       "Tsy afaka nandika ilay prompt."
     );
+  }
 }
 
 
@@ -2673,22 +2685,8 @@ function openGemini() {
     toast(
       "Tsy afaka nanokatra Gemini."
     );
+  }
 }
-
-
-  function renderSimulationTool(
-    container
-  ) {
-
-    const scenario =
-      simulationScenarios[
-        Math.floor(
-          Math.random() *
-          simulationScenarios.length
-        )
-      ];
-
-
     container.innerHTML = `
 
       <div class="workspace-header">
