@@ -1,35 +1,22 @@
 /* =========================================================
    TANTSAHA MATIHANINA • VENTE LAB
-   APP.JS — PARTIE 1/3
+   APP.JS — VERSION VOAMBOARA
    ========================================================= */
 
 (function () {
   "use strict";
-
 
   /* =========================================================
      CONFIGURATION
      ========================================================= */
 
   const CONFIG = {
-
-    whatsappGroup:
-      "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
-
-    whatsappPurchase:
-      "https://wa.me/261385651378",
-
-    facebook:
-      "https://www.facebook.com/share/1Zfiu8oj3m/",
-
-    supabaseUrl:
-      "https://sdzybetralbaincrxddf4.supabase.co",
-
-    supabaseKey:
-      "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy"
-
+    whatsappGroup: "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
+    whatsappPurchase: "https://wa.me/261385651378",
+    facebook: "https://www.facebook.com/share/1Zfiu8oj3m/",
+    supabaseUrl: "https://sdzybetralbaincrxddf4.supabase.co",
+    supabaseKey: "sb_publishable_3ByjJyxXteRPkG7cWHHFxw_3wVXU9Qy"
   };
-
 
   /* =========================================================
      STATE
@@ -38,505 +25,245 @@
   const KEY = "tm_vente_lab_state_v3";
 
   const defaults = {
-
     calculations: [],
-
     orders: [],
-
     evaluations: [],
-
     localReviews: [],
-
     prospects: [],
-
     calendarPlans: [],
-
     challenge: [],
-
+    lastOffer: null,
     lastActivity: null
-
   };
 
-
   let state = loadState();
-
   let sb = null;
-
 
   /* =========================================================
      BASIC UTILITIES
      ========================================================= */
 
-  const $ = (id) =>
-    document.getElementById(id);
-
+  const $ = (id) => document.getElementById(id);
 
   function clone(obj) {
-
-    return JSON.parse(
-      JSON.stringify(obj)
-    );
-
+    return JSON.parse(JSON.stringify(obj));
   }
-
 
   function num(value) {
-
-    const n =
-      Number(
-        String(value ?? "")
-          .replace(/\s/g, "")
-          .replace(",", ".")
-      );
-
-    return Number.isFinite(n)
-      ? n
-      : 0;
-
+    const n = Number(
+      String(value ?? "")
+        .replace(/\s/g, "")
+        .replace(",", ".")
+    );
+    return Number.isFinite(n) ? n : 0;
   }
 
-
   function esc(value) {
-
     return String(value ?? "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
-
   }
-
 
   function money(value) {
-
-    return new Intl.NumberFormat(
-      "fr-FR"
-    ).format(
-      Math.round(num(value))
-    ) + " Ar";
-
+    return new Intl.NumberFormat("fr-FR").format(Math.round(num(value))) + " Ar";
   }
 
-
   function fmtDate(value) {
-
     if (!value) return "—";
-
     const d = new Date(value);
-
     if (Number.isNaN(d.getTime())) {
       return value;
     }
-
-    return d.toLocaleDateString(
-      "fr-FR"
-    );
-
+    return d.toLocaleDateString("fr-FR");
   }
-
 
   function todayISO() {
-
     const d = new Date();
-
-    const p = (n) =>
-      String(n).padStart(2, "0");
-
-    return (
-      d.getFullYear() +
-      "-" +
-      p(d.getMonth() + 1) +
-      "-" +
-      p(d.getDate())
-    );
-
+    const p = (n) => String(n).padStart(2, "0");
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
   }
 
-
   function addDays(date, days) {
-  const d = new Date(date);
-  d.setDate(d.getDate() + Number(days));
-  return d;
-}
-
+    const d =
+      typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)
+        ? new Date(date + "T00:00:00")
+        : new Date(date);
+    d.setDate(d.getDate() + Number(days));
+    return d;
+  }
 
   /* =========================================================
      LOCAL STORAGE
      ========================================================= */
 
   function loadState() {
-
     try {
-
-      const raw =
-        localStorage.getItem(KEY);
-
+      const raw = localStorage.getItem(KEY);
       if (!raw) {
         return clone(defaults);
       }
-
-      const saved =
-        JSON.parse(raw);
-
+      const saved = JSON.parse(raw);
       return {
         ...clone(defaults),
         ...saved
       };
-
     } catch (error) {
-
-      console.error(
-        "Erreur chargement state:",
-        error
-      );
-
+      console.error("Erreur chargement state:", error);
       return clone(defaults);
-
     }
-
   }
-
 
   function saveState() {
-
     try {
-
-      localStorage.setItem(
-        KEY,
-        JSON.stringify(state)
-      );
-
+      localStorage.setItem(KEY, JSON.stringify(state));
     } catch (error) {
-
-      console.error(
-        "Erreur sauvegarde state:",
-        error
-      );
-
+      console.error("Erreur sauvegarde state:", error);
     }
-
   }
-
 
   function touch() {
-
-    state.lastActivity =
-      new Date().toISOString();
-
+    state.lastActivity = new Date().toISOString();
     saveState();
-
   }
-
 
   /* =========================================================
      TOAST
      ========================================================= */
 
-  function toast(
-    message,
-    type = "success"
-  ) {
-
-    const el =
-      $("toast");
-
+  function toast(message, type = "success") {
+    const el = $("toast");
     if (!el) return;
 
-    el.textContent =
-      message;
+    el.textContent = message;
+    el.className = "toast " + type;
+    el.classList.add("is-visible");
 
-    el.className =
-      "toast " + type;
+    clearTimeout(el._toastTimer);
 
-    el.classList.add(
-      "is-visible"
-    );
-
-    clearTimeout(
-      el._toastTimer
-    );
-
-    el._toastTimer =
-      setTimeout(
-        function () {
-
-          el.classList.remove(
-            "is-visible"
-          );
-
-        },
-        3000
-      );
-
+    el._toastTimer = setTimeout(function () {
+      el.classList.remove("is-visible");
+    }, 3000);
   }
-
 
   /* =========================================================
      COPY TEXT
      ========================================================= */
 
   async function copyText(text) {
-
     if (!text) return false;
 
     try {
-
-      await navigator.clipboard.writeText(
-        text
-      );
-
-      toast(
-        "Voakopia.",
-        "success"
-      );
-
+      await navigator.clipboard.writeText(text);
+      toast("Voakopia.", "success");
       return true;
-
     } catch (error) {
-
       try {
-
-        const area =
-          document.createElement(
-            "textarea"
-          );
-
+        const area = document.createElement("textarea");
         area.value = text;
-
-        area.style.position =
-          "fixed";
-
-        area.style.opacity =
-          "0";
-
-        document.body.appendChild(
-          area
-        );
-
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
         area.select();
-
-        document.execCommand(
-          "copy"
-        );
-
+        document.execCommand("copy");
         area.remove();
-
-        toast(
-          "Voakopia.",
-          "success"
-        );
-
+        toast("Voakopia.", "success");
         return true;
-
       } catch (err) {
-
-        toast(
-          "Tsy afaka manao copie.",
-          "error"
-        );
-
+        toast("Tsy afaka manao copie.", "error");
         return false;
-
       }
-
     }
-
   }
-
 
   /* =========================================================
      REMOTE / SUPABASE HELPER
      ========================================================= */
 
-  async function remote(
-    path,
-    options = {}
-  ) {
-
-    if (!CONFIG.supabaseUrl ||
-        !CONFIG.supabaseKey) {
-
+  async function remote(path, options = {}) {
+    if (!CONFIG.supabaseUrl || !CONFIG.supabaseKey) {
       return null;
-
     }
 
     try {
-
-      const response =
-        await fetch(
-          CONFIG.supabaseUrl +
-          "/rest/v1/" +
-          path,
-          {
-
-            ...options,
-
-            headers: {
-
-              "apikey":
-                CONFIG.supabaseKey,
-
-              "Authorization":
-                "Bearer " +
-                CONFIG.supabaseKey,
-
-              "Content-Type":
-                "application/json",
-
-              ...(options.headers || {})
-
-            }
-
+      const response = await fetch(
+        CONFIG.supabaseUrl + "/rest/v1/" + path,
+        {
+          ...options,
+          headers: {
+            "apikey": CONFIG.supabaseKey,
+            "Authorization": "Bearer " + CONFIG.supabaseKey,
+            "Content-Type": "application/json",
+            ...(options.headers || {})
           }
-        );
-
-      if (!response.ok) {
-
-        console.warn(
-          "Remote error:",
-          response.status
-        );
-
-        return null;
-
-      }
-
-      const text =
-        await response.text();
-
-      return text
-        ? JSON.parse(text)
-        : null;
-
-    } catch (error) {
-
-      console.warn(
-        "Remote request failed:",
-        error
+        }
       );
 
+      if (!response.ok) {
+        console.warn("Remote error:", response.status);
+        return null;
+      }
+
+      const text = await response.text();
+      return text ? JSON.parse(text) : null;
+    } catch (error) {
+      console.warn("Remote request failed:", error);
       return null;
-
     }
-
   }
-
 
   /* =========================================================
      TOOLS DISPATCHER
      ========================================================= */
 
   function initTools() {
-
-    document.addEventListener(
-      "click",
-      function (e) {
-
-        const button =
-          e.target.closest(
-            "[data-tool]"
-          );
-
-        if (!button) return;
-
-        openTool(
-          button.dataset.tool
-        );
-
-      }
-    );
-
+    document.addEventListener("click", function (e) {
+      const button = e.target.closest("[data-tool]");
+      if (!button) return;
+      openTool(button.dataset.tool);
+    });
   }
 
-
   function openTool(tool) {
-
     const ws =
       tool === "calendar"
-
         ? $("calendarWorkspace")
-
         : $("toolWorkspace");
-
 
     if (!ws) return;
 
-
     const tools = {
-
-      price:
-        renderPriceTool,
-
-      livestock:
-        renderLivestockTool,
-
-      offer:
-        renderOfferTool,
-
-      publication:
-        renderPublicationTool,
-
-      simulation:
-        renderSimulationTool,
-
-      order:
-        renderOrderTool,
-
-      receipt:
-        renderReceiptTool,
-
-      guide:
-        renderGuideTool,
-
-      challenge:
-        renderChallengeTool,
-
-      calendar:
-        renderCalendarTool
-
+      price: renderPriceTool,
+      livestock: renderLivestockTool,
+      offer: renderOfferTool,
+      publication: renderPublicationTool,
+      simulation: renderSimulationTool,
+      order: renderOrderTool,
+      receipt: renderReceiptTool,
+      guide: renderGuideTool,
+      challenge: renderChallengeTool,
+      calendar: renderCalendarTool
     };
 
-
     if (!tools[tool]) {
-
       ws.innerHTML = `
-
         <div class="workspace-empty">
-
-          <h3>
-            Outil mbola tsy voaomana
-          </h3>
-
-          <p>
-            Hampidirina amin'ny
-            version manaraka.
-          </p>
-
+          <h3>Outil mbola tsy voaomana</h3>
+          <p>Hampidirina amin'ny version manaraka.</p>
         </div>
-
       `;
-
       return;
-
     }
 
-
     tools[tool](ws);
-
-    ws.dataset.activeTool =
-      tool;
-
+    ws.dataset.activeTool = tool;
   }
 
-/* =========================================================
-   FARAN'NY PARTIE 1/3
-   ========================================================= */
-
-
-/* =========================================================
-   1. KAJY PRIX & TOMBONY
-   ========================================================= */
+  /* =========================================================
+     1. KAJY PRIX & TOMBONY
+     ========================================================= */
 
   const ANIMALS = [
     "Akoho Gasy",
@@ -551,422 +278,123 @@
     "Ondry"
   ];
 
-
-  function head(
-    eyebrow,
-    title,
-    description
-  ) {
-
+  function head(eyebrow, title, description) {
     return `
       <div class="workspace-header">
-
-        <span class="eyebrow">
-          ${esc(eyebrow)}
-        </span>
-
-        <h2>
-          ${esc(title)}
-        </h2>
-
-        <p>
-          ${esc(description)}
-        </p>
-
+        <span class="eyebrow">${esc(eyebrow)}</span>
+        <h2>${esc(title)}</h2>
+        <p>${esc(description)}</p>
       </div>
     `;
-
   }
 
-
-  function field(
-    label,
-    name,
-    type = "text",
-    attrs = ""
-  ) {
-
+  function field(label, name, type = "text", attrs = "") {
     return `
       <label>
-
         ${esc(label)}
-
-        <input
-          type="${esc(type)}"
-          name="${esc(name)}"
-          ${attrs}
-        >
-
+        <input type="${esc(type)}" name="${esc(name)}" ${attrs}>
       </label>
     `;
-
   }
 
-
-  function area(
-    label,
-    name,
-    attrs = ""
-  ) {
-
+  function area(label, name, attrs = "") {
     return `
       <label>
-
         ${esc(label)}
-
-        <textarea
-          name="${esc(name)}"
-          rows="4"
-          ${attrs}
-        ></textarea>
-
+        <textarea name="${esc(name)}" rows="4" ${attrs}></textarea>
       </label>
     `;
-
   }
 
-
-  function select(
-    label,
-    name,
-    options
-  ) {
-
+  function select(label, name, options) {
     return `
       <label>
-
         ${esc(label)}
-
         <select name="${esc(name)}">
-
           ${options.map(
             (option) => `
-              <option value="${esc(option)}">
-                ${esc(option)}
-              </option>
+              <option value="${esc(option)}">${esc(option)}</option>
             `
           ).join("")}
-
         </select>
-
       </label>
     `;
-
   }
-
 
   function getData(form) {
-
-    const fd =
-      new FormData(form);
-
+    const fd = new FormData(form);
     return Object.fromEntries(fd.entries());
-
-  }
-   
-function renderPriceTool(c) {
-  c.innerHTML =
-    head(
-      "LAB 01",
-      "💰 Kajy Prix & Tombony",
-      "Fantaro ny coût, prix de vente, tombony ary marge alohan'ny hivarotana."
-    ) +
-
-    `<form id="priceForm" class="tool-form">
-
-      ${field(
-        "Vokatra",
-        "product",
-        "text",
-        'placeholder="Ohatra: Akoho Gasy" required'
-      )}
-
-      ${field(
-        "Isan'ny vokatra",
-        "quantity",
-        "number",
-        'min="1" value="1" required'
-      )}
-
-      <div class="section-title">💸 Coûts</div>
-
-      ${field(
-        "Achat / Matières",
-        "purchaseCost",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      ${field(
-        "Sakafo",
-        "feedCost",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      ${field(
-        "Fanafody / Vaksiny",
-        "healthCost",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      ${field(
-        "Transport",
-        "transportCost",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      ${field(
-        "Autres dépenses",
-        "otherCost",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      <div class="section-title">🎯 Vidy sy tanjona</div>
-
-      ${field(
-        "Prix de vente / unité",
-        "salePrice",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      ${field(
-        "Tombony kendrena",
-        "targetProfit",
-        "number",
-        'min="0" value="0"'
-      )}
-
-      <div id="pricePreview" class="preview-box"></div>
-
-      <button type="submit" class="btn-primary">
-        💰 Kajio ny Prix & Tombony
-      </button>
-
-    </form>
-
-    <div id="priceResult"></div>`;
-
-  const form = document.getElementById("priceForm");
-  const preview = document.getElementById("pricePreview");
-  const result = document.getElementById("priceResult");
-
-  function calculatePreview() {
-    const d = getData(form);
-
-    const q = Math.max(1, num(d.quantity));
-
-    const purchaseCost = Math.max(0, num(d.purchaseCost));
-    const feedCost = Math.max(0, num(d.feedCost));
-    const healthCost = Math.max(0, num(d.healthCost));
-    const transportCost = Math.max(0, num(d.transportCost));
-    const otherCost = Math.max(0, num(d.otherCost));
-    const targetProfit = Math.max(0, num(d.targetProfit));
-
-    const totalCost =
-      purchaseCost +
-      feedCost +
-      healthCost +
-      transportCost +
-      otherCost;
-
-    const costPerUnit = totalCost / q;
-
-    const minPrice = costPerUnit;
-
-    const recommendedPrice =
-      (totalCost + targetProfit) / q;
-
-    preview.innerHTML = `
-      <div class="preview-title">📊 Tombana</div>
-
-      <div class="result-grid">
-
-        <div>
-          <span>Coût total</span>
-          <strong>${money(totalCost)}</strong>
-        </div>
-
-        <div>
-          <span>Coût / unité</span>
-          <strong>${money(costPerUnit)}</strong>
-        </div>
-
-        <div>
-          <span>Prix minimum rentable</span>
-          <strong>${money(minPrice)}</strong>
-        </div>
-
-        <div>
-          <span>Prix conseillé</span>
-          <strong>${money(recommendedPrice)}</strong>
-        </div>
-
-      </div>
-    `;
   }
 
-  form.addEventListener("input", calculatePreview);
+  function renderPriceTool(c) {
+    c.innerHTML =
+      head(
+        "LAB 01",
+        "💰 Kajy Prix & Tombony",
+        "Fantaro ny coût, prix de vente, tombony ary marge alohan'ny hivarotana."
+      ) +
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+      `<form id="priceForm" class="tool-form">
 
-    const d = getData(form);
+        ${field("Vokatra", "product", "text", 'placeholder="Ohatra: Akoho Gasy" required')}
 
-    const product = String(d.product || "").trim();
+        ${field("Isan'ny vokatra", "quantity", "number", 'min="1" value="1" required')}
 
-    const q = Math.max(1, num(d.quantity));
+        <div class="section-title">💸 Coûts</div>
 
-    const purchaseCost = Math.max(
-      0,
-      num(d.purchaseCost)
-    );
+        ${field("Achat / Matières", "purchaseCost", "number", 'min="0" value="0"')}
 
-    const feedCost = Math.max(
-      0,
-      num(d.feedCost)
-    );
+        ${field("Sakafo", "feedCost", "number", 'min="0" value="0"')}
 
-    const healthCost = Math.max(
-      0,
-      num(d.healthCost)
-    );
+        ${field("Fanafody / Vaksiny", "healthCost", "number", 'min="0" value="0"')}
 
-    const transportCost = Math.max(
-      0,
-      num(d.transportCost)
-    );
+        ${field("Transport", "transportCost", "number", 'min="0" value="0"')}
 
-    const otherCost = Math.max(
-      0,
-      num(d.otherCost)
-    );
+        ${field("Autres dépenses", "otherCost", "number", 'min="0" value="0"')}
 
-    const salePrice = Math.max(
-      0,
-      num(d.salePrice)
-    );
+        <div class="section-title">🎯 Vidy sy tanjona</div>
 
-    const targetProfit = Math.max(
-      0,
-      num(d.targetProfit)
-    );
+        ${field("Prix de vente / unité", "salePrice", "number", 'min="0" value="0"')}
 
-    const totalCost =
-      purchaseCost +
-      feedCost +
-      healthCost +
-      transportCost +
-      otherCost;
+        ${field("Tombony kendrena", "targetProfit", "number", 'min="0" value="0"')}
 
-    const costPerUnit =
-      totalCost / q;
+        <div id="pricePreview" class="preview-box"></div>
 
-    const minPrice =
-      costPerUnit;
+        <button type="submit" class="btn-primary">
+          💰 Kajio ny Prix & Tombony
+        </button>
 
-    const recommendedPrice =
-      (totalCost + targetProfit) / q;
+      </form>
 
-    const revenue =
-      q * salePrice;
+      <div id="priceResult"></div>`;
 
-    const profit =
-      revenue - totalCost;
+    const form = document.getElementById("priceForm");
+    const preview = document.getElementById("pricePreview");
+    const result = document.getElementById("priceResult");
 
-    const margin =
-      revenue > 0
-        ? (profit / revenue) * 100
-        : 0;
+    function calculatePreview() {
+      const d = getData(form);
 
-    const targetReached =
-      profit >= targetProfit;
+      const q = Math.max(1, num(d.quantity));
 
-    const ok =
-      profit > 0;
+      const purchaseCost = Math.max(0, num(d.purchaseCost));
+      const feedCost = Math.max(0, num(d.feedCost));
+      const healthCost = Math.max(0, num(d.healthCost));
+      const transportCost = Math.max(0, num(d.transportCost));
+      const otherCost = Math.max(0, num(d.otherCost));
+      const targetProfit = Math.max(0, num(d.targetProfit));
 
-    let advice = "";
+      const totalCost =
+        purchaseCost + feedCost + healthCost + transportCost + otherCost;
 
-    if (salePrice < minPrice) {
-      advice = `
-        <div class="advice warning">
-          ⚠️ Attention : votre prix de vente est inférieur
-          au coût de revient. Vous risquez une perte.
-        </div>
-      `;
-    } else if (!targetReached) {
-      advice = `
-        <div class="advice warning">
-          ⚠️ Vous êtes rentable, mais le bénéfice cible
-          n'est pas encore atteint.
-        </div>
-      `;
-    } else {
-      advice = `
-        <div class="advice success">
-          ✅ Très bien ! Le bénéfice cible est atteint.
-        </div>
-      `;
-    }
+      const costPerUnit = totalCost / q;
+      const minPrice = costPerUnit;
+      const recommendedPrice = (totalCost + targetProfit) / q;
 
-    state.calculations.push({
-      date: new Date().toISOString(),
-      product,
-      quantity: q,
-
-      cost: totalCost,
-
-      purchaseCost,
-      feedCost,
-      healthCost,
-      transportCost,
-      otherCost,
-
-      costPerUnit,
-      minPrice,
-      recommendedPrice,
-
-      salePrice,
-      targetProfit,
-
-      revenue,
-      profit,
-      margin
-    });
-
-    touch();
-    updateDashboard();
-
-    result.innerHTML = `
-      <div class="result-card ${
-        ok
-          ? "result-positive"
-          : "result-negative"
-      }">
-
-        <div class="result-title">
-          ${
-            ok
-              ? "✅ Vokatra azo amidy"
-              : "⚠️ Misy fatiantoka"
-          }
-        </div>
+      preview.innerHTML = `
+        <div class="preview-title">📊 Tombana</div>
 
         <div class="result-grid">
-
-          <div>
-            <span>Vokatra</span>
-            <strong>${esc(product)}</strong>
-          </div>
-
-          <div>
-            <span>Quantité</span>
-            <strong>${q}</strong>
-          </div>
 
           <div>
             <span>Coût total</span>
@@ -988,53 +416,174 @@ function renderPriceTool(c) {
             <strong>${money(recommendedPrice)}</strong>
           </div>
 
-          <div>
-            <span>Prix de vente</span>
-            <strong>${money(salePrice)}</strong>
+        </div>
+      `;
+    }
+
+    form.addEventListener("input", calculatePreview);
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const d = getData(form);
+
+      const product = String(d.product || "").trim();
+
+      const q = Math.max(1, num(d.quantity));
+
+      const purchaseCost = Math.max(0, num(d.purchaseCost));
+      const feedCost = Math.max(0, num(d.feedCost));
+      const healthCost = Math.max(0, num(d.healthCost));
+      const transportCost = Math.max(0, num(d.transportCost));
+      const otherCost = Math.max(0, num(d.otherCost));
+      const salePrice = Math.max(0, num(d.salePrice));
+      const targetProfit = Math.max(0, num(d.targetProfit));
+
+      const totalCost =
+        purchaseCost + feedCost + healthCost + transportCost + otherCost;
+
+      const costPerUnit = totalCost / q;
+      const minPrice = costPerUnit;
+      const recommendedPrice = (totalCost + targetProfit) / q;
+      const revenue = q * salePrice;
+      const profit = revenue - totalCost;
+      const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+      const targetReached = profit >= targetProfit;
+      const ok = profit > 0;
+
+      let advice = "";
+
+      if (salePrice < minPrice) {
+        advice = `
+          <div class="advice warning">
+            ⚠️ Attention : votre prix de vente est inférieur
+            au coût de revient. Vous risquez une perte.
+          </div>
+        `;
+      } else if (!targetReached) {
+        advice = `
+          <div class="advice warning">
+            ⚠️ Vous êtes rentable, mais le bénéfice cible
+            n'est pas encore atteint.
+          </div>
+        `;
+      } else {
+        advice = `
+          <div class="advice success">
+            ✅ Très bien ! Le bénéfice cible est atteint.
+          </div>
+        `;
+      }
+
+      state.calculations.push({
+        date: new Date().toISOString(),
+        product,
+        quantity: q,
+        cost: totalCost,
+        purchaseCost,
+        feedCost,
+        healthCost,
+        transportCost,
+        otherCost,
+        costPerUnit,
+        minPrice,
+        recommendedPrice,
+        salePrice,
+        targetProfit,
+        revenue,
+        profit,
+        margin
+      });
+
+      touch();
+      updateDashboard();
+
+      result.innerHTML = `
+        <div class="result-card ${ok ? "result-positive" : "result-negative"}">
+
+          <div class="result-title">
+            ${ok ? "✅ Vokatra azo amidy" : "⚠️ Misy fatiantoka"}
           </div>
 
-          <div>
-            <span>Vola miditra / CA</span>
-            <strong>${money(revenue)}</strong>
+          <div class="result-grid">
+
+            <div>
+              <span>Vokatra</span>
+              <strong>${esc(product)}</strong>
+            </div>
+
+            <div>
+              <span>Quantité</span>
+              <strong>${q}</strong>
+            </div>
+
+            <div>
+              <span>Coût total</span>
+              <strong>${money(totalCost)}</strong>
+            </div>
+
+            <div>
+              <span>Coût / unité</span>
+              <strong>${money(costPerUnit)}</strong>
+            </div>
+
+            <div>
+              <span>Prix minimum rentable</span>
+              <strong>${money(minPrice)}</strong>
+            </div>
+
+            <div>
+              <span>Prix conseillé</span>
+              <strong>${money(recommendedPrice)}</strong>
+            </div>
+
+            <div>
+              <span>Prix de vente</span>
+              <strong>${money(salePrice)}</strong>
+            </div>
+
+            <div>
+              <span>Vola miditra / CA</span>
+              <strong>${money(revenue)}</strong>
+            </div>
+
+            <div>
+              <span>Tombony</span>
+              <strong>${money(profit)}</strong>
+            </div>
+
+            <div>
+              <span>Tombony kendrena</span>
+              <strong>${money(targetProfit)}</strong>
+            </div>
+
+            <div>
+              <span>Marge</span>
+              <strong>${margin.toFixed(2)}%</strong>
+            </div>
+
           </div>
 
-          <div>
-            <span>Tombony</span>
-            <strong>${money(profit)}</strong>
-          </div>
-
-          <div>
-            <span>Tombony kendrena</span>
-            <strong>${money(targetProfit)}</strong>
-          </div>
-
-          <div>
-            <span>Marge</span>
-            <strong>${margin.toFixed(2)}%</strong>
-          </div>
+          ${advice}
 
         </div>
+      `;
 
-        ${advice}
+      toast(
+        ok
+          ? "Kajy vita. Tombony tsara!"
+          : "Kajy vita. Tandremo ny fatiantoka."
+      );
+    });
 
-      </div>
-    `;
+    calculatePreview();
+  }
 
-    toast(
-      ok
-        ? "Kajy vita. Tombony tsara!"
-        : "Kajy vita. Tandremo ny fatiantoka."
-    );
-  });
-
-  calculatePreview();
-}
   /* =========================================================
      2. FIOMPIANA
      ========================================================= */
 
   function renderLivestockTool(c) {
-
     c.innerHTML =
       head(
         "LAB 02",
@@ -1043,267 +592,135 @@ function renderPriceTool(c) {
       ) +
 
       `
-      <form
-        id="livestockForm"
-        class="lab-form"
-      >
+      <form id="livestockForm" class="lab-form">
 
         <div class="form-grid">
 
-          ${select(
-            "Karazana",
-            "animal",
-            ANIMALS
-          )}
+          ${select("Karazana", "animal", ANIMALS)}
 
-          ${field(
-            "Isan'ny biby",
-            "quantity",
-            "number",
-            'min="1" value="10" required'
-          )}
+          ${field("Isan'ny biby", "quantity", "number", 'min="1" value="10" required')}
 
-          ${field(
-            "Coût sakafo",
-            "feed",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Coût sakafo", "feed", "number", 'min="0" value="0"')}
 
-          ${field(
-            "Fanafody / vaksiny",
-            "health",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Fanafody / vaksiny", "health", "number", 'min="0" value="0"')}
 
-          ${field(
-            "Achat biby",
-            "purchase",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Achat biby", "purchase", "number", 'min="0" value="0"')}
 
-          ${field(
-            "Dépenses hafa",
-            "other",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Dépenses hafa", "other", "number", 'min="0" value="0"')}
 
-          ${field(
-            "Prix de vente / biby",
-            "salePrice",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Prix de vente / biby", "salePrice", "number", 'min="0" value="0"')}
 
         </div>
 
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
           🐓 Kajio ny fiompiana
         </button>
 
       </form>
 
-
-      <div
-        id="livestockResult"
-        class="lab-result"
-      ></div>
+      <div id="livestockResult" class="lab-result"></div>
       `;
 
+    $("livestockForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    $("livestockForm").addEventListener(
-      "submit",
-      (e) => {
+      const d = getData(e.currentTarget);
 
-        e.preventDefault();
+      const q = num(d.quantity);
 
-        const d =
-          getData(e.currentTarget);
+      const cost =
+        num(d.feed) + num(d.health) + num(d.purchase) + num(d.other);
 
-        const q =
-          num(d.quantity);
+      const revenue = q * num(d.salePrice);
+      const profit = revenue - cost;
+      const per = q > 0 ? cost / q : 0;
 
-        const cost =
-          num(d.feed) +
-          num(d.health) +
-          num(d.purchase) +
-          num(d.other);
+      state.calculations.push({
+        date: new Date().toISOString(),
+        animal: d.animal,
+        product: d.animal,
+        quantity: q,
+        cost: cost,
+        revenue: revenue,
+        profit: profit,
+        costPerAnimal: per
+      });
 
-        const revenue =
-          q * num(d.salePrice);
+      touch();
 
-        const profit =
-          revenue - cost;
+      $("livestockResult").innerHTML = `
 
-        const per =
-          q > 0
-            ? cost / q
-            : 0;
+        <div class="result-card">
 
+          <div class="result-title">
+            ${esc(d.animal)} — Résultat
+          </div>
 
-        state.calculations.push({
+          <div class="result-grid">
 
-          date:
-            new Date().toISOString(),
-
-          animal:
-            d.animal,
-
-          product:
-            d.animal,
-
-          quantity:
-            q,
-
-          cost:
-            cost,
-
-          revenue:
-            revenue,
-
-          profit:
-            profit,
-
-          costPerAnimal:
-            per
-
-        });
-
-
-        touch();
-
-
-        $("livestockResult").innerHTML = `
-
-          <div class="result-card">
-
-            <div class="result-title">
-
-              ${esc(d.animal)}
-              — Résultat
-
+            <div>
+              <span>Isan'ny biby</span>
+              <strong>${q}</strong>
             </div>
 
-
-            <div class="result-grid">
-
-              <div>
-                <span>Isan'ny biby</span>
-                <strong>${q}</strong>
-              </div>
-
-
-              <div>
-                <span>Coût total</span>
-                <strong>
-                  ${money(cost)}
-                </strong>
-              </div>
-
-
-              <div>
-                <span>Coût / biby</span>
-                <strong>
-                  ${money(per)}
-                </strong>
-              </div>
-
-
-              <div>
-                <span>Vola miditra</span>
-                <strong>
-                  ${money(revenue)}
-                </strong>
-              </div>
-
-
-              <div>
-                <span>Tombony</span>
-                <strong>
-                  ${money(profit)}
-                </strong>
-              </div>
-
+            <div>
+              <span>Coût total</span>
+              <strong>${money(cost)}</strong>
             </div>
 
+            <div>
+              <span>Coût / biby</span>
+              <strong>${money(per)}</strong>
+            </div>
 
-            <div class="result-advice">
+            <div>
+              <span>Vola miditra</span>
+              <strong>${money(revenue)}</strong>
+            </div>
 
-              ${
-                profit > 0
-
-                  ? "Tsara: afaka manohy amin'ny préparation de vente ianao."
-
-                  : "Tandremo: mety tsy hahazo tombony amin'ity prix ity."
-              }
-
+            <div>
+              <span>Tombony</span>
+              <strong>${money(profit)}</strong>
             </div>
 
           </div>
 
-        `;
+          <div class="result-advice">
+            ${
+              profit > 0
+                ? "Tsara: afaka manohy amin'ny préparation de vente ianao."
+                : "Tandremo: mety tsy hahazo tombony amin'ity prix ity."
+            }
+          </div>
 
+        </div>
 
-        updateDashboard();
+      `;
 
-        toast(
-          "Kajy fiompiana vita."
-        );
+      updateDashboard();
 
-      }
-    );
-
+      toast("Kajy fiompiana vita.");
+    });
   }
-
 
   /* =========================================================
      3. CALENDRIER
      ========================================================= */
 
   const profiles = {
-
-    "Akoho Gasy":
-      [150, 120, 210],
-
-    "Pondeuse":
-      [140, 120, 180],
-
-    "Poulet de chair":
-      [45, 35, 60],
-
-    "Kisoa":
-      [180, 150, 240],
-
-    "Bitro":
-      [90, 70, 120],
-
-    "Gana":
-      [100, 80, 130],
-
-    "Gisa":
-      [150, 120, 200],
-
-    "Vorontsiloza":
-      [150, 120, 200],
-
-    "Osy":
-      [240, 180, 300],
-
-    "Ondry":
-      [240, 180, 300]
-
+    "Akoho Gasy": [150, 120, 210],
+    "Pondeuse": [140, 120, 180],
+    "Poulet de chair": [45, 35, 60],
+    "Kisoa": [180, 150, 240],
+    "Bitro": [90, 70, 120],
+    "Gana": [100, 80, 130],
+    "Gisa": [150, 120, 200],
+    "Vorontsiloza": [150, 120, 200],
+    "Osy": [240, 180, 300],
+    "Ondry": [240, 180, 300]
   };
 
-
   function renderCalendarTool(c) {
-
     c.innerHTML =
       head(
         "LAB 10 • OUTIL STRATÉGIQUE",
@@ -1315,34 +732,14 @@ function renderPriceTool(c) {
 
       <div class="info-box">
 
-        <strong>
-          Ahoana no fampiasana azy?
-        </strong>
+        <strong>Ahoana no fampiasana azy?</strong>
 
         <ol>
-
-          <li>
-            Safidio ny karazana biby.
-          </li>
-
-          <li>
-            Ampidiro ny daty nanombohana.
-          </li>
-
-          <li>
-            Raha fantatra, ampidiro
-            ny andro ananany.
-          </li>
-
-          <li>
-            Tsindrio
-            <strong>
-              Hamorona Calendrier
-            </strong>.
-          </li>
-
+          <li>Safidio ny karazana biby.</li>
+          <li>Ampidiro ny daty nanombohana.</li>
+          <li>Raha fantatra, ampidiro ny andro ananany.</li>
+          <li>Tsindrio <strong>Hamorona Calendrier</strong>.</li>
         </ol>
-
 
         <p>
           ⚠️ Tombana ihany ny daty.
@@ -1353,390 +750,218 @@ function renderPriceTool(c) {
 
       </div>
 
-
-      <form
-        id="calendarForm"
-        class="lab-form"
-      >
+      <form id="calendarForm" class="lab-form">
 
         <div class="form-grid">
 
-          ${select(
-            "Karazana biby",
-            "animal",
-            Object.keys(profiles)
-          )}
+          ${select("Karazana biby", "animal", Object.keys(profiles))}
 
-          ${field(
-            "Isan'ny biby",
-            "quantity",
-            "number",
-            'min="1" value="10" required'
-          )}
+          ${field("Isan'ny biby", "quantity", "number", 'min="1" value="10" required')}
 
-          ${field(
-            "Daty nanombohana",
-            "startDate",
-            "date",
-            `value="${todayISO()}" required`
-          )}
+          ${field("Daty nanombohana", "startDate", "date", `value="${todayISO()}" required`)}
 
-          ${field(
-            "Andro ananan'ny biby (raha fantatra)",
-            "ageDays",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Andro ananan'ny biby (raha fantatra)", "ageDays", "number", 'min="0" value="0"')}
 
-          ${field(
-            "Lanja ankehitriny kg (raha fantatra)",
-            "weight",
-            "number",
-            'min="0" step="0.1" value="0"'
-          )}
+          ${field("Lanja ankehitriny kg (raha fantatra)", "weight", "number", 'min="0" step="0.1" value="0"')}
 
-          ${field(
-            "Prix de vente / biby",
-            "salePrice",
-            "number",
-            'min="0" value="0"'
-          )}
+          ${field("Prix de vente / biby", "salePrice", "number", 'min="0" value="0"')}
 
         </div>
 
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
           📅 Hamorona Calendrier
         </button>
 
       </form>
 
-
-      <div
-        id="calendarResult"
-        class="lab-result"
-      ></div>
+      <div id="calendarResult" class="lab-result"></div>
 
       `;
 
-
-    $("calendarForm").addEventListener(
-      "submit",
-      (e) => {
-
-        e.preventDefault();
-
-        const d =
-          getData(e.currentTarget);
-
-        const [
-          def,
-          min,
-          max
-        ] =
-          profiles[d.animal];
-
-        const age =
-          num(d.ageDays);
-
-        const q =
-          num(d.quantity);
-
-        const left =
-          Math.max(
-            def - age,
-            0
-          );
-
-        const sale =
-          addDays(
-            d.startDate,
-            left
-          );
-
-        const rangeA =
-          addDays(
-            d.startDate,
-            Math.max(
-              min - age,
-              0
-            )
-          );
-
-        const rangeB =
-          addDays(
-            d.startDate,
-            Math.max(
-              max - age,
-              0
-            )
-          );
-
-
-        const at =
-          (n) =>
-            new Date(
-              sale.getTime() -
-              n * 86400000
-            );
-
-
-        const events = [
-
-          [
-            "🐣",
-            "Fiandohana fiompiana",
-            new Date(
-              d.startDate +
-              "T00:00:00"
-            ),
-            "Manomboka ny fiompiana sy ny fanaraha-maso."
-          ],
-
-          [
-            "🧰",
-            "Préparation de vente",
-            at(30),
-            "Jereo ny lanja, fahasalamana, fitaovana ary lanja kendrena."
-          ],
-
-          [
-            "🔎",
-            "Prospection",
-            at(21),
-            "Mitady client: namana, tsena, vondrom-piarahamonina."
-          ],
-
-          [
-            "📢",
-            "Publication",
-            at(14),
-            "Alefaso ny publication sy ny sary/vidéo ny biby."
-          ],
-
-          [
-            "🛒",
-            "Commande",
-            at(7),
-            "Raiso ny commande sy ny acompte."
-          ],
-
-          [
-            "💰",
-            "Vente",
-            sale,
-            "Andro tombanana hivarotana (hamafisina araka ny lanja sy ny tsena)."
-          ],
-
-          [
-            "🤝",
-            "Suivi client",
-            new Date(
-              sale.getTime() +
-              7 * 86400000
-            ),
-            "Angataho ny retour ary tehirizo ny client."
-          ]
-
-        ];
-
-
-        const revenue =
-          q *
-          num(d.salePrice);
-
-
-        state.calendarPlans.push({
-
-          date:
-            new Date().toISOString(),
-
-          animal:
-            d.animal,
-
-          quantity:
-            q,
-
-          sale:
-            sale.toISOString()
-
-        });
-
-
-        touch();
-
-
-        $("calendarResult").innerHTML = `
-
-          <div class="result-card">
-
-            <div
-              class="result-card-header"
-            >
-
-              <span>
-                ${esc(d.animal)}
-                × ${q}
-              </span>
-
-              <strong>
-                Vente:
-                ${fmtDate(sale)}
-              </strong>
-
-            </div>
-
-
-            <div
-              class="calendar-result-warning"
-            >
-
-              ⚠️
-
-              <span>
-                Fetra tombana:
-                ${fmtDate(rangeA)}
-                →
-                ${fmtDate(rangeB)}.
-                Tombana ihany ny daty.
-              </span>
-
-            </div>
-
-
-            <div
-              class="calendar-timeline"
-            >
-
-              ${events.map(
-                (ev) => `
-
-                <div
-                  class="
-                    calendar-event
-                    ${
-                      ev[1] === "Vente"
-                        ? "calendar-event-main"
-                        : ""
-                    }
-                  "
-                >
-
-                  <div
-                    class="calendar-event-icon"
-                  >
-                    ${ev[0]}
-                  </div>
-
-
-                  <div>
-
-                    <strong>
-                      ${ev[1]}
-                    </strong>
-
-                    <small>
-                      ${fmtDate(ev[2])}
-                    </small>
-
-                    <p>
-                      ${ev[3]}
-                    </p>
-
-                  </div>
-
-                </div>
-
-              `).join("")}
-
-            </div>
-
-
-            <div
-              class="calendar-action-plan"
-            >
-
-              <h3>
-                Plan d'action
-              </h3>
-
-              <ul>
-
-                <li>
-                  Andro sisa alohan'ny
-                  vente:
-                  <strong>
-                    ${left}
-                  </strong>
-                </li>
-
-
-                ${
-                  revenue > 0
-
-                    ? `
-                      <li>
-                        CA mety azo:
-                        <strong>
-                          ${money(revenue)}
-                        </strong>
-                      </li>
-                    `
-
-                    : ""
-                }
-
-
-                <li>
-                  Manomboka mitady client
-                  farafahakeliny
-                  3 herinandro mialoha.
-                </li>
-
-              </ul>
-
-            </div>
-
-
-            <div class="calendar-note">
-
-              <strong>
-                Fampitandremana
-              </strong>
-
-              <p>
-                Raha tsy mahatratra
-                ny lanja kendrena
-                ny biby dia ampiato
-                ny daty hivarotana.
-              </p>
-
-            </div>
+    $("calendarForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const d = getData(e.currentTarget);
+
+      const [def, min, max] = profiles[d.animal];
+
+      const age = num(d.ageDays);
+      const q = num(d.quantity);
+
+      const left = Math.max(def - age, 0);
+
+      const sale = addDays(d.startDate, left);
+
+      const rangeA = addDays(d.startDate, Math.max(min - age, 0));
+      const rangeB = addDays(d.startDate, Math.max(max - age, 0));
+
+      const at = (n) => new Date(sale.getTime() - n * 86400000);
+
+      const events = [
+        [
+          "🐣",
+          "Fiandohana fiompiana",
+          new Date(d.startDate + "T00:00:00"),
+          "Manomboka ny fiompiana sy ny fanaraha-maso."
+        ],
+        [
+          "🧰",
+          "Préparation de vente",
+          at(30),
+          "Jereo ny lanja, fahasalamana, fitaovana ary lanja kendrena."
+        ],
+        [
+          "🔎",
+          "Prospection",
+          at(21),
+          "Mitady client: namana, tsena, vondrom-piarahamonina."
+        ],
+        [
+          "📢",
+          "Publication",
+          at(14),
+          "Alefaso ny publication sy ny sary/vidéo ny biby."
+        ],
+        [
+          "🛒",
+          "Commande",
+          at(7),
+          "Raiso ny commande sy ny acompte."
+        ],
+        [
+          "💰",
+          "Vente",
+          sale,
+          "Andro tombanana hivarotana (hamafisina araka ny lanja sy ny tsena)."
+        ],
+        [
+          "🤝",
+          "Suivi client",
+          new Date(sale.getTime() + 7 * 86400000),
+          "Angataho ny retour ary tehirizo ny client."
+        ]
+      ];
+
+      const revenue = q * num(d.salePrice);
+
+      state.calendarPlans.push({
+        date: new Date().toISOString(),
+        animal: d.animal,
+        quantity: q,
+        sale: sale.toISOString()
+      });
+
+      touch();
+
+      $("calendarResult").innerHTML = `
+
+        <div class="result-card">
+
+          <div class="result-card-header">
+
+            <span>${esc(d.animal)} × ${q}</span>
+
+            <strong>Vente: ${fmtDate(sale)}</strong>
 
           </div>
 
-        `;
+          <div class="calendar-result-warning">
 
+            ⚠️
 
-        toast(
-          "Calendrier vita."
-        );
+            <span>
+              Fetra tombana:
+              ${fmtDate(rangeA)}
+              →
+              ${fmtDate(rangeB)}.
+              Tombana ihany ny daty.
+            </span>
 
-      }
-    );
+          </div>
 
+          <div class="calendar-timeline">
+
+            ${events.map(
+              (ev) => `
+
+              <div class="calendar-event ${ev[1] === "Vente" ? "calendar-event-main" : ""}">
+
+                <div class="calendar-event-icon">${ev[0]}</div>
+
+                <div>
+
+                  <strong>${ev[1]}</strong>
+
+                  <small>${fmtDate(ev[2])}</small>
+
+                  <p>${ev[3]}</p>
+
+                </div>
+
+              </div>
+
+            `).join("")}
+
+          </div>
+
+          <div class="calendar-action-plan">
+
+            <h3>Plan d'action</h3>
+
+            <ul>
+
+              <li>
+                Andro sisa alohan'ny vente:
+                <strong>${left}</strong>
+              </li>
+
+              ${
+                revenue > 0
+                  ? `
+                    <li>
+                      CA mety azo:
+                      <strong>${money(revenue)}</strong>
+                    </li>
+                  `
+                  : ""
+              }
+
+              <li>
+                Manomboka mitady client
+                farafahakeliny
+                3 herinandro mialoha.
+              </li>
+
+            </ul>
+
+          </div>
+
+          <div class="calendar-note">
+
+            <strong>Fampitandremana</strong>
+
+            <p>
+              Raha tsy mahatratra
+              ny lanja kendrena
+              ny biby dia ampiato
+              ny daty hivarotana.
+            </p>
+
+          </div>
+
+        </div>
+
+      `;
+
+      toast("Calendrier vita.");
+    });
   }
-
 
   /* =========================================================
      4. CRÉER UNE OFFRE
      ========================================================= */
 
   function renderOfferTool(c) {
-
     c.innerHTML =
       head(
         "LAB 03",
@@ -1745,81 +970,39 @@ function renderPriceTool(c) {
       ) +
 
       `
-      <form
-        id="offerForm"
-        class="lab-form"
-      >
+      <form id="offerForm" class="lab-form">
 
         <div class="form-grid">
 
-          ${field(
-            "Vokatra / service",
-            "product",
-            "text",
-            "required"
-          )}
+          ${field("Vokatra / service", "product", "text", "required")}
 
-          ${field(
-            "Client kendrena",
-            "client",
-            "text",
-            'placeholder="Ohatra: mpandrafitra fety" required'
-          )}
+          ${field("Client kendrena", "client", "text", 'placeholder="Ohatra: mpandrafitra fety" required')}
 
-          ${area(
-            "Olana amin'ny client",
-            "problem"
-          )}
+          ${area("Olana amin'ny client", "problem")}
 
-          ${area(
-            "Vahaolana atolotra",
-            "solution"
-          )}
+          ${area("Vahaolana atolotra", "solution")}
 
-          ${field(
-            "Prix (Ar)",
-            "price",
-            "number",
-            'min="0"'
-          )}
+          ${field("Prix (Ar)", "price", "number", 'min="0"')}
 
-          ${field(
-            "Bonus / garantie",
-            "bonus",
-            "text"
-          )}
+          ${field("Bonus / garantie", "bonus", "text")}
 
         </div>
 
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
           🎁 Hamorona Offre
         </button>
 
       </form>
 
-
-      <div
-        id="offerResult"
-        class="lab-result"
-      ></div>
+      <div id="offerResult" class="lab-result"></div>
       `;
 
+    $("offerForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    $("offerForm").addEventListener(
-      "submit",
-      (e) => {
+      const d = getData(e.currentTarget);
 
-        e.preventDefault();
-
-        const d =
-          getData(e.currentTarget);
-
-
-        const text =
+      const text =
 `🎁 OFFRE: ${d.product}
 
 👤 Ho an'ny: ${d.client}
@@ -1833,57 +1016,36 @@ function renderPriceTool(c) {
 
 📲 Alefaso ny hafatra hanaovana commande.`;
 
+      $("offerResult").innerHTML = `
 
-        $("offerResult").innerHTML = `
+        <div class="generated-copy" id="offerText">
+          ${esc(text).replace(/\n/g, "<br>")}
+        </div>
 
-          <div
-            class="generated-copy"
-            id="offerText"
-          >
-            ${esc(text)
-              .replace(/\n/g, "<br>")}
-          </div>
+        <div class="result-actions">
 
+          <button class="btn btn-secondary" type="button" data-copy="offerText">
+            📋 Adikao
+          </button>
 
-          <div class="result-actions">
+        </div>
 
-            <button
-              class="btn btn-secondary"
-              type="button"
-              data-copy="offerText"
-            >
-              📋 Adikao
-            </button>
+      `;
 
-          </div>
+      state.lastOffer = d;
 
-        `;
+      touch();
 
-
-        state.lastOffer =
-          d;
-
-        touch();
-
-        toast(
-          "Offre vita."
-        );
-
-      }
-    );
-
+      toast("Offre vita.");
+    });
   }
-
 
   /* =========================================================
      5. PUBLICATION
      ========================================================= */
 
   function renderPublicationTool(c) {
-
-    const o =
-      state.lastOffer || {};
-
+    const o = state.lastOffer || {};
 
     c.innerHTML =
       head(
@@ -1893,88 +1055,39 @@ function renderPriceTool(c) {
       ) +
 
       `
-      <form
-        id="pubForm"
-        class="lab-form"
-      >
+      <form id="pubForm" class="lab-form">
 
         <div class="form-grid">
 
-          ${field(
-            "Vokatra",
-            "product",
-            "text",
-            `value="${esc(
-              o.product || ""
-            )}" required`
-          )}
+          ${field("Vokatra", "product", "text", `value="${esc(o.product || "")}" required`)}
 
-          ${field(
-            "Hook (fanombohana)",
-            "hook",
-            "text",
-            'placeholder="Ohatra: Mila akoho tsara ve ianao?"'
-          )}
+          ${field("Hook (fanombohana)", "hook", "text", 'placeholder="Ohatra: Mila akoho tsara ve ianao?"')}
 
-          ${area(
-            "Olana",
-            "problem",
-            ""
-          )}
+          ${area("Olana", "problem", "")}
 
-          ${area(
-            "Vahaolana / offre",
-            "solution",
-            ""
-          )}
+          ${area("Vahaolana / offre", "solution", "")}
 
-          ${field(
-            "Prix (Ar)",
-            "price",
-            "number",
-            `min="0" value="${esc(
-              o.price || ""
-            )}"`
-          )}
+          ${field("Prix (Ar)", "price", "number", `min="0" value="${esc(o.price || "")}"`)}
 
-          ${field(
-            "Contact / lieu",
-            "contact",
-            "text",
-            'placeholder="WhatsApp, Toamasina..."'
-          )}
+          ${field("Contact / lieu", "contact", "text", 'placeholder="WhatsApp, Toamasina..."')}
 
         </div>
 
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
           📢 Hamorona Publication
         </button>
 
       </form>
 
-
-      <div
-        id="pubResult"
-        class="lab-result"
-      ></div>
+      <div id="pubResult" class="lab-result"></div>
       `;
 
+    $("pubForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    $("pubForm").addEventListener(
-      "submit",
-      (e) => {
+      const d = getData(e.currentTarget);
 
-        e.preventDefault();
-
-        const d =
-          getData(e.currentTarget);
-
-
-        const text =
+      const text =
 `${d.hook || "🔥 Vaovao tsara!"}
 
 ${d.problem
@@ -1987,158 +1100,86 @@ ${d.solution || ""}
 
 👉 Alefaso ny hafatra ankehitriny hanaovana commande.`;
 
+      $("pubResult").innerHTML = `
 
-        $("pubResult").innerHTML = `
+        <div class="generated-copy" id="pubText">
+          ${esc(text).replace(/\n/g, "<br>")}
+        </div>
 
-          <div
-            class="generated-copy"
-            id="pubText"
-          >
-            ${esc(text)
-              .replace(/\n/g, "<br>")}
-          </div>
+        <div class="result-actions">
 
+          <button class="btn btn-secondary" type="button" data-copy="pubText">
+            📋 Adikao
+          </button>
 
-          <div class="result-actions">
+        </div>
 
-            <button
-              class="btn btn-secondary"
-              type="button"
-              data-copy="pubText"
-            >
-              📋 Adikao
-            </button>
+      `;
 
-          </div>
+      touch();
 
-        `;
-
-
-        touch();
-
-        toast(
-          "Publication vita."
-        );
-
-      }
-    );
-
+      toast("Publication vita.");
+    });
   }
-
 
   /* =========================================================
      6. SIMULATION CLIENT
         RAPIDE + GEMINI
      ========================================================= */
 
-  const showToast =
-    toast;
+  const showToast = toast;
 
-  const escapeHTML =
-    esc;
-
+  const escapeHTML = esc;
 
   const simulationScenarios = [
-
     {
-      client:
-        "Lafo loatra ilay izy.",
-
+      client: "Lafo loatra ilay izy.",
       options: [
-
         "Eny, lafo tokoa.",
-
         "Azafady tompoko, inona no budget noeritreretinao? Afaka jerentsika izay quantité mifanaraka aminy.",
-
         "Tsy afaka mampidina prix aho."
-
       ],
-
-      correct:
-        1
+      correct: 1
     },
-
-
     {
-      client:
-        "Mbola hieritreritra aho.",
-
+      client: "Mbola hieritreritra aho.",
       options: [
-
         "Eny ary.",
-
         "Tsy maninona tompoko. Inona indrindra no mbola tianao hohamarinina alohan'ny hanapahanao hevitra?",
-
         "Raha tsy mividy ianao dia tsy maninona."
-
       ],
-
-      correct:
-        1
+      correct: 1
     },
-
-
     {
-      client:
-        "Misy remise ve?",
-
+      client: "Misy remise ve?",
       options: [
-
         "Eny, ahena fotsiny.",
-
         "Miankina amin'ny quantité tompoko. Firy no ilainao dia kajiantsika izay offre mety?",
-
         "Tsy misy remise mihitsy."
-
       ],
-
-      correct:
-        1
+      correct: 1
     },
-
-
     {
-      client:
-        "Aiza no misy anareo?",
-
+      client: "Aiza no misy anareo?",
       options: [
-
         "Eto Madagascar.",
-
         "Aiza no misy anao tompoko? Dia hojereko ny toerana sy ny fomba hahazoanao azy.",
-
         "Aza manahy fa halefanay."
-
       ],
-
-      correct:
-        1
+      correct: 1
     },
-
-
     {
-      client:
-        "Alefaso aloha dia mandoa aho.",
-
+      client: "Alefaso aloha dia mandoa aho.",
       options: [
-
         "Eny, halefako.",
-
         "Andao aloha hamafisina ny commande sy ny fomba fandoavana ary ny fandefasana mba samy ho voaaro.",
-
         "Tsy azo atao."
-
       ],
-
-      correct:
-        1
+      correct: 1
     }
-
   ];
 
-
   const geminiProducts = [
-
     "Akoho Gasy",
     "Pondeuse",
     "Poulet de chair",
@@ -2152,77 +1193,41 @@ ${d.solution || ""}
     "Tantely",
     "Masomboly",
     "Vokatra hafa"
-
   ];
-
 
   const geminiDifficulties = [
-
     {
-      value:
-        "facile",
-
-      label:
-        "Facile",
-
-      description:
-        "Client mbola mora resena lahatra ary tsy dia misy objection."
+      value: "facile",
+      label: "Facile",
+      description: "Client mbola mora resena lahatra ary tsy dia misy objection."
     },
-
     {
-      value:
-        "intermediaire",
-
-      label:
-        "Intermédiaire",
-
-      description:
-        "Client manontany sy manao objection tsindraindray."
+      value: "intermediaire",
+      label: "Intermédiaire",
+      description: "Client manontany sy manao objection tsindraindray."
     },
-
     {
-      value:
-        "difficile",
-
-      label:
-        "Difficile",
-
-      description:
-        "Client misalasala, mampitaha prix ary manery."
+      value: "difficile",
+      label: "Difficile",
+      description: "Client misalasala, mampitaha prix ary manery."
     },
-
     {
-      value:
-        "exigeant",
-
-      label:
-        "Client exigeant",
-
-      description:
-        "Client tena mitaky preuve, prix, garantie ary assurance."
+      value: "exigeant",
+      label: "Client exigeant",
+      description: "Client tena mitaky preuve, prix, garantie ary assurance."
     }
-
   ];
-function generateGeminiPrompt() {
 
-  const product =
-    $("geminiProduct")?.value ||
-    "vokatra iray";
+  function generateGeminiPrompt() {
+    const product = $("geminiProduct")?.value || "vokatra iray";
 
-  const difficulty =
-    $("geminiDifficulty")?.value ||
-    "intermediaire";
+    const difficulty = $("geminiDifficulty")?.value || "intermediaire";
 
-  const scenario =
-    $("geminiScenario")?.value ||
-    "Lafo loatra";
+    const scenario = $("geminiScenario")?.value || "Lafo loatra";
 
-  const context =
-    $("geminiContext")?.value?.trim() ||
-    "";
+    const context = $("geminiContext")?.value?.trim() || "";
 
-
-  return `
+    return `
 TANTSAHA MATIHANINA — VENTE LAB
 SIMULATION CLIENT AVEC GEMINI
 
@@ -2620,84 +1625,53 @@ Aza manome analyse.
 MIANDRY NY VENDEUR.
 
   `.trim();
+  }
 
-  function renderSimulationTool(
-    container
-  ) {
-
+  function renderSimulationTool(container) {
     const scenario =
       simulationScenarios[
-        Math.floor(
-          Math.random() *
-          simulationScenarios.length
-        )
+        Math.floor(Math.random() * simulationScenarios.length)
       ];
 
-async function copyGeminiPrompt() {
-  try {
-    await copyText(
-      generateGeminiPrompt()
-    );
+    async function copyGeminiPrompt() {
+      try {
+        await copyText(generateGeminiPrompt());
 
-    toast(
-      "Prompt Gemini voadika. Apetaho ao amin'i Gemini."
-    );
+        toast("Prompt Gemini voadika. Apetaho ao amin'i Gemini.");
+      } catch (error) {
+        console.error("Erreur copie Gemini:", error);
 
-  } catch (error) {
+        toast("Tsy afaka nandika ilay prompt.");
+      }
+    }
 
-    console.error(
-      "Erreur copie Gemini:",
-      error
-    );
+    function openGemini() {
+      try {
+        const prompt = generateGeminiPrompt();
 
-    toast(
-      "Tsy afaka nandika ilay prompt."
-    );
-  }
-}
+        copyText(prompt);
 
+        window.open(
+          "https://gemini.google.com/app",
+          "_blank",
+          "noopener,noreferrer"
+        );
 
-function openGemini() {
-  try {
+        toast("Gemini nosokafana. Apetaho ilay prompt voadika.");
+      } catch (error) {
+        console.error("Erreur ouverture Gemini:", error);
 
-    const prompt =
-      generateGeminiPrompt();
+        toast("Tsy afaka nanokatra Gemini.");
+      }
+    }
 
-    copyText(prompt);
-
-    window.open(
-      "https://gemini.google.com/app",
-      "_blank",
-      "noopener,noreferrer"
-    );
-
-    toast(
-      "Gemini nosokafana. Apetaho ilay prompt voadika."
-    );
-
-  } catch (error) {
-
-    console.error(
-      "Erreur ouverture Gemini:",
-      error
-    );
-
-    toast(
-      "Tsy afaka nanokatra Gemini."
-    );
-  }
-}
     container.innerHTML = `
 
       <div class="workspace-header">
 
-        <span class="eyebrow">
-          LAB 05
-        </span>
+        <span class="eyebrow">LAB 05</span>
 
-        <h2>
-          🎯 Simulation Client
-        </h2>
+        <h2>🎯 Simulation Client</h2>
 
         <p>
           Manao pratique amin'ny objection ianao
@@ -2705,7 +1679,6 @@ function openGemini() {
         </p>
 
       </div>
-
 
       <div class="simulation-mode-grid">
 
@@ -2715,9 +1688,7 @@ function openGemini() {
           data-simulation-mode="quick"
         >
 
-          <strong>
-            🎯 Simulation Rapide
-          </strong>
+          <strong>🎯 Simulation Rapide</strong>
 
           <span>
             Scenario fohy misy objection
@@ -2726,16 +1697,13 @@ function openGemini() {
 
         </button>
 
-
         <button
           type="button"
           class="simulation-mode-card"
           data-simulation-mode="gemini"
         >
 
-          <strong>
-            🤖 Simulation Libre avec Gemini
-          </strong>
+          <strong>🤖 Simulation Libre avec Gemini</strong>
 
           <span>
             Gemini no CLIENT,
@@ -2746,32 +1714,17 @@ function openGemini() {
 
       </div>
 
+      <div id="quickSimulation" class="simulation-panel">
 
-      <div
-        id="quickSimulation"
-        class="simulation-panel"
-      >
+        <div class="simulation-client-card">
 
-        <div
-          class="simulation-client-card"
-        >
+          <span class="eyebrow">CLIENT</span>
 
-          <span class="eyebrow">
-            CLIENT
-          </span>
-
-          <h3>
-            "${escapeHTML(
-              scenario.client
-            )}"
-          </h3>
+          <h3>"${escapeHTML(scenario.client)}"</h3>
 
         </div>
 
-
-        <div
-          class="simulation-options"
-        >
+        <div class="simulation-options">
 
           ${scenario.options.map(
             (option, index) => `
@@ -2789,12 +1742,7 @@ function openGemini() {
 
         </div>
 
-
-        <div
-          id="simulationFeedback"
-          class="simulation-feedback"
-        ></div>
-
+        <div id="simulationFeedback" class="simulation-feedback"></div>
 
         <button
           type="button"
@@ -2806,7 +1754,6 @@ function openGemini() {
 
       </div>
 
-
       <div
         id="geminiSimulation"
         class="simulation-panel"
@@ -2817,13 +1764,9 @@ function openGemini() {
 
           <div class="gemini-intro">
 
-            <span class="eyebrow">
-              🤖 GEMINI CLIENT
-            </span>
+            <span class="eyebrow">🤖 GEMINI CLIENT</span>
 
-            <h3>
-              Simulation libre — Client réaliste
-            </h3>
+            <h3>Simulation libre — Client réaliste</h3>
 
             <p>
               Gemini joue le rôle du client.
@@ -2832,7 +1775,6 @@ function openGemini() {
             </p>
 
           </div>
-
 
           <div class="form-grid">
 
@@ -2853,7 +1795,6 @@ function openGemini() {
 
             </label>
 
-
             <label>
               Niveau
 
@@ -2871,38 +1812,26 @@ function openGemini() {
 
             </label>
 
-
             <label>
               Objection / scénario
 
               <select id="geminiScenario">
 
-                <option>
-                  Lafo loatra
-                </option>
+                <option>Lafo loatra</option>
 
-                <option>
-                  Mbola hieritreritra
-                </option>
+                <option>Mbola hieritreritra</option>
 
-                <option>
-                  Mitady remise
-                </option>
+                <option>Mitady remise</option>
 
-                <option>
-                  Aiza no misy anareo?
-                </option>
+                <option>Aiza no misy anareo?</option>
 
-                <option>
-                  Alefaso aloha dia mandoa aho
-                </option>
+                <option>Alefaso aloha dia mandoa aho</option>
 
               </select>
 
             </label>
 
           </div>
-
 
           <label>
             Contexte fanampiny
@@ -2915,7 +1844,6 @@ function openGemini() {
 
           </label>
 
-
           <div class="gemini-actions">
 
             <button
@@ -2925,7 +1853,6 @@ function openGemini() {
             >
               📋 Copier le prompt
             </button>
-
 
             <button
               type="button"
@@ -2937,53 +1864,28 @@ function openGemini() {
 
           </div>
 
+          <div class="gemini-instructions">
 
-          <div
-            class="gemini-instructions"
-          >
-
-            <strong>
-              Ahoana no fanaovana azy?
-            </strong>
+            <strong>Ahoana no fanaovana azy?</strong>
 
             <ol>
 
-              <li>
-                Safidio ny produit sy ny niveau.
-              </li>
+              <li>Safidio ny produit sy ny niveau.</li>
 
-              <li>
-                Tsindrio
-                <strong>
-                  Ouvrir Gemini
-                </strong>.
-              </li>
+              <li>Tsindrio <strong>Ouvrir Gemini</strong>.</li>
 
-              <li>
-                Apetaho ilay prompt
-                raha tsy efa voapaste.
-              </li>
+              <li>Apetaho ilay prompt raha tsy efa voapaste.</li>
 
-              <li>
-                Gemini no client.
-              </li>
+              <li>Gemini no client.</li>
 
-              <li>
-                Ianao mamaly amin'ny
-                maha-vendeur anao.
-              </li>
+              <li>Ianao mamaly amin'ny maha-vendeur anao.</li>
 
               <li>
                 Rehefa vita dia soraty:
-                <strong>
-                  FIN DE SIMULATION
-                </strong>.
+                <strong>FIN DE SIMULATION</strong>.
               </li>
 
-              <li>
-                Gemini no manao
-                evaluation /100.
-              </li>
+              <li>Gemini no manao evaluation /100.</li>
 
             </ol>
 
@@ -2995,229 +1897,106 @@ function openGemini() {
 
     `;
 
+    const modeButtons = container.querySelectorAll("[data-simulation-mode]");
 
-    const modeButtons =
-      container.querySelectorAll(
-        "[data-simulation-mode]"
-      );
+    const quickPanel = container.querySelector("#quickSimulation");
 
-    const quickPanel =
-      container.querySelector(
-        "#quickSimulation"
-      );
+    const geminiPanel = container.querySelector("#geminiSimulation");
 
-    const geminiPanel =
-      container.querySelector(
-        "#geminiSimulation"
-      );
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        modeButtons.forEach((item) => item.classList.remove("active"));
 
+        button.classList.add("active");
 
-    modeButtons.forEach(
-      (button) => {
+        const gem = button.dataset.simulationMode === "gemini";
 
-        button.addEventListener(
-          "click",
-          () => {
+        quickPanel.style.display = gem ? "none" : "block";
 
-            modeButtons.forEach(
-              (item) =>
-                item.classList.remove(
-                  "active"
-                )
-            );
+        geminiPanel.style.display = gem ? "block" : "none";
+      });
+    });
 
+    container.querySelectorAll(".simulation-option").forEach((button) => {
+      button.addEventListener("click", () => {
+        const answer = Number(button.dataset.answer);
 
-            button.classList.add(
-              "active"
-            );
+        const feedback = container.querySelector("#simulationFeedback");
 
+        container
+          .querySelectorAll(".simulation-option")
+          .forEach((item) => (item.disabled = true));
 
-            const gem =
-              button.dataset
-                .simulationMode ===
-              "gemini";
+        if (answer === scenario.correct) {
+          feedback.innerHTML = `
 
+            <div class="result-card result-positive">
 
-            quickPanel.style.display =
-              gem
-                ? "none"
-                : "block";
+              <strong>✅ Bonne réponse</strong>
 
+              <p>
+                Tsara ny fomba
+                namalianao.
+                Niezaka namantatra
+                ny besoin sy nitondra
+                ny conversation
+                nankany amin'ny
+                solution ianao.
+              </p>
 
-            geminiPanel.style.display =
-              gem
-                ? "block"
-                : "none";
+            </div>
 
-          }
-        );
+          `;
+        } else {
+          feedback.innerHTML = `
 
-      }
-    );
+            <div class="result-card result-negative">
 
+              <strong>⚠️ Azo hatsaraina</strong>
 
-    container
-      .querySelectorAll(
-        ".simulation-option"
-      )
-      .forEach(
-        (button) => {
+              <p>
+                Aza mamaly objection
+                fotsiny.
+                Miezaha aloha hahatakatra
+                ny antony mahatonga
+                ilay client hisalasala.
+              </p>
 
-          button.addEventListener(
-            "click",
-            () => {
+              <p>
 
-              const answer =
-                Number(
-                  button.dataset.answer
-                );
+                <strong>Réponse recommandée:</strong>
 
+                ${escapeHTML(scenario.options[scenario.correct])}
 
-              const feedback =
-                container.querySelector(
-                  "#simulationFeedback"
-                );
+              </p>
 
+            </div>
 
-              container
-                .querySelectorAll(
-                  ".simulation-option"
-                )
-                .forEach(
-                  (item) =>
-                    (item.disabled = true)
-                );
-
-
-              if (
-                answer ===
-                scenario.correct
-              ) {
-
-                feedback.innerHTML = `
-
-                  <div
-                    class="
-                      result-card
-                      result-positive
-                    "
-                  >
-
-                    <strong>
-                      ✅ Bonne réponse
-                    </strong>
-
-                    <p>
-                      Tsara ny fomba
-                      namalianao.
-                      Niezaka namantatra
-                      ny besoin sy nitondra
-                      ny conversation
-                      nankany amin'ny
-                      solution ianao.
-                    </p>
-
-                  </div>
-
-                `;
-
-              } else {
-
-                feedback.innerHTML = `
-
-                  <div
-                    class="
-                      result-card
-                      result-negative
-                    "
-                  >
-
-                    <strong>
-                      ⚠️ Azo hatsaraina
-                    </strong>
-
-                    <p>
-                      Aza mamaly objection
-                      fotsiny.
-                      Miezaha aloha hahatakatra
-                      ny antony mahatonga
-                      ilay client hisalasala.
-                    </p>
-
-                    <p>
-
-                      <strong>
-                        Réponse recommandée:
-                      </strong>
-
-                      ${escapeHTML(
-                        scenario.options[
-                          scenario.correct
-                        ]
-                      )}
-
-                    </p>
-
-                  </div>
-
-                `;
-
-              }
-
-
-              touch();
-
-            }
-          );
-
+          `;
         }
-      );
 
-
-    container
-      .querySelector(
-        "[data-new-simulation]"
-      )
-      ?.addEventListener(
-        "click",
-        () =>
-          renderSimulationTool(
-            container
-          )
-      );
-
+        touch();
+      });
+    });
 
     container
-      .querySelector(
-        "#copyGeminiPrompt"
-      )
-      ?.addEventListener(
-        "click",
-        copyGeminiPrompt
-      );
-
+      .querySelector("[data-new-simulation]")
+      ?.addEventListener("click", () => renderSimulationTool(container));
 
     container
-      .querySelector(
-        "#openGemini"
-      )
-      ?.addEventListener(
-        "click",
-        openGemini
-      );
+      .querySelector("#copyGeminiPrompt")
+      ?.addEventListener("click", copyGeminiPrompt);
 
+    container
+      .querySelector("#openGemini")
+      ?.addEventListener("click", openGemini);
   }
 
-
-  /* =========================================================
-     FARAN'NY PARTIE 2/3
-     ========================================================= */
   /* =========================================================
      7. COMMANDE
      ========================================================= */
 
   function renderOrderTool(c) {
-
     c.innerHTML =
       head(
         "LAB 07",
@@ -3226,198 +2005,105 @@ function openGemini() {
       ) +
 
       `
-      <form
-        id="orderForm"
-        class="lab-form"
-      >
+      <form id="orderForm" class="lab-form">
 
         <div class="form-grid">
 
-          ${field(
-            "Client",
-            "client",
-            "text",
-            "required"
-          )}
+          ${field("Client", "client", "text", "required")}
 
-          ${field(
-            "Téléphone",
-            "phone",
-            "tel"
-          )}
+          ${field("Téléphone", "phone", "tel")}
 
-          ${field(
-            "Produit",
-            "product",
-            "text",
-            "required"
-          )}
+          ${field("Produit", "product", "text", "required")}
 
-          ${field(
-            "Isa",
-            "quantity",
-            "number",
-            'min="1" value="1" required'
-          )}
+          ${field("Isa", "quantity", "number", 'min="1" value="1" required')}
 
-          ${field(
-            "Prix / unité",
-            "price",
-            "number",
-            'min="0" required'
-          )}
+          ${field("Prix / unité", "price", "number", 'min="0" required')}
 
-          ${select(
-            "Statut",
-            "status",
-            [
-              "En attente",
-              "Payé",
-              "Livré",
-              "Annulé"
-            ]
-          )}
+          ${select("Statut", "status", ["En attente", "Payé", "Livré", "Annulé"])}
 
         </div>
 
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
           🛒 Tahiry ny commande
         </button>
 
       </form>
 
-
-      <div
-        id="orderList"
-        class="dashboard-list"
-      ></div>
+      <div id="orderList" class="dashboard-list"></div>
       `;
 
-
     const list = () => {
+      $("orderList").innerHTML = state.orders.length
+        ? state.orders
+            .slice(-8)
+            .reverse()
+            .map(
+              (o) => `
 
-      $("orderList").innerHTML =
-        state.orders.length
+                <div class="dashboard-item">
 
-          ? state.orders
-              .slice(-8)
-              .reverse()
-              .map(
-                (o) => `
-
-                  <div
-                    class="dashboard-item"
-                  >
-
-                    <div>
-
-                      <strong>
-                        ${esc(o.client)}
-                        —
-                        ${esc(o.product)}
-                      </strong>
-
-                      <small>
-                        ${fmtDate(o.date)}
-                        •
-                        ${esc(o.status)}
-                      </small>
-
-                    </div>
+                  <div>
 
                     <strong>
-                      ${money(o.total)}
+                      ${esc(o.client)} — ${esc(o.product)}
                     </strong>
+
+                    <small>
+                      ${fmtDate(o.date)} • ${esc(o.status)}
+                    </small>
 
                   </div>
 
-                `
-              )
-              .join("")
+                  <strong>${money(o.total)}</strong>
 
-          : `
-              <p class="empty-state">
-                Tsy mbola misy commande.
-              </p>
-            `;
+                </div>
 
+              `
+            )
+            .join("")
+        : `
+            <p class="empty-state">Tsy mbola misy commande.</p>
+          `;
     };
-
 
     list();
 
+    $("orderForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    $("orderForm").addEventListener(
-      "submit",
-      (e) => {
+      const form = e.currentTarget;
 
-        e.preventDefault();
+      const d = getData(form);
 
-        const d =
-          getData(e.currentTarget);
+      state.orders.push({
+        id: Date.now(),
+        date: new Date().toISOString(),
+        client: d.client,
+        phone: d.phone,
+        product: d.product,
+        quantity: num(d.quantity),
+        price: num(d.price),
+        total: num(d.quantity) * num(d.price),
+        status: d.status
+      });
 
+      touch();
 
-        state.orders.push({
+      list();
 
-          id:
-            Date.now(),
+      updateDashboard();
 
-          date:
-            new Date().toISOString(),
+      form.reset();
 
-          client:
-            d.client,
-
-          phone:
-            d.phone,
-
-          product:
-            d.product,
-
-          quantity:
-            num(d.quantity),
-
-          price:
-            num(d.price),
-
-          total:
-            num(d.quantity) *
-            num(d.price),
-
-          status:
-            d.status
-
-        });
-
-
-        touch();
-
-        list();
-
-        updateDashboard();
-
-        e.currentTarget.reset();
-
-        toast(
-          "Commande voatahiry."
-        );
-
-      }
-    );
-
+      toast("Commande voatahiry.");
+    });
   }
-
 
   /* =========================================================
      8. REÇU
      ========================================================= */
 
   function renderReceiptTool(c) {
-
     c.innerHTML =
       head(
         "LAB 08",
@@ -3426,76 +2112,35 @@ function openGemini() {
       ) +
 
       `
-      <form
-        id="receiptForm"
-        class="lab-form"
-      >
+      <form id="receiptForm" class="lab-form">
 
         <div class="form-grid">
 
-          ${field(
-            "Client",
-            "client",
-            "text",
-            "required"
-          )}
+          ${field("Client", "client", "text", "required")}
 
-          ${field(
-            "Produit",
-            "product",
-            "text",
-            "required"
-          )}
+          ${field("Produit", "product", "text", "required")}
 
-          ${field(
-            "Montant (Ar)",
-            "amount",
-            "number",
-            'min="0" required'
-          )}
+          ${field("Montant (Ar)", "amount", "number", 'min="0" required')}
 
-          ${select(
-            "Paiement",
-            "method",
-            [
-              "Espèces",
-              "Mvola",
-              "Orange Money",
-              "Airtel Money"
-            ]
-          )}
+          ${select("Paiement", "method", ["Espèces", "Mvola", "Orange Money", "Airtel Money"])}
 
         </div>
 
-
-        <button
-          class="btn btn-primary"
-          type="submit"
-        >
+        <button class="btn btn-primary" type="submit">
           🧾 Hamorona Reçu
         </button>
 
       </form>
 
-
-      <div
-        id="receiptResult"
-        class="lab-result"
-      ></div>
+      <div id="receiptResult" class="lab-result"></div>
       `;
 
+    $("receiptForm").addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    $("receiptForm").addEventListener(
-      "submit",
-      (e) => {
+      const d = getData(e.currentTarget);
 
-        e.preventDefault();
-
-        const d =
-          getData(e.currentTarget);
-
-
-        const txt =
+      const txt =
 `REÇU — TANTSAHA MATIHANINA
 Date: ${fmtDate(new Date())}
 Client: ${d.client}
@@ -3504,133 +2149,78 @@ Montant: ${money(d.amount)}
 Paiement: ${d.method}
 Misaotra!`;
 
+      $("receiptResult").innerHTML = `
 
-        $("receiptResult").innerHTML = `
+        <div class="receipt-preview" id="receiptText">
 
-          <div
-            class="receipt-preview"
-            id="receiptText"
-          >
+          <div class="receipt-brand">TANTSAHA MATIHANINA</div>
 
-            <div class="receipt-brand">
-              TANTSAHA MATIHANINA
-            </div>
+          <h3>REÇU DE VENTE</h3>
 
-            <h3>
-              REÇU DE VENTE
-            </h3>
+          <hr>
 
-            <hr>
+          <p>
+            <strong>Date:</strong>
+            ${fmtDate(new Date())}
+          </p>
 
-            <p>
-              <strong>Date:</strong>
-              ${fmtDate(new Date())}
-            </p>
+          <p>
+            <strong>Client:</strong>
+            ${esc(d.client)}
+          </p>
 
-            <p>
-              <strong>Client:</strong>
-              ${esc(d.client)}
-            </p>
+          <p>
+            <strong>Produit:</strong>
+            ${esc(d.product)}
+          </p>
 
-            <p>
-              <strong>Produit:</strong>
-              ${esc(d.product)}
-            </p>
+          <p>
+            <strong>Montant:</strong>
+            ${money(d.amount)}
+          </p>
 
-            <p>
-              <strong>Montant:</strong>
-              ${money(d.amount)}
-            </p>
+          <p>
+            <strong>Paiement:</strong>
+            ${esc(d.method)}
+          </p>
 
-            <p>
-              <strong>Paiement:</strong>
-              ${esc(d.method)}
-            </p>
+          <hr>
 
-            <hr>
+          <p>Misaotra!</p>
 
-            <p>
-              Misaotra!
-            </p>
+        </div>
 
-          </div>
+        <div class="result-actions">
 
+          <button class="btn btn-secondary" type="button" id="rcCopy">
+            📋 Adikao
+          </button>
 
-          <div class="result-actions">
+        </div>
 
-            <button
-              class="btn btn-secondary"
-              type="button"
-              id="rcCopy"
-            >
-              📋 Adikao
-            </button>
+      `;
 
-          </div>
+      $("rcCopy").addEventListener("click", () => copyText(txt));
 
-        `;
-
-
-        $("rcCopy").addEventListener(
-          "click",
-          () => copyText(txt)
-        );
-
-
-        touch();
-
-      }
-    );
-
+      touch();
+    });
   }
-
 
   /* =========================================================
      9. GUIDE FORMATION
      ========================================================= */
 
   const days = [
-
-    [
-      "Fototry ny Vente",
-      "Fantaro ny valeur atolotra ny client."
-    ],
-
-    [
-      "Client Cible",
-      "Fantaro hoe iza no hividy sy inona ny olany."
-    ],
-
-    [
-      "Offre & Prix",
-      "Kajio ny coût, prix ary tombony."
-    ],
-
-    [
-      "Publication & Copywriting",
-      "Hook → Problème → Solution → Offre → CTA."
-    ],
-
-    [
-      "Prospection & Discussion",
-      "Comment → MP → Qualification → Proposition."
-    ],
-
-    [
-      "Objection & Closing",
-      "Valio ny objection ary akatony ny vente."
-    ],
-
-    [
-      "Suivi & Fidélisation",
-      "Araho ny client ary angataho ny retour."
-    ]
-
+    ["Fototry ny Vente", "Fantaro ny valeur atolotra ny client."],
+    ["Client Cible", "Fantaro hoe iza no hividy sy inona ny olany."],
+    ["Offre & Prix", "Kajio ny coût, prix ary tombony."],
+    ["Publication & Copywriting", "Hook → Problème → Solution → Offre → CTA."],
+    ["Prospection & Discussion", "Comment → MP → Qualification → Proposition."],
+    ["Objection & Closing", "Valio ny objection ary akatony ny vente."],
+    ["Suivi & Fidélisation", "Araho ny client ary angataho ny retour."]
   ];
 
-
   function renderGuideTool(c) {
-
     c.innerHTML =
       head(
         "GUIDE",
@@ -3645,23 +2235,15 @@ Misaotra!`;
         ${days.map(
           (d, i) => `
 
-            <div
-              class="guide-step"
-            >
+            <div class="guide-step">
 
-              <span>
-                ${i + 1}
-              </span>
+              <span>${i + 1}</span>
 
               <div>
 
-                <h3>
-                  ${d[0]}
-                </h3>
+                <h3>${d[0]}</h3>
 
-                <p>
-                  ${d[1]}
-                </p>
+                <p>${d[1]}</p>
 
               </div>
 
@@ -3673,21 +2255,15 @@ Misaotra!`;
       </div>
 
       `;
-
   }
-
 
   /* =========================================================
      10. CHALLENGE
      ========================================================= */
 
   function renderChallengeTool(c) {
-
     const draw = () => {
-
-      const done =
-        state.challenge.length;
-
+      const done = state.challenge.length;
 
       c.innerHTML =
         head(
@@ -3703,35 +2279,21 @@ Misaotra!`;
           ${days.map(
             (d, i) => `
 
-              <label
-                class="challenge-item"
-              >
+              <label class="challenge-item">
 
                 <input
                   type="checkbox"
                   data-day="${i}"
-                  ${
-                    state.challenge.includes(i)
-                      ? "checked"
-                      : ""
-                  }
+                  ${state.challenge.includes(i) ? "checked" : ""}
                 >
 
-                <span
-                  class="challenge-check"
-                >
-                  ${i + 1}
-                </span>
+                <span class="challenge-check">${i + 1}</span>
 
                 <span>
 
-                  <strong>
-                    ${d[0]}
-                  </strong>
+                  <strong>${d[0]}</strong>
 
-                  <small>
-                    ${d[1]}
-                  </small>
+                  <small>${d[1]}</small>
 
                 </span>
 
@@ -3742,24 +2304,13 @@ Misaotra!`;
 
         </div>
 
+        <div class="challenge-progress">
 
-        <div
-          class="challenge-progress"
-        >
+          <strong>${done}/7 vita</strong>
 
-          <strong>
-            ${done}/7 vita
-          </strong>
+          <div class="progress-track">
 
-          <div
-            class="progress-track"
-          >
-
-            <i
-              style="
-                width:${(done / 7) * 100}%
-              "
-            ></i>
+            <i style="width:${(done / 7) * 100}%"></i>
 
           </div>
 
@@ -3767,390 +2318,203 @@ Misaotra!`;
 
         `;
 
+      c.querySelectorAll("[data-day]").forEach((cb) => {
+        cb.addEventListener("change", () => {
+          const i = num(cb.dataset.day);
 
-      c.querySelectorAll(
-        "[data-day]"
-      ).forEach(
-        (cb) => {
+          state.challenge = cb.checked
+            ? [...new Set([...state.challenge, i])]
+            : state.challenge.filter((x) => x !== i);
 
-          cb.addEventListener(
-            "change",
-            () => {
+          touch();
 
-              const i =
-                num(cb.dataset.day);
-
-
-              state.challenge =
-                cb.checked
-
-                  ? [
-                      ...new Set([
-                        ...state.challenge,
-                        i
-                      ])
-                    ]
-
-                  : state.challenge.filter(
-                      (x) => x !== i
-                    );
-
-
-              touch();
-
-              draw();
-
-            }
-          );
-
-        }
-      );
-
+          draw();
+        });
+      });
     };
 
-
     draw();
-
   }
-
 
   /* =========================================================
      DASHBOARD
      ========================================================= */
 
   function updateDashboard() {
+    const set = (id, v) => {
+      const el = $(id);
 
-    const set =
-      (id, v) => {
+      if (el) {
+        el.textContent = v;
+      }
+    };
 
-        const el =
-          $(id);
+    const ev = state.evaluations;
 
-        if (el) {
-          el.textContent = v;
-        }
+    const sum = (arr, key) =>
+      arr.reduce((s, x) => s + num(x[key]), 0);
 
-      };
+    set("statCalculations", state.calculations.length);
 
-
-    const ev =
-      state.evaluations;
-
-
-    const sum =
-      (arr, key) =>
-        arr.reduce(
-          (s, x) =>
-            s + num(x[key]),
-          0
-        );
-
-
-    set(
-      "statCalculations",
-      state.calculations.length
-    );
-
-
-    set(
-      "statOrders",
-      state.orders.length +
-      sum(ev, "orders")
-    );
-
+    set("statOrders", state.orders.length + sum(ev, "orders"));
 
     set(
       "statRevenue",
-      money(
-        sum(
-          state.orders,
-          "total"
-        ) +
-        sum(
-          ev,
-          "revenue"
-        )
-      )
+      money(sum(state.orders, "total") + sum(ev, "revenue"))
     );
-
 
     set(
       "statProfit",
-      money(
-        sum(
-          state.calculations,
-          "profit"
-        ) +
-        sum(
-          ev,
-          "profit"
-        )
-      )
+      money(sum(state.calculations, "profit") + sum(ev, "profit"))
     );
-
 
     const f = {
-
-      Prospects:
-        sum(ev, "prospects"),
-
-      Responses:
-        sum(ev, "responses"),
-
-      Discussions:
-        sum(ev, "discussions"),
-
-      Orders:
-        state.orders.length +
-        sum(ev, "orders"),
-
-      Clients:
-        state.orders.filter(
-          (o) =>
-            o.status === "Payé" ||
-            o.status === "Livré"
-        ).length
-
+      Prospects: sum(ev, "prospects"),
+      Responses: sum(ev, "responses"),
+      Discussions: sum(ev, "discussions"),
+      Orders: state.orders.length + sum(ev, "orders"),
+      Clients: state.orders.filter(
+        (o) => o.status === "Payé" || o.status === "Livré"
+      ).length
     };
 
+    const max = Math.max(...Object.values(f), 1);
 
-    const max =
-      Math.max(
-        ...Object.values(f),
-        1
-      );
+    Object.entries(f).forEach(([key, value]) => {
+      const bar = $("funnel" + key);
 
-
-    Object.entries(f).forEach(
-      ([key, value]) => {
-
-        const bar =
-          $("funnel" + key);
-
-
-        if (bar) {
-
-          bar.style.width =
-            (value / max) *
-            100 +
-            "%";
-
-        }
-
-
-        set(
-          "funnel" +
-          key +
-          "Count",
-          value
-        );
-
+      if (bar) {
+        bar.style.width = (value / max) * 100 + "%";
       }
-    );
 
+      set("funnel" + key + "Count", value);
+    });
 
-    const rc =
-      $("recentCalculations");
-
+    const rc = $("recentCalculations");
 
     if (rc) {
+      rc.innerHTML = state.calculations.length
+        ? state.calculations
+            .slice(-5)
+            .reverse()
+            .map(
+              (x) => `
 
-      rc.innerHTML =
-        state.calculations.length
+                <div class="dashboard-item">
 
-          ? state.calculations
-              .slice(-5)
-              .reverse()
-              .map(
-                (x) => `
+                  <div>
 
-                  <div
-                    class="dashboard-item"
-                  >
+                    <strong>${esc(x.product || x.animal)}</strong>
 
-                    <div>
-
-                      <strong>
-                        ${esc(
-                          x.product ||
-                          x.animal
-                        )}
-                      </strong>
-
-                      <small>
-                        ${fmtDate(x.date)}
-                      </small>
-
-                    </div>
-
-                    <strong>
-                      ${money(x.profit)}
-                    </strong>
+                    <small>${fmtDate(x.date)}</small>
 
                   </div>
 
-                `
-              )
-              .join("")
+                  <strong>${money(x.profit)}</strong>
 
-          : `
-              <p>
-                Aucun calcul mbola vita.
-              </p>
-            `;
+                </div>
 
+              `
+            )
+            .join("")
+        : `
+            <p>Aucun calcul mbola vita.</p>
+          `;
     }
 
-
-    const ro =
-      $("recentOrders");
-
+    const ro = $("recentOrders");
 
     if (ro) {
+      ro.innerHTML = state.orders.length
+        ? state.orders
+            .slice(-5)
+            .reverse()
+            .map(
+              (x) => `
 
-      ro.innerHTML =
-        state.orders.length
+                <div class="dashboard-item">
 
-          ? state.orders
-              .slice(-5)
-              .reverse()
-              .map(
-                (x) => `
+                  <div>
 
-                  <div
-                    class="dashboard-item"
-                  >
+                    <strong>${esc(x.client)}</strong>
 
-                    <div>
-
-                      <strong>
-                        ${esc(x.client)}
-                      </strong>
-
-                      <small>
-                        ${fmtDate(x.date)}
-                        •
-                        ${esc(x.status)}
-                      </small>
-
-                    </div>
-
-                    <strong>
-                      ${money(x.total)}
-                    </strong>
+                    <small>
+                      ${fmtDate(x.date)} • ${esc(x.status)}
+                    </small>
 
                   </div>
 
-                `
-              )
-              .join("")
+                  <strong>${money(x.total)}</strong>
 
-          : `
-              <p>
-                Aucune commande
-                mbola voatahiry.
-              </p>
-            `;
+                </div>
 
+              `
+            )
+            .join("")
+        : `
+            <p>Aucune commande mbola voatahiry.</p>
+          `;
     }
-
   }
-
 
   /* =========================================================
      EVALUATION
      ========================================================= */
 
   function initEvaluation() {
-
-    const f =
-      $("evaluationForm");
-
+    const f = $("evaluationForm");
 
     if (!f) return;
 
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    f.addEventListener(
-      "submit",
-      (e) => {
+      const d = getData(f);
 
-        e.preventDefault();
+      const row = {
+        ...d,
+        date: new Date().toISOString()
+      };
 
+      [
+        "views",
+        "messages",
+        "prospects",
+        "responses",
+        "discussions",
+        "orders",
+        "revenue",
+        "profit"
+      ].forEach((key) => {
+        row[key] = num(row[key]);
+      });
 
-        const d =
-          getData(f);
+      state.evaluations.push(row);
 
+      touch();
 
-        const row = {
+      remote("evaluations", {
+        method: "POST",
+        headers: { Prefer: "return=minimal" },
+        body: JSON.stringify(row)
+      });
 
-          ...d,
+      f.reset();
 
-          date:
-            new Date().toISOString()
+      updateDashboard();
 
-        };
-
-
-        [
-          "views",
-          "messages",
-          "prospects",
-          "responses",
-          "discussions",
-          "orders",
-          "revenue",
-          "profit"
-        ].forEach(
-          (key) => {
-
-            row[key] =
-              num(row[key]);
-
-          }
-        );
-
-
-        state.evaluations.push(
-          row
-        );
-
-
-        touch();
-
-
-        remote(
-          "evaluations",
-          row
-        );
-
-
-        f.reset();
-
-        updateDashboard();
-
-
-        toast(
-          "Misaotra! Voatahiry ny retour."
-        );
-
-      }
-    );
-
+      toast("Misaotra! Voatahiry ny retour.");
+    });
   }
-
 
   /* =========================================================
      AVIS / REVIEWS
      ========================================================= */
 
   function renderReviews() {
-
-    const box =
-      $("reviewsList");
-
+    const box = $("reviewsList");
 
     if (!box) return;
-
 
     /*
      * Raha tsy mbola misy avis,
@@ -4159,7 +2523,6 @@ Misaotra!`;
      */
 
     if (!state.localReviews.length) {
-
       box.innerHTML = `
 
         <div class="empty-state">
@@ -4175,523 +2538,258 @@ Misaotra!`;
       `;
 
       return;
-
     }
 
+    box.innerHTML = state.localReviews
+      .slice()
+      .reverse()
+      .map(
+        (r) => `
 
-    box.innerHTML =
-      state.localReviews
-        .slice()
-        .reverse()
-        .map(
-          (r) => `
+          <div class="review-card">
 
-            <div
-              class="review-card"
-            >
+            <div class="review-header">
 
-              <div
-                class="review-header"
-              >
+              <strong>${esc(r.name)}</strong>
 
-                <strong>
-                  ${esc(r.name)}
-                </strong>
-
-                <span>
-                  ${
-                    "⭐".repeat(
-                      num(r.rating)
-                    )
-                  }
-                </span>
-
-              </div>
-
-
-              ${
-                r.learning
-                  ? `
-                    <p>
-                      <strong>
-                        Nianarana:
-                      </strong>
-
-                      ${esc(
-                        r.learning
-                      )}
-
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                r.applied
-                  ? `
-                    <p>
-
-                      <strong>
-                        Nampiharina:
-                      </strong>
-
-                      ${esc(
-                        r.applied
-                      )}
-
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                r.result
-                  ? `
-                    <p>
-
-                      <strong>
-                        Résultat:
-                      </strong>
-
-                      ${esc(
-                        r.result
-                      )}
-
-                    </p>
-                  `
-                  : ""
-              }
-
-
-              ${
-                r.message
-                  ? `
-                    <blockquote>
-                      ${esc(
-                        r.message
-                      )}
-                    </blockquote>
-                  `
-                  : ""
-              }
+              <span>${"⭐".repeat(num(r.rating))}</span>
 
             </div>
 
-          `
-        )
-        .join("");
+            ${
+              r.learning
+                ? `
+                  <p>
+                    <strong>Nianarana:</strong>
+                    ${esc(r.learning)}
+                  </p>
+                `
+                : ""
+            }
 
+            ${
+              r.applied
+                ? `
+                  <p>
+                    <strong>Nampiharina:</strong>
+                    ${esc(r.applied)}
+                  </p>
+                `
+                : ""
+            }
+
+            ${
+              r.result
+                ? `
+                  <p>
+                    <strong>Résultat:</strong>
+                    ${esc(r.result)}
+                  </p>
+                `
+                : ""
+            }
+
+            ${
+              r.message
+                ? `
+                  <blockquote>${esc(r.message)}</blockquote>
+                `
+                : ""
+            }
+
+          </div>
+
+        `
+      )
+      .join("");
   }
 
-
   function initReviews() {
-
-    const f =
-      $("reviewForm");
-
+    const f = $("reviewForm");
 
     if (!f) return;
 
+    f.addEventListener("submit", (e) => {
+      e.preventDefault();
 
-    f.addEventListener(
-      "submit",
-      (e) => {
+      const d = getData(f);
 
-        e.preventDefault();
+      const row = {
+        ...d,
+        date: new Date().toISOString()
+      };
 
+      delete row.consent;
 
-        const d =
-          getData(f);
+      state.localReviews.push(row);
 
+      touch();
 
-        const row = {
+      remote("reviews", {
+        method: "POST",
+        headers: { Prefer: "return=minimal" },
+        body: JSON.stringify(row)
+      });
 
-          ...d,
+      f.reset();
 
-          date:
-            new Date().toISOString()
+      closeModal("reviewModal");
 
-        };
+      renderReviews();
 
-
-        delete row.consent;
-
-
-        state.localReviews.push(
-          row
-        );
-
-
-        touch();
-
-
-        remote(
-          "reviews",
-          row
-        );
-
-
-        f.reset();
-
-
-        closeModal(
-          "reviewModal"
-        );
-
-
-        renderReviews();
-
-
-        toast(
-          "Misaotra tamin'ny avis-nao!"
-        );
-
-      }
-    );
-
+      toast("Misaotra tamin'ny avis-nao!");
+    });
   }
-
 
   /* =========================================================
      MODAL
      ========================================================= */
 
   function openModal(id) {
-
-    const m =
-      $(id);
-
+    const m = $(id);
 
     if (!m) return;
 
+    m.classList.add("open");
 
-    m.classList.add(
-      "open"
-    );
+    m.setAttribute("aria-hidden", "false");
 
-
-    m.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-
-    document.body.classList.add(
-      "modal-open"
-    );
-
+    document.body.classList.add("modal-open");
   }
-
 
   function closeModal(id) {
-
-    const m =
-      id
-        ? $(id)
-        : document.querySelector(
-            ".modal.open"
-          );
-
+    const m = id ? $(id) : document.querySelector(".modal.open");
 
     if (!m) return;
 
+    m.classList.remove("open");
 
-    m.classList.remove(
-      "open"
-    );
+    m.setAttribute("aria-hidden", "true");
 
-
-    m.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-
-    document.body.classList.remove(
-      "modal-open"
-    );
-
+    document.body.classList.remove("modal-open");
   }
-
 
   /* =========================================================
      GLOBAL CLICKS
      ========================================================= */
 
   function initGlobalClicks() {
+    document.addEventListener("click", (e) => {
+      const t = e.target;
 
-    document.addEventListener(
-      "click",
-      (e) => {
+      let el;
 
-        const t =
-          e.target;
-
-        let el;
-
-
-        /*
-         * Modal open
-         */
-
-        if (
-          (el =
-            t.closest(
-              "[data-modal-open]"
-            ))
-        ) {
-
-          return openModal(
-            el.dataset.modalOpen
-          );
-
-        }
-
-
-        /*
-         * Modal close
-         */
-
-        if (
-          t.closest(
-            "[data-modal-close]"
-          )
-        ) {
-
-          return closeModal();
-
-        }
-
-
-        /*
-         * Click outside modal
-         */
-
-        if (
-          t.classList &&
-          t.classList.contains(
-            "modal"
-          )
-        ) {
-
-          return closeModal();
-
-        }
-
-
-        /*
-         * Copy
-         */
-
-        if (
-          (el =
-            t.closest(
-              "[data-copy]"
-            ))
-        ) {
-
-          const src =
-            $(el.dataset.copy);
-
-
-          return (
-            src &&
-            copyText(
-              src.innerText
-            )
-          );
-
-        }
-
-
-        /*
-         * External links
-         */
-
-        if (
-          (el =
-            t.closest(
-              "[data-external]"
-            ))
-          &&
-          el.dataset.external
-        ) {
-
-          return window.open(
-            el.dataset.external,
-            "_blank",
-            "noopener,noreferrer"
-          );
-
-        }
-
-
-        /*
-         * WhatsApp
-         */
-
-        if (
-          t.closest(
-            "[data-whatsapp-purchase]"
-          )
-          ||
-          t.closest(
-            "[data-whatsapp]"
-          )
-        ) {
-
-          return window.open(
-            CONFIG.whatsappPurchase,
-            "_blank",
-            "noopener,noreferrer"
-          );
-
-        }
-
-
-        /*
-         * Reset data
-         */
-
-        if (
-          t.closest(
-            "[data-reset-data]"
-          )
-        ) {
-
-          if (
-            confirm(
-              "Hamafa ny données rehetra ao amin'ity appareil ity?"
-            )
-          ) {
-
-            state =
-              clone(defaults);
-
-
-            saveState();
-
-
-            updateDashboard();
-
-
-            renderReviews();
-
-
-            toast(
-              "Voafafa ny données.",
-              "warning"
-            );
-
-          }
-
-        }
-
+      /* Modal open */
+      if ((el = t.closest("[data-modal-open]"))) {
+        return openModal(el.dataset.modalOpen);
       }
-    );
 
-
-    document.addEventListener(
-      "keydown",
-      (e) => {
-
-        if (
-          e.key === "Escape"
-        ) {
-
-          closeModal();
-
-        }
-
+      /* Modal close */
+      if (t.closest("[data-modal-close]")) {
+        return closeModal();
       }
-    );
 
+      /* Click outside modal */
+      if (t.classList && t.classList.contains("modal")) {
+        return closeModal();
+      }
+
+      /* Copy */
+      if ((el = t.closest("[data-copy]"))) {
+        const src = $(el.dataset.copy);
+
+        return src && copyText(src.innerText);
+      }
+
+      /* External links */
+      if ((el = t.closest("[data-external]")) && el.dataset.external) {
+        return window.open(el.dataset.external, "_blank", "noopener,noreferrer");
+      }
+
+      /* WhatsApp */
+      if (
+        t.closest("[data-whatsapp-purchase]") ||
+        t.closest("[data-whatsapp]")
+      ) {
+        return window.open(
+          CONFIG.whatsappPurchase,
+          "_blank",
+          "noopener,noreferrer"
+        );
+      }
+
+      /* Reset data */
+      if (t.closest("[data-reset-data]")) {
+        if (confirm("Hamafa ny données rehetra ao amin'ity appareil ity?")) {
+          state = clone(defaults);
+
+          saveState();
+
+          updateDashboard();
+
+          renderReviews();
+
+          toast("Voafafa ny données.", "warning");
+        }
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    });
   }
-
 
   /* =========================================================
      SUPABASE
      ========================================================= */
 
   function initSupabase() {
-
     try {
-
       if (
         window.supabase &&
-        typeof window.supabase.createClient ===
-          "function"
+        typeof window.supabase.createClient === "function"
       ) {
-
-        sb =
-          window.supabase.createClient(
-            CONFIG.supabaseUrl,
-            CONFIG.supabaseKey
-          );
-
+        sb = window.supabase.createClient(
+          CONFIG.supabaseUrl,
+          CONFIG.supabaseKey
+        );
       }
-
     } catch (e) {
-
-      console.warn(
-        "Supabase tsy misy:",
-        e
-      );
+      console.warn("Supabase tsy misy:", e);
 
       sb = null;
-
     }
-
   }
 
+  /* =========================================================
+     INITIALISATION
+     ========================================================= */
 
-/* =========================================================
-   INITIALISATION
-   ========================================================= */
+  function init() {
+    initTools();
 
-function init() {
+    initGlobalClicks();
 
-  initTools();
+    initEvaluation();
 
-  initGlobalClicks();
+    initReviews();
 
-  initEvaluation();
+    renderReviews();
 
-  initReviews();
+    updateDashboard();
+  }
 
-  renderReviews();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 
-  updateDashboard();
+  window.addEventListener("load", initSupabase);
 
-}
-
-
-if (
-  document.readyState ===
-  "loading"
-) {
-
-  document.addEventListener(
-    "DOMContentLoaded",
-    init
-  );
-
-} else {
-
-  init();
-
-}
-
-
-window.addEventListener(
-  "load",
-  initSupabase
-);
-
-
-/* =========================================================
-   FARAN'NY APP.JS
-   ========================================================= */
+  /* =========================================================
+     FARAN'NY APP.JS
+     ========================================================= */
 })();
