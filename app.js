@@ -2451,7 +2451,6 @@ Ataovy mazava, professionnel ary pédagogique.
 
 Aza mamerina ny conversation manontolo.
 
-
 ════════════════════════════════════
 ATOMBOHY IZAO NY SIMULATION
 ════════════════════════════════════
@@ -2467,6 +2466,9 @@ Aza manome analyse.
 
 MIANDRY NY VENDEUR.
 
+  `.trim();
+}
+
 
   async function copyGeminiPrompt() {
 
@@ -2476,25 +2478,6 @@ MIANDRY NY VENDEUR.
 
     showToast(
       "Prompt Gemini voadika. Apetaho ao amin'i Gemini."
-    );
-
-  }
-
-
-  function openGemini() {
-
-    copyText(
-      generateGeminiPrompt()
-    );
-
-    window.open(
-      "https://gemini.google.com/app",
-      "_blank",
-      "noopener,noreferrer"
-    );
-
-    showToast(
-      "Gemini nosokafana. Apetaho ilay prompt voadika."
     );
 
   }
