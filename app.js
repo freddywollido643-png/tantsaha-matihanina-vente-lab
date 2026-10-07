@@ -2622,18 +2622,58 @@ MIANDRY NY VENDEUR.
   `.trim();
 }
 
-
-  async function copyGeminiPrompt() {
-
+async function copyGeminiPrompt() {
+  try {
     await copyText(
       generateGeminiPrompt()
     );
 
-    showToast(
+    toast(
       "Prompt Gemini voadika. Apetaho ao amin'i Gemini."
     );
 
-  }
+  } catch (error) {
+
+    console.error(
+      "Erreur copie Gemini:",
+      error
+    );
+
+    toast(
+      "Tsy afaka nandika ilay prompt."
+    );
+}
+
+
+function openGemini() {
+  try {
+
+    const prompt =
+      generateGeminiPrompt();
+
+    copyText(prompt);
+
+    window.open(
+      "https://gemini.google.com/app",
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+    toast(
+      "Gemini nosokafana. Apetaho ilay prompt voadika."
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Erreur ouverture Gemini:",
+      error
+    );
+
+    toast(
+      "Tsy afaka nanokatra Gemini."
+    );
+}
 
 
   function renderSimulationTool(
