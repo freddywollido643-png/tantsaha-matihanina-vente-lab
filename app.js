@@ -12,6 +12,8 @@
 
   const CONFIG = {
     whatsappGroup: "https://chat.whatsapp.com/InDOPztfXnCC6crJfJ368B",
+    whatsappPractice: "https://chat.whatsapp.com/FU0bIEq9nmVI6W4VDH6GlI",
+    whatsappReturn: "https://chat.whatsapp.com/KdpFGACZvDg30syTi9N7mC",
     whatsappPurchase: "https://wa.me/261385651378",
     facebook: "https://www.facebook.com/share/1Zfiu8oj3m/",
     supabaseUrl: "https://sdzybetralbaincrxddf4.supabase.co",
@@ -32,6 +34,9 @@
     prospects: [],
     calendarPlans: [],
     challenge: [],
+    receipts: [],
+    simulations: [],
+    challengeNotes: {},
     lastOffer: null,
     lastActivity: null
   };
@@ -326,19 +331,86 @@
     return Object.fromEntries(fd.entries());
   }
 
+  function priceCalc(d) {
+    const q = Math.max(1, num(d.quantity));
+    const loss = Math.min(99, Math.max(0, num(d.loss)));
+    const sellable = Math.max(1, q * (1 - loss / 100));
+
+    const totalCost =
+      Math.max(0, num(d.purchaseCost)) +
+      Math.max(0, num(d.feedCost)) +
+      Math.max(0, num(d.healthCost)) +
+      Math.max(0, num(d.laborCost)) +
+      Math.max(0, num(d.packagingCost)) +
+      Math.max(0, num(d.transportCost)) +
+      Math.max(0, num(d.otherCost));
+
+    const fee = Math.min(50, Math.max(0, num(d.feePct))) / 100;
+    const targetProfit = Math.max(0, num(d.targetProfit));
+    const targetMargin = Math.min(90, Math.max(0, num(d.targetMargin))) / 100;
+    const salePrice = Math.max(0, num(d.salePrice));
+
+    const costPerUnit = totalCost / sellable;
+
+    const minPrice = totalCost / (sellable * (1 - fee));
+
+    let recRevenue = (totalCost + targetProfit) / (1 - fee);
+
+    if (targetMargin > 0 && 1 - fee - targetMargin > 0) {
+      recRevenue = Math.max(recRevenue, totalCost / (1 - fee - targetMargin));
+    }
+
+    const recommendedPrice = recRevenue / sellable;
+
+    const outcome = (price) => {
+      const revenue = sellable * price;
+      const fees = revenue * fee;
+      const profit = revenue - fees - totalCost;
+      return {
+        price,
+        revenue,
+        fees,
+        profit,
+        margin: revenue > 0 ? (profit / revenue) * 100 : 0
+      };
+    };
+
+    const cur = outcome(salePrice);
+
+    const unitNet = salePrice * (1 - fee) - costPerUnit;
+
+    return {
+      q, loss, sellable, totalCost, costPerUnit, minPrice, recommendedPrice,
+      targetProfit, salePrice, cur,
+      markup: costPerUnit > 0 ? (unitNet / costPerUnit) * 100 : 0,
+      profitPerUnit: unitNet,
+      breakEvenQty: salePrice * (1 - fee) > 0 ? Math.ceil(totalCost / (salePrice * (1 - fee))) : 0,
+      scenarios: [
+        ["Prix -10%", outcome(salePrice * 0.9)],
+        ["Prix actuel", cur],
+        ["Prix +10%", outcome(salePrice * 1.1)],
+        ["Prix conseillé", outcome(recommendedPrice)]
+      ]
+    };
+  }
+
   function renderPriceTool(c) {
     c.innerHTML =
       head(
         "LAB 01",
         "💰 Kajy Prix & Tombony",
-        "Fantaro ny coût, prix de vente, tombony ary marge alohan'ny hivarotana."
+        "Hahafantatra ny prix minimum, prix conseillé, tombony, marge ary ny isa tsy maintsy amidy mba tsy ho very."
       ) +
 
       `<form id="priceForm" class="tool-form">
 
-        ${field("Vokatra", "product", "text", 'placeholder="Ohatra: Akoho Gasy" required')}
+        ${field("Vokatra", "product", "text", 'placeholder="Ohatra: Akoho Gasy, Tantely, Vary" required')}
 
-        ${field("Isan'ny vokatra", "quantity", "number", 'min="1" value="1" required')}
+        ${select("Unité de vente", "unit", ["biby / pièce", "kg", "litre", "sac", "boaty / pot"])}
+
+        ${field("Isan'ny vokatra natomboka", "quantity", "number", 'min="1" value="1" required')}
+
+        ${field("Fahavery / fahafatesana (%)", "loss", "number", 'min="0" max="99" step="0.5" value="0"')}
 
         <div class="section-title">💸 Coûts</div>
 
@@ -348,6 +420,10 @@
 
         ${field("Fanafody / Vaksiny", "healthCost", "number", 'min="0" value="0"')}
 
+        ${field("Mpiasa / main d'œuvre", "laborCost", "number", 'min="0" value="0"')}
+
+        ${field("Emballage / fonosana", "packagingCost", "number", 'min="0" value="0"')}
+
         ${field("Transport", "transportCost", "number", 'min="0" value="0"')}
 
         ${field("Autres dépenses", "otherCost", "number", 'min="0" value="0"')}
@@ -356,7 +432,11 @@
 
         ${field("Prix de vente / unité", "salePrice", "number", 'min="0" value="0"')}
 
-        ${field("Tombony kendrena", "targetProfit", "number", 'min="0" value="0"')}
+        ${field("Frais paiement / commission (%)", "feePct", "number", 'min="0" max="50" step="0.1" value="0"')}
+
+        ${field("Tombony kendrena (Ar)", "targetProfit", "number", 'min="0" value="0"')}
+
+        ${field("Marge kendrena (%)", "targetMargin", "number", 'min="0" max="90" step="1" value="0"')}
 
         <div id="pricePreview" class="preview-box"></div>
 
@@ -373,23 +453,7 @@
     const result = document.getElementById("priceResult");
 
     function calculatePreview() {
-      const d = getData(form);
-
-      const q = Math.max(1, num(d.quantity));
-
-      const purchaseCost = Math.max(0, num(d.purchaseCost));
-      const feedCost = Math.max(0, num(d.feedCost));
-      const healthCost = Math.max(0, num(d.healthCost));
-      const transportCost = Math.max(0, num(d.transportCost));
-      const otherCost = Math.max(0, num(d.otherCost));
-      const targetProfit = Math.max(0, num(d.targetProfit));
-
-      const totalCost =
-        purchaseCost + feedCost + healthCost + transportCost + otherCost;
-
-      const costPerUnit = totalCost / q;
-      const minPrice = costPerUnit;
-      const recommendedPrice = (totalCost + targetProfit) / q;
+      const r = priceCalc(getData(form));
 
       preview.innerHTML = `
         <div class="preview-title">📊 Tombana</div>
@@ -398,22 +462,22 @@
 
           <div>
             <span>Coût total</span>
-            <strong>${money(totalCost)}</strong>
+            <strong>${money(r.totalCost)}</strong>
           </div>
 
           <div>
-            <span>Coût / unité</span>
-            <strong>${money(costPerUnit)}</strong>
+            <span>Coût / unité vendable</span>
+            <strong>${money(r.costPerUnit)}</strong>
           </div>
 
           <div>
             <span>Prix minimum rentable</span>
-            <strong>${money(minPrice)}</strong>
+            <strong>${money(r.minPrice)}</strong>
           </div>
 
           <div>
             <span>Prix conseillé</span>
-            <strong>${money(recommendedPrice)}</strong>
+            <strong>${money(r.recommendedPrice)}</strong>
           </div>
 
         </div>
@@ -429,48 +493,40 @@
 
       const product = String(d.product || "").trim();
 
-      const q = Math.max(1, num(d.quantity));
+      const r = priceCalc(d);
 
-      const purchaseCost = Math.max(0, num(d.purchaseCost));
-      const feedCost = Math.max(0, num(d.feedCost));
-      const healthCost = Math.max(0, num(d.healthCost));
-      const transportCost = Math.max(0, num(d.transportCost));
-      const otherCost = Math.max(0, num(d.otherCost));
-      const salePrice = Math.max(0, num(d.salePrice));
-      const targetProfit = Math.max(0, num(d.targetProfit));
+      const ok = r.cur.profit > 0;
 
-      const totalCost =
-        purchaseCost + feedCost + healthCost + transportCost + otherCost;
-
-      const costPerUnit = totalCost / q;
-      const minPrice = costPerUnit;
-      const recommendedPrice = (totalCost + targetProfit) / q;
-      const revenue = q * salePrice;
-      const profit = revenue - totalCost;
-      const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
-      const targetReached = profit >= targetProfit;
-      const ok = profit > 0;
+      const targetReached = r.cur.profit >= r.targetProfit;
 
       let advice = "";
 
-      if (salePrice < minPrice) {
+      if (r.salePrice < r.minPrice) {
         advice = `
           <div class="advice warning">
-            ⚠️ Attention : votre prix de vente est inférieur
-            au coût de revient. Vous risquez une perte.
+            ⚠️ Ambany noho ny prix minimum rentable (${money(r.minPrice)}) ny prix de vente.
+            Misy fatiantoka. Ampiakaro ny prix na ahenao ny coûts.
           </div>
         `;
       } else if (!targetReached) {
         advice = `
           <div class="advice warning">
-            ⚠️ Vous êtes rentable, mais le bénéfice cible
-            n'est pas encore atteint.
+            ⚠️ Mahazo tombony ianao, fa mbola tsy tonga ny tombony kendrena.
+            Prix conseillé: ${money(r.recommendedPrice)}.
           </div>
         `;
       } else {
         advice = `
           <div class="advice success">
-            ✅ Très bien ! Le bénéfice cible est atteint.
+            ✅ Tsara! Tonga ny tombony kendrena.
+          </div>
+        `;
+      }
+
+      if (r.loss > 0 && r.salePrice >= r.minPrice) {
+        advice += `
+          <div class="advice warning">
+            ℹ️ Voaisa ao amin'ny kajy ny fahavery ${r.loss}%: ${Math.round(r.sellable)} no vendable amin'ny ${Math.round(r.q)}.
           </div>
         `;
       }
@@ -478,21 +534,19 @@
       state.calculations.push({
         date: new Date().toISOString(),
         product,
-        quantity: q,
-        cost: totalCost,
-        purchaseCost,
-        feedCost,
-        healthCost,
-        transportCost,
-        otherCost,
-        costPerUnit,
-        minPrice,
-        recommendedPrice,
-        salePrice,
-        targetProfit,
-        revenue,
-        profit,
-        margin
+        unit: d.unit,
+        quantity: r.q,
+        sellable: r.sellable,
+        loss: r.loss,
+        cost: r.totalCost,
+        costPerUnit: r.costPerUnit,
+        minPrice: r.minPrice,
+        recommendedPrice: r.recommendedPrice,
+        salePrice: r.salePrice,
+        targetProfit: r.targetProfit,
+        revenue: r.cur.revenue,
+        profit: r.cur.profit,
+        margin: r.cur.margin
       });
 
       touch();
@@ -507,64 +561,50 @@
 
           <div class="result-grid">
 
-            <div>
-              <span>Vokatra</span>
-              <strong>${esc(product)}</strong>
-            </div>
+            <div><span>Vokatra</span><strong>${esc(product)}</strong></div>
 
-            <div>
-              <span>Quantité</span>
-              <strong>${q}</strong>
-            </div>
+            <div><span>Vendable / natomboka</span><strong>${Math.round(r.sellable)} / ${Math.round(r.q)}</strong></div>
 
-            <div>
-              <span>Coût total</span>
-              <strong>${money(totalCost)}</strong>
-            </div>
+            <div><span>Coût total</span><strong>${money(r.totalCost)}</strong></div>
 
-            <div>
-              <span>Coût / unité</span>
-              <strong>${money(costPerUnit)}</strong>
-            </div>
+            <div><span>Coût / ${esc(d.unit)}</span><strong>${money(r.costPerUnit)}</strong></div>
 
-            <div>
-              <span>Prix minimum rentable</span>
-              <strong>${money(minPrice)}</strong>
-            </div>
+            <div><span>Prix minimum rentable</span><strong>${money(r.minPrice)}</strong></div>
 
-            <div>
-              <span>Prix conseillé</span>
-              <strong>${money(recommendedPrice)}</strong>
-            </div>
+            <div><span>Prix conseillé</span><strong>${money(r.recommendedPrice)}</strong></div>
 
-            <div>
-              <span>Prix de vente</span>
-              <strong>${money(salePrice)}</strong>
-            </div>
+            <div><span>Prix de vente</span><strong>${money(r.salePrice)}</strong></div>
 
-            <div>
-              <span>Vola miditra / CA</span>
-              <strong>${money(revenue)}</strong>
-            </div>
+            <div><span>Vola miditra / CA</span><strong>${money(r.cur.revenue)}</strong></div>
 
-            <div>
-              <span>Tombony</span>
-              <strong>${money(profit)}</strong>
-            </div>
+            <div><span>Frais / commission</span><strong>${money(r.cur.fees)}</strong></div>
 
-            <div>
-              <span>Tombony kendrena</span>
-              <strong>${money(targetProfit)}</strong>
-            </div>
+            <div><span>Tombony</span><strong>${money(r.cur.profit)}</strong></div>
 
-            <div>
-              <span>Marge</span>
-              <strong>${margin.toFixed(2)}%</strong>
-            </div>
+            <div><span>Tombony / ${esc(d.unit)}</span><strong>${money(r.profitPerUnit)}</strong></div>
+
+            <div><span>Marge</span><strong>${r.cur.margin.toFixed(2)}%</strong></div>
+
+            <div><span>Markup (/ coût)</span><strong>${r.markup.toFixed(1)}%</strong></div>
+
+            <div><span>Isa tsy maintsy amidy (seuil)</span><strong>${r.breakEvenQty}</strong></div>
 
           </div>
 
           ${advice}
+
+          <div class="preview-title">🔁 Scénarios de prix</div>
+
+          <div class="result-grid">
+
+            ${r.scenarios.map(([label, s]) => `
+              <div>
+                <span>${label} (${money(s.price)})</span>
+                <strong>${money(s.profit)} • ${s.margin.toFixed(1)}%</strong>
+              </div>
+            `).join("")}
+
+          </div>
 
         </div>
       `;
@@ -583,115 +623,143 @@
      2. FIOMPIANA
      ========================================================= */
 
+  const LIVESTOCK_MORTALITY = {
+    "Akoho Gasy": 15, "Pondeuse": 8, "Poulet de chair": 5, "Kisoa": 8, "Bitro": 10,
+    "Gana": 12, "Gisa": 12, "Vorontsiloza": 12, "Osy": 6, "Ondry": 6
+  };
+
   function renderLivestockTool(c) {
     c.innerHTML =
       head(
         "LAB 02",
-        "Kajy Fiompiana",
-        "Ampidiro ny karazana biby, isan'ny biby ary ny dépenses hahitana ny coût sy ny potentiel de vente."
+        "🐓 Kajy Fiompiana Professionnel",
+        "Kajy tena izy: fahafatesana, coût tsirairay, prix minimum, ROI ary tombony isam-bolana."
       ) +
-
       `
       <form id="livestockForm" class="lab-form">
-
         <div class="form-grid">
-
           ${select("Karazana", "animal", ANIMALS)}
+          ${field("Isan'ny biby natomboka", "quantity", "number", 'min="1" value="10" required')}
+          ${field("Fahafatesana tombanana (%)", "mortality", "number", 'min="0" max="100" step="0.5" value="15"')}
+          ${field("Faharetan'ny fiompiana (andro)", "days", "number", 'min="1" value="150"')}
 
-          ${field("Isan'ny biby", "quantity", "number", 'min="1" value="10" required')}
-
-          ${field("Coût sakafo", "feed", "number", 'min="0" value="0"')}
-
+          <div class="section-title">💸 Coûts</div>
+          ${field("Achat biby (total)", "purchase", "number", 'min="0" value="0"')}
+          ${field("Sakafo (total)", "feed", "number", 'min="0" value="0"')}
           ${field("Fanafody / vaksiny", "health", "number", 'min="0" value="0"')}
-
-          ${field("Achat biby", "purchase", "number", 'min="0" value="0"')}
-
+          ${field("Mpiasa / main d'œuvre", "labor", "number", 'min="0" value="0"')}
+          ${field("Trano, rano, herinaratra, litière", "housing", "number", 'min="0" value="0"')}
+          ${field("Transport", "transport", "number", 'min="0" value="0"')}
           ${field("Dépenses hafa", "other", "number", 'min="0" value="0"')}
 
-          ${field("Prix de vente / biby", "salePrice", "number", 'min="0" value="0"')}
-
+          <div class="section-title">🎯 Vidiny</div>
+          ${field("Prix de vente / biby velona", "salePrice", "number", 'min="0" value="0"')}
+          ${field("Na: lanja salanisa (kg)", "avgWeight", "number", 'min="0" step="0.1" value="0"')}
+          ${field("Na: prix / kg", "pricePerKg", "number", 'min="0" value="0"')}
+          ${field("Vola hafa miditra (zezika, atody...)", "extraRevenue", "number", 'min="0" value="0"')}
         </div>
 
         <button class="btn btn-primary" type="submit">
           🐓 Kajio ny fiompiana
         </button>
-
       </form>
 
       <div id="livestockResult" class="lab-result"></div>
       `;
 
-    $("livestockForm").addEventListener("submit", (e) => {
+    const form = $("livestockForm");
+
+    form.elements.animal.addEventListener("change", () => {
+      const a = form.elements.animal.value;
+      form.elements.mortality.value = LIVESTOCK_MORTALITY[a] ?? 10;
+      form.elements.days.value = (profiles[a] || [150])[0];
+    });
+
+    form.elements.animal.dispatchEvent(new Event("change"));
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const d = getData(e.currentTarget);
+      const d = getData(form);
 
-      const q = num(d.quantity);
+      const q = Math.max(1, num(d.quantity));
+      const mort = Math.min(100, Math.max(0, num(d.mortality)));
+      const days = Math.max(1, num(d.days));
+
+      const survivors = Math.round(q * (1 - mort / 100));
 
       const cost =
-        num(d.feed) + num(d.health) + num(d.purchase) + num(d.other);
+        num(d.purchase) + num(d.feed) + num(d.health) + num(d.labor) +
+        num(d.housing) + num(d.transport) + num(d.other);
 
-      const revenue = q * num(d.salePrice);
+      const price =
+        num(d.pricePerKg) > 0 && num(d.avgWeight) > 0
+          ? num(d.pricePerKg) * num(d.avgWeight)
+          : num(d.salePrice);
+
+      const extra = num(d.extraRevenue);
+      const revenue = survivors * price + extra;
       const profit = revenue - cost;
-      const per = q > 0 ? cost / q : 0;
+      const margin = revenue > 0 ? (profit / revenue) * 100 : 0;
+      const roi = cost > 0 ? (profit / cost) * 100 : 0;
+      const perMonth = profit / (days / 30);
+      const costPerSurvivor = survivors > 0 ? cost / survivors : 0;
+      const breakEven = survivors > 0 ? Math.max(0, cost - extra) / survivors : 0;
+
+      const mort2 = Math.min(100, mort + 10);
+      const survivors2 = Math.round(q * (1 - mort2 / 100));
+      const profit2 = survivors2 * price + extra - cost;
 
       state.calculations.push({
         date: new Date().toISOString(),
         animal: d.animal,
         product: d.animal,
         quantity: q,
-        cost: cost,
-        revenue: revenue,
-        profit: profit,
-        costPerAnimal: per
+        survivors,
+        mortality: mort,
+        days,
+        cost,
+        costPerAnimal: costPerSurvivor,
+        revenue,
+        profit,
+        margin,
+        roi
       });
 
       touch();
 
+      let advice;
+      if (survivors === 0) {
+        advice = "⚠️ Tsy misy biby velona hamidy amin'ity fahafatesana ity.";
+      } else if (price < breakEven) {
+        advice = "⚠️ Ambany noho ny prix minimum rentable (" + money(breakEven) + " / biby) ny prix de vente. Misy fatiantoka.";
+      } else if (profit2 < 0) {
+        advice = "⚠️ Tombony ankehitriny, fa raha miakatra +10 points ny fahafatesana dia lasa fatiantoka. Hamafiso ny fiarovana (vaksiny, trano, sakafo).";
+      } else {
+        advice = "✅ Tsara: mbola tombony na dia miakatra +10 points aza ny fahafatesana.";
+      }
+
       $("livestockResult").innerHTML = `
 
-        <div class="result-card">
+        <div class="result-card ${profit > 0 ? "result-positive" : "result-negative"}">
 
-          <div class="result-title">
-            ${esc(d.animal)} — Résultat
-          </div>
+          <div class="result-title">${esc(d.animal)} — Résultat</div>
 
           <div class="result-grid">
-
-            <div>
-              <span>Isan'ny biby</span>
-              <strong>${q}</strong>
-            </div>
-
-            <div>
-              <span>Coût total</span>
-              <strong>${money(cost)}</strong>
-            </div>
-
-            <div>
-              <span>Coût / biby</span>
-              <strong>${money(per)}</strong>
-            </div>
-
-            <div>
-              <span>Vola miditra</span>
-              <strong>${money(revenue)}</strong>
-            </div>
-
-            <div>
-              <span>Tombony</span>
-              <strong>${money(profit)}</strong>
-            </div>
-
+            <div><span>Natomboka → velona</span><strong>${q} → ${survivors}</strong></div>
+            <div><span>Coût total</span><strong>${money(cost)}</strong></div>
+            <div><span>Coût / biby velona</span><strong>${money(costPerSurvivor)}</strong></div>
+            <div><span>Prix minimum rentable</span><strong>${money(breakEven)}</strong></div>
+            <div><span>Prix de vente / biby</span><strong>${money(price)}</strong></div>
+            <div><span>Vola miditra (CA)</span><strong>${money(revenue)}</strong></div>
+            <div><span>Tombony</span><strong>${money(profit)}</strong></div>
+            <div><span>Marge</span><strong>${margin.toFixed(1)}%</strong></div>
+            <div><span>ROI</span><strong>${roi.toFixed(1)}%</strong></div>
+            <div><span>Tombony / volana</span><strong>${money(perMonth)}</strong></div>
+            <div><span>Raha fahafatesana ${mort2}%</span><strong>${money(profit2)}</strong></div>
           </div>
 
-          <div class="result-advice">
-            ${
-              profit > 0
-                ? "Tsara: afaka manohy amin'ny préparation de vente ianao."
-                : "Tandremo: mety tsy hahazo tombony amin'ity prix ity."
-            }
-          </div>
+          <div class="result-advice">${advice}</div>
 
         </div>
 
@@ -720,62 +788,104 @@
     "Ondry": [240, 180, 300]
   };
 
+  /* Protocole de soins et sakafo isaky ny karazana (andro nanomboka tamin'ny fiterahana) */
+  const CARE_PLANS = {
+    "Poulet de chair": [
+      [1, "🍼", "Démarrage", "Sakafo démarrage, hafanana mety (32-34°C), rano madio."],
+      [7, "💉", "Vaksiny Newcastle", "Hamafiso amin'ny vétérinaire ny vaksiny sy ny fotoana."],
+      [12, "💉", "Vaksiny Gumboro", "Hamafiso amin'ny vétérinaire."],
+      [15, "🌾", "Sakafo croissance", "Ovay ny sakafo démarrage ho croissance."],
+      [21, "💉", "Rappel Newcastle", "Hamafiso amin'ny vétérinaire."],
+      [29, "🌾", "Sakafo finition", "Sakafo finition hatramin'ny vente."],
+      [35, "⚖️", "Pesée", "Karajao ny lanja salanisa."]
+    ],
+    "Akoho Gasy": [
+      [7, "💉", "Vaksiny Newcastle", "Hamafiso amin'ny vétérinaire."],
+      [21, "💉", "Rappel Newcastle", "Hamafiso amin'ny vétérinaire."],
+      [30, "💊", "Déparasitage", "Fanafody parasite anatiny sy ivelany."],
+      [90, "⚖️", "Pesée", "Karajao ny lanja salanisa."],
+      [120, "💉", "Rappel Newcastle", "Isaky ny 3-4 volana araka ny vétérinaire."]
+    ],
+    "Pondeuse": [
+      [7, "💉", "Vaksiny Newcastle", "Hamafiso amin'ny vétérinaire."],
+      [14, "💉", "Vaksiny Gumboro", "Hamafiso amin'ny vétérinaire."],
+      [21, "💉", "Rappel Newcastle", "Hamafiso amin'ny vétérinaire."],
+      [42, "💊", "Déparasitage", "Fanafody parasite."],
+      [112, "🌾", "Sakafo pondeuse", "Miomana amin'ny fanombohan'ny atody: ovay ny sakafo."]
+    ],
+    "Kisoa": [
+      [3, "💉", "Fanampiana vy (fer)", "Hataon'ny vétérinaire na technicien."],
+      [14, "🌾", "Manomboka sakafo mafy", "Atombohy ny sakafo ho an'ny zanak'kisoa."],
+      [28, "🐷", "Sevrage", "Fanasarahana amin'ny reny (28-45 andro)."],
+      [30, "💊", "Déparasitage", "Fanafody parasite."],
+      [60, "⚖️", "Pesée", "Karajao ny lanja."],
+      [120, "⚖️", "Pesée", "Jereo raha mifanaraka amin'ny lanja kendrena."],
+      [150, "🧰", "Famaranana", "Sakafo finition sy fanamarinana ny lanja."]
+    ],
+    "Osy": [
+      [30, "💊", "Déparasitage", "Fanafody parasite."],
+      [90, "💊", "Déparasitage", "Isaky ny 3 volana araka ny vétérinaire."],
+      [120, "⚖️", "Pesée", "Karajao ny lanja."],
+      [180, "⚖️", "Pesée", "Jereo ny fivoaran'ny lanja."]
+    ],
+    "Ondry": [
+      [30, "💊", "Déparasitage", "Fanafody parasite."],
+      [90, "💊", "Déparasitage", "Isaky ny 3 volana araka ny vétérinaire."],
+      [120, "⚖️", "Pesée", "Karajao ny lanja."],
+      [180, "⚖️", "Pesée", "Jereo ny fivoaran'ny lanja."]
+    ]
+  };
+
+  const CARE_GENERIC = [
+    [7, "💊", "Vitamines / prophylaxie", "Hamafiso amin'ny vétérinaire."],
+    [21, "💊", "Déparasitage", "Fanafody parasite."],
+    [45, "⚖️", "Pesée", "Karajao ny lanja salanisa."],
+    [90, "⚖️", "Pesée", "Jereo ny fivoaran'ny lanja."]
+  ];
+
+  const TARGET_WEIGHT = {
+    "Akoho Gasy": 1.5, "Poulet de chair": 2, "Kisoa": 80, "Bitro": 3,
+    "Gana": 4, "Gisa": 5, "Vorontsiloza": 2.5, "Osy": 25, "Ondry": 25
+  };
+
   function renderCalendarTool(c) {
     c.innerHTML =
       head(
         "LAB 10 • OUTIL STRATÉGIQUE",
         "📅 Calendrier Mpiompy & Vente",
-        "Tsy ny daty hivarotana ihany no kajiana: fiompiana → préparation → prospection → publication → commande → vente → suivi."
+        "Fiompiana, fikarakarana (vaksiny, fanafody, sakafo, pesée) ary vente ao anaty calendrier iray."
       ) +
 
       `
-
       <div class="info-box">
-
         <strong>Ahoana no fampiasana azy?</strong>
-
         <ol>
           <li>Safidio ny karazana biby.</li>
-          <li>Ampidiro ny daty nanombohana.</li>
-          <li>Raha fantatra, ampidiro ny andro ananany.</li>
+          <li>Ampidiro ny daty nanombohana sy ny andro ananan'ny biby.</li>
           <li>Tsindrio <strong>Hamorona Calendrier</strong>.</li>
+          <li>Tsindrio <strong>Adikao</strong> raha tianao alefa amin'ny WhatsApp.</li>
         </ol>
-
         <p>
-          ⚠️ Tombana ihany ny daty.
-          Ny lanja, fahasalamana, sakafo
-          ary vidin'ny tsena no manamafy
-          ny tena fotoana hivarotana.
+          ⚠️ Tombana ihany ny daty. Ny vaksiny sy fanafody dia tokony hamafisina
+          amin'ny vétérinaire na technicien eo an-toerana.
         </p>
-
       </div>
 
       <form id="calendarForm" class="lab-form">
-
         <div class="form-grid">
-
           ${select("Karazana biby", "animal", Object.keys(profiles))}
-
           ${field("Isan'ny biby", "quantity", "number", 'min="1" value="10" required')}
-
           ${field("Daty nanombohana", "startDate", "date", `value="${todayISO()}" required`)}
-
           ${field("Andro ananan'ny biby (raha fantatra)", "ageDays", "number", 'min="0" value="0"')}
-
           ${field("Lanja ankehitriny kg (raha fantatra)", "weight", "number", 'min="0" step="0.1" value="0"')}
-
           ${field("Prix de vente / biby", "salePrice", "number", 'min="0" value="0"')}
-
         </div>
-
         <button class="btn btn-primary" type="submit">
           📅 Hamorona Calendrier
         </button>
-
       </form>
 
       <div id="calendarResult" class="lab-result"></div>
-
       `;
 
     $("calendarForm").addEventListener("submit", (e) => {
@@ -786,63 +896,51 @@
       const [def, min, max] = profiles[d.animal];
 
       const age = num(d.ageDays);
-      const q = num(d.quantity);
+      const q = Math.max(1, num(d.quantity));
+      const weight = num(d.weight);
 
       const left = Math.max(def - age, 0);
-
       const sale = addDays(d.startDate, left);
-
       const rangeA = addDays(d.startDate, Math.max(min - age, 0));
       const rangeB = addDays(d.startDate, Math.max(max - age, 0));
 
       const at = (n) => new Date(sale.getTime() - n * 86400000);
 
       const events = [
-        [
-          "🐣",
-          "Fiandohana fiompiana",
-          new Date(d.startDate + "T00:00:00"),
-          "Manomboka ny fiompiana sy ny fanaraha-maso."
-        ],
-        [
-          "🧰",
-          "Préparation de vente",
-          at(30),
-          "Jereo ny lanja, fahasalamana, fitaovana ary lanja kendrena."
-        ],
-        [
-          "🔎",
-          "Prospection",
-          at(21),
-          "Mitady client: namana, tsena, vondrom-piarahamonina."
-        ],
-        [
-          "📢",
-          "Publication",
-          at(14),
-          "Alefaso ny publication sy ny sary/vidéo ny biby."
-        ],
-        [
-          "🛒",
-          "Commande",
-          at(7),
-          "Raiso ny commande sy ny acompte."
-        ],
-        [
-          "💰",
-          "Vente",
-          sale,
-          "Andro tombanana hivarotana (hamafisina araka ny lanja sy ny tsena)."
-        ],
-        [
-          "🤝",
-          "Suivi client",
-          new Date(sale.getTime() + 7 * 86400000),
-          "Angataho ny retour ary tehirizo ny client."
-        ]
+        { date: addDays(d.startDate, 0), icon: "🐣", title: "Fiandohana fiompiana", note: "Manomboka ny fiompiana sy ny fanaraha-maso." }
       ];
 
+      (CARE_PLANS[d.animal] || CARE_GENERIC).forEach(([day, icon, title, note]) => {
+        if (day >= age && day < def) {
+          events.push({ date: addDays(d.startDate, day - age), icon, title, note, care: true });
+        }
+      });
+
+      events.push(
+        { date: at(30), icon: "🧰", title: "Préparation de vente", note: "Jereo ny lanja, fahasalamana ary ny fitaovana." },
+        { date: at(21), icon: "🔎", title: "Prospection", note: "Mitady client: namana, tsena, vondrom-piarahamonina." },
+        { date: at(14), icon: "📢", title: "Publication", note: "Alefaso ny publication sy ny sary/vidéo ny biby." },
+        { date: at(7), icon: "🛒", title: "Commande", note: "Raiso ny commande sy ny acompte." },
+        { date: sale, icon: "💰", title: "Vente", note: "Andro tombanana hivarotana (hamafisina araka ny lanja sy ny tsena).", main: true },
+        { date: new Date(sale.getTime() + 7 * 86400000), icon: "🤝", title: "Suivi client", note: "Angataho ny retour ary tehirizo ny client." }
+      );
+
+      events.sort((a, b) => a.date - b.date);
+
       const revenue = q * num(d.salePrice);
+
+      let weightInfo = "";
+      const target = TARGET_WEIGHT[d.animal];
+      if (weight > 0 && target) {
+        const pct = Math.round((weight / target) * 100);
+        weightInfo = `
+          <li>
+            Lanja ankehitriny: <strong>${weight} kg</strong>
+            (${pct}% amin'ny lanja kendrena ~${target} kg).
+            ${pct < 50 && left < 30 ? "⚠️ Mety tsy ho tonga ny lanja amin'ny daty vente: eritrereto ny hanemotra azy." : ""}
+          </li>
+        `;
+      }
 
       state.calendarPlans.push({
         date: new Date().toISOString(),
@@ -855,47 +953,33 @@
 
       $("calendarResult").innerHTML = `
 
-        <div class="result-card">
+        <div class="result-card" id="calendarText">
 
           <div class="result-card-header">
-
             <span>${esc(d.animal)} × ${q}</span>
-
             <strong>Vente: ${fmtDate(sale)}</strong>
-
           </div>
 
           <div class="calendar-result-warning">
-
             ⚠️
-
             <span>
-              Fetra tombana:
-              ${fmtDate(rangeA)}
-              →
-              ${fmtDate(rangeB)}.
+              Fetra tombana: ${fmtDate(rangeA)} → ${fmtDate(rangeB)}.
               Tombana ihany ny daty.
             </span>
-
           </div>
 
           <div class="calendar-timeline">
 
-            ${events.map(
-              (ev) => `
+            ${events.map((ev) => `
 
-              <div class="calendar-event ${ev[1] === "Vente" ? "calendar-event-main" : ""}">
+              <div class="calendar-event ${ev.main ? "calendar-event-main" : ""} ${ev.care ? "calendar-event-care" : ""}">
 
-                <div class="calendar-event-icon">${ev[0]}</div>
+                <div class="calendar-event-icon">${ev.icon}</div>
 
                 <div>
-
-                  <strong>${ev[1]}</strong>
-
-                  <small>${fmtDate(ev[2])}</small>
-
-                  <p>${ev[3]}</p>
-
+                  <strong>${esc(ev.title)}</strong>
+                  <small>${fmtDate(ev.date)}</small>
+                  <p>${esc(ev.note)}</p>
                 </div>
 
               </div>
@@ -909,46 +993,28 @@
             <h3>Plan d'action</h3>
 
             <ul>
-
-              <li>
-                Andro sisa alohan'ny vente:
-                <strong>${left}</strong>
-              </li>
-
-              ${
-                revenue > 0
-                  ? `
-                    <li>
-                      CA mety azo:
-                      <strong>${money(revenue)}</strong>
-                    </li>
-                  `
-                  : ""
-              }
-
-              <li>
-                Manomboka mitady client
-                farafahakeliny
-                3 herinandro mialoha.
-              </li>
-
+              <li>Andro sisa alohan'ny vente: <strong>${left}</strong></li>
+              ${weightInfo}
+              ${revenue > 0 ? `<li>CA mety azo: <strong>${money(revenue)}</strong></li>` : ""}
+              <li>Manomboka mitady client farafahakeliny 3 herinandro mialoha.</li>
             </ul>
 
           </div>
 
           <div class="calendar-note">
-
             <strong>Fampitandremana</strong>
-
             <p>
-              Raha tsy mahatratra
-              ny lanja kendrena
-              ny biby dia ampiato
+              Raha tsy mahatratra ny lanja kendrena ny biby dia ampiato
               ny daty hivarotana.
             </p>
-
           </div>
 
+        </div>
+
+        <div class="result-actions">
+          <button class="btn btn-secondary" type="button" data-copy="calendarText">
+            📋 Adikao
+          </button>
         </div>
 
       `;
@@ -961,12 +1027,42 @@
      4. CRÉER UNE OFFRE
      ========================================================= */
 
+  function offerText(d) {
+    const price = num(d.price);
+    const old = num(d.oldPrice);
+    const lines = [
+      "🎁 OFFRE: " + d.product,
+      "",
+      d.client ? "👤 Ho an'ny: " + d.client : "",
+      d.problem ? "❗ Olana: " + d.problem : "",
+      d.solution ? "✅ Vahaolana: " + d.solution : "",
+      "💰 Prix: " + money(price) +
+        (old > price ? " (fa tsy " + money(old) + " — mitsitsy " + Math.round((1 - price / old) * 100) + "%)" : ""),
+      d.bonus ? "🎯 Bonus: " + d.bonus : "",
+      d.guarantee ? "🛡️ Garantie: " + d.guarantee : "",
+      d.delivery ? "🚚 Livraison: " + d.delivery : "",
+      d.stock ? "📦 Stock voafetra: " + d.stock : "",
+      d.deadline ? "⏳ Valable hatramin'ny: " + fmtDate(d.deadline) : "",
+      d.payment ? "💳 Fandoavana: " + d.payment : "",
+      "",
+      "📲 Commande: " + (d.contact || "Alefaso ny hafatra") 
+    ];
+    return lines.filter((l, i) => l !== "" || (i > 0 && lines[i - 1] !== "")).join("\n").trim();
+  }
+
+  function offerShort(d) {
+    return d.product + ": " + money(num(d.price)) +
+      (d.bonus ? " + " + d.bonus : "") +
+      (d.deadline ? " (hatramin'ny " + fmtDate(d.deadline) + ")" : "") +
+      ". Commande: " + (d.contact || "alefaso ny hafatra");
+  }
+
   function renderOfferTool(c) {
     c.innerHTML =
       head(
         "LAB 03",
         "🎁 Créer une Offre",
-        "Client → Problème → Solution → Prix → CTA."
+        "Client → Problème → Solution → Prix → Bonus → Garantie → Urgence → CTA."
       ) +
 
       `
@@ -975,16 +1071,18 @@
         <div class="form-grid">
 
           ${field("Vokatra / service", "product", "text", "required")}
-
           ${field("Client kendrena", "client", "text", 'placeholder="Ohatra: mpandrafitra fety" required')}
-
           ${area("Olana amin'ny client", "problem")}
-
           ${area("Vahaolana atolotra", "solution")}
-
-          ${field("Prix (Ar)", "price", "number", 'min="0"')}
-
-          ${field("Bonus / garantie", "bonus", "text")}
+          ${field("Prix (Ar)", "price", "number", 'min="0" required')}
+          ${field("Prix taloha / tsy promo (Ar)", "oldPrice", "number", 'min="0"')}
+          ${field("Bonus", "bonus", "text")}
+          ${field("Garantie", "guarantee", "text", 'placeholder="Ohatra: avadika raha maty tao anatin'+"'"+'ny 48 ora"')}
+          ${field("Livraison (toerana / vidiny)", "delivery", "text")}
+          ${field("Stock / isa voafetra", "stock", "text")}
+          ${field("Valable hatramin'ny", "deadline", "date")}
+          ${field("Fandoavana (Mvola, espèces...)", "payment", "text")}
+          ${field("Contact commande", "contact", "text", 'placeholder="WhatsApp 034..."')}
 
         </div>
 
@@ -1002,30 +1100,58 @@
 
       const d = getData(e.currentTarget);
 
-      const text =
-`🎁 OFFRE: ${d.product}
+      const full = offerText(d);
+      const short = offerShort(d);
 
-👤 Ho an'ny: ${d.client}
-❗ Olana: ${d.problem || "—"}
-✅ Vahaolana: ${d.solution || "—"}
-💰 Prix: ${money(d.price)}${
-  d.bonus
-    ? `\n🎯 Bonus: ${d.bonus}`
-    : ""
-}
+      const checks = [
+        ["Client kendrena mazava", !!d.client, "Lazao hoe iza ilay client."],
+        ["Olana voalaza", !!d.problem, "Ampio ny olan'ny client."],
+        ["Vahaolana mazava", !!d.solution, "Lazao ny vokatra mamaha ny olana."],
+        ["Prix voalaza", num(d.price) > 0, "Ampio ny prix."],
+        ["Bonus", !!d.bonus, "Ampio bonus kely mba hanasarotra ny fanitsahana."],
+        ["Garantie / fiarovana", !!d.guarantee, "Ny garantie dia mampihena ny tahotra hividy."],
+        ["Urgence (daty na stock)", !!(d.deadline || d.stock), "Ampio daty farany na stock voafetra."],
+        ["Contact commande", !!d.contact, "Ampio ny laharana hanaovana commande."]
+      ];
 
-📲 Alefaso ny hafatra hanaovana commande.`;
+      const score = checks.filter((x) => x[1]).length;
 
       $("offerResult").innerHTML = `
 
+        <div class="result-card">
+
+          <div class="result-title">Kalitaon'ny offre: ${score}/8</div>
+
+          <ul>
+            ${checks.map((x) => `<li>${x[1] ? "✅" : "⚪"} ${esc(x[0])}${x[1] ? "" : " — " + esc(x[2])}</li>`).join("")}
+          </ul>
+
+        </div>
+
+        <div class="preview-title">Offre feno</div>
+
         <div class="generated-copy" id="offerText">
-          ${esc(text).replace(/\n/g, "<br>")}
+          ${esc(full).replace(/\n/g, "<br>")}
+        </div>
+
+        <div class="preview-title">Version fohy (SMS)</div>
+
+        <div class="generated-copy" id="offerShortText">
+          ${esc(short)}
         </div>
 
         <div class="result-actions">
 
           <button class="btn btn-secondary" type="button" data-copy="offerText">
-            📋 Adikao
+            📋 Adikao ny feno
+          </button>
+
+          <button class="btn btn-secondary" type="button" data-copy="offerShortText">
+            📋 Adikao ny fohy
+          </button>
+
+          <button class="btn btn-primary" type="button" data-tool="publication">
+            📢 Hamorona publication avy amin'ity offre ity
           </button>
 
         </div>
@@ -1044,14 +1170,99 @@
      5. PUBLICATION
      ========================================================= */
 
+  const PUB_PLATFORMS = ["Facebook", "WhatsApp", "SMS"];
+
+  const PUB_HOOKS = ["Fanontaniana", "Olana", "Promo", "Faneriterena"];
+
+  function pubHook(d, style) {
+    const price = num(d.price);
+    const old = num(d.oldPrice);
+
+    if (d.hook) return d.hook;
+
+    if (style === "Olana") {
+      return d.problem ? "❗ " + d.problem : "Sahirana amin'ny " + d.product + " ve ianao?";
+    }
+
+    if (style === "Promo") {
+      return old > price
+        ? "🔥 PROMO: " + d.product + " " + money(price) + " fa tsy " + money(old) + "!"
+        : "🔥 Vaovao tsara: " + d.product + "!";
+    }
+
+    if (style === "Faneriterena") {
+      if (d.stock) return "⏳ " + d.product + " — voafetra: " + d.stock + "!";
+      if (d.deadline) return "⏳ " + d.product + " — hatramin'ny " + fmtDate(d.deadline) + " ihany!";
+      return "⏳ " + d.product + " — mandehana haingana!";
+    }
+
+    return "Mila " + d.product + " tsara ve ianao?";
+  }
+
+  function pubText(d) {
+    const price = num(d.price);
+    const old = num(d.oldPrice);
+    const hook = pubHook(d, d.hookStyle);
+    const tag = "#" + String(d.product || "").replace(/[^\p{L}\p{N}]/gu, "");
+    const priceLine =
+      "💰 Prix: " + money(price) +
+      (old > price ? " (fa tsy " + money(old) + ")" : "");
+
+    if (d.platform === "SMS") {
+      return (
+        hook + " " + d.product + " " + money(price) +
+        (d.deadline ? " hatramin'ny " + fmtDate(d.deadline) : "") +
+        ". " + (d.contact || "Alefaso ny hafatra")
+      ).slice(0, 320);
+    }
+
+    const bold = (t) => (d.platform === "WhatsApp" ? "*" + t + "*" : t);
+
+    const lines = [
+      bold(hook),
+      "",
+      d.problem && d.hookStyle !== "Olana" ? "❗ " + d.problem : "",
+      "✅ " + d.product,
+      d.solution || "",
+      priceLine,
+      d.bonus ? "🎯 Bonus: " + d.bonus : "",
+      d.guarantee ? "🛡️ Garantie: " + d.guarantee : "",
+      d.delivery ? "🚚 " + d.delivery : "",
+      d.deadline ? "⏳ Hatramin'ny " + fmtDate(d.deadline) : "",
+      "",
+      "👉 Commande: " + (d.contact || "alefaso ny hafatra ankehitriny"),
+      d.location ? "📍 " + d.location : "",
+      d.platform === "Facebook" ? "\n#TantsahaMatihanina #Madagascar " + tag : ""
+    ];
+
+    return lines.filter((l, i) => l !== "" || (i > 0 && lines[i - 1] !== "")).join("\n").trim();
+  }
+
+  const PUB_IDEAS = {
+    Facebook: [
+      "Sary 1: ny vokatra akaiky sy mazava (jiro voajanahary).",
+      "Sary 2: ny toerana fiompiana/fambolena mba hanampy ny fahatokisana.",
+      "Vidéo 15-30 s: asehoy ny vokatra ary lazao ny prix sy ny fomba commande."
+    ],
+    WhatsApp: [
+      "Alefaso amin'ny Statut miaraka amin'ny sary iray mazava.",
+      "Alefaso mivantana amin'ny client efa nividy na nanontany."
+    ],
+    SMS: [
+      "Ampiasao ho an'ny client efa fantatra. Tazony fohy: vokatra, prix, contact."
+    ]
+  };
+
   function renderPublicationTool(c) {
     const o = state.lastOffer || {};
+
+    const v = (k) => `value="${esc(o[k] || "")}"`;
 
     c.innerHTML =
       head(
         "LAB 04",
         "📢 Publication",
-        "Hook → Problème → Solution → Offre → Prix → CTA."
+        "Hook → Problème → Solution → Offre → Prix → CTA, mifanaraka amin'ny Facebook, WhatsApp na SMS."
       ) +
 
       `
@@ -1059,17 +1270,21 @@
 
         <div class="form-grid">
 
-          ${field("Vokatra", "product", "text", `value="${esc(o.product || "")}" required`)}
-
-          ${field("Hook (fanombohana)", "hook", "text", 'placeholder="Ohatra: Mila akoho tsara ve ianao?"')}
-
+          ${select("Plateforme", "platform", PUB_PLATFORMS)}
+          ${select("Karazana hook", "hookStyle", PUB_HOOKS)}
+          ${field("Hook manokana (raha tianao)", "hook", "text", 'placeholder="Avelao foana raha te hampiasa ilay automatique"')}
+          ${field("Vokatra", "product", "text", v("product") + " required")}
           ${area("Olana", "problem", "")}
-
           ${area("Vahaolana / offre", "solution", "")}
-
           ${field("Prix (Ar)", "price", "number", `min="0" value="${esc(o.price || "")}"`)}
-
-          ${field("Contact / lieu", "contact", "text", 'placeholder="WhatsApp, Toamasina..."')}
+          ${field("Prix taloha (Ar)", "oldPrice", "number", `min="0" value="${esc(o.oldPrice || "")}"`)}
+          ${field("Bonus", "bonus", "text", v("bonus"))}
+          ${field("Garantie", "guarantee", "text", v("guarantee"))}
+          ${field("Livraison", "delivery", "text", v("delivery"))}
+          ${field("Stock voafetra", "stock", "text", v("stock"))}
+          ${field("Valable hatramin'ny", "deadline", "date", v("deadline"))}
+          ${field("Contact commande", "contact", "text", v("contact") + ' placeholder="WhatsApp, 034..."')}
+          ${field("Toerana", "location", "text", 'placeholder="Toamasina..."')}
 
         </div>
 
@@ -1082,23 +1297,19 @@
       <div id="pubResult" class="lab-result"></div>
       `;
 
-    $("pubForm").addEventListener("submit", (e) => {
+    const form = $("pubForm");
+
+    if (o.problem) form.elements.problem.value = o.problem;
+    if (o.solution) form.elements.solution.value = o.solution;
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const d = getData(e.currentTarget);
+      const d = getData(form);
 
-      const text =
-`${d.hook || "🔥 Vaovao tsara!"}
+      const text = pubText(d);
 
-${d.problem
-  ? "❗ " + d.problem + "\n\n"
-  : ""}✅ ${d.product}
-${d.solution || ""}
-
-💰 Prix: ${money(d.price)}
-📍 ${d.contact || ""}
-
-👉 Alefaso ny hafatra ankehitriny hanaovana commande.`;
+      const share = "https://wa.me/?text=" + encodeURIComponent(text);
 
       $("pubResult").innerHTML = `
 
@@ -1106,15 +1317,43 @@ ${d.solution || ""}
           ${esc(text).replace(/\n/g, "<br>")}
         </div>
 
+        <small>${text.length} tarehintsoratra${d.platform === "SMS" ? " (SMS: tsara raha ≤ 160 ho an'ny 1 SMS)" : ""}</small>
+
         <div class="result-actions">
 
           <button class="btn btn-secondary" type="button" data-copy="pubText">
             📋 Adikao
           </button>
 
+          <a class="btn btn-secondary" href="${esc(share)}" target="_blank" rel="noopener noreferrer">
+            💬 Zarao amin'ny WhatsApp
+          </a>
+
+          <button class="btn btn-primary" type="button" id="pubSendGroup">
+            🧪 Alefaso ao amin'ny groupe fanandramana
+          </button>
+
+        </div>
+
+        <div class="info-box">
+
+          <strong>Hevitra sary / vidéo</strong>
+
+          <ul>
+            ${(PUB_IDEAS[d.platform] || []).map((t) => `<li>${esc(t)}</li>`).join("")}
+          </ul>
+
         </div>
 
       `;
+
+      $("pubSendGroup").addEventListener("click", () => {
+        copyText(text);
+
+        window.open(CONFIG.whatsappPractice, "_blank", "noopener,noreferrer");
+
+        toast("Voakopia ny publication. Apetaho ao amin'ny groupe.");
+      });
 
       touch();
 
@@ -1627,12 +1866,44 @@ MIANDRY NY VENDEUR.
   `.trim();
   }
 
-  function renderSimulationTool(container) {
-    const scenario =
-      simulationScenarios[
-        Math.floor(Math.random() * simulationScenarios.length)
-      ];
+  const SIM_WHY = [
+    [
+      "Miaiky fa lafo ianao nefa tsy mbola hay ny budget: very ny fahafahana mifampiraharaha.",
+      null,
+      "Mamono ny resaka: tsy mamaly ny filan'ny client."
+    ],
+    [
+      "Avela handeha ny client tsy fantatra izay mahasalasala azy.",
+      null,
+      "Manery ary mampihena ny fitokisana."
+    ],
+    [
+      "Mampihena ny prix tsy misy antony: very ny tombony sy ny fahatokisana ny vidiny.",
+      null,
+      "Mikatona ny varavarana: tsy mitondra mankany amin'ny offre mety."
+    ],
+    [
+      "Valiny mikatona: tsy manampy ny client hahazo ny vokatra.",
+      null,
+      "Fampanantenana tsy mazava: tsy voafaritra ny antsipiriany."
+    ],
+    [
+      "Mety mampidi-doza ny fandefasana tsy misy commande sy fandoavana voafaritra.",
+      null,
+      "Mandà tsy misy vahaolana: very ny vente."
+    ]
+  ];
 
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function renderSimulationTool(container) {
     async function copyGeminiPrompt() {
       try {
         await copyText(generateGeminiPrompt());
@@ -1682,83 +1953,27 @@ MIANDRY NY VENDEUR.
 
       <div class="simulation-mode-grid">
 
-        <button
-          type="button"
-          class="simulation-mode-card active"
-          data-simulation-mode="quick"
-        >
+        <button type="button" class="simulation-mode-card active" data-simulation-mode="quick">
 
           <strong>🎯 Simulation Rapide</strong>
 
-          <span>
-            Scenario fohy misy objection
-            sy correction avy hatrany.
-          </span>
+          <span>Fanontaniana 5, misy score sy correction isaky ny valiny.</span>
 
         </button>
 
-        <button
-          type="button"
-          class="simulation-mode-card"
-          data-simulation-mode="gemini"
-        >
+        <button type="button" class="simulation-mode-card" data-simulation-mode="gemini">
 
           <strong>🤖 Simulation Libre avec Gemini</strong>
 
-          <span>
-            Gemini no CLIENT,
-            ianao no VENDEUR.
-          </span>
+          <span>Gemini no CLIENT, ianao no VENDEUR.</span>
 
         </button>
 
       </div>
 
-      <div id="quickSimulation" class="simulation-panel">
+      <div id="quickSimulation" class="simulation-panel"></div>
 
-        <div class="simulation-client-card">
-
-          <span class="eyebrow">CLIENT</span>
-
-          <h3>"${escapeHTML(scenario.client)}"</h3>
-
-        </div>
-
-        <div class="simulation-options">
-
-          ${scenario.options.map(
-            (option, index) => `
-
-            <button
-              type="button"
-              class="simulation-option"
-              data-answer="${index}"
-            >
-              ${escapeHTML(option)}
-            </button>
-
-          `
-          ).join("")}
-
-        </div>
-
-        <div id="simulationFeedback" class="simulation-feedback"></div>
-
-        <button
-          type="button"
-          class="btn btn-secondary"
-          data-new-simulation
-        >
-          🔄 Scenario hafa
-        </button>
-
-      </div>
-
-      <div
-        id="geminiSimulation"
-        class="simulation-panel"
-        style="display:none;"
-      >
+      <div id="geminiSimulation" class="simulation-panel" style="display:none;">
 
         <div class="gemini-panel">
 
@@ -1785,9 +2000,7 @@ MIANDRY NY VENDEUR.
 
                 ${geminiProducts.map(
                   (p) => `
-                    <option value="${escapeHTML(p)}">
-                      ${escapeHTML(p)}
-                    </option>
+                    <option value="${escapeHTML(p)}">${escapeHTML(p)}</option>
                   `
                 ).join("")}
 
@@ -1802,9 +2015,7 @@ MIANDRY NY VENDEUR.
 
                 ${geminiDifficulties.map(
                   (i) => `
-                    <option value="${i.value}">
-                      ${i.label}
-                    </option>
+                    <option value="${i.value}">${i.label}</option>
                   `
                 ).join("")}
 
@@ -1846,19 +2057,11 @@ MIANDRY NY VENDEUR.
 
           <div class="gemini-actions">
 
-            <button
-              type="button"
-              class="btn btn-secondary"
-              id="copyGeminiPrompt"
-            >
+            <button type="button" class="btn btn-secondary" id="copyGeminiPrompt">
               📋 Copier le prompt
             </button>
 
-            <button
-              type="button"
-              class="btn btn-primary"
-              id="openGemini"
-            >
+            <button type="button" class="btn btn-primary" id="openGemini">
               🤖 Ouvrir Gemini
             </button>
 
@@ -1887,7 +2090,19 @@ MIANDRY NY VENDEUR.
 
               <li>Gemini no manao evaluation /100.</li>
 
+              <li>
+                Zarao ao amin'ny groupe fanandramana ny valiny raha te hahazo retour.
+              </li>
+
             </ol>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-external="${esc(CONFIG.whatsappPractice)}"
+            >
+              👥 Groupe fanandramana
+            </button>
 
           </div>
 
@@ -1917,71 +2132,192 @@ MIANDRY NY VENDEUR.
       });
     });
 
-    container.querySelectorAll(".simulation-option").forEach((button) => {
-      button.addEventListener("click", () => {
-        const answer = Number(button.dataset.answer);
+    /* ---------- Simulation rapide: session 5 fanontaniana ---------- */
 
-        const feedback = container.querySelector("#simulationFeedback");
+    const pool = simulationScenarios.map((s, i) => ({ ...s, why: SIM_WHY[i] }));
 
-        container
-          .querySelectorAll(".simulation-option")
-          .forEach((item) => (item.disabled = true));
+    let order = shuffle(pool);
+    let idx = 0;
+    let score = 0;
+    let misses = [];
 
-        if (answer === scenario.correct) {
-          feedback.innerHTML = `
+    function drawSummary() {
+      const total = order.length;
 
-            <div class="result-card result-positive">
+      const level =
+        score === total
+          ? "🏆 Excellent: mahay mamaly objection ianao."
+          : score >= Math.ceil(total * 0.6)
+            ? "👍 Tsara: mbola ampy fanatsarana kely."
+            : "📚 Mila fanazarana bebe kokoa: averina ny simulation.";
 
-              <strong>✅ Bonne réponse</strong>
+      const text =
+        "Simulation Client — Tantsaha Matihanina\n" +
+        "Score: " + score + "/" + total + "\n" + level +
+        (misses.length
+          ? "\n\nZavatra hatsaraina:\n" +
+            misses.map((m) => "- " + m.client + " → " + m.better).join("\n")
+          : "");
 
-              <p>
-                Tsara ny fomba
-                namalianao.
-                Niezaka namantatra
-                ny besoin sy nitondra
-                ny conversation
-                nankany amin'ny
-                solution ianao.
-              </p>
-
-            </div>
-
-          `;
-        } else {
-          feedback.innerHTML = `
-
-            <div class="result-card result-negative">
-
-              <strong>⚠️ Azo hatsaraina</strong>
-
-              <p>
-                Aza mamaly objection
-                fotsiny.
-                Miezaha aloha hahatakatra
-                ny antony mahatonga
-                ilay client hisalasala.
-              </p>
-
-              <p>
-
-                <strong>Réponse recommandée:</strong>
-
-                ${escapeHTML(scenario.options[scenario.correct])}
-
-              </p>
-
-            </div>
-
-          `;
-        }
-
-        touch();
+      state.simulations.push({
+        date: new Date().toISOString(),
+        score,
+        total
       });
-    });
 
-    container
-      .querySelector("[data-new-simulation]")
-      ?.addEventListener("click", () => renderSimulationTool(container));
+      touch();
+
+      quickPanel.innerHTML = `
+
+        <div class="result-card ${score >= Math.ceil(total * 0.6) ? "result-positive" : "result-negative"}">
+
+          <div class="result-title">Score: ${score}/${total}</div>
+
+          <p>${escapeHTML(level)}</p>
+
+          <div id="simSummaryText">
+
+            ${
+              misses.length
+                ? `
+                  <strong>Zavatra hatsaraina:</strong>
+                  <ul>
+                    ${misses.map((m) => `<li>"${escapeHTML(m.client)}" → ${escapeHTML(m.better)}</li>`).join("")}
+                  </ul>
+                `
+                : `<p>Tsy nisy diso. Tohizo amin'ny Simulation Libre miaraka amin'i Gemini.</p>`
+            }
+
+            <span style="display:none">${escapeHTML(text)}</span>
+
+          </div>
+
+        </div>
+
+        <div class="result-actions">
+
+          <button type="button" class="btn btn-primary" id="simRestart">🔄 Averina</button>
+
+          <button type="button" class="btn btn-secondary" id="simCopy">📋 Adikao ny valiny</button>
+
+          <button type="button" class="btn btn-secondary" data-external="${esc(CONFIG.whatsappPractice)}">
+            👥 Zarao ao amin'ny groupe fanandramana
+          </button>
+
+        </div>
+
+      `;
+
+      quickPanel.querySelector("#simRestart").addEventListener("click", () => {
+        order = shuffle(pool);
+        idx = 0;
+        score = 0;
+        misses = [];
+        drawQuick();
+      });
+
+      quickPanel.querySelector("#simCopy").addEventListener("click", () => copyText(text));
+    }
+
+    function drawQuick() {
+      if (idx >= order.length) return drawSummary();
+
+      const s = order[idx];
+
+      const opts = shuffle(
+        s.options.map((text, k) => ({ text, k, correct: k === s.correct }))
+      );
+
+      quickPanel.innerHTML = `
+
+        <div class="simulation-client-card">
+
+          <span class="eyebrow">CLIENT • ${idx + 1}/${order.length}</span>
+
+          <h3>"${escapeHTML(s.client)}"</h3>
+
+        </div>
+
+        <div class="simulation-options">
+
+          ${opts.map(
+            (o, i) => `
+              <button type="button" class="simulation-option" data-i="${i}">
+                ${escapeHTML(o.text)}
+              </button>
+            `
+          ).join("")}
+
+        </div>
+
+        <div id="simulationFeedback" class="simulation-feedback"></div>
+
+      `;
+
+      const feedback = quickPanel.querySelector("#simulationFeedback");
+
+      quickPanel.querySelectorAll(".simulation-option").forEach((button) => {
+        button.addEventListener("click", () => {
+          const o = opts[Number(button.dataset.i)];
+
+          quickPanel
+            .querySelectorAll(".simulation-option")
+            .forEach((item) => (item.disabled = true));
+
+          if (o.correct) {
+            score++;
+
+            feedback.innerHTML = `
+
+              <div class="result-card result-positive">
+
+                <strong>✅ Bonne réponse</strong>
+
+                <p>
+                  Tsara ny fomba namalianao: niezaka namantatra ny besoin
+                  ianao ary nitondra ny conversation nankany amin'ny solution.
+                </p>
+
+              </div>
+
+            `;
+          } else {
+            misses.push({ client: s.client, better: s.options[s.correct] });
+
+            feedback.innerHTML = `
+
+              <div class="result-card result-negative">
+
+                <strong>⚠️ Azo hatsaraina</strong>
+
+                <p>${escapeHTML(s.why[o.k] || "Miezaha aloha hahatakatra ny antony mahatonga ny client hisalasala.")}</p>
+
+                <p>
+                  <strong>Réponse recommandée:</strong>
+                  ${escapeHTML(s.options[s.correct])}
+                </p>
+
+              </div>
+
+            `;
+          }
+
+          feedback.insertAdjacentHTML(
+            "beforeend",
+            `<button type="button" class="btn btn-primary" id="simNext">
+               ${idx + 1 < order.length ? "Manaraka →" : "Hijery ny valiny →"}
+             </button>`
+          );
+
+          feedback.querySelector("#simNext").addEventListener("click", () => {
+            idx++;
+            drawQuick();
+          });
+        });
+      });
+    }
+
+    drawQuick();
 
     container
       .querySelector("#copyGeminiPrompt")
@@ -1996,12 +2332,34 @@ MIANDRY NY VENDEUR.
      7. COMMANDE
      ========================================================= */
 
+  let pendingReceiptOrder = null;
+
+  const ORDER_STATUS = ["En attente", "Acompte reçu", "Payé", "Livré", "Annulé"];
+
+  const PAY_METHODS = ["Espèces", "Mvola", "Orange Money", "Airtel Money"];
+
+  function waLink(phone, text) {
+    let p = String(phone || "").replace(/\D/g, "");
+    if (!p) return "";
+    if (p.startsWith("0")) p = "261" + p.slice(1);
+    return "https://wa.me/" + p + "?text=" + encodeURIComponent(text);
+  }
+
+  function orderPaid(o) {
+    if (o.paid !== undefined && o.paid !== null) return num(o.paid);
+    return o.status === "Payé" || o.status === "Livré" ? num(o.total) : 0;
+  }
+
+  function orderBalance(o) {
+    return Math.max(0, num(o.total) - orderPaid(o));
+  }
+
   function renderOrderTool(c) {
     c.innerHTML =
       head(
         "LAB 07",
         "🛒 Commande",
-        "Client → Produit → Total → Statut."
+        "Client → Produit → Acompte → Livraison → Reçu."
       ) +
 
       `
@@ -2010,18 +2368,21 @@ MIANDRY NY VENDEUR.
         <div class="form-grid">
 
           ${field("Client", "client", "text", "required")}
-
-          ${field("Téléphone", "phone", "tel")}
-
+          ${field("Téléphone (WhatsApp)", "phone", "tel", 'placeholder="034 00 000 00"')}
           ${field("Produit", "product", "text", "required")}
-
           ${field("Isa", "quantity", "number", 'min="1" value="1" required')}
-
-          ${field("Prix / unité", "price", "number", 'min="0" required')}
-
-          ${select("Statut", "status", ["En attente", "Payé", "Livré", "Annulé"])}
+          ${field("Prix / unité", "price", "number", 'min="0" value="0" required')}
+          ${field("Remise (Ar)", "discount", "number", 'min="0" value="0"')}
+          ${field("Frais de livraison (Ar)", "fee", "number", 'min="0" value="0"')}
+          ${field("Acompte reçu (Ar)", "deposit", "number", 'min="0" value="0"')}
+          ${select("Paiement", "method", PAY_METHODS)}
+          ${field("Daty livraison", "deliveryDate", "date")}
+          ${field("Toerana livraison", "place", "text")}
+          ${select("Statut", "status", ORDER_STATUS)}
 
         </div>
+
+        <div id="orderPreview" class="preview-box"></div>
 
         <button class="btn btn-primary" type="submit">
           🛒 Tahiry ny commande
@@ -2029,28 +2390,86 @@ MIANDRY NY VENDEUR.
 
       </form>
 
+      <div id="orderSummary" class="preview-box"></div>
+
       <div id="orderList" class="dashboard-list"></div>
       `;
 
+    const form = $("orderForm");
+
+    const calc = () => {
+      const d = getData(form);
+      const total = Math.max(
+        0,
+        Math.max(1, num(d.quantity)) * num(d.price) - num(d.discount) + num(d.fee)
+      );
+      const deposit = Math.min(total, Math.max(0, num(d.deposit)));
+      return { d, total, deposit, rest: total - deposit };
+    };
+
+    const preview = () => {
+      const r = calc();
+      $("orderPreview").innerHTML = `
+        <div class="result-grid">
+          <div><span>Total</span><strong>${money(r.total)}</strong></div>
+          <div><span>Acompte</span><strong>${money(r.deposit)}</strong></div>
+          <div><span>Sisa haloa</span><strong>${money(r.rest)}</strong></div>
+        </div>
+      `;
+    };
+
+    form.addEventListener("input", preview);
+
+    preview();
+
     const list = () => {
+      const active = state.orders.filter((o) => o.status !== "Annulé");
+      const toCollect = active.reduce((s, o) => s + orderBalance(o), 0);
+
+      $("orderSummary").innerHTML = `
+        <div class="result-grid">
+          <div><span>Commande mavitrika</span><strong>${active.length}</strong></div>
+          <div><span>Sisa horaisina</span><strong>${money(toCollect)}</strong></div>
+        </div>
+      `;
+
       $("orderList").innerHTML = state.orders.length
         ? state.orders
-            .slice(-8)
+            .slice(-15)
             .reverse()
-            .map(
-              (o) => `
+            .map((o) => {
+              const bal = orderBalance(o);
+              const wa = waLink(
+                o.phone,
+                "Salama " + o.client + ", momba ny commande " + o.product +
+                " (" + money(o.total) + "). Sisa haloa: " + money(bal) + ". Misaotra!"
+              );
+              return `
 
                 <div class="dashboard-item">
 
                   <div>
 
-                    <strong>
-                      ${esc(o.client)} — ${esc(o.product)}
-                    </strong>
+                    <strong>${esc(o.client)} — ${esc(o.product)} × ${esc(o.quantity)}</strong>
 
                     <small>
                       ${fmtDate(o.date)} • ${esc(o.status)}
+                      ${o.deliveryDate ? " • Livraison: " + fmtDate(o.deliveryDate) : ""}
+                      ${o.place ? " • " + esc(o.place) : ""}
                     </small>
+
+                    <small>
+                      Total: ${money(o.total)} • Voaloa: ${money(orderPaid(o))} •
+                      Sisa: ${money(bal)}
+                    </small>
+
+                    <div class="result-actions">
+                      <button class="btn btn-secondary" type="button" data-order-action="receipt" data-id="${o.id}">🧾 Reçu</button>
+                      ${bal > 0 && o.status !== "Annulé" ? `<button class="btn btn-secondary" type="button" data-order-action="paid" data-id="${o.id}">💰 Payé</button>` : ""}
+                      ${o.status !== "Livré" && o.status !== "Annulé" ? `<button class="btn btn-secondary" type="button" data-order-action="delivered" data-id="${o.id}">🚚 Livré</button>` : ""}
+                      ${wa ? `<a class="btn btn-secondary" href="${esc(wa)}" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>` : ""}
+                      <button class="btn btn-secondary" type="button" data-order-action="delete" data-id="${o.id}">🗑️</button>
+                    </div>
 
                   </div>
 
@@ -2058,8 +2477,8 @@ MIANDRY NY VENDEUR.
 
                 </div>
 
-              `
-            )
+              `;
+            })
             .join("")
         : `
             <p class="empty-state">Tsy mbola misy commande.</p>
@@ -2068,12 +2487,53 @@ MIANDRY NY VENDEUR.
 
     list();
 
-    $("orderForm").addEventListener("submit", (e) => {
+    $("orderList").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-order-action]");
+      if (!btn) return;
+
+      const id = Number(btn.dataset.id);
+      const o = state.orders.find((x) => x.id === id);
+      if (!o) return;
+
+      const action = btn.dataset.orderAction;
+
+      if (action === "receipt") {
+        pendingReceiptOrder = id;
+        return openTool("receipt");
+      }
+
+      if (action === "paid") {
+        o.paid = num(o.total);
+        o.status = o.status === "Livré" ? "Livré" : "Payé";
+      }
+
+      if (action === "delivered") {
+        o.status = "Livré";
+      }
+
+      if (action === "delete") {
+        if (!confirm("Hamafa ity commande ity?")) return;
+        state.orders = state.orders.filter((x) => x.id !== id);
+      }
+
+      touch();
+      list();
+      updateDashboard();
+    });
+
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const form = e.currentTarget;
+      const { d, total, deposit } = calc();
 
-      const d = getData(form);
+      let status = d.status;
+      let paid = deposit;
+
+      if (status === "Payé" || status === "Livré") {
+        paid = total;
+      } else if (status === "En attente" && deposit > 0) {
+        status = "Acompte reçu";
+      }
 
       state.orders.push({
         id: Date.now(),
@@ -2081,10 +2541,16 @@ MIANDRY NY VENDEUR.
         client: d.client,
         phone: d.phone,
         product: d.product,
-        quantity: num(d.quantity),
+        quantity: Math.max(1, num(d.quantity)),
         price: num(d.price),
-        total: num(d.quantity) * num(d.price),
-        status: d.status
+        discount: num(d.discount),
+        fee: num(d.fee),
+        total: total,
+        paid: paid,
+        method: d.method,
+        deliveryDate: d.deliveryDate,
+        place: d.place,
+        status: status
       });
 
       touch();
@@ -2095,6 +2561,8 @@ MIANDRY NY VENDEUR.
 
       form.reset();
 
+      preview();
+
       toast("Commande voatahiry.");
     });
   }
@@ -2104,27 +2572,37 @@ MIANDRY NY VENDEUR.
      ========================================================= */
 
   function renderReceiptTool(c) {
+    const o = state.orders.find((x) => x.id === pendingReceiptOrder) || null;
+
+    pendingReceiptOrder = null;
+
+    const prior = o ? orderPaid(o) : 0;
+
     c.innerHTML =
       head(
         "LAB 08",
         "🧾 Reçu de Vente",
-        "Vente → Paiement → Reçu."
+        "Vente → Paiement → Reçu numéroté, miaraka amin'ny sisa haloa."
       ) +
 
       `
       <form id="receiptForm" class="lab-form">
 
+        <input type="hidden" name="orderId" value="${o ? o.id : ""}">
+
         <div class="form-grid">
 
-          ${field("Client", "client", "text", "required")}
-
-          ${field("Produit", "product", "text", "required")}
-
-          ${field("Montant (Ar)", "amount", "number", 'min="0" required')}
-
-          ${select("Paiement", "method", ["Espèces", "Mvola", "Orange Money", "Airtel Money"])}
+          ${field("Client", "client", "text", `value="${esc(o ? o.client : "")}" required`)}
+          ${field("Téléphone (WhatsApp)", "phone", "tel", `value="${esc(o ? o.phone || "" : "")}"`)}
+          ${field("Produit", "product", "text", `value="${esc(o ? o.product : "")}" required`)}
+          ${field("Total commande (Ar)", "total", "number", `min="0" value="${o ? num(o.total) : ""}" required`)}
+          ${field("Voaloa ankehitriny (Ar)", "paid", "number", `min="0" value="${o ? orderBalance(o) : ""}" required`)}
+          ${select("Paiement", "method", PAY_METHODS)}
+          ${field("Référence (Mvola, Orange...)", "reference", "text")}
 
         </div>
+
+        ${o && prior > 0 ? `<p class="empty-state">Efa voaloa teo aloha: ${money(prior)}</p>` : ""}
 
         <button class="btn btn-primary" type="submit">
           🧾 Hamorona Reçu
@@ -2140,14 +2618,54 @@ MIANDRY NY VENDEUR.
 
       const d = getData(e.currentTarget);
 
+      const total = num(d.total);
+      const paid = num(d.paid);
+      const linked = state.orders.find((x) => String(x.id) === String(d.orderId)) || null;
+      const before = linked ? orderPaid(linked) : 0;
+      const rest = Math.max(0, total - before - paid);
+      const settled = rest === 0;
+
+      const number =
+        "REC-" + new Date().getFullYear() + "-" +
+        String(state.receipts.length + 1).padStart(4, "0");
+
+      if (linked) {
+        linked.paid = Math.min(num(linked.total), before + paid);
+        if (linked.status !== "Livré" && linked.status !== "Annulé") {
+          linked.status = settled ? "Payé" : "Acompte reçu";
+        }
+      }
+
+      state.receipts.push({
+        number,
+        date: new Date().toISOString(),
+        client: d.client,
+        product: d.product,
+        total,
+        paid,
+        rest,
+        method: d.method,
+        reference: d.reference,
+        orderId: linked ? linked.id : null
+      });
+
+      touch();
+
+      updateDashboard();
+
       const txt =
-`REÇU — TANTSAHA MATIHANINA
+`REÇU N° ${number} — TANTSAHA MATIHANINA
 Date: ${fmtDate(new Date())}
 Client: ${d.client}
 Produit: ${d.product}
-Montant: ${money(d.amount)}
-Paiement: ${d.method}
+Total: ${money(total)}${before > 0 ? `\nEfa voaloa: ${money(before)}` : ""}
+Voaloa androany: ${money(paid)}
+Sisa haloa: ${money(rest)}
+Paiement: ${d.method}${d.reference ? ` (Réf: ${d.reference})` : ""}
+Statut: ${settled ? "SOLDÉ" : "ACOMPTE"}
 Misaotra!`;
+
+      const wa = waLink(d.phone, txt);
 
       $("receiptResult").innerHTML = `
 
@@ -2155,34 +2673,19 @@ Misaotra!`;
 
           <div class="receipt-brand">TANTSAHA MATIHANINA</div>
 
-          <h3>REÇU DE VENTE</h3>
+          <h3>REÇU DE VENTE N° ${esc(number)}</h3>
 
           <hr>
 
-          <p>
-            <strong>Date:</strong>
-            ${fmtDate(new Date())}
-          </p>
-
-          <p>
-            <strong>Client:</strong>
-            ${esc(d.client)}
-          </p>
-
-          <p>
-            <strong>Produit:</strong>
-            ${esc(d.product)}
-          </p>
-
-          <p>
-            <strong>Montant:</strong>
-            ${money(d.amount)}
-          </p>
-
-          <p>
-            <strong>Paiement:</strong>
-            ${esc(d.method)}
-          </p>
+          <p><strong>Date:</strong> ${fmtDate(new Date())}</p>
+          <p><strong>Client:</strong> ${esc(d.client)}</p>
+          <p><strong>Produit:</strong> ${esc(d.product)}</p>
+          <p><strong>Total:</strong> ${money(total)}</p>
+          ${before > 0 ? `<p><strong>Efa voaloa:</strong> ${money(before)}</p>` : ""}
+          <p><strong>Voaloa androany:</strong> ${money(paid)}</p>
+          <p><strong>Sisa haloa:</strong> ${money(rest)}</p>
+          <p><strong>Paiement:</strong> ${esc(d.method)}${d.reference ? " (Réf: " + esc(d.reference) + ")" : ""}</p>
+          <p><strong>Statut:</strong> ${settled ? "SOLDÉ ✅" : "ACOMPTE"}</p>
 
           <hr>
 
@@ -2196,13 +2699,15 @@ Misaotra!`;
             📋 Adikao
           </button>
 
+          ${wa ? `<a class="btn btn-secondary" href="${esc(wa)}" target="_blank" rel="noopener noreferrer">💬 Alefaso amin'ny WhatsApp</a>` : ""}
+
         </div>
 
       `;
 
       $("rcCopy").addEventListener("click", () => copyText(txt));
 
-      touch();
+      toast("Reçu vita.");
     });
   }
 
@@ -2220,15 +2725,129 @@ Misaotra!`;
     ["Suivi & Fidélisation", "Araho ny client ary angataho ny retour."]
   ];
 
+  const DAY_GUIDE = [
+    {
+      goal: "Ny vente dia famahana olana ho an'ny client, tsy fanindronana vokatra fotsiny.",
+      steps: [
+        "Soraty ny vokatra 3 azonao amidy.",
+        "Isaky ny vokatra: inona ny olana vahaoliny ho an'ny client?",
+        "Fantaro ny coût tena izy alohan'ny hilaza prix."
+      ],
+      action: "Soraty ny vokatra 3 azonao amidy sy ny olana vahaoliny.",
+      tool: "price", toolLabel: "💰 Kajy Prix",
+      mistake: "Mametraka prix tsy nanao kajy coût."
+    },
+    {
+      goal: "Mivarotra amin'ny client IRAY mazava aloha, fa tsy amin'ny rehetra.",
+      steps: [
+        "Safidio mpividy iray tena mety (ohatra: mpandrafitra fety).",
+        "Fantaro ny filany, ny budget ary ny toerana misy azy.",
+        "Fantaro ny toerana hitana azy (Facebook, tsena, WhatsApp)."
+      ],
+      action: "Safidio ny client IRAY kendrena ary soraty ny filany.",
+      tool: "offer", toolLabel: "🎁 Offre",
+      mistake: "Te hivarotra amin'ny olona rehetra."
+    },
+    {
+      goal: "Ny offre mahomby dia mampifandray ny client, ny olana, ny vahaolana ary ny prix.",
+      steps: [
+        "Kajio ny coût sy ny prix conseillé.",
+        "Ampio bonus na garantie.",
+        "Ampio daty farany na stock voafetra."
+      ],
+      action: "Kajio ny coût sy ny prix conseillé, avy eo mamorona offre.",
+      tool: "price", toolLabel: "💰 Kajy Prix",
+      mistake: "Mivarotra amin'ny prix ambany noho ny coût."
+    },
+    {
+      goal: "Ny publication tsara dia misarika ao amin'ny andalana voalohany.",
+      steps: [
+        "Hook mahasarika ao amin'ny andalana voalohany.",
+        "Olana → vahaolana → prix → CTA.",
+        "Sary na vidéo mazava sy jiro voajanahary."
+      ],
+      action: "Mamoròna publication ary alefaso (Facebook na WhatsApp).",
+      tool: "publication", toolLabel: "📢 Publication",
+      mistake: "Publication lava be tsy misy CTA."
+    },
+    {
+      goal: "Miresaka amin'ny olona ianao fa tsy mandefa publication ihany.",
+      steps: [
+        "Mitadiava olona 10 mety hividy (namana, groupes, tsena).",
+        "Manomboka amin'ny fanontaniana, fa tsy amin'ny prix.",
+        "Ahafantaro ny filany alohan'ny hanolotra."
+      ],
+      action: "Miresaka amin'ny olona 5 farafahakeliny: mametraha fanontaniana aloha.",
+      tool: "simulation", toolLabel: "🎯 Simulation",
+      mistake: "Mandefa publication ihany nefa tsy miresaka amin'ny olona."
+    },
+    {
+      goal: "Ny objection dia famantarana fa mbola mila fanazavana ny client.",
+      steps: [
+        "Henoy tsara ny objection alohan'ny hamaly.",
+        "Mamaly amin'ny fanontaniana sy valeur.",
+        "Manolora dingana manaraka mazava (commande + acompte)."
+      ],
+      action: "Mamaly objection iray ary manolora commande + acompte.",
+      tool: "simulation", toolLabel: "🎯 Simulation",
+      mistake: "Mampidina prix avy hatrany."
+    },
+    {
+      goal: "Ny client efa nividy no mora indrindra hividy indray.",
+      steps: [
+        "Alefaso ny reçu sy ny fisaorana.",
+        "Angataho ny retour sy ny avis.",
+        "Tehirizo ny client ho an'ny vente manaraka."
+      ],
+      action: "Alefaso ny reçu, angataho ny retour ary tehirizo ny client.",
+      tool: "receipt", toolLabel: "🧾 Reçu",
+      mistake: "Manadino ny client aorian'ny vente."
+    }
+  ];
+
+  function groupButtons() {
+    return `
+      <div class="result-actions">
+
+        <button type="button" class="btn btn-secondary" data-external="${esc(CONFIG.whatsappGroup)}">
+          👥 Groupe formation
+        </button>
+
+        <button type="button" class="btn btn-secondary" data-external="${esc(CONFIG.whatsappPractice)}">
+          🧪 Groupe fanandramana
+        </button>
+
+        <button type="button" class="btn btn-secondary" data-external="${esc(CONFIG.whatsappReturn)}">
+          📝 Groupe retour
+        </button>
+
+      </div>
+    `;
+  }
+
   function renderGuideTool(c) {
     c.innerHTML =
       head(
         "GUIDE",
         "📘 Guide Formation",
-        "Lesona sy pratique isan'andro."
+        "Lesona, hetsika sy fanazaran-tena isan'andro (7 andro)."
       ) +
 
       `
+
+      <div class="info-box">
+
+        <p>
+          <strong>Dingana:</strong>
+          1) Mianara ny lesona androany →
+          2) Ataovy ny fanazaran-tena ao amin'ny site →
+          3) Zarao ao amin'ny groupe fanandramana →
+          4) Rehefa vita ny formation dia manaova retour.
+        </p>
+
+        ${groupButtons()}
+
+      </div>
 
       <div class="guide-content">
 
@@ -2241,9 +2860,29 @@ Misaotra!`;
 
               <div>
 
-                <h3>${d[0]}</h3>
+                <h3>${esc(d[0])}</h3>
 
-                <p>${d[1]}</p>
+                <p>${esc(d[1])}</p>
+
+                <details>
+
+                  <summary>Hijery ny lesona</summary>
+
+                  <p><strong>Tanjona:</strong> ${esc(DAY_GUIDE[i].goal)}</p>
+
+                  <ol>
+                    ${DAY_GUIDE[i].steps.map((s) => `<li>${esc(s)}</li>`).join("")}
+                  </ol>
+
+                  <p><strong>Hetsika androany:</strong> ${esc(DAY_GUIDE[i].action)}</p>
+
+                  <p>⚠️ <strong>Diso tokony hialana:</strong> ${esc(DAY_GUIDE[i].mistake)}</p>
+
+                  <button type="button" class="btn btn-primary" data-tool="${DAY_GUIDE[i].tool}">
+                    ${DAY_GUIDE[i].toolLabel}
+                  </button>
+
+                </details>
 
               </div>
 
@@ -2269,7 +2908,7 @@ Misaotra!`;
         head(
           "CHALLENGE",
           "🏆 Challenge 7 Jours",
-          "Action → Résultat → Retour."
+          "Action → Résultat → Retour. Isan'andro: hetsika iray, vokatra iray, fanamarihana iray."
         ) +
 
         `
@@ -2279,25 +2918,39 @@ Misaotra!`;
           ${days.map(
             (d, i) => `
 
-              <label class="challenge-item">
+              <div class="challenge-item">
 
-                <input
-                  type="checkbox"
-                  data-day="${i}"
-                  ${state.challenge.includes(i) ? "checked" : ""}
-                >
+                <label>
 
-                <span class="challenge-check">${i + 1}</span>
+                  <input
+                    type="checkbox"
+                    data-day="${i}"
+                    ${state.challenge.includes(i) ? "checked" : ""}
+                  >
 
-                <span>
+                  <span class="challenge-check">${i + 1}</span>
 
-                  <strong>${d[0]}</strong>
+                  <span>
 
-                  <small>${d[1]}</small>
+                    <strong>${esc(d[0])}</strong>
 
-                </span>
+                    <small>${esc(DAY_GUIDE[i].action)}</small>
 
-              </label>
+                  </span>
+
+                </label>
+
+                <textarea
+                  rows="2"
+                  data-note="${i}"
+                  placeholder="Résultat: inona no vokatra? (client, commande, sary...)"
+                >${esc(state.challengeNotes[i] || "")}</textarea>
+
+                <button type="button" class="btn btn-secondary" data-tool="${DAY_GUIDE[i].tool}">
+                  ${DAY_GUIDE[i].toolLabel}
+                </button>
+
+              </div>
 
             `
           ).join("")}
@@ -2316,6 +2969,42 @@ Misaotra!`;
 
         </div>
 
+        ${
+          done === 7
+            ? `
+              <div class="result-card result-positive">
+
+                <strong>🎉 Arahabaina! Vita ny challenge 7 andro.</strong>
+
+                <p>
+                  Manaova retour ankehitriny: lazao ny nianaranao, ny nampiharinao ary ny vokatra azonao.
+                </p>
+
+                <div class="result-actions">
+
+                  <button type="button" class="btn btn-primary" data-modal-open="reviewModal">
+                    ⭐ Manaova avis
+                  </button>
+
+                  <button type="button" class="btn btn-secondary" data-external="${esc(CONFIG.whatsappReturn)}">
+                    📝 Groupe retour
+                  </button>
+
+                </div>
+
+              </div>
+            `
+            : `
+              <div class="result-actions">
+
+                <button type="button" class="btn btn-secondary" data-external="${esc(CONFIG.whatsappPractice)}">
+                  🧪 Zarao ao amin'ny groupe fanandramana
+                </button>
+
+              </div>
+            `
+        }
+
         `;
 
       c.querySelectorAll("[data-day]").forEach((cb) => {
@@ -2329,6 +3018,14 @@ Misaotra!`;
           touch();
 
           draw();
+        });
+      });
+
+      c.querySelectorAll("[data-note]").forEach((ta) => {
+        ta.addEventListener("change", () => {
+          state.challengeNotes[ta.dataset.note] = ta.value;
+
+          touch();
         });
       });
     };
@@ -2360,7 +3057,7 @@ Misaotra!`;
 
     set(
       "statRevenue",
-      money(sum(state.orders, "total") + sum(ev, "revenue"))
+      money(sum(state.orders.filter((o) => o.status !== "Annulé"), "total") + sum(ev, "revenue"))
     );
 
     set(
